@@ -2,4 +2,4 @@ User-agent: *
 
 Disallow: /norobots/
 
-Sitemap: http://kalali.github.io/sitemap.xml
+Sitemap: https://kalali.github.io/sitemap.xml
