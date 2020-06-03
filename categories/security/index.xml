@@ -2,31 +2,31 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Security on The Place</title>
-    <link>/categories/security/</link>
+    <link>https://kalali.github.io/categories/security/</link>
     <description>Recent content in Security on The Place</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Wed, 05 Dec 2007 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/categories/security/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://kalali.github.io/categories/security/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>How to Secure GlassFish installation.</title>
-      <link>/2007/12/how-to-secure-glassfish-installation./</link>
+      <link>https://kalali.github.io/2007/12/how-to-secure-glassfish-installation./</link>
       <pubDate>Wed, 05 Dec 2007 00:00:00 +0000</pubDate>
       
-      <guid>/2007/12/how-to-secure-glassfish-installation./</guid>
+      <guid>https://kalali.github.io/2007/12/how-to-secure-glassfish-installation./</guid>
       <description>It is some days that I saw some posts about securing Glassfish in production environment, so I thought I write some of my experience here to let other secure the GlassFish easier. There are some basic items that you will need to relay on in order to have a secure Glassfish installation.
  secure access to administration console, both web based and CLI. secure all ports and listeners that application server uses to interact with outside applications.</description>
     </item>
     
     <item>
       <title>How to have your Own CA and configure Glassfish and your clients for mutual authentication?, Part II</title>
-      <link>/2007/08/how-to-have-your-own-ca-and-configure-glassfish-and-your-clients-for-mutual-authentication-part-ii/</link>
+      <link>https://kalali.github.io/2007/08/how-to-have-your-own-ca-and-configure-glassfish-and-your-clients-for-mutual-authentication-part-ii/</link>
       <pubDate>Thu, 23 Aug 2007 00:00:00 +0000</pubDate>
       
-      <guid>/2007/08/how-to-have-your-own-ca-and-configure-glassfish-and-your-clients-for-mutual-authentication-part-ii/</guid>
+      <guid>https://kalali.github.io/2007/08/how-to-have-your-own-ca-and-configure-glassfish-and-your-clients-for-mutual-authentication-part-ii/</guid>
       <description>In the second part of the series, you can see how we can utilize EJBCA to create certification for a client side application which will communicate with Glassfish server when Client cert authentication (Mutual Authentication) is enabled whether by changing the listener attributes or by describing it in the web-config.xml.
 In order to create client certification we will need to perform following steps as described in 4 sections:
 Section 1: Creating clients certification profile:  Go to https://localhost:8080/ejbca/ and select Administration.</description>
@@ -34,20 +34,20 @@ Section 1: Creating clients certification profile:  Go to https://localhost:8080
     
     <item>
       <title>How to have your Own CA and configure Glassfish and your clients for mutual authentication?</title>
-      <link>/2007/08/how-to-have-your-own-ca-and-configure-glassfish-and-your-clients-for-mutual-authentication/</link>
+      <link>https://kalali.github.io/2007/08/how-to-have-your-own-ca-and-configure-glassfish-and-your-clients-for-mutual-authentication/</link>
       <pubDate>Thu, 16 Aug 2007 00:00:00 +0000</pubDate>
       
-      <guid>/2007/08/how-to-have-your-own-ca-and-configure-glassfish-and-your-clients-for-mutual-authentication/</guid>
+      <guid>https://kalali.github.io/2007/08/how-to-have-your-own-ca-and-configure-glassfish-and-your-clients-for-mutual-authentication/</guid>
       <description>One of the most repeated question in GlassFish mailing list is SSL, Certification, Mutual Authentication,&amp;hellip;. In this Entry I will try to address some of this questions by giving an step by step guide for using EJBCA to issue certificate, use them in both GlassFish and clients which connect to GlassFish in some manner. clients like web browser, standalone java applications,&amp;hellip;
 There are several tutorial and blog entry about configuring GlassFish to use some specific certification in order to perform server authentication for clients over SSL and each of those weblog is an invaluable source of information.</description>
     </item>
     
     <item>
       <title>How to install and use OpenSSO CLI (Command Line Administration Interface)</title>
-      <link>/2007/05/how-to-install-and-use-opensso-cli-command-line-administration-interface/</link>
+      <link>https://kalali.github.io/2007/05/how-to-install-and-use-opensso-cli-command-line-administration-interface/</link>
       <pubDate>Thu, 17 May 2007 00:00:00 +0000</pubDate>
       
-      <guid>/2007/05/how-to-install-and-use-opensso-cli-command-line-administration-interface/</guid>
+      <guid>https://kalali.github.io/2007/05/how-to-install-and-use-opensso-cli-command-line-administration-interface/</guid>
       <description>OpenSSO which is open source branch of Sun Java Access Manager has several module which you should install and configure in case that you want to have similar bundle from its open source branch.
 One of main components is OpenSSO itself which you can obtain from Its nightly builds page; just make sure to select latest link which will take you to the download page with links to OpenSSO modules.</description>
     </item>

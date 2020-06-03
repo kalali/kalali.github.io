@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Gmail on The Place</title>
-    <link>/tags/gmail/</link>
+    <link>https://kalali.github.io/tags/gmail/</link>
     <description>Recent content in Gmail on The Place</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sat, 04 Mar 2006 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/tags/gmail/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://kalali.github.io/tags/gmail/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>A Simple Netbeans Module , a Gmail Checker…</title>
-      <link>/2006/03/a-simple-netbeans-module-a-gmail-checker/</link>
+      <link>https://kalali.github.io/2006/03/a-simple-netbeans-module-a-gmail-checker/</link>
       <pubDate>Sat, 04 Mar 2006 00:00:00 +0000</pubDate>
       
-      <guid>/2006/03/a-simple-netbeans-module-a-gmail-checker/</guid>
+      <guid>https://kalali.github.io/2006/03/a-simple-netbeans-module-a-gmail-checker/</guid>
       <description>Some times ago I participate in NetCat 50 - a process for NetBeans IDE version 5 QA -During NetCat I find that NetBeans RCP is something that I can Pick for later Swing based clients.
 I start learning NetBeans RCP platform during NetCat 50 , and to evaluate my learnings I write a simple Module for NetBeans IDE .
 The module is a GMail Checker , Module make it possible for you to see your new emails within your IDE and allows you to rotate between subjects.</description>

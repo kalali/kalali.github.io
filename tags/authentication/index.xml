@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Authentication on The Place</title>
-    <link>/tags/authentication/</link>
+    <link>https://kalali.github.io/tags/authentication/</link>
     <description>Recent content in Authentication on The Place</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Thu, 23 Aug 2007 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/tags/authentication/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://kalali.github.io/tags/authentication/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>How to have your Own CA and configure Glassfish and your clients for mutual authentication?, Part II</title>
-      <link>/2007/08/how-to-have-your-own-ca-and-configure-glassfish-and-your-clients-for-mutual-authentication-part-ii/</link>
+      <link>https://kalali.github.io/2007/08/how-to-have-your-own-ca-and-configure-glassfish-and-your-clients-for-mutual-authentication-part-ii/</link>
       <pubDate>Thu, 23 Aug 2007 00:00:00 +0000</pubDate>
       
-      <guid>/2007/08/how-to-have-your-own-ca-and-configure-glassfish-and-your-clients-for-mutual-authentication-part-ii/</guid>
+      <guid>https://kalali.github.io/2007/08/how-to-have-your-own-ca-and-configure-glassfish-and-your-clients-for-mutual-authentication-part-ii/</guid>
       <description>In the second part of the series, you can see how we can utilize EJBCA to create certification for a client side application which will communicate with Glassfish server when Client cert authentication (Mutual Authentication) is enabled whether by changing the listener attributes or by describing it in the web-config.xml.
 In order to create client certification we will need to perform following steps as described in 4 sections:
 Section 1: Creating clients certification profile:  Go to https://localhost:8080/ejbca/ and select Administration.</description>
