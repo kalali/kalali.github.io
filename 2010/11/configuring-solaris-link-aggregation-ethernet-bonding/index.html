@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.72.0 with theme Tranquilpeak 0.4.8-BETA">
+<meta name="author" content="Masoud Kalali">
+<meta name="keywords" content=", development, next-gen, Kubernetes, Cloud, Java, Spring Boot, Microservices">
+<meta name="description" content="Link aggregation or commonly known Ethernet bonding allows us to enhance the network availability and performance by combining multiple network interfaces together and form an aggregation of those interfaces which act as a single network interface with greatly enhanced availability and performance.
+When we aggregate two or more network interfaces, we are forming a new network interface on top of those physical interfaces combined in the link layer.
+We need to have at least two network interfaces in our machine to create a link aggregation.">
+
+
+<meta property="og:description" content="Link aggregation or commonly known Ethernet bonding allows us to enhance the network availability and performance by combining multiple network interfaces together and form an aggregation of those interfaces which act as a single network interface with greatly enhanced availability and performance.
+When we aggregate two or more network interfaces, we are forming a new network interface on top of those physical interfaces combined in the link layer.
+We need to have at least two network interfaces in our machine to create a link aggregation.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Configuring Solaris Link Aggregation (Ethernet bonding)">
+<meta name="twitter:title" content="Configuring Solaris Link Aggregation (Ethernet bonding)">
+<meta property="og:url" content="/2010/11/configuring-solaris-link-aggregation-ethernet-bonding/">
+<meta property="twitter:url" content="/2010/11/configuring-solaris-link-aggregation-ethernet-bonding/">
+<meta property="og:site_name" content="The Place">
+<meta property="og:description" content="Link aggregation or commonly known Ethernet bonding allows us to enhance the network availability and performance by combining multiple network interfaces together and form an aggregation of those interfaces which act as a single network interface with greatly enhanced availability and performance.
+When we aggregate two or more network interfaces, we are forming a new network interface on top of those physical interfaces combined in the link layer.
+We need to have at least two network interfaces in our machine to create a link aggregation.">
+<meta name="twitter:description" content="Link aggregation or commonly known Ethernet bonding allows us to enhance the network availability and performance by combining multiple network interfaces together and form an aggregation of those interfaces which act as a single network interface with greatly enhanced availability and performance.
+When we aggregate two or more network interfaces, we are forming a new network interface on top of those physical interfaces combined in the link layer.
+We need to have at least two network interfaces in our machine to create a link aggregation.">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2010-11-25T00:00:00">
+  
+  
+    <meta property="article:modified_time" content="2010-11-25T00:00:00">
+  
+  
+  
+  
+    
+      <meta property="article:tag" content="Java">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+  <meta name="twitter:site" content="@masoudkalali">
+
+
+  <meta name="twitter:creator" content="@masoudkalali">
+
+
+
+
+
+
+
+
+
+
+  <meta property="og:image" content="/img/avatar.png">
+  <meta property="twitter:image" content="/img/avatar.png">
+
+
+    <title>Configuring Solaris Link Aggregation (Ethernet bonding)</title>
+
+    <link rel="icon" href="/img/favicon.png">
+    
+
+    
+
+    <link rel="canonical" href="/2010/11/configuring-solaris-link-aggregation-ethernet-bonding/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.css" integrity="sha256-vuXZ9LGmmwtjqFX1F+EKin1ThZMub58gKULUyf0qECk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
+    
+    
+    <link rel="stylesheet" href="/css/style-twzjdbqhmnnacqs0pwwdzcdbt8yhv8giawvjqjmyfoqnvazl0dalmnhdkvp7.min.css" />
+    
+    
+
+    
+      
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-137107-12', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="5">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="/">The Place</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="/img/avatar.png" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="5">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="/#about">
+          <img class="sidebar-profile-picture" src="/img/avatar.png" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">Masoud Kalali</h4>
+        
+          <h5 class="sidebar-profile-bio">Software architect with focus on PaaS container platforms, and Java EE, author, technology enthusiast, runner.</h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-home"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/categories">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/tags">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-tags"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/archives">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-archive"></i>
+      
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/#about">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-question"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/https://github.com/kalali">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-github"></i>
+      
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/index.xml">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-rss"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+
+      <div id="main" data-behavior="5"
+        class="
+               hasCoverMetaIn
+               ">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+            <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title" itemprop="headline">
+      Configuring Solaris Link Aggregation (Ethernet bonding)
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2010-11-25T00:00:00Z">
+        
+  November 25, 2010
+
+      </time>
+    
+    
+  </div>
+
+</div>
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              <p>Link aggregation or commonly known Ethernet bonding allows us to enhance the network availability and performance by combining multiple network interfaces together and form an aggregation of those interfaces which act as a single network interface with greatly enhanced availability and performance.</p>
+<p>When we aggregate two or more network interfaces, we are forming a new network interface on top of those physical interfaces combined in the link layer.</p>
+<p>We need to have at least two network interfaces in our machine to create a link aggregation. The interfaces must be unplumb-ed in order for us to use them in a link aggregation. Following command shows how to unplumb a network interface.</p>
+<p># ifconfig e1000g1 down unplumb</p>
+<p>We should disable the NWAM because link aggregation and NWAM cannot co-exist.</p>
+<p># svcadm disable network/physical:nwam</p>
+<p>The interfaces we want to use in a link aggregation must not be part of virtual interface; otherwise it will not be possible to create the aggregation. To ensure that an interface is not part of a virtual interface checks the output for the following command.</p>
+<p># dladm show-link</p>
+<p>Following figure shows that my e1000g0 has a virtual interface on top of it so it cannot be used in an aggregation.</p>
+<p><a href="http://kalali.me/wp-content/uploads/2010/11/3180_04_141.png"><img src="http://kalali.me/wp-content/uploads/2010/11/3180_04_141.png" alt="" title="3180_04_14"></a></p>
+<p>To delete the virtual interface we can use the dladm command as follow</p>
+<p># dladm delete-vlan vlan0</p>
+<p>The link aggregation as the name suggests works in the link layer and therefore we will use dladm command to make the necessary configurations.  We use create-aggr subcommand of dladm command with the following syntax to create aggregation links.</p>
+<p>dladm  create-aggr [-l interface_name]*  aggregation_name</p>
+<p>In this syntax we should have at least two occurrence of -l interface_name option followed by the aggregation name.</p>
+<p>Assuming that we have e1000g0 and e1000g1 in our disposal following commands configure an aggregation link on top of them.</p>
+<p># dladm create-aggr -l e1000g0 -l e1000g1 aggr0</p>
+<p>Now that the aggregation is created we can configure its IP allocation in the same way that we configure a physical or virtual network interface. Following command plumb the aggr0 interface, assign a static IP address to it and bring the interface up.</p>
+<p># ifconfig aggr0 plumb 10.0.2.25/24 up</p>
+<p>Now we can use ifconfig command to see status of our new aggregated interface.</p>
+<p># ifconfig aggr0</p>
+<p>The result of the above command should be similar to the following figure.</p>
+<p><a href="http://kalali.me/wp-content/uploads/2010/11/3180_04_151.png"><img src="http://kalali.me/wp-content/uploads/2010/11/3180_04_151.png" alt="" title="3180_04_15"></a></p>
+<p>To get a list of all available network interfaces either virtual or physical we can use the dladm command as follow</p>
+<p># dladm show-link</p>
+<p>And to get a list of aggregated interfaces we can use another subcommand of dladm as follow.</p>
+<p># dladm show-aggr</p>
+<p>The output for previous dladm commands is shown in the following figure.</p>
+<p><a href="http://kalali.me/wp-content/uploads/2010/11/3180_04_161.png"><img src="http://kalali.me/wp-content/uploads/2010/11/3180_04_161.png" alt="" title="3180_04_16"></a></p>
+<p>We can change an aggregation link underlying interfaces by adding an interface to the aggregation or removing one from the aggregation using add-aggr and remove-aggr subcommands of dladm command.  For example:</p>
+<p># dladm add-aggr -l e1000g2 aggr0
+# dladm remove-aggr -l e1000g1 aggr0</p>
+<p>The aggregation we created will survive the reboot but our ifconfig configuration will not survive a reboot unless we persist it using the interface configuration files.</p>
+<p>To make the aggregation IP configuration persistent we just need to add create /etc/hostname.aggr0 file with the following content:</p>
+<p>10.0.2.25/24</p>
+<p>The interface configuration files are discussed in recipe 2 and 3 of this chapter in great details. Reviewing them is recommended.</p>
+<p>To delete an aggregation we can use delete-aggr subcommand of dladm command. For example to delete aggr0 we can use the following commands.</p>
+<p># ifconfig aggr0 down unplumb
+# dladm delete-aggr aggr0</p>
+<p>As you can see before we could delete the aggregation we should bring down its interface and unplumb it.</p>
+<p>In recipe 11 we discussed IPMP which allows us to have high availability by grouping network interfaces and when required automatically failing over the IP address of any failed interface to a healthy one. In this recipe we saw how we can join a group of interfaces together to have a better performance. By grouping a set of aggregations we can have the high availability that IPMP offers along with the performance boost that link aggregation offers.</p>
+<p>The link aggregation works in layer 2 meaning that the aggregation groups the interfaces in layer 2 of network where network packets are dealt with. In this layer the network layer’s packets are extracted or created with the designated IP address of the aggregation and then are delivered to the lower, higher layer.</p>
+
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="/tags/java/">Java</a>
+
+                  </div>
+                
+              
+            
+            <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2010/12/my-slides-for-java-ee-security-session-at-javaforum-meeting-69/" data-tooltip="My slides for Java EE Security session at JavaForum meeting 69">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2010/11/configuring-dhcp-server-in-solaris/" data-tooltip="Configuring DHCP server in Solaris">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2010/11/configuring-solaris-link-aggregation-ethernet-bonding/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2010/11/configuring-solaris-link-aggregation-ethernet-bonding/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+            
+              
+                <div id="disqus_thread">
+  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2020 Masoud Kalali. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+        <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2010/12/my-slides-for-java-ee-security-session-at-javaforum-meeting-69/" data-tooltip="My slides for Java EE Security session at JavaForum meeting 69">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2010/11/configuring-dhcp-server-in-solaris/" data-tooltip="Configuring DHCP server in Solaris">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2010/11/configuring-solaris-link-aggregation-ethernet-bonding/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2010/11/configuring-solaris-link-aggregation-ethernet-bonding/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+  <i id="btn-close-shareoptions" class="fa fa-close"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=%2F2010%2F11%2Fconfiguring-solaris-link-aggregation-ethernet-bonding%2F">
+          <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=%2F2010%2F11%2Fconfiguring-solaris-link-aggregation-ethernet-bonding%2F">
+          <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="/img/avatar.png" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">Masoud Kalali</h4>
+    
+      <div id="about-card-bio">Software architect with focus on PaaS container platforms, and Java EE, author, technology enthusiast, runner.</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Software engineer
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        Sweden
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      <div id="cover" style="background-image:url('img/cover.jpg');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
+
+
+<script src="/js/script-pcw6v3xilnxydl1vddzazdverrnn9ctynvnxgwho987mfyqkuylcb1nlt.min.js"></script>
+
+
+<script lang="javascript">
+window.onload = updateMinWidth;
+window.onresize = updateMinWidth;
+document.getElementById("sidebar").addEventListener("transitionend", updateMinWidth);
+function updateMinWidth() {
+  var sidebar = document.getElementById("sidebar");
+  var main = document.getElementById("main");
+  main.style.minWidth = "";
+  var w1 = getComputedStyle(main).getPropertyValue("min-width");
+  var w2 = getComputedStyle(sidebar).getPropertyValue("width");
+  var w3 = getComputedStyle(sidebar).getPropertyValue("left");
+  main.style.minWidth = `calc(${w1} - ${w2} - ${w3})`;
+}
+</script>
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+  
+    
+      <script>
+        var disqus_config = function () {
+          this.page.url = '\/2010\/11\/configuring-solaris-link-aggregation-ethernet-bonding\/';
+          
+            this.page.identifier = '\/2010\/11\/configuring-solaris-link-aggregation-ethernet-bonding\/'
+          
+        };
+        (function() {
+          
+          
+          if (window.location.hostname == "localhost") {
+            return;
+          }
+          var d = document, s = d.createElement('script');
+          var disqus_shortname = 'kalali.github.io';
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      </script>
+    
+  
+
+
+
+
+    
+  </body>
+</html>
+

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>JBoss on The Place</title>
+    <link>/tags/jboss/</link>
+    <description>Recent content in JBoss on The Place</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 25 Mar 2006 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/jboss/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Testing some FrameWorks and applications on Glassfish build 40&#43;</title>
+      <link>/2006/03/testing-some-frameworks-and-applications-on-glassfish-build-40-/</link>
+      <pubDate>Sat, 25 Mar 2006 00:00:00 +0000</pubDate>
+      
+      <guid>/2006/03/testing-some-frameworks-and-applications-on-glassfish-build-40-/</guid>
+      <description>Now with EJB 3 , (I am talking about current date take a look at date that this entry is written) options in application server market are so limited because there are just few application server that support EJB3. some of them that i know are Jboss and GlassFish project.
+But GlassFish provide more than being EJB3 container , it is aimed to be a full Java ee 5 container.</description>
+    </item>
+    
+  </channel>
+</rss>

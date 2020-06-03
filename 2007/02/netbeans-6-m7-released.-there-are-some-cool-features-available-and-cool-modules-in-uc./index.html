@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.72.0 with theme Tranquilpeak 0.4.8-BETA">
+<meta name="author" content="Masoud Kalali">
+<meta name="keywords" content=", development, next-gen, Kubernetes, Cloud, Java, Spring Boot, Microservices">
+<meta name="description" content="NetBeans 6 milestone 7 has released and you can download it from NetBeans web site by at least two methods
+ Traditional setup file for separate packs using new NetBeans installer which allows you to customize your package before you download it.  Traditional method for downloading NetBeans 6 which is a development build is using http://www.netbeans.info/downloads/dev.php and the new installer which I am going to talk about is available at http://nbi.">
+
+
+<meta property="og:description" content="NetBeans 6 milestone 7 has released and you can download it from NetBeans web site by at least two methods
+ Traditional setup file for separate packs using new NetBeans installer which allows you to customize your package before you download it.  Traditional method for downloading NetBeans 6 which is a development build is using http://www.netbeans.info/downloads/dev.php and the new installer which I am going to talk about is available at http://nbi.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NetBeans 6 M7 released. There are some cool features available and cool modules in UC.">
+<meta name="twitter:title" content="NetBeans 6 M7 released. There are some cool features available and cool modules in UC.">
+<meta property="og:url" content="/2007/02/netbeans-6-m7-released.-there-are-some-cool-features-available-and-cool-modules-in-uc./">
+<meta property="twitter:url" content="/2007/02/netbeans-6-m7-released.-there-are-some-cool-features-available-and-cool-modules-in-uc./">
+<meta property="og:site_name" content="The Place">
+<meta property="og:description" content="NetBeans 6 milestone 7 has released and you can download it from NetBeans web site by at least two methods
+ Traditional setup file for separate packs using new NetBeans installer which allows you to customize your package before you download it.  Traditional method for downloading NetBeans 6 which is a development build is using http://www.netbeans.info/downloads/dev.php and the new installer which I am going to talk about is available at http://nbi.">
+<meta name="twitter:description" content="NetBeans 6 milestone 7 has released and you can download it from NetBeans web site by at least two methods
+ Traditional setup file for separate packs using new NetBeans installer which allows you to customize your package before you download it.  Traditional method for downloading NetBeans 6 which is a development build is using http://www.netbeans.info/downloads/dev.php and the new installer which I am going to talk about is available at http://nbi.">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2007-02-22T00:00:00">
+  
+  
+    <meta property="article:modified_time" content="2007-02-22T00:00:00">
+  
+  
+  
+    
+      <meta property="article:section" content="NetBeans">
+    
+  
+  
+    
+      <meta property="article:tag" content="Java">
+    
+      <meta property="article:tag" content="NetBeans">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+  <meta name="twitter:site" content="@masoudkalali">
+
+
+  <meta name="twitter:creator" content="@masoudkalali">
+
+
+
+
+
+
+
+
+
+
+  <meta property="og:image" content="/img/avatar.png">
+  <meta property="twitter:image" content="/img/avatar.png">
+
+
+    <title>NetBeans 6 M7 released. There are some cool features available and cool modules in UC.</title>
+
+    <link rel="icon" href="/img/favicon.png">
+    
+
+    
+
+    <link rel="canonical" href="/2007/02/netbeans-6-m7-released.-there-are-some-cool-features-available-and-cool-modules-in-uc./">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.css" integrity="sha256-vuXZ9LGmmwtjqFX1F+EKin1ThZMub58gKULUyf0qECk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
+    
+    
+    <link rel="stylesheet" href="/css/style-twzjdbqhmnnacqs0pwwdzcdbt8yhv8giawvjqjmyfoqnvazl0dalmnhdkvp7.min.css" />
+    
+    
+
+    
+      
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-137107-12', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="5">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="/">The Place</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="/img/avatar.png" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="5">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="/#about">
+          <img class="sidebar-profile-picture" src="/img/avatar.png" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">Masoud Kalali</h4>
+        
+          <h5 class="sidebar-profile-bio">Software architect with focus on PaaS container platforms, and Java EE, author, technology enthusiast, runner.</h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-home"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/categories">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/tags">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-tags"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/archives">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-archive"></i>
+      
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/#about">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-question"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/https://github.com/kalali">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-github"></i>
+      
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/index.xml">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-rss"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+
+      <div id="main" data-behavior="5"
+        class="
+               hasCoverMetaIn
+               ">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+            <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title" itemprop="headline">
+      NetBeans 6 M7 released. There are some cool features available and cool modules in UC.
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2007-02-22T00:00:00Z">
+        
+  February 22, 2007
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="/categories/netbeans">NetBeans</a>
+    
+  
+
+  </div>
+
+</div>
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              <p>NetBeans 6 milestone 7  has released and you can download it from NetBeans web site by at least two methods</p>
+<ul>
+<li>Traditional setup file for separate packs</li>
+<li>using new NetBeans installer which allows you to customize your package before you download it.</li>
+</ul>
+<p>Traditional method for downloading NetBeans 6 which is a development build is using <a href="http://www.netbeans.info/downloads/dev.php" title="http://www.netbeans.info/downloads/dev.php">http://www.netbeans.info/downloads/dev.php</a> and the new installer which I am going to talk about is available at <a href="http://nbi.netbeans.org/" title="http://nbi.netbeans.org/">http://nbi.netbeans.org/</a> .<br>
+<a href="http://pack.google.com/">Google pack</a> installer is somehow similar to new NetBeans installer. In one simple paragraph it allows you to customize what you need in one mega installer and then you can download your customized package to your local machine to install those components into your system.<br>
+features that new installer has and I really like them are as follow (sure you may find some there feature that I have not mentioned )</p>
+<ul>
+<li>Download what you need by customizing the download package.</li>
+</ul>
+<p><img src="http://kajcarpet.com/mimages/nb6_m7_image1.jpg" alt="Download section">.</p>
+<ul>
+<li>From bundle that you have download you may not install all of them at the same time.</li>
+</ul>
+<p><img src="http://kajcarpet.com/mimages/nb6_m7_image2.jpg" alt="Installer first round"></p>
+<p>When you choose to install GlassFish you have option to select its path, ports, and default JDK which are important options.</p>
+<ul>
+<li>You are allowed to uninstall some of components when you do not need them by running the installer again.</li>
+</ul>
+<p><img src="http://kajcarpet.com/mimages/nb6_m7_image3.jpg" alt="Uninstalling"></p>
+<ul>
+<li>Installer register any component that you install into other components (Application server, mobility features,&hellip;.).</li>
+<li>Tight integration with windows <em>add or remove programs.</em></li>
+<li>And many other features that I do not noticed yet.</li>
+</ul>
+<p>But there are some other cool changes in NetBeans IDE, look what we have as our icon set, it remind me some of Firefox themes with fantasy icons. I hope we could see some modularity mechanism for icons which will allows NetBeans fans to develop some new icon set or use older version of icon set.<br>
+<a href="http://kajcarpet.com/mimages/nb6_m7_image4.jpg"></a><a href="http://kajcarpet.com/mimages/nb6_m7_image4.jpg"><img src="http://kajcarpet.com/mimages/nb6_m7_image4_small.jpg" alt="new icons"></a></p>
+<p>Based on <a href="http://wiki.netbeans.org/wiki/view/NB6FeaturePlan" title="NetBeans 6 Feature Plan">NetBeans 6 Feature Plan</a>  we will have RoR and JavaScript support in NetBeans 6 M7, so this features should be inside our downloaded IDE or in update center, lets look and see what does we have in NetBeans new project and file and also in update centers.<br>
+Yes, we have JavaScript and ROR support built-in.</p>
+<p>Lets see what else we can find in update center that is not available for 5.5.* or in NetBeans 6 M7 out of the box.</p>
+<!-- raw HTML omitted -->
+<p>OK, what that really amazed me about new modules for NetBeans IDE is Jasper Report Visual designer, Its really cool to see a report designer for jasper report integrated into NetBeans.</p>
+<p>I know that it has some basic integration but it is the initial release of this really cool module. here are some images of Jasper report designer integrated into NetBeans.</p>
+<p><a href="http://kajcarpet.com/mimages/jarvis.jpg"></a><a href="http://kajcarpet.com/mimages/jarvis.jpg"><img src="http://kajcarpet.com/mimages/jarvis_small.jpg" alt="jarvis"></a></p>
+<p>the project home page is <a href="https://jarvis.dev.java.net/" title="https://jarvis.dev.java.net/">https://jarvis.dev.java.net/</a> credits goes to developer of this really required module.</p>
+<p>NetBeans 6 release is as amazing as NetBeans 5 release was.</p>
+
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="/tags/java/">Java</a>
+
+  <a class="tag tag--primary tag--small" href="/tags/netbeans/">NetBeans</a>
+
+                  </div>
+                
+              
+            
+            <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2007/05/what-happend-to-javarss.com/" data-tooltip="What happend to JavaRSS.com?">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2007/02/hibernate-dynamic-mapping-and-dom4j-enabled-sessions/" data-tooltip="Hibernate dynamic mapping and Dom4J enabled sessions">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2007/02/netbeans-6-m7-released.-there-are-some-cool-features-available-and-cool-modules-in-uc./">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2007/02/netbeans-6-m7-released.-there-are-some-cool-features-available-and-cool-modules-in-uc./">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+            
+              
+                <div id="disqus_thread">
+  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2020 Masoud Kalali. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+        <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2007/05/what-happend-to-javarss.com/" data-tooltip="What happend to JavaRSS.com?">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2007/02/hibernate-dynamic-mapping-and-dom4j-enabled-sessions/" data-tooltip="Hibernate dynamic mapping and Dom4J enabled sessions">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2007/02/netbeans-6-m7-released.-there-are-some-cool-features-available-and-cool-modules-in-uc./">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2007/02/netbeans-6-m7-released.-there-are-some-cool-features-available-and-cool-modules-in-uc./">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+  <i id="btn-close-shareoptions" class="fa fa-close"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=%2F2007%2F02%2Fnetbeans-6-m7-released.-there-are-some-cool-features-available-and-cool-modules-in-uc.%2F">
+          <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=%2F2007%2F02%2Fnetbeans-6-m7-released.-there-are-some-cool-features-available-and-cool-modules-in-uc.%2F">
+          <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="/img/avatar.png" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">Masoud Kalali</h4>
+    
+      <div id="about-card-bio">Software architect with focus on PaaS container platforms, and Java EE, author, technology enthusiast, runner.</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Software engineer
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        Sweden
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      <div id="cover" style="background-image:url('img/cover.jpg');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
+
+
+<script src="/js/script-pcw6v3xilnxydl1vddzazdverrnn9ctynvnxgwho987mfyqkuylcb1nlt.min.js"></script>
+
+
+<script lang="javascript">
+window.onload = updateMinWidth;
+window.onresize = updateMinWidth;
+document.getElementById("sidebar").addEventListener("transitionend", updateMinWidth);
+function updateMinWidth() {
+  var sidebar = document.getElementById("sidebar");
+  var main = document.getElementById("main");
+  main.style.minWidth = "";
+  var w1 = getComputedStyle(main).getPropertyValue("min-width");
+  var w2 = getComputedStyle(sidebar).getPropertyValue("width");
+  var w3 = getComputedStyle(sidebar).getPropertyValue("left");
+  main.style.minWidth = `calc(${w1} - ${w2} - ${w3})`;
+}
+</script>
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+  
+    
+      <script>
+        var disqus_config = function () {
+          this.page.url = '\/2007\/02\/netbeans-6-m7-released.-there-are-some-cool-features-available-and-cool-modules-in-uc.\/';
+          
+            this.page.identifier = '\/2007\/02\/netbeans-6-m7-released.-there-are-some-cool-features-available-and-cool-modules-in-uc.\/'
+          
+        };
+        (function() {
+          
+          
+          if (window.location.hostname == "localhost") {
+            return;
+          }
+          var d = document, s = d.createElement('script');
+          var disqus_shortname = 'kalali.github.io';
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      </script>
+    
+  
+
+
+
+
+    
+  </body>
+</html>
+

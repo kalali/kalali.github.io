@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.72.0 with theme Tranquilpeak 0.4.8-BETA">
+<meta name="author" content="Masoud Kalali">
+<meta name="keywords" content=", development, next-gen, Kubernetes, Cloud, Java, Spring Boot, Microservices">
+<meta name="description" content="JBoss application server 5 GA released after a very long period of silence from &ldquo;JBoss, a division of Red Hat&rdquo;. The new version of JBoss application server supports Java EE 5 and is based on modularity concept with a small kernel named JBoss MicroContainer in the core and all functionalities as modules around the kernel. JBoss kernel is POJO based and all modules follows the same principals, some configuration files are required to configure the services which the kernel will load.">
+
+
+<meta property="og:description" content="JBoss application server 5 GA released after a very long period of silence from &ldquo;JBoss, a division of Red Hat&rdquo;. The new version of JBoss application server supports Java EE 5 and is based on modularity concept with a small kernel named JBoss MicroContainer in the core and all functionalities as modules around the kernel. JBoss kernel is POJO based and all modules follows the same principals, some configuration files are required to configure the services which the kernel will load.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Some thoughts on the JBoss AS 5 release">
+<meta name="twitter:title" content="Some thoughts on the JBoss AS 5 release">
+<meta property="og:url" content="/2008/12/some-thoughts-on-the-jboss-as-5-release/">
+<meta property="twitter:url" content="/2008/12/some-thoughts-on-the-jboss-as-5-release/">
+<meta property="og:site_name" content="The Place">
+<meta property="og:description" content="JBoss application server 5 GA released after a very long period of silence from &ldquo;JBoss, a division of Red Hat&rdquo;. The new version of JBoss application server supports Java EE 5 and is based on modularity concept with a small kernel named JBoss MicroContainer in the core and all functionalities as modules around the kernel. JBoss kernel is POJO based and all modules follows the same principals, some configuration files are required to configure the services which the kernel will load.">
+<meta name="twitter:description" content="JBoss application server 5 GA released after a very long period of silence from &ldquo;JBoss, a division of Red Hat&rdquo;. The new version of JBoss application server supports Java EE 5 and is based on modularity concept with a small kernel named JBoss MicroContainer in the core and all functionalities as modules around the kernel. JBoss kernel is POJO based and all modules follows the same principals, some configuration files are required to configure the services which the kernel will load.">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2008-12-18T00:00:00">
+  
+  
+    <meta property="article:modified_time" content="2008-12-18T00:00:00">
+  
+  
+  
+  
+    
+      <meta property="article:tag" content="Java">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+  <meta name="twitter:site" content="@masoudkalali">
+
+
+  <meta name="twitter:creator" content="@masoudkalali">
+
+
+
+
+
+
+
+
+
+
+  <meta property="og:image" content="/img/avatar.png">
+  <meta property="twitter:image" content="/img/avatar.png">
+
+
+    <title>Some thoughts on the JBoss AS 5 release</title>
+
+    <link rel="icon" href="/img/favicon.png">
+    
+
+    
+
+    <link rel="canonical" href="/2008/12/some-thoughts-on-the-jboss-as-5-release/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.css" integrity="sha256-vuXZ9LGmmwtjqFX1F+EKin1ThZMub58gKULUyf0qECk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
+    
+    
+    <link rel="stylesheet" href="/css/style-twzjdbqhmnnacqs0pwwdzcdbt8yhv8giawvjqjmyfoqnvazl0dalmnhdkvp7.min.css" />
+    
+    
+
+    
+      
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-137107-12', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="5">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="/">The Place</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="/img/avatar.png" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="5">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="/#about">
+          <img class="sidebar-profile-picture" src="/img/avatar.png" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">Masoud Kalali</h4>
+        
+          <h5 class="sidebar-profile-bio">Software architect with focus on PaaS container platforms, and Java EE, author, technology enthusiast, runner.</h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-home"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/categories">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/tags">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-tags"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/archives">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-archive"></i>
+      
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/#about">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-question"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/https://github.com/kalali">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-github"></i>
+      
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/index.xml">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-rss"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+
+      <div id="main" data-behavior="5"
+        class="
+               hasCoverMetaIn
+               ">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+            <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title" itemprop="headline">
+      Some thoughts on the JBoss AS 5 release
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2008-12-18T00:00:00Z">
+        
+  December 18, 2008
+
+      </time>
+    
+    
+  </div>
+
+</div>
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              <p><a href="http://www.jboss.org">JBoss</a> application server 5 GA released after a very long period of silence from &ldquo;JBoss, a division of Red Hat&rdquo;. The new version of JBoss application server supports Java EE 5 and is based on modularity concept with a small kernel named <a href="http://www.jboss.org/jbossmc/">JBoss MicroContainer</a> in the core and all functionalities as modules around the kernel. JBoss kernel is POJO based and all modules follows the same principals, some configuration files are required to configure the services which the kernel will load. JBoss modularity system is niether based on OSGI nor drafts of the to be released Java SE modularity system.</p>
+<p>JBoss 5, uses the MicroContainer to ensure an easy implementation of Java EE 6 profiles and also let the developers and administrators to easily disable some features and enable some other features.</p>
+<p>I think from version 5, JBoss application server development will see some dramatic changes, the modules will be developed independently and therefore, the release cycle will be a mixed model of hot module releases like updates and patches and major releases which is an integration of all available modules. Although JBoss is far from providing a solid foundation in term providing a package distribution system and all required software to keep an eye on the updated modules and installing them, but that is the path which I think they will follow.</p>
+<p>With all this architectural changes, JBoss 5 has a drawback. There is no changes in the administration at all, 3 years of development produces no changes in what administrators use to manage the servers, clusters and applications which are assets of the company which they work for. The same old JMX based administration console is what administrators should deal with for some few months or years until Red Hat finishes the development of their new administration console. Yes, the have a project named <a href="http://www.jboss.org/jopr/">Jopr</a> to provide a neat SEAM based administration console, but when it will be ready to get bundled with AS, no one knows.</p>
+<p>Today <a href="http://GlassFish.dev.java.net">GlassFish</a> is the dominant open source application server and it gained the market share in absence of the Open Source application servers steward, JBoss. The steward re-appeared but its re-appearance is not that promising because of many advantages which its replacement, GlassFish, provides over it.</p>
+<p><a href="http://GlassFish.dev.java.net">GlassFish v3</a> uses a modular architecture based on the standards.The OSGI as the bundle layer and <a href="HK2.dev.java.net">HK2</a> which is an early implementation of JSR-277, Java SE modularity system, for the service layer. There is no need to edit an XML file, just drop the bundle and it is installed or remove the bundle and it will not load the next time. Also you can utilize the very easy to use update Centre which in addition to managing the currently installed modules, let you install updates or brand new features by selecting the features that you need and waiting for the download to finishes.</p>
+<p>GlassFish v3 distribution is based on a solid binary distribution system named <a href="http://www.opensolaris.org/os/project/pkg/">pkg(5) Image Packaging System</a> or simply IPS which is a operating system independent software distribution system based on network repository of the software packages. The IPS helps keeping GlassFish up to date automatically with in the blink of an eye. it let you install the new features and updates by some clicks in the desktop GUI, web based administration console, or using the command line</p>
+<p>GlassFish v3 provides very solid administration channels including the JMX console, the web based administration console and the command line administration tools which one can use to administrate all aspects of the application server from mere deploying an application to large scale management of a cluster farm.</p>
+<p>And Finally GlassFish version 3 supports Java EE 6 and its final version will be available by the middle of 2009. if you want to know about GlassFish for Java EE 5, you should know that the version which supports Java EE 5 released in May 2006 and its 3rd major updates is <a href="http://wiki.glassfish.java.net/Wiki.jsp?page=PlanForGlassFishV2.1">GlassFish 2.1</a> which is scheduled to be released on Jan 2009</p>
+
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="/tags/java/">Java</a>
+
+                  </div>
+                
+              
+            
+            <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2008/12/one-suite-of-jsf-components-to-rule-them-all/" data-tooltip="One suite of JSF components to rule them all">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2008/10/netbeans-6.5-is-at-your-door-step-take-a-look-at-shining-new-features/" data-tooltip="Netbeans 6.5 is at your door step, take a look at shining new features">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2008/12/some-thoughts-on-the-jboss-as-5-release/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2008/12/some-thoughts-on-the-jboss-as-5-release/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+            
+              
+                <div id="disqus_thread">
+  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2020 Masoud Kalali. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+        <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2008/12/one-suite-of-jsf-components-to-rule-them-all/" data-tooltip="One suite of JSF components to rule them all">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2008/10/netbeans-6.5-is-at-your-door-step-take-a-look-at-shining-new-features/" data-tooltip="Netbeans 6.5 is at your door step, take a look at shining new features">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2008/12/some-thoughts-on-the-jboss-as-5-release/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2008/12/some-thoughts-on-the-jboss-as-5-release/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+  <i id="btn-close-shareoptions" class="fa fa-close"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=%2F2008%2F12%2Fsome-thoughts-on-the-jboss-as-5-release%2F">
+          <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=%2F2008%2F12%2Fsome-thoughts-on-the-jboss-as-5-release%2F">
+          <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="/img/avatar.png" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">Masoud Kalali</h4>
+    
+      <div id="about-card-bio">Software architect with focus on PaaS container platforms, and Java EE, author, technology enthusiast, runner.</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Software engineer
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        Sweden
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      <div id="cover" style="background-image:url('img/cover.jpg');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
+
+
+<script src="/js/script-pcw6v3xilnxydl1vddzazdverrnn9ctynvnxgwho987mfyqkuylcb1nlt.min.js"></script>
+
+
+<script lang="javascript">
+window.onload = updateMinWidth;
+window.onresize = updateMinWidth;
+document.getElementById("sidebar").addEventListener("transitionend", updateMinWidth);
+function updateMinWidth() {
+  var sidebar = document.getElementById("sidebar");
+  var main = document.getElementById("main");
+  main.style.minWidth = "";
+  var w1 = getComputedStyle(main).getPropertyValue("min-width");
+  var w2 = getComputedStyle(sidebar).getPropertyValue("width");
+  var w3 = getComputedStyle(sidebar).getPropertyValue("left");
+  main.style.minWidth = `calc(${w1} - ${w2} - ${w3})`;
+}
+</script>
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+  
+    
+      <script>
+        var disqus_config = function () {
+          this.page.url = '\/2008\/12\/some-thoughts-on-the-jboss-as-5-release\/';
+          
+            this.page.identifier = '\/2008\/12\/some-thoughts-on-the-jboss-as-5-release\/'
+          
+        };
+        (function() {
+          
+          
+          if (window.location.hostname == "localhost") {
+            return;
+          }
+          var d = document, s = d.createElement('script');
+          var disqus_shortname = 'kalali.github.io';
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      </script>
+    
+  
+
+
+
+
+    
+  </body>
+</html>
+

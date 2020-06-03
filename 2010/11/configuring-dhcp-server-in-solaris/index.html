@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.72.0 with theme Tranquilpeak 0.4.8-BETA">
+<meta name="author" content="Masoud Kalali">
+<meta name="keywords" content=", development, next-gen, Kubernetes, Cloud, Java, Spring Boot, Microservices">
+<meta name="description" content="A Dynamic Host Configuration Protocol (DHCP) server leases IP address to clients connected to the network and has DHCP client enabled on their network interface.
+Before we can setup a start the DHCP server we need to install DHCP configuration packages. Detail information about installing packages in provided in recipe of chapter 1. But to save the time we can use the following command to install the packages.
+# pkg install SUNWdhcs">
+
+
+<meta property="og:description" content="A Dynamic Host Configuration Protocol (DHCP) server leases IP address to clients connected to the network and has DHCP client enabled on their network interface.
+Before we can setup a start the DHCP server we need to install DHCP configuration packages. Detail information about installing packages in provided in recipe of chapter 1. But to save the time we can use the following command to install the packages.
+# pkg install SUNWdhcs">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Configuring DHCP server in Solaris">
+<meta name="twitter:title" content="Configuring DHCP server in Solaris">
+<meta property="og:url" content="/2010/11/configuring-dhcp-server-in-solaris/">
+<meta property="twitter:url" content="/2010/11/configuring-dhcp-server-in-solaris/">
+<meta property="og:site_name" content="The Place">
+<meta property="og:description" content="A Dynamic Host Configuration Protocol (DHCP) server leases IP address to clients connected to the network and has DHCP client enabled on their network interface.
+Before we can setup a start the DHCP server we need to install DHCP configuration packages. Detail information about installing packages in provided in recipe of chapter 1. But to save the time we can use the following command to install the packages.
+# pkg install SUNWdhcs">
+<meta name="twitter:description" content="A Dynamic Host Configuration Protocol (DHCP) server leases IP address to clients connected to the network and has DHCP client enabled on their network interface.
+Before we can setup a start the DHCP server we need to install DHCP configuration packages. Detail information about installing packages in provided in recipe of chapter 1. But to save the time we can use the following command to install the packages.
+# pkg install SUNWdhcs">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2010-11-17T00:00:00">
+  
+  
+    <meta property="article:modified_time" content="2010-11-17T00:00:00">
+  
+  
+  
+  
+    
+      <meta property="article:tag" content="Java">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+  <meta name="twitter:site" content="@masoudkalali">
+
+
+  <meta name="twitter:creator" content="@masoudkalali">
+
+
+
+
+
+
+
+
+
+
+  <meta property="og:image" content="/img/avatar.png">
+  <meta property="twitter:image" content="/img/avatar.png">
+
+
+    <title>Configuring DHCP server in Solaris</title>
+
+    <link rel="icon" href="/img/favicon.png">
+    
+
+    
+
+    <link rel="canonical" href="/2010/11/configuring-dhcp-server-in-solaris/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.css" integrity="sha256-vuXZ9LGmmwtjqFX1F+EKin1ThZMub58gKULUyf0qECk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
+    
+    
+    <link rel="stylesheet" href="/css/style-twzjdbqhmnnacqs0pwwdzcdbt8yhv8giawvjqjmyfoqnvazl0dalmnhdkvp7.min.css" />
+    
+    
+
+    
+      
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-137107-12', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="5">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="/">The Place</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="/img/avatar.png" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="5">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="/#about">
+          <img class="sidebar-profile-picture" src="/img/avatar.png" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">Masoud Kalali</h4>
+        
+          <h5 class="sidebar-profile-bio">Software architect with focus on PaaS container platforms, and Java EE, author, technology enthusiast, runner.</h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-home"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/categories">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/tags">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-tags"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/archives">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-archive"></i>
+      
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/#about">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-question"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/https://github.com/kalali">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-github"></i>
+      
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/index.xml">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-rss"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+
+      <div id="main" data-behavior="5"
+        class="
+               hasCoverMetaIn
+               ">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+            <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title" itemprop="headline">
+      Configuring DHCP server in Solaris
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2010-11-17T00:00:00Z">
+        
+  November 17, 2010
+
+      </time>
+    
+    
+  </div>
+
+</div>
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              <p>A Dynamic Host Configuration Protocol (DHCP) server leases IP address to clients connected to the network and has DHCP client enabled on their network interface.</p>
+<p>Before we can setup a start the DHCP server we need to install DHCP configuration packages. Detail information about installing packages in provided in recipe of chapter 1. But to save the time we can use the following command to install the packages.</p>
+<p># pkg install SUNWdhcs</p>
+<p>After installing these packages we can continue with the next step.</p>
+<p>How to do it&hellip;</p>
+<p>First thing to setup the DHCP server is creating the storage and initial settings for the DHCP server. Following command does the trick for us.</p>
+<p># dhcpconfig -D -r SUNWfiles -p /fpool/dhcp_fs -a 10.0.2.254 -d domain.nme -h files -l 86400</p>
+<p>In the above command we used several parameters and options, each one of these options are explained below.</p>
+<ul>
+<li>The -D specifies that we are setting up a new instance of the DHCP service.</li>
+<li>The -r SUNWfiles specifies the storage type. Here we are using plain-text storage while SUNWbinfiles and SUNWnisplus are available as well.</li>
+<li>The -p /fpool/dhcp_fs specifies the absolute path to where the configuration files should be stored.</li>
+<li>The -a 10.0.2.15 specifies the DNS server to use on the LAN. We can multiple comma separated addresses for DNS servers.</li>
+<li>The -d domain.nme specifies the network domain name.</li>
+<li>The -h files specifies where the host information should be stored. Other values are nisplus and dns.</li>
+<li>The -l 86400 specifies the lease time in seconds.</li>
+</ul>
+<p>Now that the initial configuration is created we should proceed to the next step and create a network.</p>
+<p># dhcpconfig -N 10.0.2.0 -m 255.255.255.0  -t 10.0.2.1</p>
+<p>Parameters we used in the above command are explained below.</p>
+<ul>
+<li>The -N 10.0.2.0 specifies the network address.</li>
+<li>The -m 255.255.255.0 specifies the network mask to use for the network</li>
+<li>The -t 10.0.2.1 specifies the default gateway</li>
+</ul>
+<p>All configurations that we created are stored in DHCP server configuration files. We can manage the configurations using the dhtadm command. For example to view all of the current DHCP server configuration assemblies we can use the following command.</p>
+<p># dhtadm -P</p>
+<p>This command’s output is similar to the following figure.</p>
+<p><a href="http://kalali.me/wp-content/uploads/2010/11/3180_04_071.png"><img src="http://kalali.me/wp-content/uploads/2010/11/3180_04_071.png" alt="" title="DHCP Configuration - Solaris"></a></p>
+<p>Each command we invoked previously is stored as a macro with a unique name in the DHCP configuration storage. Later on we will use these macros in subsequent commands.</p>
+<p>Now we need to create a network of addresses to lease. Following command adds the addresses we want to lease.</p>
+<p># pntadm -C 10.0.2.0</p>
+<p>If we need to reserve an address for a specific host or a specific interface in a host we should add the required configuration to the system to ensure that our host or interface receives the designated IP address. For example:</p>
+<p># pntadm -A 10.0.2.22 -f MANUAL -i 01001BFC92BC10 -m 10.0.2.0 -y 10.0.2.0</p>
+<p>In the above command we have:</p>
+<ul>
+<li>The -A 10.0.2.22 adds the IP address 10.0.2.22.</li>
+<li>The -f MANUAL sets the flag MANUAL in order to only assign this IP address to the MAC address specified.</li>
+<li>The -i 01001BFC92BC10 sets the MAC address for the host this entry assigned  to it.</li>
+<li>The -m 10.0.2.0 specifies that this host is going to use the 192.168.0.0 macro.</li>
+<li>The –y asks the command to verify that the macro entered actually exists.</li>
+<li>The 10.0.2.0 Specifies the network the address is assigned to.</li>
+</ul>
+<p>Finally we should restart the DHCP server in order for all the changes to take effect. Following command restarts the corresponding service.</p>
+<p>#  svcadm restart dhcp-server</p>
+<p>When we setup the DHCP service, we store the related configuration in the storage of our choice. When we start the service, it reads the configuration from the storage and wait dormant until it receives a request for leasing an IP address. The service checks the configuration and if an IP was available for lease, it leases the IP to the client.</p>
+<p>Prior to leasing the IP, DHCP service checks all leasing conditions like leasing a specific IP address to a client to ensure that it leases the right address to a client, etc.</p>
+<p>We can use the DHCP Manager GUI application to configure a DHCP server. The DHCP manager can migrate the DHCP storage from one format to another. To install the DHCP manager package we can use the following command.</p>
+<p># pkg install SUNWdhcm</p>
+<p>Now we can invoke the DHCP manager using the following command which opens the DHCP Manager welcome page shown in the following figure.</p>
+<p># dhcpmgr</p>
+<p><a href="http://kalali.me/wp-content/uploads/2010/11/3180_04_081.png"><img src="http://kalali.me/wp-content/uploads/2010/11/3180_04_081.png" alt="" title="DHCP Manager GUI - Solaris"></a></p>
+
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="/tags/java/">Java</a>
+
+                  </div>
+                
+              
+            
+            <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2010/11/configuring-solaris-link-aggregation-ethernet-bonding/" data-tooltip="Configuring Solaris Link Aggregation (Ethernet bonding)">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2010/10/glassfish-security-book-contest-here-are-the-lucky-winners/" data-tooltip="GlassFish security book contest: Here are the lucky winners">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2010/11/configuring-dhcp-server-in-solaris/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2010/11/configuring-dhcp-server-in-solaris/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+            
+              
+                <div id="disqus_thread">
+  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2020 Masoud Kalali. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+        <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2010/11/configuring-solaris-link-aggregation-ethernet-bonding/" data-tooltip="Configuring Solaris Link Aggregation (Ethernet bonding)">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2010/10/glassfish-security-book-contest-here-are-the-lucky-winners/" data-tooltip="GlassFish security book contest: Here are the lucky winners">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2010/11/configuring-dhcp-server-in-solaris/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2010/11/configuring-dhcp-server-in-solaris/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+  <i id="btn-close-shareoptions" class="fa fa-close"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=%2F2010%2F11%2Fconfiguring-dhcp-server-in-solaris%2F">
+          <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=%2F2010%2F11%2Fconfiguring-dhcp-server-in-solaris%2F">
+          <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="/img/avatar.png" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">Masoud Kalali</h4>
+    
+      <div id="about-card-bio">Software architect with focus on PaaS container platforms, and Java EE, author, technology enthusiast, runner.</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Software engineer
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        Sweden
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      <div id="cover" style="background-image:url('img/cover.jpg');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
+
+
+<script src="/js/script-pcw6v3xilnxydl1vddzazdverrnn9ctynvnxgwho987mfyqkuylcb1nlt.min.js"></script>
+
+
+<script lang="javascript">
+window.onload = updateMinWidth;
+window.onresize = updateMinWidth;
+document.getElementById("sidebar").addEventListener("transitionend", updateMinWidth);
+function updateMinWidth() {
+  var sidebar = document.getElementById("sidebar");
+  var main = document.getElementById("main");
+  main.style.minWidth = "";
+  var w1 = getComputedStyle(main).getPropertyValue("min-width");
+  var w2 = getComputedStyle(sidebar).getPropertyValue("width");
+  var w3 = getComputedStyle(sidebar).getPropertyValue("left");
+  main.style.minWidth = `calc(${w1} - ${w2} - ${w3})`;
+}
+</script>
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+  
+    
+      <script>
+        var disqus_config = function () {
+          this.page.url = '\/2010\/11\/configuring-dhcp-server-in-solaris\/';
+          
+            this.page.identifier = '\/2010\/11\/configuring-dhcp-server-in-solaris\/'
+          
+        };
+        (function() {
+          
+          
+          if (window.location.hostname == "localhost") {
+            return;
+          }
+          var d = document, s = d.createElement('script');
+          var disqus_shortname = 'kalali.github.io';
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      </script>
+    
+  
+
+
+
+
+    
+  </body>
+</html>
+

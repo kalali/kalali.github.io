@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.72.0 with theme Tranquilpeak 0.4.8-BETA">
+<meta name="author" content="Masoud Kalali">
+<meta name="keywords" content=", development, next-gen, Kubernetes, Cloud, Java, Spring Boot, Microservices">
+<meta name="description" content="SMF services are basically daemons staying in background and waiting for the requests which they should server, when the request come the daemon wake ups, serve the request and then wait for the next request to come. The services are building using software development platforms and languages but they have one common aspect which we are going to discuss here. The service manifests which describe the service for the SMF and let the SMF manage and understand the service life cycle.">
+
+
+<meta property="og:description" content="SMF services are basically daemons staying in background and waiting for the requests which they should server, when the request come the daemon wake ups, serve the request and then wait for the next request to come. The services are building using software development platforms and languages but they have one common aspect which we are going to discuss here. The service manifests which describe the service for the SMF and let the SMF manage and understand the service life cycle.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Writing Solaris Service Management Facility (SMF) service manifest">
+<meta name="twitter:title" content="Writing Solaris Service Management Facility (SMF) service manifest">
+<meta property="og:url" content="/2011/01/writing-solaris-service-management-facility-smf-service-manifest/">
+<meta property="twitter:url" content="/2011/01/writing-solaris-service-management-facility-smf-service-manifest/">
+<meta property="og:site_name" content="The Place">
+<meta property="og:description" content="SMF services are basically daemons staying in background and waiting for the requests which they should server, when the request come the daemon wake ups, serve the request and then wait for the next request to come. The services are building using software development platforms and languages but they have one common aspect which we are going to discuss here. The service manifests which describe the service for the SMF and let the SMF manage and understand the service life cycle.">
+<meta name="twitter:description" content="SMF services are basically daemons staying in background and waiting for the requests which they should server, when the request come the daemon wake ups, serve the request and then wait for the next request to come. The services are building using software development platforms and languages but they have one common aspect which we are going to discuss here. The service manifests which describe the service for the SMF and let the SMF manage and understand the service life cycle.">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2011-01-31T00:00:00">
+  
+  
+    <meta property="article:modified_time" content="2011-01-31T00:00:00">
+  
+  
+  
+  
+    
+      <meta property="article:tag" content="Java">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+  <meta name="twitter:site" content="@masoudkalali">
+
+
+  <meta name="twitter:creator" content="@masoudkalali">
+
+
+
+
+
+
+
+
+
+
+  <meta property="og:image" content="/img/avatar.png">
+  <meta property="twitter:image" content="/img/avatar.png">
+
+
+    <title>Writing Solaris Service Management Facility (SMF) service manifest</title>
+
+    <link rel="icon" href="/img/favicon.png">
+    
+
+    
+
+    <link rel="canonical" href="/2011/01/writing-solaris-service-management-facility-smf-service-manifest/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.css" integrity="sha256-vuXZ9LGmmwtjqFX1F+EKin1ThZMub58gKULUyf0qECk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
+    
+    
+    <link rel="stylesheet" href="/css/style-twzjdbqhmnnacqs0pwwdzcdbt8yhv8giawvjqjmyfoqnvazl0dalmnhdkvp7.min.css" />
+    
+    
+
+    
+      
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-137107-12', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="5">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="/">The Place</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="/img/avatar.png" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="5">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="/#about">
+          <img class="sidebar-profile-picture" src="/img/avatar.png" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">Masoud Kalali</h4>
+        
+          <h5 class="sidebar-profile-bio">Software architect with focus on PaaS container platforms, and Java EE, author, technology enthusiast, runner.</h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-home"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/categories">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/tags">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-tags"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/archives">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-archive"></i>
+      
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/#about">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-question"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/https://github.com/kalali">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-github"></i>
+      
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/index.xml">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-rss"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+
+      <div id="main" data-behavior="5"
+        class="
+               hasCoverMetaIn
+               ">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+            <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title" itemprop="headline">
+      Writing Solaris Service Management Facility (SMF) service manifest
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2011-01-31T00:00:00Z">
+        
+  January 31, 2011
+
+      </time>
+    
+    
+  </div>
+
+</div>
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              <p>SMF services are basically daemons staying in background and waiting for the requests which they should server, when the request come the daemon wake ups, serve the request and then wait for the next request to come. The services are building using software development platforms and languages but they have one common aspect which we are going to discuss here. The service manifests which describe the service for the SMF and let the SMF manage and understand the service life cycle. To write a service manifest we should be familiar with XML and the service manifest schema located at /usr/share/lib/xml/dtd/service_bundle.dtd.1.  This file specifies what elements can be used for describing a service for the SMF. Next thing we need is a text editor and preferable an XML aware text editor. The Gnome gedit can do the task for us. The service manifest file composed of 6 important elements which are listed below:</p>
+<ul>
+<li>The service declaration:  specifies the service name, type and instantiation model</li>
+<li>Zero or more dependency declaration elements: Specifies the service dependencies</li>
+<li>Lifecycle methods: Specifies the start, stop and refresh methods</li>
+<li>Property groups: Which property groups the service description has.</li>
+<li>Stability element: how stable the service interface is considering version changes</li>
+<li>Template element: more human readable information for the service.</li>
+</ul>
+<p>To describe a service, first thing we need to do is identifying the service itself. Following snippet shows how we can declare a service named jws.</p>
+<p>&lt;service name='network/jws’ type='service&rsquo; version='1'&gt;
+&lt;single_instance/&gt;</p>
+<p>The first line specifies the service name, version and its type. The service name attribute forms the FMRI of the service which for this instance will be svc:/network/jws. In the second line we are telling SMF that it should only instantiate one instance of this service which will be svc:/network/jws:default. We can use the create_default_instance element to manipulate automatic creation of the default instance. All of the elements which we are going to mention in the following sections of this article are immediate child elements of the service element which itself is a child element of the service_bundle element. The next important element is dependency declaration element. We can have one or more of this element in our service manifest.</p>
+<!-- raw HTML omitted -->
+<p>Here we are telling that our service depends on the svc:/network/physical service and this service needs to be online before our service can start. Some of the values for the grouping attribute are as follow:</p>
+<ul>
+<li>The require_all which represent that all services marked with this grouping must be online before our service came online</li>
+<li>The require_any which represents that any of the services in this grouping suffice and our service can become online if one of them is online</li>
+<li>The optional_all presence of the services marked with this grouping is optional for our service. Our service works with or without them.</li>
+<li>The exclude_all:  specifies the services which may have conflict with our service and we cannot become online in presence of them</li>
+</ul>
+<p>The next important elements are specifying how the SMF should start, stop and refresh the service. For these tasks we use three exec_method elements as follow:</p>
+<p>&lt;exec_method name='start&rsquo; type='method&rsquo; exec=&rsquo;/opt/jws/runner start&rsquo; timeout_seconds='60'&gt;
+&lt;/exec_method&gt;</p>
+<p>This is the start method, SMF will invoke what the exec attribute specifies when it want to start the service.</p>
+<p>&lt;exec_method name='stop&rsquo; type='method&rsquo; exec=&rsquo;:kill&rsquo; timeout_seconds='60'&gt;
+&lt;/exec_method&gt;</p>
+<p>The SMF will terminate the process it started for the service using a kill signal. By default it uses the SIGTERM but we can specify our own signal. For example we can use &lsquo;kill -9&rsquo; or &lsquo;kill -HUP&rsquo; or any other signal we find appropriate for our service termination.</p>
+<p>&lt;exec_method name='refresh&rsquo; type='method&rsquo; exec=&rsquo;/opt/jws/runner reload_cof&rsquo; timeout_seconds='60'&gt;
+&lt;/exec_method&gt;</p>
+<p>The final method which we should describe is the refresh method in which we should reload the service configuration without disturbing its function. The start and stop methods description are required to be present in the manifest in order to import it into the SMF repository but the refresh method description and implementation is optional. The timeout_seconds='60&rsquo; specifies that the SMF should wait for 60 seconds before aborting the method execution and retrying it over. We can use longer timeout when we know that the execution of the method take longer or lower timeout when we know that our service starts sooner. The property group elements specify which property groups the SMF should associate with the service.  We can use as many of the SMF built-in property groups or define our own property groups.</p>
+<p>&lt;property_group name='startd&rsquo; type='framework'&gt;
+<!-- raw HTML omitted -->
+&lt;/property_group&gt;</p>
+<p>The above snippet shows how we can define using a framework built-in property group. The built-in property groups and their properties have meaning for the SMF framework and change its way of dealing with our service.  For example the above snippet says that the SMF should ignore core dump termination of suppresses of this service via a kill signal from another application. Next important element is the stability element which specifies whether the property names, service name, its dependencies and other service attributes may or may not change for the next release. For example the following snippet specifies that the service attributes may change in the next release.</p>
+<!-- raw HTML omitted -->
+<p>Finally we have the template element which contains descriptive information about the service, for example we can have something like the following element which describes our service for human users.</p>
+<!-- raw HTML omitted -->
+<p>The entire element is self describing except for the man page element which specifies where the man utility command should look for the man pages for the jws service.</p>
+<p>All of these elements should be saved into an XML file with the following structure:</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p>&lt;service_bundle &hellip;&gt;
+&lt;service &hellip;&gt;
+&lt;single_instance &hellip;/&gt;
+&lt;dependency &hellip; /&gt;
+&lt;exec_method&hellip; /&gt;
+&lt;property_group &hellip;/&gt;
+&lt;stability &hellip;/&gt;
+&lt;template &hellip;&gt;
+<!-- raw HTML omitted -->
+&lt;/service_bundle&gt;</p>
+<p>This is a raw representation of what the service manifest bare bone cal look like. The syntax is not accurate and the attributes and child elements are omitted to make it easier to scan by the eyes. The service_bundle, service, and  start and stop method elements are mandatory while other elements are optional. Now we should install the service into the SMF repository and then administrate it. For installing the service we can use the following command.</p>
+<p># svccfg import /path/to/manifest.xml</p>
+<p>When we import the service manifest into the service repository, SMF will scan the service profiles and check whether this service is required to be enabled either directly or because of a dependent service or not. If required, the SMF will use the start method specified in the manifest to start the service. But before starting it, SMF will check its dependencies and start any required service recursively if they are not already online. Reviewing the XML schema located at /usr/share/lib/xml/dtd/service_bundle.dtd.1 and the staying tuned for my next few entries is recommended for grasping a better understanding of the whole SMF and Solaris Services administration/management.</p>
+
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="/tags/java/">Java</a>
+
+                  </div>
+                
+              
+            
+            <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2011/05/some-best-practices-on-spring-framework-context-configuration-files-naming/" data-tooltip="Some best practices on Spring framework context configuration files naming">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2011/01/solaris-fault-administration-using-fmadm-command/" data-tooltip="Solaris fault administration using fmadm command">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2011/01/writing-solaris-service-management-facility-smf-service-manifest/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2011/01/writing-solaris-service-management-facility-smf-service-manifest/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+            
+              
+                <div id="disqus_thread">
+  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2020 Masoud Kalali. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+        <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2011/05/some-best-practices-on-spring-framework-context-configuration-files-naming/" data-tooltip="Some best practices on Spring framework context configuration files naming">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2011/01/solaris-fault-administration-using-fmadm-command/" data-tooltip="Solaris fault administration using fmadm command">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2011/01/writing-solaris-service-management-facility-smf-service-manifest/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2011/01/writing-solaris-service-management-facility-smf-service-manifest/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+  <i id="btn-close-shareoptions" class="fa fa-close"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=%2F2011%2F01%2Fwriting-solaris-service-management-facility-smf-service-manifest%2F">
+          <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=%2F2011%2F01%2Fwriting-solaris-service-management-facility-smf-service-manifest%2F">
+          <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="/img/avatar.png" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">Masoud Kalali</h4>
+    
+      <div id="about-card-bio">Software architect with focus on PaaS container platforms, and Java EE, author, technology enthusiast, runner.</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Software engineer
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        Sweden
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      <div id="cover" style="background-image:url('img/cover.jpg');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
+
+
+<script src="/js/script-pcw6v3xilnxydl1vddzazdverrnn9ctynvnxgwho987mfyqkuylcb1nlt.min.js"></script>
+
+
+<script lang="javascript">
+window.onload = updateMinWidth;
+window.onresize = updateMinWidth;
+document.getElementById("sidebar").addEventListener("transitionend", updateMinWidth);
+function updateMinWidth() {
+  var sidebar = document.getElementById("sidebar");
+  var main = document.getElementById("main");
+  main.style.minWidth = "";
+  var w1 = getComputedStyle(main).getPropertyValue("min-width");
+  var w2 = getComputedStyle(sidebar).getPropertyValue("width");
+  var w3 = getComputedStyle(sidebar).getPropertyValue("left");
+  main.style.minWidth = `calc(${w1} - ${w2} - ${w3})`;
+}
+</script>
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+  
+    
+      <script>
+        var disqus_config = function () {
+          this.page.url = '\/2011\/01\/writing-solaris-service-management-facility-smf-service-manifest\/';
+          
+            this.page.identifier = '\/2011\/01\/writing-solaris-service-management-facility-smf-service-manifest\/'
+          
+        };
+        (function() {
+          
+          
+          if (window.location.hostname == "localhost") {
+            return;
+          }
+          var d = document, s = d.createElement('script');
+          var disqus_shortname = 'kalali.github.io';
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      </script>
+    
+  
+
+
+
+
+    
+  </body>
+</html>
+
