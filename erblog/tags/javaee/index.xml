@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>JavaEE on The Place</title>
+    <link>/tags/javaee/</link>
+    <description>Recent content in JavaEE on The Place</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Wed, 10 May 2006 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/javaee/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Step by Step toward a jms sample in NetBeans and yes GlassFish. part 2 : Remote Client</title>
+      <link>/post/2006-05-10-step-by-step-toward-a-jms-sample-in-netbeans-and-yes-glassfish-part/</link>
+      <pubDate>Wed, 10 May 2006 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2006-05-10-step-by-step-toward-a-jms-sample-in-netbeans-and-yes-glassfish-part/</guid>
+      <description>In previous part you saw that how easy is to make an MDB to consume messages and a jsp/Servlet Front End to send message to a queue.
+in this part i will show you how you can send message to a queue from a remote j2se client. you should know that in JMS sending and receiving messages has similar steps , some small changes require to consume message from a j2se client instead of sending messages.</description>
+    </item>
+    
+    <item>
+      <title>GlassFish is Open source , but how much Open it is ?</title>
+      <link>/post/2006-05-09-glassfish-is-open-source-but-how-much-open-it-is/</link>
+      <pubDate>Tue, 09 May 2006 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2006-05-09-glassfish-is-open-source-but-how-much-open-it-is/</guid>
+      <description>We know that GlassFish is opensource under CDDL license , being opensource is good but having a good and open relation with community is very good.
+GlassFish has the most active community between opensource project that i have been involve a bit closer than observing , having that TheAquarium weblog make it magnificent. Meanwhile you think that that weblogs is available in more that 3 languages, and it shows how much hard GlassFish people works to provide community with information that they need.</description>
+    </item>
+    
+    <item>
+      <title>overview of XML Parsing in java , different methods and libraries</title>
+      <link>/post/2006-04-24-overview-of-xml-parsing-in-java-different-methods-and-libraries/</link>
+      <pubDate>Mon, 24 Apr 2006 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2006-04-24-overview-of-xml-parsing-in-java-different-methods-and-libraries/</guid>
+      <description>what are different technologies and implementations to simply pars some XML files ?
+What Java provide you to pars XML files ?
+Iin this blog entry After answering the above questions , i will introduce (by name and method of parsing) some XML parser available in java land.we may talk more about each of them in next entries.
+First lets see what are different methods to pars XML files. There are Two major XML parsing method , one of them is Old and Standard method using a DOM (Documet Object Model) and the other is Stream and Event Based Parsing.</description>
+    </item>
+    
+    <item>
+      <title>Testing some FrameWorks and applications on Glassfish build 40&#43; part V , And some tips about Application deployment</title>
+      <link>/post/2006-04-11-testing-some-frameworks-and-applications-on-glassfish-build-40-part-v-and-some-tips-about-application-deployment/</link>
+      <pubDate>Tue, 11 Apr 2006 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2006-04-11-testing-some-frameworks-and-applications-on-glassfish-build-40-part-v-and-some-tips-about-application-deployment/</guid>
+      <description>It is a short entry that shows i used DWR Ajax Toolkit On GlassFish But to make the entry a bit more useful , i would like to tell you how you can deploy an application to GlassFish .
+so far I know two methods that allows us to deploy application into GlassFish ,
+ Using its web based Admin console which usually run on port 4848 Using the Autodeply library of your desired Domain Using Asadmin administration console  Lets see how we can deploy sample war file of DWR Ajax Toolkit using each of the above methods.</description>
+    </item>
+    
+    <item>
+      <title>Testing some FrameWorks and applications on Glassfish build 40&#43; part IV</title>
+      <link>/post/2006-03-31-testing-some-frameworks-and-applications-on-glassfish-build-40-part-iv/</link>
+      <pubDate>Fri, 31 Mar 2006 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2006-03-31-testing-some-frameworks-and-applications-on-glassfish-build-40-part-iv/</guid>
+      <description>This time i want to setup and test a utility that i am using with my Application server to mange them and monitor them.
+Utility that i will use is Mc4j A very powerful and flexible jmx console built on top of Netbeans Platform .
+so to follow this blog entry you will need GlassFish build 40+ , although i am testing it on buid 42 .Also you will need to have Mc4j version 1.</description>
+    </item>
+    
+    <item>
+      <title>Testing some FrameWorks and applications on Glassfish build 40&#43; part III</title>
+      <link>/post/2006-03-30-testing-some-frameworks-and-applications-on-glassfish-build-40-part-iii/</link>
+      <pubDate>Thu, 30 Mar 2006 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2006-03-30-testing-some-frameworks-and-applications-on-glassfish-build-40-part-iii/</guid>
+      <description>This time I want to test OSWorkflow on GlassFish , for this purpose I get latest version of this application , I mean osworkflow-2.8.0.
+Lets see What a workFlow engine is and what is its usage , a workFlow Engine is an engine that is capable of executing WorkFlows in different level. a workFlow is a graph of works , so it means that a workFlow engine can execute a graph of works , this graph describe when , how and under which circumstance a node must be executed and/or which branch of graph should be followd.</description>
+    </item>
+    
+    <item>
+      <title>Testing some FrameWorks and applications on Glassfish build 40&#43;</title>
+      <link>/post/2006-03-25-testing-some-frameworks-and-applications-on-glassfish-build-40/</link>
+      <pubDate>Sat, 25 Mar 2006 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2006-03-25-testing-some-frameworks-and-applications-on-glassfish-build-40/</guid>
+      <description>Now with EJB 3 , (I am talking about current date take a look at date that this entry is written) options in application server market are so limited because there are just few application server that support EJB3. some of them that i know are Jboss and GlassFish project.
+But GlassFish provide more than being EJB3 container , it is aimed to be a full Java ee 5 container.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,658 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>The Place - GlassFish Modularity System, How extend GlassFish CLI and Web Administration Console (Part I, The architecture) </title>
+    
+    
+    <meta content="Java" name="keywords">
+    
+    <meta content="The Place - Modularity is the essential design and implementation consideration which every software architects and designers should have in mind to get an easy to develop, maintain and extend software.
+GlassFish is an application server which highly benefits from a modularity system to provide different level of functionalities for different deployment and case studies. GlassFish fully supports Java EE profiles, so it provides a lot of features which suits different case studies and different type of use cases." name="description">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    
+        <link rel="icon" href="img/favicon.ico">
+    
+
+    
+
+    
+
+    
+
+    <link rel="stylesheet" href="/layui/css/layui.css">
+    <link rel="stylesheet" href="/self/css/default.css">
+    <script src="/layui/layui.js"></script>
+
+    <link rel="stylesheet" async href="/self/css/markdown.min.css">
+    <link rel="stylesheet" async href="/self/css/gallery.css">
+    
+    
+    
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
+    <script async src="https://cdn.jsdelivr.net/npm/lazysizes@5.2.0/lazysizes.min.js" integrity="sha256-h2tMEmhemR2IN4wbbdNjj9LaDIjzwk2hralQwfJmBOE=" crossorigin="anonymous"></script></head>
+
+<body>
+    
+    <header class="layui-header layui-bg-cyan">
+
+    
+        <a href=""><img src="/img/avatar.png" class="layui-nav-img" style="margin-left:10px;margin-top:-10px"></a>
+    
+    
+    <a class="nav-self-logo" href="/">
+        The Place
+    </a>
+
+    <ul class="layui-nav layui-layout-right layui-bg-cyan" lay-filter="">
+        
+        
+        <li class="layui-nav-item" id="nav_big"><a href="/post/">Posts</a></li>
+        
+
+        
+            
+                <li class="layui-nav-item" id="nav_big"><a href="/about/">About</a></li>
+            
+        
+
+        
+        <li class="layui-nav-item" id="nav_small">
+            <a href="javascript:;">
+                <i class="layui-icon layui-icon-app" style="font-size: 24px;"></i>
+            </a>
+
+            <dl class="layui-nav-child">
+                
+                <dd><a href="/post/">Posts</a></dd>
+                
+
+                
+                    
+                        <dd><a href="/about/">About</a></dd>
+                    
+                
+            </dl>
+        </li>
+    </ul>
+</header>
+
+<script>
+layui.use('element', function(){
+  var element = layui.element;
+});
+</script>
+        <div id="content" style="min-height:80%">
+<div class="layui-container" style="margin-bottom: 10px">
+    
+
+    <div class="layui-row layui-col-space10">
+        <div class="layui-col-md8 layui-col-sm12 layui-col-xs12">
+            <div class="layui-card single-card">
+                <br />
+                <blockquote class="self-elem-quote self-elem-quote-bg-red markdown-body single-title" >
+                    <h1>GlassFish Modularity System, How extend GlassFish CLI and Web Administration Console (Part I, The architecture)</h1>
+                    <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2010-03-15</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                </blockquote>
+                <div class="layui-card-body markdown-body single-content">
+                    <p>Modularity is the essential design and implementation consideration which every software architects and designers should have in mind to get an easy to develop, maintain and extend software.</p>
+<p>GlassFish is an application server which highly benefits from a modularity system to provide different level of functionalities for different deployment and case studies. GlassFish fully supports Java EE profiles, so it provides a lot of features which suits different case studies and different type of use cases. Every deployment and case study requires a subset of functionalities to be provided, administrated and maintained so, both GlassFish users, application developers, and GlassFish development team can highly benefits from modularity to reduce the overall costs for development, maintenance, administration and management of each deployment type that GlassFish supports.</p>
+<p>Looking from functionalities point of view GlassFish provides extension points for further extending: administration console, CLI, containers, and monitoring capabilities of GlassFish application server in a non-intrusive and modular way.</p>
+<p>From development point of view, GlassFish uses OSGI for module lifecycle management while it uses HK2 for service layer functionalities like dependency injection, service instances management, service load and unload sequence, and so on.</p>
+<p>Looking from integration point GlassFish modular architecture provides many benefits for different level of integration. In bigger picture Glassfish can be deployed into a bigger OSGI container which for example may be running your enterprise application, GlassFish has many advanced subsystem like its monitoring infrastructure  which can be used in any enterprise level application for extendable monitoring, and thanks to GlassFish modularity these capabilities can be easily extracted from GlassFish without any class path dependencies headache and versioning conflicts.</p>
+<p><strong><em>GlassFish Modularity</em></strong></p>
+<p>GlassFish supports modularity by providing extension points and required SPIs to add new functionalities in administration console, CLI, monitoring, and possibility to develop new containers to host new type of applications.</p>
+<p>Not only modular architecture provides easy extendibility but also it provides better performance and much faster starts and stops sequences as the modular architecture loads modules as soon as they get referenced by another module and not during the startup. For example, Ruby container will not start unless a Ruby on Rails application gets deployed into application server.</p>
+<p>GlassFish modular system uses a combination of two module systems including well known OSGI and HK2 as an early implementation of Java module system (JSR-277). OSGI provides module and module lifecycle layers functionalities to let application server fits into bigger deployment which uses OSGI framework.  It also makes It possible to benefits from well designed and tested OSGI modularity and lifecycle management techniques which are included in OSGI. The HK2 provides service layer functionality and guarantee a smooth migration to Java SE 7 module system (JSR-277). To make it simple, HK2 is the framework which we use to develop the Java classes that we have inside our module and perform the main tasks.</p>
+<p>We talked about GlassFish modules, but these modules need another entity to load, unload and feed them with their intended responsibilities which the module designed to accept.  The entity which takes care of loading and unloading modules is GlassFish kernel which itself is an OSGI bundle which implemented Kernel services.</p>
+<p>When GlassFish starts, either normally using its internal OSGI framework or using an external OSGI framework, First it loads GlassFish kernel and check for all available services by looking into the implementation of different contracts in the class path and. Kernel will only loads services which are necessary during the startup or services which are referenced from another service as one of its dependencies.</p>
+<p>Containers services will only starts if an application get deployed into the container, administration console extensions load as soon as administration console loads, CLI commands loads on demand and system does not preload all commands when asadmin starts, monitoring modules starts when a client bind to them.</p>
+<p>GlassFish modular system does not only apply to application server specific capabilities like administration console extension, but it also applies on Java EE specifications implementation. GlassFish uses different OSGI modules for different Java EE specifications like Servlet 3 and JSF 2. These specifications are bundled using OSGI to make it easier to update the system when a new release of each specification is available.</p>
+<p>Different GlassFish modules fit into different categories around GlassFish kernel. These categorizations of modules are result of modules implementing GlassFish provided interfaces for different extendibility points. We will discuss the extension points in mode details in section 3.</p>
+<p>New features added to GlassFish using the modularity system will not differ from GlassFish out of the box features because new modules completely fit into the overall provided features.</p>
+<p>All extendibility points in GlassFish designed to ensure that adding new type of containers for hosting programming languages and framework other than Java is easy to cope with. Every container that is available for GlassFish application server adds its own set of CLI commands, administration console web pages and navigation nodes, and its own monitoring modules to measure its required metrics.</p>
+<p><strong><em>2 Introducing OSGI</em></strong></p>
+<p>The OSGI is an extensive framework introduced to add modularity capabilities to Java before Java SE 7 being shipped. Essentially OSGI is a composition of several layers of functionalities which are building on top of each other to free Java developers from headache of overcoming the class loader complexity, dynamic plug ability, libraries versioning, code visibility, dependency management; and a publish, find and bind service model to decouple bundles. Layering OSGI gives us something similar to Figure 1.</p>
+<p><img src="http://docs.google.com/File?id=ajhfp4djcnw6_431gs3cxhp3_b" alt=""></p>
+<p>Figure 1 OSGI layers, GlassFish uses all except the service layer. An OSGI based application may utilize all or some of the layers in addition to OS and Java platform which OSGI is running on.</p>
+<p>              OSGI runs on hand held devices with CDC profile support and Java SE. so variety of operating systems and devices can benefits from OSGI. Over this minimum platform, OSGI layers march one over the other and based on the principals of layered architecture each layer can only see its bottom layer and not its upper layer.</p>
+<p>Bundle or module layer is closest to Java SE platform, OSGI bundles are Jar files which some more Meta data information, these metadata generally defines modules required and provided interfaces, but it does this task in a very effective manner. OSGI bundles provide 7 defections to help with dependencies, versioning. These definitions include:</p>
+<p>       Multi-version support: several versions of the same bundle can exist in the framework. And depended bundles can use the versions that satisfy their requirements.</p>
+<p>       Bundle fragments: Allows bundle content to be extended, bundles can merge to form one bundle and expose a unified export and import attributes.</p>
+<p>       Bundle dependencies: Allows for tight coupling of bundles when required Import everything that another, specific bundle exports Allows re-exporting and split packages</p>
+<p>       Explicit code boundaries and dependencies: Bundles can explicitly their internal packages or declare dependencies on external packages.</p>
+<p>       Arbitrary export/import attributes for more control: Exporters can attach arbitrary attributes to their exports; importers can match against these arbitrary attributes when they find the required package and before importing.</p>
+<p>       Sophisticated class space consistency model</p>
+<p>       Package filtering for fine-grained class visibility: Exporters may declare that certain classes are included/ excluded from the exported package.</p>
+<p>All of these definitions are included in the MANIFEST.MF file which is an easy to read and create text file located inside the META-INF directory of jar files. Listing 4 shows a sample MANIFEST.MF file.</p>
+<p><strong>Listing 4 sample MANIFIST.MF file which shows some OSGI modules definitions</strong></p>
+<p><code>Bundle-ManifestVersion: 2                                       #1 Bundle-SymbolicName: gfbook.samples.chapter12                    #2 Bundle-Version: 1.1.0                                            #2 Bundle-Activator: gfbook.samples.chapterActivator             #3  Bundle-ClassPath: .,gfbook/lib/juice.jar                          #4 Bundle-NativeCode:                                                #5 serialport.so; osname=Linux; processor=x86,                        #5 serialport.dll; osname=Windows 98; processor=x86                   #5 Import-Package: gfbook.samples.chapter7; version=&quot;[1.0.0,1.1.0)&quot;;  #6 resolution:=&quot;optional&quot;                                             #6 Export-Package:                                                    #7 gfbook.samples.chapterservices.monitoring; version=1.1;          #7 vendor=&quot;gfbook.samples:&quot;; exclude:=&quot;*Impl&quot;,                         #7 gfbook.samples.chapterservices.logging; version=1.1;             #8 uses:=&quot;samples.chapter7.services&quot;                                   #8</code></p>
+<p>GlassFish uses OSGI Revision 4 and the version number at #1 indicates it. At #2 we uniquely identify this bundle with a name and its version together. At #3 we determine a Class which implements BundleActivator interface in order to let the bundle get notified when it stops or starts. It lets the developers to perform initialization and perform some checks when the bundle starts or perform some cleanup when the bundle stops. At #4 we define our bundle internal class path, a bundle can has JAR files inside it and bundle class loader check this class path when it looks for a classes that it requires in the same order given in the Bundle-ClassPath header. At #5 we define the bundle native dependencies per operating system.</p>
+<p>At #6 we define an optional dependency on some packages, as you can see our bundle can use any version inside the given version range. At #7 we describe the exported packages along with the version and excluded classes using wildcard notation. At #8 we define that if any bundle import gfbook.samples.chapterservices.logging from our bundle and the importer bundle needs samples.chapter7.services it should use the same bundle for satisfying this import that our package uses.</p>
+<p>Next layer in OSGI modularity system is the Life Cycle layer which makes it possible for bundles to installed, dependency checked, started, activated, stopped, and uninstalled dynamically. It relies on the module layer for the class path related tasks like class locating and class loading. This layer adds some APIs for managing the modules in run time. Figure 2 shows functionalities of this layer.</p>
+<p><img src="http://docs.google.com/File?id=ajhfp4djcnw6_432f2cvbnr8_b" alt=""></p>
+<p>Figure 2 OSGI life cycle layer states. A module need to be stopped and has no dependency to be uninstalled.</p>
+<p>     Installed: the bundle has been installed and but all bundle dependencies have not been satisfied, for example one of its imported packages in not exported by any of currently resolved bundles.</p>
+<p>     Resolved: Bundle is installed and all of its dependencies are satisfied, this is an in-transit state and bundles do not stay in this state.</p>
+<p>       Starting: Another temporary state which a bundle goes through when it is going to be activated.</p>
+<p>       Active: Bundle is active and running.</p>
+<p>     Stopping: A temporary state which a bundle goes through when it is going to be stopped.</p>
+<p>       Uninstalled: Bundle is not in the framework anymore.</p>
+<p>Next layer in OSGI mode is the Service model, the layer which is not used by eclipse provides several functionalities for the deployed bundles. First it provides some common services which are common in all applications, services like logging and security. Secondly it provides a set of APIs which bundles developers can use to developed OSGI friendly services and publish them in the OSGI framework service registry, search for services that their bundles need in the registry and bind to the services that they need. This layer is not used by GlassFish.</p>
+<p>All that GlassFish taken from OSGI is its bundle and life cycle management layers. Adhering to these two layer guidelines let GlassFish be able to fit in bigger systems which are OSGI compliant and it can host new modules based on OSGI modularity system. Now that you know How GlassFish modularity system uses OSGI, you are ready to see what is inside these modules and what GlassFish propose for developing the module functionalities.</p>
+<p><strong><em>3 Introducing HK2</em></strong></p>
+<p>We said that GlassFish uses HK2 for service layer functionalities. First question which you may ask is OSGI service model has not utilized for GlassFish; answer is that the HK2 is more aligned with Java Module System (JSR-277) which is going to be a part of Java Runtime in Java SE 7 and eventually replacing HK2 with Java SE modularity system will be easier that replacing OSGI service model layer with Java SE service model layer.</p>
+<p><strong><em>3.1 What HK2 is</em></strong></p>
+<p>GlassFish as a modular application system should have a kernel which all modules plug into it to provide some functionality which call services. In order for the kernel to place the services in the right category and place, services are developed based on some contracts which are provided by the GlassFish application server designer and developers.</p>
+<p>A contract describes the extension point building blocks and a service is an implementation which fits that particular building blocks. HK2 is a general purpose modularity system and can be used in any application which requires a modular design.</p>
+<p>An HK2 service should adhere to a contract and it means nothing but extending an interface which HK2 kernel knows its structure and knows how to use it. But interfaces alone can not provide all information which a module may require to identify itself to the kernel. So HK2 provides a set of annotations which let the developers to provide some META data with the component to make it possible for the kernel to place it in the correct place.</p>
+<p>A system which looks for modularity should have a complex requirement which leas to a architecture, and modularity is one of many helpers with design and development of a complex software.</p>
+<p>In software as big as GlassFish objects need other objects during the construction, they need configuration during construction or after the construction during a method execution, objects may need to provides some of their internal objects available for other object which may need them, objects need to be categorized into different scopes to prevent any interference between objects that need scoped information and objects that runs without storing any state information (stateless).</p>
+<p>First things first</p>
+<p>Do we need to discuss contract and service annotation source code?</p>
+<p>, after we developed a service by implementing a contract which is an interface, we should have a way to inform HK2 that our implementation is a service, it has a name and it has a scope. To do this we use a @Service annotation, listing 1 shows an example of using @Service annotation.</p>
+<p><strong>Listing 1 HK2 @Service annotation</strong></p>
+<p><code>@Service (name=&quot;restart-domain&quot;,                                  #1 scope=org.jvnet.hk2.component.PerLookup.class,                                     factory=gfbook.chapterCommandFactory) public class RestartDomain implements AdminCommand {                     #2 ... }</code></p>
+<p>Very simple, just an annotated POJO provide the system with all required information to accept it as a CLI command. At #1 we define the name of the service that we want to develop, late on we define the scope of the component. At #2 implement the contract interface to make it possible for the kernel to use our service in the way that it knows. Scope can be one of the built-in scopes or any custom implemented scope by implementing org.jvnet.hk2.component.Scope contract. The custom scopes should take care of the objects lifecycle. Built-in scopes are:</p>
+<p>     Per Lookup scope: Components in this scope will create new instances every time someone asks for it, the implementation class is: org.jvnet.hk2.component.</p>
+<p>     Singleton scope: Objects in this scope stay alive until the session’s ends and any subsequent call for instantiating such objects end in returning the available object. The implementation class is: org.jvnet.hk2.component.Singleton.</p>
+<p>The @Service annotation accepts several optional elements as follow, these elements are just for sake of better and more readable, maintainable and customizable code, otherwise they are not required and HK2 determine default values for each element.</p>
+<p>       The name element defines the name of the service. The default value is an empty string.</p>
+<p>     The scope element defines the scope to which this service implementation is tied. The default value is org.jvnet.hk2.component.PerLookup.class.</p>
+<p>     The factory element defines the factory class for the service implementation, if the service is created by a factory class rather than by calling the default constructor. If this element is specified, the factory component is activated, and Factory.getObject is used instead of the default constructor.</p>
+<p>What if our service requires accessing another service or another object? How we will decide whether we should initiate a new object and use it or use a currently available object? Should we as service developers really involve with a complex service or object initialization task?</p>
+<p>First let’s look at instantiation, HK2 is an IOC pattern implementation and so, No object instantiation will need to go though calling new() method and instead you will ask the IOC to return an instance of your required component. In HK2, ComponentManager class is in charge of providing a registry for instantiated components, and also it bear the responsibility of initializing components that are not initialized upon a client request. Clients ask ComponentManager for a component By calling getComponent(ClassT contract). And ComponentManager manager ensure that either it returns a correct instance based on available instance and their scopes or it create a new instance by traversing the entire object graph required for initializing the component. The ComponentManager methods are threading safe and maintain no session information between consequent calls.</p>
+<p>Components developers need to have some control to ensure all required resources and configuration are ready after the construction and before any other operation; also they may need to perform some housekeeping and cleanup before destroying the object. So two interfaces are provided which components can implement them to register for a notification upon object construction and destruction. There two interfaces are org.jvnet.hk2.component.PostConstruct and org.jvnet.hk2.component.PreDestroy, each interface just has one method named postConstruct and preDestroy. The ComponentManager is also in charge of resource injection to components properties during construction and also resource extraction from components.</p>
+<p>First lets see resource extraction which may be unfamiliar, Some components may create an internal object which carry some information required by some other components in the system or similar components which are going to be constructed. These internal objects can be marked with @Extract annotation which is located at org.jvnet.hk2.annotations.Extract. This annotation makes define the property to be extracted and placed in a predefined scope or the default scope which is PerLookup scope.</p>
+<p>After an object is extracted, HK2 place it inside a container of type org.jvnet.hk2.component.Habitat, the container will provide any object which needs one of its inhabitants. Listing 2 shows how a property of an object can be marked as an extraction.</p>
+<p><strong>Listing 2 The HK2 extraction sample</strong></p>
+<p><code>@Service (name=&quot;restart-domain&quot;,                                 scope=org.jvnet.hk2.component.PerLookup.class,                                     factory=gfbook.chapterCommandFactory) public class RestartDomain implements AdminCommand {                    @Extract                                                                                                                  #1 LoggerService logger; @Extract                                                                                                  #2 public CounterService getCounterService() {...} }  </code></p>
+<p>At #1 we mark a property for extraction and at #2 we extract the object from a getter method, so remember that @Extract annotation works both on property and getter level. Now let’s see how these inhabitant objects can be used by another service which needs these two functionalities.</p>
+<p><strong>Listing 3 The HK2 extraction sample</strong></p>
+<p>`````@Service (name=&quot;restart-domain&rdquo;,                                 scope=org.jvnet.hk2.component.PerLookup.class,                                     factory=gfbook.chapterCommandFactory) public class RestartDomain implements AdminCommand {                    @Inject protected Habitat habitat;                                                                      #1 public void performAudition() { LoggerService logger = habitat.getComponent(LoggerService.class);         #2 CounterService counter = habitat.getComponent(CounterService.class);       #2 } }````</p>
+<p>At #1 we inject the container into a property of these object, you see this is world of IOC, and we have no explicit object creation, at #2 we ask habitat to provide us with instance of LoggerService and CounterService.</p>
+<p>Now you should have required understanding of OSGI Bundle layer and HK2 basics we can get our hands down to write some GlassFish modules to see how these two can be used to GlassFish modules in this article  and the upcomming one.</p>
+<p><strong><em>4 GlassFish Containers and Containers extendibility</em></strong></p>
+<p>GlassFish is a multi purpose application server which can host different kind of applications developed using variety of programming languages like Ruby, Groovy and PHP in addition to support for Java EE platform based applications.</p>
+<p>The concept of container makes it possible to let GlassFish application server host new types of applications which can be developed using either Java programming language or other programming languages. Imagine that you want to develop a new container which can host a brand new type of application. These type of application will let GlassFish users to deploy a new type of archived package which contains descriptor files along with required classes for performing scheduled tasks in a container managed way. The new type of application is developed using Java and for sure it can access all GlassFish application server content and in the same way it can access some operating system related scripts like shell scripts for performing operating system related tasks on schedule.</p>
+<p>GlassFish may have tens of different type containers for different type of applications so, before anything else, each container must have a name in order to make it possible for GlassFish kernel to access them easily. In the next step, GlassFish should have some mechanism to determine which container an application should be deployed to. Then there should be a mechanism to determine which URL patterns should be passed to a specific container for further processing. And finally, each application has some set of classes which container should load them to process the incoming request, so a class loader with full understanding of the application directory structure is required to load the application classes.  Figure 3 shows the procedure of application deployment from the moment that a deployment command received by GlassFish up to the stage that the container becomes available to GlassFish deployment manager.</p>
+<p><img src="http://docs.google.com/File?id=ajhfp4djcnw6_433f64jrbdt_b" alt=""></p>
+<p>Figure 3 Application deployment activities in GlassFish</p>
+<p>Is this figure too busy? Also, there are some typos in it, so keep this flagged</p>
+<p>  from early start until GlassFish get the designated container name.</p>
+<p>Figure 4 shows activities that happen after the container become available to GlassFish application deployment manager up to the point that GlassFish get a class loader for the deployed application.</p>
+<p><img src="http://docs.google.com/File?id=ajhfp4djcnw6_434fjqfcfc4_b" alt=""></p>
+<p>Figure 4 Activities which happens after GlassFish get the specific container name</p>
+<p>GlassFish container SPI provides several interfaces which container developers can consider implementing them to develop their containers. These interfaces provide necessary functionalities for each activity in figure 3. First let’s see what are required for the first step which is checking the deployment artifact which can be a compressed file or a directory.</p>
+<p>When an artifact is passed to GlassFish for deployment, first the artifact goes though a check to see which type of archive it is and which container can host this application. So we need to be able to check an archive and determine whether is compatible with our container or not. To do this we must implements an interface with the fully qualified name as org.glassfish.api.container.Sniffer, GlassFish creates a list of all Sniffer implementations and pass the archive to each one of them to see whether an Sniffer know the archive or not. Listing 4 shows a dummy Sniffer implementation</p>
+<p><strong>Listing 4 Sniffer interface</strong></p>
+<p>```@Service(name = &ldquo;TextApplicationSniffer&rdquo;) @Scoped(Singleton.class) public interface TextApplicationSniffer implements Sniffer{ public boolean handles(ReadableArchive source, ClassLoader loader){} #1 public Class&lt;? extends Annotation&gt;[] getAnnotationTypes(){} #2 public String[] getURLPatterns(){}                                  #3 public String getModuleType(){}                                     #4 public Module[] setup(String containerHome, Logger logger) throws IOException(){}                                                      #9 public void tearDown(){}                                           #5 public String[] getContainersNames(){}                             #6    public boolean isUserVisible(){}                                   #7 public Map&lt;String,String&gt; getDeploymentConfigurations(final          ReadableArchive source) throws IOException{}                           #8 }``</p>
+<p>An implementation of Sniffer interface should return true or false based on the fact that either it understands the archive or not #1. ReadableArchive interface implementations provide us a virtual representation of the archive content and let us check for specific files or file size or it let us check for presence of another archive inside the current one and so on.</p>
+<p>If we intend to use a more complex analyze of the archive, for example by checking the presence of a specific annotation we should return list of annotations in getAnnotationTypes #2. GlassFish scan the archive for presence of one the annotations and continue with this Sniffer if a class is annotated by one of these annotations.</p>
+<p>If this is the Sniffer that understands the archive then GlassFish asks for a URL patterns that GlassFish should call the container service method when a request matches that pattern#3. At #4 we define the module name which can be a simple string.</p>
+<p>At #5 we just remove everything related to this container from the module system. At #6 we should return a list of all containers that this specific Sniffer can enable.</p>
+<p>At #7, we determine whether the container is visible to users when they deploy an application into the container or not and at #8 we should return all interesting configuration of the archive which can be used during the deployment or runtime of the application.</p>
+<p>The most important method in the Sniffer interface is the setup method which will setup the container if container is not already installed. #9 As you have already noticed the method have the path to container home directory so, the container is not installed already Sniffer can download the required bundles from the repositories and configure the container with default configurations. The method returns a list of all modules that are required by the container; using this list GlassFish prevent removal of any of these modules and check for the container class to resume the operation.</p>
+<p>The org.glassfish.api.container.Container is the GlassFish container contract which each container should implements, Container interface is the entry point for GlassFish container extendibility. Listing 5 shows a dummy Container implementation. Container class does not need to perform anything specific, all tasks will delegate to another class which perform the</p>
+<p><strong>Listing 5 dummy container implemenatation</strong></p>
+<p><code>@Service(name = &quot;gfbook.chaptercontainer.TextApplicationContainer&quot;)       #1 public class TextApplicationContainer implements Container {                 #2   public Class&lt;? extends Deployer&gt; getDeployer() {              #3       return gfbook.chaptercontainer.TextApplicationDeployer.class;#3   }   public String getName() {       return &quot; Text Container&quot;;                   #4   }</code></p>
+<p>At #1 we define a unique name for our container, we can use fully qualified class name to ensure that it is unique. At #2 we implement the container contract to let the GlassFish kernel use our container in the way that it knows. At # we return our Deployer interface implementation class name which will take care of tasks like loading, unloading, preparing, and other application related tasks. At #4 we return a human readable name for our container.</p>
+<p>You can see that container has nothing special except that it has an implementation of org.glassfish.api.deployment.Deployer which GlassFish kernel will use to delegate the deployment task. Listing 6 shows snippet code from Text application container’s deployer implementation.</p>
+<p><strong>Listing 6 Deployer implementation of TextApplication container</strong></p>
+<p><code>@Service public class TextApplicationDeployer implements Deployer&lt;TextContainer,    TextApplication&gt; {                   #1               public boolean prepare(DeploymentContext context) {    } #2     public &lt;T&gt; T loadMetaData(Class&lt;T&gt; type, DeploymentContext context) { }#3     public MetaData getMetaData() {}#4     public TextApplication load(TextContainer container, DeploymentContext context) {}                               #5     public void unload(TextApplication container, DeploymentContext context) {}                  #6     public void clean(DeploymentContext context) {}  #6 }</code></p>
+<p>Methods that are shown in the code snippet are just mandatory methods of Deployer contract that, our implementation may have some helper methods too. At #1 we define our class as an HK2 service which implements Deployer interface.</p>
+<p>At #2 we prepare the application for deployment it can be unzipping some archive files or pre-processing the application deployment descriptors to extract some required information for deployment task. Several methods of the Deployer interface accept a org.glassfish.api.deployment.DeploymentContext as one of its parameters, this interface provides all contextual information about the currently under processing application. For example application content in term of files and directories, accessing the application class loader, all parameters which passed to deploy command and so on.</p>
+<p>At #3 we return a set of MetaData that is associated with our application, these metadata can contain information like application name and so on. At #4 we should return an instance of org.glassfish.api.deployment.MetaData which contains special requirement which this Deployer instance needs these requirement can be loading a set of classes before loading the application using a separate class loader, or a set of metadata that our Deployer instance will provides after successfully loading the application. We will discuss the MetaData in more details in next step. At #5 we load the application and return an implementation of org.glassfish.api.deployment. The ApplicationContainer manages the lifecycle of the application and its execution environment. At #6 we undeploy the application from the container which means that our application should not be available in the container anymore. At #7 we clean any temporary file created during the prepare method execution.</p>
+<p>Now the TextApplication class which implements application management tasks like starting application, stopping application. The sample snippet for this class can be similar to listing 7.</p>
+<p><strong>Listing 7 Snippet code for TextApplication class</strong></p>
+<p><code>public class TextApplication extends TextApplicationAdapter                 implements ApplicationContainer{ #1   public boolean start(ApplicationContext startupContext) {   }   public boolean stop(ApplicationContext stopContext) {  }   public boolean resume()   public ClassLoader getClassLoader() {  }   public boolean suspend()   public Object getDescriptor() {  } #2 }</code></p>
+<p>All portion of the code should be self explaining except that in #2 we return the application descriptor to GlassFish deployment layer and in #1 which we do a lot of works including interfacing our container with Grizzly (the web layer of GlassFish).</p>
+<p>You remember that in listing 6 we returned an instance of TextApplication when the container calls the load method of the Deployer object, this object is responsible for application lifecycle including what you can see in the listing 7 and also it is responsible for interfacing our container with Grizzly layer. Listing 8 shows the snippet of the TextApplicationAdapter abstract class implementation. Extending the com.sun.grizzly.tcp.http11.GrizzlyAdapter helps with developing custom containers which need to interact with HTTP layer of GlassFish. The com.sun.grizzly.tcp.http11.GrizzlyAdapter has one abstract method which we talk about it when we were discussing the Sniffer interface implementation and that method is the void service(GrizzlyRequest request, GrizzlyResponse response) which is called when ever a request hits a URL matching with one of the container’s deployed application.</p>
+<p><strong><em>5 GlassFish</em></strong> <strong><em>Update</em></strong> <strong><em>Center</em></strong></p>
+<p>Glassfish update center is one of its outstanding features which help developers and system administrators to spend less time on updating and distributing applications on multiple GlassFish instances. In this section we will dig more into how update center works, and how we can develop new package for the update center.</p>
+<p>The update center name may be misleading that it can just works for updating the system, but reality is that it has more functionalities than what its name reveal. Figure 1.3 shows update center Swing client running in a Linux machine. At your left hand you will see a navigation tree which let you select what kid of information you want to view regarding update center functionalities. These tasks include:</p>
+<p>       Available Updates: The Available Updates node includes information about available updates for installation. It shows the basic details about each available update and identifies if the update is new and whether its installation needs a restart to complete. You can select the desired component from the table and click install.</p>
+<p>       Installed Software: The Installed Software node shows the software components currently installed. This is the place which you can remove any of not required piece of software from your GlassFish installation and let it run lightly. Upon trying to uninstall any component GlassFish will check to find what components are depending on it and let you decide whether you want to remove all of them or not. The Details section of the window shows more information for the installed software including technical specifications, product support, documentation, and other useful resources.</p>
+<p>       Available Software: The Available Software node shows all the software components available for installation through the Update Center. These are new set of components like new containers, new JDBC drivers, and new web applications and so on. The Details section of the window shows more information for the installed software including technical specifications, product support, documentation and other useful resources.</p>
+<p>Now that we know what the update center can do, let’s see how we should bootstrap it in our application server. GlassFish is the modular application server and so, update center itself is a module which can be present or not, by default the update center modules are not bundled with GlassFish installation and GlassFish download and installs its bit upon the first access, just like GlassFish administration console.</p>
+<p>GlassFish installer will bootstrap the GlassFish Update Center during installation if a internet connection was available. If your environment had no Internet connection during the installation you can bootstrap the update center by navigating to GlassFish_Home/bin and running updatetool script, it is either a shell script or a batch file. After you execute the command it will download the necessary bits and configure the update center. Running the command again will result in seeing the update center tool GUI similar to figure 5.</p>
+<p><img src="http://docs.google.com/File?id=ajhfp4djcnw6_435d9jbdvf8_b" alt=""></p>
+<p>Figure 5 Update Center Tool, it can manage multiple application installation</p>
+<p>In the Navigation Tree you can see that several installations can be managed using a single Update Center front end. These are installed image in the system along with manually create image for GlassFish in Action Book.</p>
+<p><strong><em>5.1 Update center in the administration console</em></strong></p>
+<p>GlassFish administration system is all about effectiveness, integration and ease of use so the same update center functionalities are available in the GlassFish administration console to let the administrators check and install updates without having shell level access to their machines. Administrators can navigate to Update Center page in GlassFish administration page and see which updates and which new features are available for their installed version.</p>
+<p>Figure 5 shows web based update center page with all features that desktop based version has. Integrating the update center functionalities into administration console is along with GlassFish promises to keep all administration tasks for a single machine or a cluster integrated into one single application.</p>
+<p><img src="http://docs.google.com/File?id=ajhfp4djcnw6_436drmsbsdn_b" alt="">Figure 6 Update center pages in GlassFish administration console with the same functionalities of desktop GUI.</p>
+<p>I know that you want to ask, what about update notification, how often I should check for updates. GlassFish development team knows that administrators like to be notified for available updates, therefore there are two mechanisms for you to get notified about available updates. The first way is by means of the notification text which appears in the top bar of the administration console as shown in figure 7.</p>
+<p><img src="http://docs.google.com/File?id=ajhfp4djcnw6_437g2z6pdd8_b" alt=""></p>
+<p>Figure 7 Update center web based notification and integration of the notification icon in Gnome desktop</p>
+<p>You are asking for more passive way of notification, are a CLI advocate administrator, then you can use the Try Icon notification system which notifies you about available updates by showing a bulb in your system try. There is no different if you are using Solaris, Linux or windows, you can activate the notification icon simply by issuing the following command in the GlassFish_Home/updatetool/bin/ directory.</p>
+<p>./updatetool &ndash;register</p>
+<p>And you are done, the registration of update center notification icon is finished and after your next startup you can see the notification icon which notifies you about availability of new updates and features. Figure 7 shows the two notification mechanism discussed.</p>
+<p>The update center helps us to keep our application server up to date by notifying us about availability of new packages and features. This features and packages as we already know either should be OSGI bundles or they should be some other types of packages which can be used for transferring any type of files. The update center uses a general packaging system to deliver the requested packages which may contains one or more OSGI bundles, operating system binary files, graphic and text and any other types of contents.</p>
+<p>This general purpose and very powerful packaging system is called pkg(5) Image Packaging System or in brief IPS.</p>
+<p><strong><em>6</em></strong> <strong><em>GlassFish packages distribution</em></strong></p>
+<p>Update center as we can see in the GlassFish use case, helps us to keep our application server up to date and let us install new components or remove currently installed components to keep the house clean of not required components. But the so called update center is much more important and bigger than just updating the GlassFish installation. Update center is part of a bigger general purpose binary package distribution for distributing modular software systems in different operating system without interfering with the operating system installation sub-system or so called root permission.</p>
+<p>GlassFish version 2 has an update center, which you can use to manage the GlassFish installation however that update tool was using a module model like NetBeans NBM files to transfer the updates from the server to local installation. But in GlassFish version 3 the update center system and GlassFish installation system has completely changed. We know that the GlassFish installer and OpenInstaller framework, you may remember from 2.2 that that GlassFish installer uses a specific type of binary distribution system designed by OpenSolaris named pkg(5) Image Packaging System (IPS). Now we are going to discuss IPS in more details along with its relation with GlassFish update center. The IPS developed using Python to ensure that it is platform independent and will execute on every platform with minimal required dependencies.</p>
+<p><strong><em>6.1 PKG(5) Image Packaging System, simply IPS</em></strong></p>
+<p>The IPS is a software delivery system based heavily on using network repositories to distribute the software system either completely from the network repositories or in a mixture of using network repositories and initially downloaded packages. Generally speaking IPS helps with distributing and updating software system on different levels independent of the operating system and the platform that the software is going to be installed.</p>
+<p>IPS is consisting of several components which Some of them are mandatory for maintaining a system based on IPS and some of them are just provided to let us make the overall procedure of creating, maintaining, and using IPS based software distribution easier.</p>
+<p>       End user Utilities: There is a set of command line utilities that let the end users to interact with the server side software which serve as repository front end to let clients fetch and install updates and new features for their installed software.</p>
+<p>       GUI based Client side software: like the Java based Update Center  which is in use by GlassFish</p>
+<p>       API for interacting with IPS: There are some Java APIs provided for Java developers to be able to perform IPS related tasks from their Java applications, it provides better integration with java application and more flexibilities for ISVs and OEMs to develop their own client side applications.</p>
+<p>       Installation images: An Installation image is a set of packages for an application that provides some or all of its functionalities.</p>
+<p>       Servers side utilities: An HTTP server which sit in front of the physical repository to interact with the clients.</p>
+<p>       Development utilities: A set of utilities that helps developers with creating IPS packages. The build systems integration as a subset of development utilities. For now IPS integration with Maven and ANT is available which integrate and automate creating and publishing the package to repositories with the build system.</p>
+<p>In IPS, a software installation is called an image that we can say is a customized mirror of the installation repositories in term of installed packages. Different types of images are defined in the IPS including:</p>
+<p>       Operating system level images: This type of images is just in use for distributing Operating systems and operating system upgrades. Images in this level are called Full images and partial images.</p>
+<p>       Custom application level image: This is the image level which software developers and distributes can use to distribute their application. This image is called user images and does not require the host operating system to be based on IPS.</p>
+<p>Let’s see how GlassFish installer is related to IPS, GlassFish installer solely asks the user for the path which user wants to expand GlassFish IPS image and perform the initial configuration on the expanded image. These initial configurations include creating of a default domain along with setting the key repositories for domain password and master password. The expanded image will interact with some preconfigured network repository to fetch information about updates and new features which are available for expanded GlassFish image.</p>
+<p>Package repositories, which installation image interact with, contain packages which lead to updating, completing or adding new features to an already installed image. These packages can differ from one operating system to another and Because of these differences different repositories are required for different operating systems.</p>
+<p>An installation image can be as big as an operating system image or as small as necessary bootstrapping files to bootstrap the IPS and let it perform the rest of installation task. So a user image can be categorized under one of the following types:</p>
+<p>       The image with some basic required functionality, for example GlassFish web container. These basic functionalities can be operating system independent for sake of simplicity in distributing the main image. The image can contain complete IPS system including its utilities and client application like GlassFish update center or it may just contain a script to bootstrap the IPS system installation.</p>
+<p>       The image may contains the very basic and minimal packages to bootstrap the IPS system, the user will run the IPS bootstrapping script to install more IPS related packages like graphical Update Center client and later on install all required features by using these IPS utilities.</p>
+<p><strong><em>6.2 Creating packages using IPS</em></strong></p>
+<p>Now that we have an understanding of what is IPS and what is its relation with GlassFish installer and GlassFish itself we can get our hands on IPS utilities and see how we can use command line utilities or use the IPS to create new packages. Figure 8 shows GlassFish directory structure after bootstrapping the Update Center. Keep it in mind that bootstrapping the GlassFish Update Center result in installation of pkg(5) IPS utilities.</p>
+<p>You may ask what the relation GlassFish modularity, extendibility, OSGI and HK2 is with IPS, IPS image is zip files containing the GlassFish directory layout including its files like its OSGI bungles, JAR files, documentation and so on. Later on, each IPS package which can be an update to currently installed features or a brand new feature is a zip file which can contain one or more OSGI bundle along with their related documentation and thing like that.</p>
+<p>Two directories in GlassFish directory structure are related to IPS and GlassFish Update Center. The pkg directory includes all necessary files for IPS system which includes man pages, libraries which Java developers can use to develop their own application on top of IPS system or their own application for bootstrapping the IPS; it also includes a minimal Python distribution to let users execute the IPS scripts. The vendor-packages contain all packages downloaded and installed for this image which is the Update Center image.</p>
+<p>From now on, we referee to pkg folder with the name ips_home so you should replace it with the real path to the pkg directory or you can set an environment variable with this name pointing to that directory.</p>
+<p><img src="http://docs.google.com/File?id=ajhfp4djcnw6_438dcdjh2fs_b" alt=""></p>
+<p>Figure 8 Update center and pkg(5) IPS directory layout</p>
+<p>The bin directory that resides inside the pkg directory includes IPS scripts for both developers and end users, these scripts are listed in table 1 with their description.</p>
+<p>Table 1 IPS scripts with associated description</p>
+<!-- raw HTML omitted -->
+<p>You can see some Python scripts in the bin directory. These scripts perform the real tasks explained for each of the above operating system friendly scripts.</p>
+<p>The updatetool folder is where Update Center GUI application is located along with its documentation and related scripts. The bin directory contains two scripts for running the Update Center and registering the desktop notifier which keeps you posted about new updates and available feature by showing a balloon with the related message in your system try section. The vendor-packages folder contains all packages downloaded and installed for this image which is the Update Center image.</p>
+<p>Now let’s see how we can setup a repository, create a package and publish the package into the repository. I am just going to create a very basic package to show the procedure, the package may not be useful for GlassFish or any other application.</p>
+<p>First of all we need a directory to act as the depot of our packages, a place which we are sure our user has the read and write permission along with enough space for our packages.  So create a directory named repository, the directory can be inside the ips_home directory. Now start the repository server by issuing the following command inside the ips_home/bin directory.</p>
+<p>./pkg.depotd -d ../repository -p 10005</p>
+<p>To check that your repository is running open <a href="http://127.0.0.1:10005/">http://127.0.0.1:10005</a> in your browser and you should see something similar to figure 9 which includes some information about your repository status.</p>
+<p><img src="http://docs.google.com/File?id=ajhfp4djcnw6_439zwwq5qgz_b" alt=""></p>
+<p>Figure 9 The Repository status which we can see by pointing the browser to the repository URL.</p>
+<p>Now we have our repository server running and waiting for us to push our packages into it and later on download those packages by our client side utilities like pkg or Update Center.</p>
+<p>Our packages should be placed in the package repository and the command which can do this for us is pkgsend command. You should already though about the urge for a way to describe content of a package, its version, description, and so on. The pkgsend command let us open a transaction and add all package attribute, its included files and directory layout and finally close the transaction which lead to pkgsend sends our package to the repository. The pkgsend command can acts in a transactional way which means we can have a set of packages which we need either all of them in the repository or none of them. This model guaranteed that we may never have incompatible packages in the repository during the time that we push updates. To create a sample package we need some contents, so create a directory inside the pkg directory and name it sample_package, put two text files named readme.txt and license.txt inside it. Inside the sample_package directory create a directory named figures with an image file named figure1.jpg inside it. These are dummy files and their content can be anything that you like. You may add some more files and create a directory structure to test more complex structured packages. Listing 8 shows a series of commands which we can use to create and push the package that we have just prepared its content to the repository that we create in previous step. I assumed that you are using Linux so the commands are Linuxish and you should enter them line by line in the terminal window which can be either a gnome-terminal or any other terminal of your choice. If you want to see how a transaction works you can point your browser to <a href="http://127.0.0.1:10005/">http://127.0.0.1:10005/</a> during the executing of listing 8 commands.</p>
+<p><strong>Listing 8 Create and push the sample package to our repository</strong></p>
+<p><code>export PKG_REPO=http://127.0.0.1:10005/                           #1 eval './pkgsend open GFiASample@1.0'                              #2 ./pkgsend add set name=&quot;pkg.name&quot; value=&quot;GFiASamplePackage&quot;      #3 ./pkgsend add set name=&quot;pkg.description&quot; value=&quot;sample description&quot; #4 ./pkgsend add set name=&quot;pkg.detailed_url&quot; value=&quot;sample.com/kalali&quot; #5   ./pkgsend add file ../sample_package/readme.txt path=GFiA/README.txt  #6 ./pkgsend add dir path=GFiA/images/                      #7 ./pkgsend add file ../sample_package/figures/f.jpg path=GFiA/figs/f.jpg #8 ./pkgsend add license ../sample_package/license.txt license=GPL         #9 ./pkgsend close               #10  </code></p>
+<p>At #1 we export an environment variable which IPS scripts will use as the repository URL, otherwise we should pass the URL with –s <a href="http://127.0.0.1:10005/">http://127.0.0.1:10005/</a> in each command execution. At #2 we open a transaction named <a href="mailto:GFiASample@1.0">GFiASample@1.0</a> for uploading a package. At #3 we add the package name.  At #4 we add the package description which will appear in the description column of the Update Center GUI application or pkg command information retrieval.  At #5 we add the URL which contain complementary information, Update Center fetch the information from provided URL and it will show them in the description pane. At #6 we add a text file along with its extraction path; At #7 we add a directory which our package installation will create in the destination image. At #8 we add a file to our previously created directory. At #9 we add the package license type along with the license file, later on license type can be used to query the available packages based on their licenses. And finally at #10 we close the transaction will result in appearance of the package in the package repository.</p>
+<p>Now we have one package in our repository, you can find the number packages in the repository by opening the repository URL which is http://127.0.0.1:10005/ in your browser.</p>
+<p>You may already recognize a pattern in using pkgsend command and its parameters, and if you did you are correct because pkgsend commands are following a pattern which is similar to pkgsend subcommand [subcommand parameters]. List of important pkgsend subcommand is shown in table 2.</p>
+<p>Table 2 List of pkgsend subcommands which can be used to send a package to repository</p>
+<!-- raw HTML omitted -->
+<p>You can see complete list of subcommands in the pkgsend man files or in the pkg(5) project website located at <a href="http://www.opensolaris.org/os/project/pkg/">http://www.opensolaris.org/os/project/pkg/</a>.</p>
+<p>The add subcommand is the most usefull subcommand between the pkgsend subcommands, it takes actions which we need to the transaction along with the actions attributes. You have already seen how we can use set, file, dir, and license actions. As you see each action may accept one or more named attributes. Other important actions are listed in table 3.</p>
+<p>Table 3 list of other important add actions</p>
+<!-- raw HTML omitted -->
+<p>Now that we are finished with the pkgsend, let’s see what alternatives we have in using our package repository. We can either install the package into an already installed package like our GlassFish installation or we can create a new package in our client machine and install the package into that particular image.</p>
+<p>To install the package in the current GlassFish installation open Update Center, select GlassFish node in the navigation tree and then select Image Properties from file menu or press CTRL+I to open the image properties window. Add a new repository; enter GFiA.Repository as name and <a href="http://127.0.0.1:10005/">http://127.0.0.1:10005/</a> as the repository URL.  Now you should be able to refresh the Available Add-ons list and select GFiA Sample  Package for installation.</p>
+<p>The installation process will be fairly simple as it will just execute the given actions one by one which will result in creation of a GFiA directory inside the GlassFish installation directory with two text files inside it. The package installation also creates the figs directory inside GFiA directory along with adding the image file inside it.</p>
+<p>You get the idea that you can copy your package files anywhere in the host image (GlassFish installation in this case) so, when you want to distribute your OSGI bundle you will only need to put the bundle inside an already existing directory named modules in the GlassFish installation directory.</p>
+<p>The other way in using our package repository is creating a new image in our client system and then installing the package in this new image. Although we can create the image and install our package into it using Update Tool, but is joyful to use command line utilities to accomplish the task.</p>
+<ol>
+<li>Create the local image:</li>
+</ol>
+<p>./pkg image-create -U -a GFiA.Repository =http://localhost:10005/ /home/user/GFiA</p>
+<p>The command will create a user image which is determined by the –U parameter; its default package repository is our local repository and it is determined by –a parameter. And finally the path to image location is /home/user/GFiA which is the place where our image will extract.</p>
+<ol>
+<li>Set a Title and Description in the Image:</li>
+</ol>
+<p>./pkg set-property title &ldquo;GlassFish in Action Image&rdquo;</p>
+<p>./pkg set-property description &ldquo;GlassFish in Action Book image which is created in Chapter &quot;</p>
+<ol>
+<li>install the GFiASamplePackage into the newly created image</li>
+</ol>
+<p>./pkg  /home/user/GFiA install GFiASamplePackage</p>
+<p>As you can see we can install the package into any installation image by providing the installation image path.</p>
+<p>You as a developer or project manager can use IPS to distribute your own application from the ground and keep yourself free from updating hurdle. The IPS toolkit is available at <a href="http://wikis.sun.com/display/IpsBestPractices/Downloads">http://wikis.sun.com/display/IpsBestPractices/Downloads</a>.</p>
+<p><strong><em>6 Summary</em></strong></p>
+<p>GlassFish modular architecture opens the way for an easy update and maintenance of the application server along with providing the possibility to use its modules outside the application server in ISVs or develop new modules to extend the application server functionalities.</p>
+<p>Using OSGI let the application server to be deployed inside a bigger software system based on the OSGI and let the system administrators and maintainers to deal with one single installation with one single underplaying module management system.</p>
+<p>GlassFish container development provides the opportunity to develop new type of severs which can contain new types of applications without going deep into network server development. It is also suitable as the container can interface with other containers in the application server to use managed resources like JDBC connection pools or EJBs.</p>
+<p>GlassFish update center can be seen as one of the most initiative features of the application server as it takes care of many headaches which administrators usually face for updating and patching the application server. The Update center automatically check for available updates for our installed version of GlassFish and in blink of an eye it will install the updates for us without making us go through the compatibility check between the available update and our installation.</p>
+<p>Update center notification mechanism can keep us posted for new updates either when we are doing daily administration task in the administration console or by showing the famous bulb in our desktop notification area.</p>
+<p>The Application server is platform independent and so it needs a platform agnostic distributing mechanism and the pkg(5) IPS is a proven binary distribution system which GlassFish used to distribute its binary.</p>
+<p>`` ``` ```` `````</p>
+</div>
+            </div>
+        </div>
+
+        <div class="layui-col-md4 layui-col-sm12 layui-col-xs12">
+            
+            <div class="layui-card single-card">
+                <h2 class="single-title">Relevant Topics</h2>
+                
+                	
+                    <div style="margin-left: 10px;">
+                        <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                            <a href="/post/2010-03-03-openmq-the-open-source-message-queuing-for-beginners-and-professionals-openmq-from-a-to-z/">
+                                <h3 class="">OpenMQ, the Open source Message Queuing, for beginners and professionals (OpenMQ from A to Z)</h3>
+                            </a>
+                            
+                            <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2010-03-03</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                        </blockquote>
+                    </div>
+                	
+                    <div style="margin-left: 10px;">
+                        <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                            <a href="/post/2010-03-01-how-to-prepare-for-and-install-godaddy-ssl-certificate-into-glassfish-v3/">
+                                <h3 class="">How to prepare for, and install GoDaddy SSL certificate into GlassFish v3</h3>
+                            </a>
+                            
+                            <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2010-03-01</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                        </blockquote>
+                    </div>
+                	
+                    <div style="margin-left: 10px;">
+                        <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                            <a href="/post/2009-12-17-and-glassfish-v3-is-here/">
+                                <h3 class="">And GlassFish v3 is Here</h3>
+                            </a>
+                            
+                            <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2009-12-17</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                        </blockquote>
+                    </div>
+                	
+                    <div style="margin-left: 10px;">
+                        <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                            <a href="/post/2009-12-17-netbeans-6-8-joined-the-glassfish-v3-in-the-release-feast/">
+                                <h3 class="">NetBeans 6.8 joined the GlassFish v3 in the release feast.</h3>
+                            </a>
+                            
+                            <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2009-12-17</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                        </blockquote>
+                    </div>
+                	
+                    <div style="margin-left: 10px;">
+                        <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                            <a href="/post/2009-11-22-architecting-a-system-need-a-wide-knowledge-of-technologies-cots-projects-standards/">
+                                <h3 class="">Architecting a system need a wide knowledge of technologies, COTS, projects, standards….</h3>
+                            </a>
+                            
+                            <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2009-11-22</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                        </blockquote>
+                    </div>
+                	
+                
+                <br />
+            </div>
+            
+
+            <div class="layui-card single-card">
+                <h2 class="single-title">Recent Posts</h2>
+            
+                
+                <div style="margin-left: 10px;">
+                    <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                    <a href="/post/2013-09-17-getting-started-with-couchdb-and-mongodb-part-ii-beginning-with-security/">
+                        <h3 class="">Getting started with CouchDB and MongoDB, Part II: Beginning with Security</h3>
+                    </a>
+                    <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2013-09-17</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                    </blockquote>
+                </div>
+                
+                <div style="margin-left: 10px;">
+                    <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                    <a href="/post/2013-09-12-getting-started-with-couchdb-and-mongodb-nosql-document-databases-part-i/">
+                        <h3 class="">Getting started with CouchDB and MongoDB, Part I: CRUD operations</h3>
+                    </a>
+                    <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2013-09-12</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                    </blockquote>
+                </div>
+                
+                <div style="margin-left: 10px;">
+                    <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                    <a href="/post/2012-12-27-my-last-blog-in-2012-my-2013-wishes-and-predictions/">
+                        <h3 class="">My last blog in 2012: My 2013 wishes and predictions…</h3>
+                    </a>
+                    <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2012-12-27</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                    </blockquote>
+                </div>
+                
+                <div style="margin-left: 10px;">
+                    <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                    <a href="/post/2012-09-24-my-sessions-in-javaone-2012/">
+                        <h3 class="">My sessions in JavaOne 2012</h3>
+                    </a>
+                    <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2012-09-24</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                    </blockquote>
+                </div>
+                
+                <div style="margin-left: 10px;">
+                    <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                    <a href="/post/2012-04-12-from-netbeans-to-intellij-idea-week-1/">
+                        <h3 class="">From NetBeans to IntelliJ IDEA, Week 1</h3>
+                    </a>
+                    <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2012-04-12</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                    </blockquote>
+                </div>
+                
+            
+            <br />
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+        </div><footer>
+    
+    
+    <div class="layui-container">
+        <p class="copyright">Copyright © 2006–2020, Masoud Kalali. Some rights are reserved</p>
+    </div>
+</footer>
+</body>
+</html>

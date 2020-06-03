@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>JMX on The Place</title>
+    <link>/tags/jmx/</link>
+    <description>Recent content in JMX on The Place</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 31 Mar 2006 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/jmx/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Testing some FrameWorks and applications on Glassfish build 40&#43; part IV</title>
+      <link>/2006/03/testing-some-frameworks-and-applications-on-glassfish-build-40-part-iv/</link>
+      <pubDate>Fri, 31 Mar 2006 00:00:00 +0000</pubDate>
+      
+      <guid>/2006/03/testing-some-frameworks-and-applications-on-glassfish-build-40-part-iv/</guid>
+      <description>This time i want to setup and test a utility that i am using with my Application server to mange them and monitor them.
+Utility that i will use is Mc4j A very powerful and flexible jmx console built on top of Netbeans Platform .
+so to follow this blog entry you will need GlassFish build 40+ , although i am testing it on buid 42 .Also you will need to have Mc4j version 1.</description>
+    </item>
+    
+  </channel>
+</rss>

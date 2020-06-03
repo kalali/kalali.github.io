@@ -1,0 +1,539 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>The Place - GlassFish is Open source , but how much Open it is ? </title>
+    
+    
+    <meta content="Java, JavaEE, GlassFish" name="keywords">
+    
+    <meta content="The Place - We know that GlassFish is opensource under CDDL license , being opensource is good but having a good and open relation with community is very good.
+GlassFish has the most active community between opensource project that i have been involve a bit closer than observing , having that TheAquarium weblog make it magnificent. Meanwhile you think that that weblogs is available in more that 3 languages, and it shows how much hard GlassFish people works to provide community with information that they need." name="description">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    
+        <link rel="icon" href="img/favicon.ico">
+    
+
+    
+
+    
+
+    
+
+    <link rel="stylesheet" href="/layui/css/layui.css">
+    <link rel="stylesheet" href="/self/css/default.css">
+    <script src="/layui/layui.js"></script>
+
+    <link rel="stylesheet" async href="/self/css/markdown.min.css">
+    <link rel="stylesheet" async href="/self/css/gallery.css">
+    
+    
+    
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
+    <script async src="https://cdn.jsdelivr.net/npm/lazysizes@5.2.0/lazysizes.min.js" integrity="sha256-h2tMEmhemR2IN4wbbdNjj9LaDIjzwk2hralQwfJmBOE=" crossorigin="anonymous"></script></head>
+
+<body>
+    
+    <header class="layui-header layui-bg-cyan">
+
+    
+        <a href=""><img src="/img/avatar.png" class="layui-nav-img" style="margin-left:10px;margin-top:-10px"></a>
+    
+    
+    <a class="nav-self-logo" href="/">
+        The Place
+    </a>
+
+    <ul class="layui-nav layui-layout-right layui-bg-cyan" lay-filter="">
+        
+        
+        <li class="layui-nav-item" id="nav_big"><a href="/post/">Posts</a></li>
+        
+
+        
+            
+                <li class="layui-nav-item" id="nav_big"><a href="/about/">About</a></li>
+            
+        
+
+        
+        <li class="layui-nav-item" id="nav_small">
+            <a href="javascript:;">
+                <i class="layui-icon layui-icon-app" style="font-size: 24px;"></i>
+            </a>
+
+            <dl class="layui-nav-child">
+                
+                <dd><a href="/post/">Posts</a></dd>
+                
+
+                
+                    
+                        <dd><a href="/about/">About</a></dd>
+                    
+                
+            </dl>
+        </li>
+    </ul>
+</header>
+
+<script>
+layui.use('element', function(){
+  var element = layui.element;
+});
+</script>
+        <div id="content" style="min-height:80%">
+<div class="layui-container" style="margin-bottom: 10px">
+    
+
+    <div class="layui-row layui-col-space10">
+        <div class="layui-col-md8 layui-col-sm12 layui-col-xs12">
+            <div class="layui-card single-card">
+                <br />
+                <blockquote class="self-elem-quote self-elem-quote-bg-red markdown-body single-title" >
+                    <h1>GlassFish is Open source , but how much Open it is ?</h1>
+                    <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2006-05-09</span>
+
+    
+     
+    <i class="layui-icon layui-icon-list" style="font-size: 32px; vertical-align: -3px;"></i>
+    
+
+    
+        <a href="/categories/glassfish/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">GlassFish</span>
+        </a>
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+        <a href="/tags/javaee/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">JavaEE</span>
+        </a>
+    
+    
+</h3>
+                </blockquote>
+                <div class="layui-card-body markdown-body single-content">
+                    <p>We know that <a href="https://glassfish.dev.java.net/" title="GlassFish"><strong>GlassFish</strong></a> is opensource under CDDL license , being opensource is good but having a good and open relation with community is very good.<br>
+GlassFish has the most active community between opensource project that i have been involve a bit closer than observing , having that <a href="http://blogs.sun.com/roller/page/theaquarium" title="TheAquarium">TheAquarium</a> weblog make it magnificent. Meanwhile you think that that weblogs is available in more that 3 languages, and it shows how much hard GlassFish people works to provide community with information that they need.<br>
+its <a href="http://wiki.java.net/bin/view/Projects/GlassFish" title="Wiki">Wiki</a> is a great source of information and shows how much far GlassFish people goes in making a good communication with the community.<br>
+wiki pages update very often , you will find new information in its wiki / weblogs whenever you look at them.I think there is more with this GlassFish to reveal than being just reference implementation of <strong>Java EE 5</strong>.<br>
+if you check <a href="http://blogs.sun.com/roller/page/theaquarium" title="TheAquarium">TheAquarium</a> in a daily basis you will see that Glassfish components are going to Maven repository on java.net very fast , and it means that we can use maven for our project which are based on java ee 5.</p>
+</div>
+            </div>
+        </div>
+
+        <div class="layui-col-md4 layui-col-sm12 layui-col-xs12">
+            
+            <div class="layui-card single-card">
+                <h2 class="single-title">Relevant Topics</h2>
+                
+                	
+                    <div style="margin-left: 10px;">
+                        <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                            <a href="/post/2006-04-24-overview-of-xml-parsing-in-java-different-methods-and-libraries/">
+                                <h3 class="">overview of XML Parsing in java , different methods and libraries</h3>
+                            </a>
+                            
+                            <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2006-04-24</span>
+
+    
+     
+    <i class="layui-icon layui-icon-list" style="font-size: 32px; vertical-align: -3px;"></i>
+    
+
+    
+        <a href="/categories/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+        <a href="/tags/xml/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">XML</span>
+        </a>
+    
+        <a href="/tags/dom/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">DOM</span>
+        </a>
+    
+        <a href="/tags/javaee/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">JavaEE</span>
+        </a>
+    
+        <a href="/tags/stax/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">StaX</span>
+        </a>
+    
+    
+</h3>
+                        </blockquote>
+                    </div>
+                	
+                    <div style="margin-left: 10px;">
+                        <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                            <a href="/post/2006-04-11-testing-some-frameworks-and-applications-on-glassfish-build-40-part-v-and-some-tips-about-application-deployment/">
+                                <h3 class="">Testing some FrameWorks and applications on Glassfish build 40&#43; part V , And some tips about Application deployment</h3>
+                            </a>
+                            
+                            <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2006-04-11</span>
+
+    
+     
+    <i class="layui-icon layui-icon-list" style="font-size: 32px; vertical-align: -3px;"></i>
+    
+
+    
+        <a href="/categories/javaee/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">JavaEE</span>
+        </a>
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+        <a href="/tags/javaee/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">JavaEE</span>
+        </a>
+    
+        <a href="/tags/glassfish/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">GlassFish</span>
+        </a>
+    
+        <a href="/tags/dwr/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">DWR</span>
+        </a>
+    
+    
+</h3>
+                        </blockquote>
+                    </div>
+                	
+                    <div style="margin-left: 10px;">
+                        <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                            <a href="/post/2006-05-05-step-by-step-toward-a-jms-sample-in-netbeans-and-yes-glassfish/">
+                                <h3 class="">Step by Step toward a jms sample in NetBeans and yes GlassFish</h3>
+                            </a>
+                            
+                            <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2006-05-05</span>
+
+    
+     
+    <i class="layui-icon layui-icon-list" style="font-size: 32px; vertical-align: -3px;"></i>
+    
+
+    
+        <a href="/categories/javaee/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">JavaEE</span>
+        </a>
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+        <a href="/tags/jms/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">JMS</span>
+        </a>
+    
+        <a href="/tags/java-ee/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java EE</span>
+        </a>
+    
+        <a href="/tags/netbeans/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">NetBeans</span>
+        </a>
+    
+    
+</h3>
+                        </blockquote>
+                    </div>
+                	
+                    <div style="margin-left: 10px;">
+                        <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                            <a href="/post/2006-04-25-simply-backup-and-restore-your-domains-in-glassfish-using-glassfish-command-console/">
+                                <h3 class="">Simply backup and restore your domains in GlassFish Using GlassFish Command Console</h3>
+                            </a>
+                            
+                            <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2006-04-25</span>
+
+    
+     
+    <i class="layui-icon layui-icon-list" style="font-size: 32px; vertical-align: -3px;"></i>
+    
+
+    
+        <a href="/categories/glassfish/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">GlassFish</span>
+        </a>
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+        <a href="/tags/glassfish/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">GlassFish</span>
+        </a>
+    
+    
+</h3>
+                        </blockquote>
+                    </div>
+                	
+                    <div style="margin-left: 10px;">
+                        <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                            <a href="/post/2006-03-31-testing-some-frameworks-and-applications-on-glassfish-build-40-part-iv/">
+                                <h3 class="">Testing some FrameWorks and applications on Glassfish build 40&#43; part IV</h3>
+                            </a>
+                            
+                            <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2006-03-31</span>
+
+    
+     
+    <i class="layui-icon layui-icon-list" style="font-size: 32px; vertical-align: -3px;"></i>
+    
+
+    
+        <a href="/categories/javaee/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">JavaEE</span>
+        </a>
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/javaee/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">JavaEE</span>
+        </a>
+    
+        <a href="/tags/jmx/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">JMX</span>
+        </a>
+    
+        <a href="/tags/glassfish/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">GlassFish</span>
+        </a>
+    
+    
+</h3>
+                        </blockquote>
+                    </div>
+                	
+                
+                <br />
+            </div>
+            
+
+            <div class="layui-card single-card">
+                <h2 class="single-title">Recent Posts</h2>
+            
+                
+                <div style="margin-left: 10px;">
+                    <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                    <a href="/post/2013-09-17-getting-started-with-couchdb-and-mongodb-part-ii-beginning-with-security/">
+                        <h3 class="">Getting started with CouchDB and MongoDB, Part II: Beginning with Security</h3>
+                    </a>
+                    <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2013-09-17</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                    </blockquote>
+                </div>
+                
+                <div style="margin-left: 10px;">
+                    <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                    <a href="/post/2013-09-12-getting-started-with-couchdb-and-mongodb-nosql-document-databases-part-i/">
+                        <h3 class="">Getting started with CouchDB and MongoDB, Part I: CRUD operations</h3>
+                    </a>
+                    <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2013-09-12</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                    </blockquote>
+                </div>
+                
+                <div style="margin-left: 10px;">
+                    <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                    <a href="/post/2012-12-27-my-last-blog-in-2012-my-2013-wishes-and-predictions/">
+                        <h3 class="">My last blog in 2012: My 2013 wishes and predictions…</h3>
+                    </a>
+                    <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2012-12-27</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                    </blockquote>
+                </div>
+                
+                <div style="margin-left: 10px;">
+                    <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                    <a href="/post/2012-09-24-my-sessions-in-javaone-2012/">
+                        <h3 class="">My sessions in JavaOne 2012</h3>
+                    </a>
+                    <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2012-09-24</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                    </blockquote>
+                </div>
+                
+                <div style="margin-left: 10px;">
+                    <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                    <a href="/post/2012-04-12-from-netbeans-to-intellij-idea-week-1/">
+                        <h3 class="">From NetBeans to IntelliJ IDEA, Week 1</h3>
+                    </a>
+                    <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2012-04-12</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                    </blockquote>
+                </div>
+                
+            
+            <br />
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+        </div><footer>
+    
+    
+    <div class="layui-container">
+        <p class="copyright">Copyright © 2006–2020, Masoud Kalali. Some rights are reserved</p>
+    </div>
+</footer>
+</body>
+</html>

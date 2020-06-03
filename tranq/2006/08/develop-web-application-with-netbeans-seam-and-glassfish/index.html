@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.71.1 with theme Tranquilpeak 0.4.8-BETA">
+<meta name="author" content="Masoud Kalali">
+<meta name="keywords" content=", development, next-gen, Kubernetes, Cloud, Java">
+<meta name="description" content="In this two part series I will try to show you how easily you can build applications using NetBeans 5.5 based on seam , facelets , jsf and new EJB 3 standard.
+I will not discuss any of framework in details as you can find detailed information about each of them in their homepage and some other articles.
+I want just show , How you can use NetBeans with some leading frameworks to build your web based applications.">
+
+
+<meta property="og:description" content="In this two part series I will try to show you how easily you can build applications using NetBeans 5.5 based on seam , facelets , jsf and new EJB 3 standard.
+I will not discuss any of framework in details as you can find detailed information about each of them in their homepage and some other articles.
+I want just show , How you can use NetBeans with some leading frameworks to build your web based applications.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Develop web application with netbeans, seam and Glassfish">
+<meta name="twitter:title" content="Develop web application with netbeans, seam and Glassfish">
+<meta property="og:url" content="/2006/08/develop-web-application-with-netbeans-seam-and-glassfish/">
+<meta property="twitter:url" content="/2006/08/develop-web-application-with-netbeans-seam-and-glassfish/">
+<meta property="og:site_name" content="The Place">
+<meta property="og:description" content="In this two part series I will try to show you how easily you can build applications using NetBeans 5.5 based on seam , facelets , jsf and new EJB 3 standard.
+I will not discuss any of framework in details as you can find detailed information about each of them in their homepage and some other articles.
+I want just show , How you can use NetBeans with some leading frameworks to build your web based applications.">
+<meta name="twitter:description" content="In this two part series I will try to show you how easily you can build applications using NetBeans 5.5 based on seam , facelets , jsf and new EJB 3 standard.
+I will not discuss any of framework in details as you can find detailed information about each of them in their homepage and some other articles.
+I want just show , How you can use NetBeans with some leading frameworks to build your web based applications.">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2006-08-15T00:00:00">
+  
+  
+    <meta property="article:modified_time" content="2006-08-15T00:00:00">
+  
+  
+  
+    
+      <meta property="article:section" content="NetBeans">
+    
+  
+  
+    
+      <meta property="article:tag" content="Java">
+    
+      <meta property="article:tag" content="NetBeans">
+    
+      <meta property="article:tag" content="GlassFish">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+  <meta name="twitter:site" content="@masoudkalali">
+
+
+  <meta name="twitter:creator" content="@masoudkalali">
+
+
+
+
+
+
+
+
+
+
+  <meta property="og:image" content="/img/avatar.png">
+  <meta property="twitter:image" content="/img/avatar.png">
+
+
+    <title>Develop web application with netbeans, seam and Glassfish</title>
+
+    <link rel="icon" href="img/favicon.png">
+    
+
+    
+
+    <link rel="canonical" href="/2006/08/develop-web-application-with-netbeans-seam-and-glassfish/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.css" integrity="sha256-vuXZ9LGmmwtjqFX1F+EKin1ThZMub58gKULUyf0qECk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
+    
+    
+    <link rel="stylesheet" href="/css/style-twzjdbqhmnnacqs0pwwdzcdbt8yhv8giawvjqjmyfoqnvazl0dalmnhdkvp7.min.css" />
+    
+    
+
+    
+      
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-137107-12', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="5">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="/">The Place</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="/img/avatar.png" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="5">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="/#about">
+          <img class="sidebar-profile-picture" src="/img/avatar.png" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">Masoud Kalali</h4>
+        
+          <h5 class="sidebar-profile-bio">Software architect with focus on PaaS container platforms, and Java EE, author, technology enthusiast, runner.</h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-home"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/categories">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/tags">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-tags"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/archives">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-archive"></i>
+      
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/#about">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-question"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/https://github.com/kalali">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-github"></i>
+      
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/index.xml">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-rss"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+
+      <div id="main" data-behavior="5"
+        class="
+               hasCoverMetaIn
+               ">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+            <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title" itemprop="headline">
+      Develop web application with netbeans, seam and Glassfish
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2006-08-15T00:00:00Z">
+        
+  August 15, 2006
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="/categories/netbeans">NetBeans</a>
+    
+  
+
+  </div>
+
+</div>
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              <p>In this two part series I will try to show you how easily you can  build applications using NetBeans 5.5 based on  seam , facelets , jsf and new EJB 3 standard.</p>
+<p>I will not discuss any of framework in details as you can find detailed information about each of them in their homepage and some other articles.<br>
+I want just show , How you can use NetBeans with some leading frameworks to build your web based applications. I will not discuss NetBeans specific tasks in details .<br>
+I will more focus on leveraging this stuff together using NetBeans IDE.</p>
+<p><strong>What you will need to follow  this series :</strong></p>
+<ul>
+<li>NetBeans enterprise edition 5.5 , you will need Glassfish or JBoss to continue with this series. check and make sure that your NetBeans has application server bundled otherwise get a copy of GlassFish from its website.</li>
+<li>seam 1.0.1 GA  or newer.</li>
+</ul>
+<p>seam distribution contain Facelets too , but i strongly suggest you get Facelets distribution separately and take a look at its samples and very good documentation. indeed both Facelets and seam has very good documentation.</p>
+<p>In this entry I will introduce each of this frameworks in very brief  to make the series stand alone , and i will show you how to setup the development environment and we will go with first part which is developing seam layer codes.</p>
+<p>JBoss seam is created to leverage maximum possible feature of Java EE 5 standards like JSF and EJB3.<br>
+seam , seamlessly integrate EJB3 as a backend with JSF as presentation , meanwhile provide management of long running process<br>
+by using JBPM . and give you ability to focus on your business logic rather than silly data providing stuff. By leveraging Facelets helps you to do even more with seam and JSF.</p>
+<p><strong>To name its features I can say:</strong></p>
+<ul>
+<li>Lesser XML, More Annotation. (please do not blame me for naming annotation and XML in one line :-))</li>
+<li>it let you go with your business logic rather thinking and resolving some common issue like user conversation state.</li>
+<li>seam has a more flexible context model , it has 8 context , by means of this context you can manage your application more effective. for example a business process live in business process context .</li>
+<li>Accessing each component in entire seam context with one unique name.</li>
+<li>Managing workplaces and conversations .</li>
+<li>It easily will let you develop Portlet by providing a Portlet context . we will discuss this item in latter parts</li>
+</ul>
+<p>With many more features.</p>
+<p>But about JSF , JSF is  a web framework , it is  Standard and  Developed under JSR 127.<br>
+<strong>Some of JSF features are as follow:</strong></p>
+<ul>
+<li> User interface framework</li>
+<li> Server-side UI components</li>
+<li> Event model , something like desktop applications event model , but very reduced.</li>
+<li> Component state</li>
+<li> Renderers , Render Kits , for example ADF faces has a telnet render which make it possible to render a ADF faces application for a  telnet client.</li>
+<li> Validation</li>
+<li> Type conversion</li>
+<li> Internationalization</li>
+</ul>
+<p>about Facelets , we will discuss more in next articles , but for now you should know that Facelets bring some view related enhancement and features to JSF community .<br>
+<strong>To name some of features :</strong></p>
+<ul>
+<li>Facelets make it possible to develop your entire web pages using your favorite page designer like Dream weaver or Microsoft FrontPage. to achieve this feature it introduce a new attribute, jsfc ,that make it possible to change each html element  to a JSF equal component. it is similar to Tapestry &lsquo;s <code>jwcid</code> attribute. So you can use all binding and event handling stuff of JSF and availability and ease of use of html WYSIWYG.</li>
+<li>Facelets provide a template-ing  features like Velocity&rsquo;s for JSF . it allows you to test JSF views out of container.</li>
+<li>Some decoration features like what tile bring to struts community and SiteMesh ,generally, to all java based web application.</li>
+</ul>
+<p>lets start the job of creating simplest sample ;) .</p>
+<p>I assume that you download seam and extract it in seam_home Also your NetBeans 5.5 is running and an application server capable of  containing ejb3 (Glassfish) is configured with your IDE.</p>
+<p>for sake of simplicity we make one   Library in our NetBeans IDE to make our job easier. as you know each library could contain some jar files, etc&hellip;</p>
+<p>**Create a library name it seam and add the following jar files to it , the first<br>
+**seam_homejboss-seam.jar<br>
+seam_homejboss-seam-ui.jar<br>
+seam_homehibernate-all.jar<br>
+seam_homethirdparty-all.jar</p>
+<p>add seam library  to Registeration-EJBModule and Registeration-WebModule</p>
+<p>Switch to runtime view (CTRL+5).Extend database node  , if you have no database created in your embedded derby  then create a database and create a table with following  characteristics<br>
+Table Name: users<br>
+Fields :</p>
+<!-- raw HTML omitted -->
+<p>after you create this table , create a new enterprise application project by going to , file&gt;new project&gt;enterprise application<br>
+name it Registeration. make sure that you have selected the Java EE 5 as j2ee version.</p>
+<p>go to project view (CTRL+1) And select Registeration-ejbModule , right click on it and select <strong>CMP entity bean from database&hellip;</strong><br>
+Now you should be able to select the JDBC connection that you have made in above step and give it a package name.<br>
+click next and select users table from left column and add it to right column.<br>
+click finish.<br>
+That&rsquo;s it , you have your CMP ready to go.</p>
+<ul>
+<li>what we need to add to the CMP bean class in addition to its created structure</li>
+<li>another constructor with all the CMP  fields.</li>
+<li>some annotation for getters , to help us in validation</li>
+</ul>
+<p>final shape of users CMP will be like :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">package</span> cmps<span style="color:#f92672">;</span>
+
+<span style="color:#f92672">import</span> java.io.Serializable<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> javax.persistence.Column<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> javax.persistence.Entity<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> javax.persistence.GeneratedValue<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> javax.persistence.GenerationType<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> javax.persistence.Id<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> javax.persistence.Table<span style="color:#f92672">;</span>
+
+<span style="color:#f92672">import</span> org.hibernate.validator.Length<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.hibernate.validator.NotNull<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.jboss.seam.annotations.Name<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.jboss.seam.annotations.Scope<span style="color:#f92672">;</span>
+<span style="color:#f92672">/</span><span style="color:#960050;background-color:#1e0010">\</span><span style="color:#f92672">*</span><span style="color:#960050;background-color:#1e0010">\</span><span style="color:#f92672">*</span>
+ <span style="color:#960050;background-color:#1e0010">\</span><span style="color:#f92672">*</span>
+ <span style="color:#960050;background-color:#1e0010">\</span><span style="color:#f92672">*</span> <span style="color:#a6e22e">@author</span> Masoud Kalali
+ <span style="color:#960050;background-color:#1e0010">\</span><span style="color:#f92672">*/</span>
+<span style="color:#a6e22e">@Entity</span>
+<span style="color:#a6e22e">@Name</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;user&#34;</span><span style="color:#f92672">)</span>
+<span style="color:#a6e22e">@Scope</span><span style="color:#f92672">(</span>org<span style="color:#f92672">.</span><span style="color:#a6e22e">jboss</span><span style="color:#f92672">.</span><span style="color:#a6e22e">seam</span><span style="color:#f92672">.</span><span style="color:#a6e22e">ScopeType</span><span style="color:#f92672">.</span><span style="color:#a6e22e">SESSION</span><span style="color:#f92672">)</span>
+<span style="color:#a6e22e">@Table</span><span style="color:#f92672">(</span>name<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;users&#34;</span><span style="color:#f92672">)</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Users</span> <span style="color:#66d9ef">implements</span> Serializable<span style="color:#f92672">{</span>
+   <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">long</span> serialVersionUID <span style="color:#f92672">=</span> 1881413500711441951L<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">private</span> String username<span style="color:#f92672">;</span>
+
+    <span style="color:#66d9ef">private</span> String password<span style="color:#f92672">;</span>
+
+    <span style="color:#66d9ef">private</span> String name<span style="color:#f92672">;</span>
+
+    <span style="color:#f92672">/</span><span style="color:#960050;background-color:#1e0010">\</span><span style="color:#f92672">*</span><span style="color:#960050;background-color:#1e0010">\</span><span style="color:#f92672">*</span> Creates a <span style="color:#66d9ef">new</span> instance of Users <span style="color:#960050;background-color:#1e0010">\</span><span style="color:#f92672">*/</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">Users</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+    <span style="color:#f92672">}</span>
+
+
+    <span style="color:#66d9ef">public</span>  <span style="color:#a6e22e">Users</span><span style="color:#f92672">(</span>String name<span style="color:#f92672">,</span> String password<span style="color:#f92672">,</span> String username<span style="color:#f92672">)</span>
+ <span style="color:#f92672">{</span>
+<span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">name</span> <span style="color:#f92672">=</span> name<span style="color:#f92672">;</span>
+<span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">password</span> <span style="color:#f92672">=</span> password<span style="color:#f92672">;</span>
+<span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">username</span> <span style="color:#f92672">=</span> username<span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+
+    <span style="color:#a6e22e">@Id</span>
+    <span style="color:#a6e22e">@GeneratedValue</span><span style="color:#f92672">(</span>strategy <span style="color:#f92672">=</span> GenerationType<span style="color:#f92672">.</span><span style="color:#a6e22e">AUTO</span><span style="color:#f92672">)</span>
+    <span style="color:#a6e22e">@Column</span><span style="color:#f92672">(</span>name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;username&#34;</span><span style="color:#f92672">,</span> nullable <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">)</span>
+     <span style="color:#a6e22e">@Length</span><span style="color:#f92672">(</span>min<span style="color:#f92672">=</span>5<span style="color:#f92672">,</span> max<span style="color:#f92672">=</span>15<span style="color:#f92672">)</span>
+    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getUsername</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">username</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setUsername</span><span style="color:#f92672">(</span>String username<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">username</span> <span style="color:#f92672">=</span> username<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#a6e22e">@Column</span><span style="color:#f92672">(</span>name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;password&#34;</span><span style="color:#f92672">,</span> nullable <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">)</span>
+     <span style="color:#a6e22e">@Length</span><span style="color:#f92672">(</span>min<span style="color:#f92672">=</span>5<span style="color:#f92672">,</span> max<span style="color:#f92672">=</span>15<span style="color:#f92672">)</span>
+    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getPassword</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">password</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setPassword</span><span style="color:#f92672">(</span>String password<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">password</span> <span style="color:#f92672">=</span> password<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#a6e22e">@Column</span><span style="color:#f92672">(</span>name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;name&#34;</span><span style="color:#f92672">,</span> nullable <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">)</span>
+     <span style="color:#a6e22e">@Length</span><span style="color:#f92672">(</span>min<span style="color:#f92672">=</span>5<span style="color:#f92672">,</span> max<span style="color:#f92672">=</span>15<span style="color:#f92672">)</span>
+    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getName</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setName</span><span style="color:#f92672">(</span>String name<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">name</span> <span style="color:#f92672">=</span> name<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+
+<span style="color:#f92672">}</span>
+</code></pre></div><p>we are finished with our POJO EJB :-) , now lets go and handle web layer stuff , from now we are working with seam view layer and JSF , I will talk about Facelets later in other articles of this series.</p>
+<p>as I said in sample scenario we have just one action , so we can use a  managed bean or plain java object or whatever that is useable here as action listener or use a stateless session bean (using session bean is what JBoss offer) so we will use a stateless session bean to implement our action listener , it will also helps you to see how an stateless session bean is implemented in java EE 5.<br>
+so create a session bean by using , <strong>file &gt; new &gt; session bean ,</strong> now you can select session bean type to be stateless , and change the package name to be **sbeans<br>
+**click finish  , editor will open up and show you the stateless seasion bean class.   <br>
+change the class body , in a way that final class looks like :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">import</span> cmps.Users<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> java.util.List<span style="color:#f92672">;</span>
+
+<span style="color:#f92672">import</span> javax.ejb.Stateless<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> javax.faces.application.FacesMessage<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> javax.faces.context.FacesContext<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> javax.persistence.EntityManager<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> javax.persistence.PersistenceContext<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.hibernate.validator.Valid<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.jboss.seam.annotations.Factory<span style="color:#f92672">;</span>
+
+
+<span style="color:#f92672">import</span> org.jboss.seam.annotations.IfInvalid<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.jboss.seam.annotations.In<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.jboss.seam.annotations.Name<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.jboss.seam.annotations.Outcome<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.jboss.seam.annotations.datamodel.DataModel<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.jboss.seam.core.FacesMessages<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.jboss.seam.ejb.SeamInterceptor<span style="color:#f92672">;</span>
+
+<span style="color:#a6e22e">@Stateless</span>
+<span style="color:#a6e22e">@Name</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">)</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ActionBean</span> <span style="color:#66d9ef">implements</span> sbeans<span style="color:#f92672">.</span><span style="color:#a6e22e">ActionLocal</span>
+<span style="color:#f92672">{</span>
+
+   <span style="color:#a6e22e">@IfInvalid</span><span style="color:#f92672">(</span>outcome<span style="color:#f92672">=</span>Outcome<span style="color:#f92672">.</span><span style="color:#a6e22e">REDISPLAY</span><span style="color:#f92672">)</span>
+   <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">String</span> <span style="color:#f92672">()</span>
+   <span style="color:#f92672">{</span>
+      List existing <span style="color:#f92672">=</span> em<span style="color:#f92672">.</span><span style="color:#a6e22e">createQuery</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;select username from User where username=:username&#34;</span><span style="color:#f92672">)</span>
+         <span style="color:#f92672">.</span><span style="color:#a6e22e">setParameter</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;username&#34;</span><span style="color:#f92672">,</span> user<span style="color:#f92672">.</span><span style="color:#a6e22e">getUsername</span><span style="color:#f92672">())</span>
+         <span style="color:#f92672">.</span><span style="color:#a6e22e">getResultList</span><span style="color:#f92672">();</span>
+      <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>existing<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">()==</span>0<span style="color:#f92672">)</span>
+      <span style="color:#f92672">{</span>
+         em<span style="color:#f92672">.</span><span style="color:#a6e22e">persist</span><span style="color:#f92672">(</span>user<span style="color:#f92672">);</span>
+         <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;success&#34;</span><span style="color:#f92672">;</span>
+      <span style="color:#f92672">}</span>
+      <span style="color:#66d9ef">else</span>
+      <span style="color:#f92672">{</span>
+         FacesMessages<span style="color:#f92672">.</span><span style="color:#a6e22e">instance</span><span style="color:#f92672">().</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;User #{user.username} already exists&#34;</span><span style="color:#f92672">);</span>
+         <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;success&#34;</span><span style="color:#f92672">;</span>
+      <span style="color:#f92672">}</span>
+   <span style="color:#f92672">}</span>
+
+<span style="color:#f92672">}</span>
+</code></pre></div><p>we will need to add same method signature to our session bean local interface , so add the method signature to <em>ActionLocal</em> class. it will looks like :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">package</span> sbeans<span style="color:#f92672">;</span>
+
+
+<span style="color:#f92672">/</span><span style="color:#960050;background-color:#1e0010">\</span><span style="color:#f92672">*</span><span style="color:#960050;background-color:#1e0010">\</span><span style="color:#f92672">*</span>
+ <span style="color:#960050;background-color:#1e0010">\</span><span style="color:#f92672">*</span> This is the business <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">for</span> Action enterprise bean<span style="color:#f92672">.</span>
+ <span style="color:#960050;background-color:#1e0010">\</span><span style="color:#f92672">*/</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">ActionLocal</span> <span style="color:#f92672">{</span>
+      <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">String</span> <span style="color:#f92672">();</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>now we are finished with the action , you may ask what are those annotation stuff in the session bean , so I should ask you to take a look at seam reference or wait until next part of this series. I should say that it is a very same version of seam sample that is implemented again in NetBeans IDE.<br>
+we are finished with EJBModule for now , lets take a look at what we will have in web module. first of all you need to add JSF framework to web module to do this , right click on web module and select properties , go to frameworks node and add JSF framework to the project. In web module we just have 2 JSF pages , one to , one to show the that s/he ed . Create following JSF files ,</p>
+<!-- raw HTML omitted -->
+<p>we need to add some navigation case to our faces-config.xml , so extend web module note and under configuration files open the faces-config.xml we should add 4 navigation case to it , so right click inside the editor ,which show content of faces-config.xml, and select add navigation rule. a dialog will open , just fill the dialog as following table show</p>
+<!-- raw HTML omitted -->
+<p>Now right click in the editor and add 4 new navigation case , these cases will handle navigating from one view to another.</p>
+<!-- raw HTML omitted -->
+<p>lets code with the register.jsp , open the register.jsp in your NetBeans editor change the content to :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html"><span style="color:#960050;background-color:#1e0010">&lt;</span>%@ taglib uri=&#34;http://java.sun.com/jsf/html&#34; prefix=&#34;h&#34; %&gt;
+<span style="color:#960050;background-color:#1e0010">&lt;</span>%@ taglib uri=&#34;http://java.sun.com/jsf/core&#34; prefix=&#34;f&#34; %&gt;
+<span style="color:#960050;background-color:#1e0010">&lt;</span>%@ taglib prefix=&#34;s&#34; uri=&#34;http://jboss.com/products/seam/taglib&#34;%&gt;
+&lt;<span style="color:#f92672">html</span>&gt;
+&lt;<span style="color:#f92672">head</span>&gt;
+&lt;<span style="color:#f92672">title</span>&gt; New User&lt;/<span style="color:#f92672">title</span>&gt;
+&lt;/<span style="color:#f92672">head</span>&gt;
+&lt;<span style="color:#f92672">body</span>&gt;
+&lt;<span style="color:#f92672">f:view</span>&gt;
+&lt;<span style="color:#f92672">h:form</span>&gt;
+&lt;<span style="color:#f92672">table</span> <span style="color:#a6e22e">border</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;0&#34;</span>&gt;
+              &lt;<span style="color:#f92672">s:validateAll</span>&gt;
+&lt;<span style="color:#f92672">tr</span>&gt;
+&lt;<span style="color:#f92672">td</span>&gt;Username&lt;/<span style="color:#f92672">td</span>&gt;
+&lt;<span style="color:#f92672">td</span>&gt;&lt;<span style="color:#f92672">h:inputText</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;username&#34;</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;#{user.username}&#34;</span> <span style="color:#a6e22e">required</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;true&#34;</span> /&gt;&lt;/<span style="color:#f92672">td</span>&gt;
+&lt;<span style="color:#f92672">td</span>&gt;      &lt;<span style="color:#f92672">h:message</span> <span style="color:#a6e22e">for</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;username&#34;</span>/&gt;       &lt;/<span style="color:#f92672">td</span>&gt;
+&lt;/<span style="color:#f92672">tr</span>&gt;
+&lt;<span style="color:#f92672">tr</span>&gt;
+&lt;<span style="color:#f92672">td</span>&gt;Real Name&lt;/<span style="color:#f92672">td</span>&gt;
+&lt;<span style="color:#f92672">td</span>&gt;&lt;<span style="color:#f92672">h:inputText</span>  <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;name&#34;</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;#{user.name}&#34;</span> <span style="color:#a6e22e">required</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;true&#34;</span> /&gt;&lt;/<span style="color:#f92672">td</span>&gt;
+&lt;<span style="color:#f92672">td</span>&gt;      &lt;<span style="color:#f92672">h:message</span> <span style="color:#a6e22e">for</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;name&#34;</span>/&gt;       &lt;/<span style="color:#f92672">td</span>&gt;
+&lt;/<span style="color:#f92672">tr</span>&gt;
+&lt;<span style="color:#f92672">tr</span>&gt;
+&lt;<span style="color:#f92672">td</span>&gt;Password&lt;/<span style="color:#f92672">td</span>&gt;
+&lt;<span style="color:#f92672">td</span>&gt;&lt;<span style="color:#f92672">h:inputSecret</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;password&#34;</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;#{user.password}&#34;</span>  <span style="color:#a6e22e">required</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;true&#34;</span> /&gt;&lt;/<span style="color:#f92672">td</span>&gt;
+&lt;<span style="color:#f92672">td</span>&gt;      &lt;<span style="color:#f92672">h:message</span> <span style="color:#a6e22e">for</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;password&#34;</span>/&gt;       &lt;/<span style="color:#f92672">td</span>&gt;
+&lt;/<span style="color:#f92672">tr</span>&gt;
+          &lt;/<span style="color:#f92672">s:validateAll</span>&gt;
+&lt;/<span style="color:#f92672">table</span>&gt;
+&lt;<span style="color:#f92672">h:messages</span> <span style="color:#a6e22e">globalOnly</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;true&#34;</span>/&gt;
+&lt;<span style="color:#f92672">h:commandButton</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;submit&#34;</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#34;</span> <span style="color:#a6e22e">action</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;#{.}&#34;</span>/&gt;
+&lt;/<span style="color:#f92672">h:form</span>&gt;
+&lt;/<span style="color:#f92672">f:view</span>&gt;
+&lt;/<span style="color:#f92672">body</span>&gt;
+&lt;/<span style="color:#f92672">html</span>&gt;
+</code></pre></div><p>No we need to create the registered.jsp which show that our user is registered. open the file in your editor and change its content to looks like :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html"><span style="color:#960050;background-color:#1e0010">&lt;</span>%@ taglib uri=&#34;http://java.sun.com/jsf/html&#34; prefix=&#34;h&#34; %&gt;
+<span style="color:#960050;background-color:#1e0010">&lt;</span>%@ taglib uri=&#34;http://java.sun.com/jsf/core&#34; prefix=&#34;f&#34; %&gt;
+&lt;<span style="color:#f92672">html</span>&gt;
+&lt;<span style="color:#f92672">head</span>&gt;
+&lt;<span style="color:#f92672">title</span>&gt;Successfully ed New User&lt;/<span style="color:#f92672">title</span>&gt;
+&lt;/<span style="color:#f92672">head</span>&gt;
+&lt;<span style="color:#f92672">body</span>&gt;
+&lt;<span style="color:#f92672">f:view</span>&gt;
+Welcome, &lt;<span style="color:#f92672">h:outputText</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;#{user.name}&#34;</span>/&gt;,
+you are successfully ed as &lt;<span style="color:#f92672">h:outputText</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;#{user.username}&#34;</span>/&gt;.
+&lt;/<span style="color:#f92672">f:view</span>&gt;
+&lt;/<span style="color:#f92672">body</span>&gt;
+&lt;/<span style="color:#f92672">html</span>&gt;
+</code></pre></div><p>Now we are almost finished with JSf files , there are some changes that we should make in web.xml and faces-config.xml.first open web.xml and add the following lines to it.make sure the you add them directly inside <!-- raw HTML omitted --> node.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"> <span style="color:#f92672">&lt;context-param&gt;</span>
+		<span style="color:#f92672">&lt;description&gt;</span>
+		<span style="color:#f92672">&lt;/description&gt;</span>
+		<span style="color:#f92672">&lt;param-name&gt;</span>org.jboss.seam.core.init.jndiPattern<span style="color:#f92672">&lt;/param-name&gt;</span>
+		<span style="color:#f92672">&lt;param-value&gt;</span>java:comp/env/registration/#{ejbName}/local<span style="color:#f92672">&lt;/param-value&gt;</span>
+<span style="color:#f92672">&lt;/context-param&gt;</span>
+
+<span style="color:#f92672">&lt;listener&gt;</span>
+	<span style="color:#f92672">&lt;listener-class&gt;</span>org.jboss.seam.servlet.SeamListener<span style="color:#f92672">&lt;/listener-class&gt;</span>
+<span style="color:#f92672">&lt;/listener&gt;</span>
+
+<span style="color:#f92672">&lt;ejb-local-ref&gt;</span>
+	<span style="color:#f92672">&lt;ejb-ref-name&gt;</span>registration/RegisterActionBean/local<span style="color:#f92672">&lt;/ejb-ref-name&gt;</span>
+	<span style="color:#f92672">&lt;ejb-ref-type&gt;</span>Session<span style="color:#f92672">&lt;/ejb-ref-type&gt;</span>
+	<span style="color:#f92672">&lt;local&gt;</span>sbeans.RegisterActionLocal<span style="color:#f92672">&lt;/local&gt;</span>
+<span style="color:#f92672">&lt;	ejb-link&gt;</span>RegisterActionBean<span style="color:#f92672">&lt;/ejb-link&gt;</span>
+<span style="color:#f92672">&lt;/ejb-local-ref&gt;</span>
+</code></pre></div><p>Now open faces-config.xml and add the following lines to it.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;lifecycle&gt;</span> <span style="color:#f92672">&lt;phase-listener&gt;</span>org.jboss.seam.jsf.SeamPhaseListener<span style="color:#f92672">&lt;/phase-listener&gt;</span> <span style="color:#f92672">&lt;/lifecycle&gt;</span>
+</code></pre></div><p>That&rsquo;s it , you are finished creating your first seam sample in netbeans , lets execute the application and see the result. press f6 and wait until your browser opens , navigate to <a href="http://localhost:8080/Registration-WebModule/faces/index.jsp">http://localhost:8080/Registration-WebModule/faces/register.jsp</a> enter some information and then press register button.</p>
+<p>You can check whether it applied or not by switching to runtime view and checking your Users table data . you can find complete explanation of jsp/java codes in Seam tutorial chapter 1 at : <a href="http://docs.jboss.com/seam/1.0.0.GA/reference/en/html/tutorial.html">http://docs.jboss.com/seam/1.0.0.GA/reference/en/html/tutorial.html</a></p>
+
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="/tags/java/">Java</a>
+
+  <a class="tag tag--primary tag--small" href="/tags/netbeans/">NetBeans</a>
+
+  <a class="tag tag--primary tag--small" href="/tags/glassfish/">GlassFish</a>
+
+                  </div>
+                
+              
+            
+            <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2006/08/netbeans-5.5-and-jdeveloper-10.1.3.1-both-sounds-very-good/" data-tooltip="Netbeans 5.5 and Jdeveloper 10.1.3.1 both sounds very good…">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2006/05/step-by-step-toward-a-jms-sample-in-netbeans-and-yes-glassfish.-part-2-remote-client/" data-tooltip="Step by Step toward a jms sample in NetBeans and yes GlassFish. part 2 : Remote Client">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2006/08/develop-web-application-with-netbeans-seam-and-glassfish/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2006/08/develop-web-application-with-netbeans-seam-and-glassfish/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+            
+              
+                <div id="disqus_thread">
+  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2020 Masoud Kalali. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+        <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2006/08/netbeans-5.5-and-jdeveloper-10.1.3.1-both-sounds-very-good/" data-tooltip="Netbeans 5.5 and Jdeveloper 10.1.3.1 both sounds very good…">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2006/05/step-by-step-toward-a-jms-sample-in-netbeans-and-yes-glassfish.-part-2-remote-client/" data-tooltip="Step by Step toward a jms sample in NetBeans and yes GlassFish. part 2 : Remote Client">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2006/08/develop-web-application-with-netbeans-seam-and-glassfish/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2006/08/develop-web-application-with-netbeans-seam-and-glassfish/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+  <i id="btn-close-shareoptions" class="fa fa-close"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=%2F2006%2F08%2Fdevelop-web-application-with-netbeans-seam-and-glassfish%2F">
+          <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=%2F2006%2F08%2Fdevelop-web-application-with-netbeans-seam-and-glassfish%2F">
+          <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="/img/avatar.png" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">Masoud Kalali</h4>
+    
+      <div id="about-card-bio">Software architect with focus on PaaS container platforms, and Java EE, author, technology enthusiast, runner.</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Software engineer
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        Sweden
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      <div id="cover" style="background-image:url('images/cover.jpg');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
+
+
+<script src="/js/script-pcw6v3xilnxydl1vddzazdverrnn9ctynvnxgwho987mfyqkuylcb1nlt.min.js"></script>
+
+
+<script lang="javascript">
+window.onload = updateMinWidth;
+window.onresize = updateMinWidth;
+document.getElementById("sidebar").addEventListener("transitionend", updateMinWidth);
+function updateMinWidth() {
+  var sidebar = document.getElementById("sidebar");
+  var main = document.getElementById("main");
+  main.style.minWidth = "";
+  var w1 = getComputedStyle(main).getPropertyValue("min-width");
+  var w2 = getComputedStyle(sidebar).getPropertyValue("width");
+  var w3 = getComputedStyle(sidebar).getPropertyValue("left");
+  main.style.minWidth = `calc(${w1} - ${w2} - ${w3})`;
+}
+</script>
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+  
+    
+      <script>
+        var disqus_config = function () {
+          this.page.url = '\/2006\/08\/develop-web-application-with-netbeans-seam-and-glassfish\/';
+          
+            this.page.identifier = '\/2006\/08\/develop-web-application-with-netbeans-seam-and-glassfish\/'
+          
+        };
+        (function() {
+          
+          
+          if (window.location.hostname == "localhost") {
+            return;
+          }
+          var d = document, s = d.createElement('script');
+          var disqus_shortname = 'hugo-tranquilpeak-theme';
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      </script>
+    
+  
+
+
+
+
+    
+  </body>
+</html>
+

@@ -1,0 +1,444 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>The Place - Manage, Administrate and Monitor GlassFish v3 from Java code using AMX &amp; JMX </title>
+    
+    
+    <meta content="Java" name="keywords">
+    
+    <meta content="The Place - Management is one of the most crucial parts of an application server set of functionalities. Development of the application which we deploy into the server happens once with minor development iteration during the software lifecycle, but the management is a lifetime task. One of the very powerful features of the GlassFish application server is the powerful administration and management channels that it provides for different level of administrators and developers whom want to extend the application server administration and management interfaces." name="description">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    
+        <link rel="icon" href="img/favicon.ico">
+    
+
+    
+
+    
+
+    
+
+    <link rel="stylesheet" href="/layui/css/layui.css">
+    <link rel="stylesheet" href="/self/css/default.css">
+    <script src="/layui/layui.js"></script>
+
+    <link rel="stylesheet" async href="/self/css/markdown.min.css">
+    <link rel="stylesheet" async href="/self/css/gallery.css">
+    
+    
+    
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
+    <script async src="https://cdn.jsdelivr.net/npm/lazysizes@5.2.0/lazysizes.min.js" integrity="sha256-h2tMEmhemR2IN4wbbdNjj9LaDIjzwk2hralQwfJmBOE=" crossorigin="anonymous"></script></head>
+
+<body>
+    
+    <header class="layui-header layui-bg-cyan">
+
+    
+        <a href=""><img src="/img/avatar.png" class="layui-nav-img" style="margin-left:10px;margin-top:-10px"></a>
+    
+    
+    <a class="nav-self-logo" href="/">
+        The Place
+    </a>
+
+    <ul class="layui-nav layui-layout-right layui-bg-cyan" lay-filter="">
+        
+        
+        <li class="layui-nav-item" id="nav_big"><a href="/post/">Posts</a></li>
+        
+
+        
+            
+                <li class="layui-nav-item" id="nav_big"><a href="/about/">About</a></li>
+            
+        
+
+        
+        <li class="layui-nav-item" id="nav_small">
+            <a href="javascript:;">
+                <i class="layui-icon layui-icon-app" style="font-size: 24px;"></i>
+            </a>
+
+            <dl class="layui-nav-child">
+                
+                <dd><a href="/post/">Posts</a></dd>
+                
+
+                
+                    
+                        <dd><a href="/about/">About</a></dd>
+                    
+                
+            </dl>
+        </li>
+    </ul>
+</header>
+
+<script>
+layui.use('element', function(){
+  var element = layui.element;
+});
+</script>
+        <div id="content" style="min-height:80%">
+<div class="layui-container" style="margin-bottom: 10px">
+    
+
+    <div class="layui-row layui-col-space10">
+        <div class="layui-col-md8 layui-col-sm12 layui-col-xs12">
+            <div class="layui-card single-card">
+                <br />
+                <blockquote class="self-elem-quote self-elem-quote-bg-red markdown-body single-title" >
+                    <h1>Manage, Administrate and Monitor GlassFish v3 from Java code using AMX &amp; JMX</h1>
+                    <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2010-04-06</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                </blockquote>
+                <div class="layui-card-body markdown-body single-content">
+                    <p>Management is one of the most crucial parts of an application server set of functionalities. Development of the application which we deploy into the server happens once with minor development iteration during the software lifecycle, but the management is a lifetime task. One of the very powerful features of the GlassFish application server is the powerful administration and management channels that it provides for different level of administrators and developers whom want to extend the application server administration and management interfaces. GlassFish as an application server capable or serving mission critical and large scale applications benefits from several administration channel including the CLI, web based administration console and finally the possibility to manage the application server by using standard Java management extension or the JMX. Not only GlassFish fully expose its management functionalities as JMX MBeans but also it provides a very easier way to manage the application server using local objects which proxies JMX MBeans. These local objects are provided as AMX APIs which lift the need for learning JMX by administers and developers whom want to interact with the application server by code. GlassFish provides very powerful monitoring APIs in term of AMX MBeans which let developers and administrators monitor any aspect of anything inside the application server using Java code without need to understand the JMX APIs or complexity of monitoring factors and statistics gathering. These monitoring APIs allows developers to monitor a bulk of Java EE functionalities together or just monitor or single attribute of a single configuration piece. GlassFish self management capability is another powerful feature based on the AMX and JMX APIs to let administrators easily automate daily tasks which can consume a handful amount of time without automation. Self management can manage the application server dynamically by monitoring the application server in runtime and changing the application server configuration dynamically based on predefined rules. <strong><em>1 Java Management eXtension (JMX)</em></strong> JMX, native to Java platform, introduced to let Java developers have a standard and easy to learn and use way for managing and monitoring their Java applications and Java enabled devices. We as architects, designers and developers of Java applications which can be as small as an in house invoice management or as big as a running stock exchange system need a way to expose management of our developed software to other industry accepted management software and JMX is the answer to these need. <strong><em>1.1 What is JMX?</em></strong> JMX is a part of Java Standard edition and was present from early days of Java platform existence and seen many enhancements during Java platform evolution. The JMX related specifications define the architecture, design patterns, APIs, and services in the Java programming language for managing and monitoring applications and Java enabled devices. Using the JMX technology, we can develop Java classes which perform the management and monitoring tasks and expose a set of their functionalities or attributes by means of an interface to which later on are exposed to JMX clients through specific JMX services. The objects which we use to perform and expose management functionalities are called Managed Beans or MBeans in brief. In order for MBeans to be accessible to JMX clients, which will use them to perform management tasks or gathers monitoring data, they need to be registered in a registry which later on let our JMX client application to find and initialize them. This registry is one of the fundamental JMX services and called MBean Server. Now that we have our MBeans registered with a registry, we should have a way to let clients communicate with the running application which registered the MBeans to execute our MBeans operations, this part of the system is called JMX connectors which let us communicate with the agent from a remote or local management station. The JMX connector and adapter API provides a two way converter which can transparently connect to JMX agent over different protocols and provides a standard way for management software to communicate with the JMX agents regardless of communication protocol. <strong><em>1.2 JMX architecture</em></strong> The JMX benefits from a layered architecture heavily based on the interfaces to provide independency between different layers in term of how each layer works and how the data and services are provided for each layer by its previous one. We can divide the JMX architecture to three layers. Each layer only relay on its direct bottom layer and is not aware of its upper layer functionalities. These layers are: instrumentation, agent, and management layers. Each layer provides some services either for other layers, in-JVM clients or remote clients running in other JVMs. Figure 1 shows different layers of JMX architecture. <img src="http://docs.google.com/File?id=ajhfp4djcnw6_453d85ffcdw_b" alt=""> Figure 1 JMX layerd architecture and each layer components <strong>Instrumentation layer</strong> This layer contains MBeans and the resources that MBeans are intended to manage. Any resource that has a Java object representative can be instrumented by MBeans. MBeans can change the value of object’s attributes or call its operations which can affect the resource that this particular Java object represents. In addition to MBeans, notification model and MBean metadata objects are categorized in this layer. There are two different types of MBeans for different use cases, these types include: Standard MBeans: Standard MBeans consisting of an MBean interface which define the exposed operations and properties (using getters and setters) and the MBean implementation class. The MBean implementation class and the interface naming should follow a standard naming pattern in Standard MBeans. There is another type of standard MBeans which lift the urge for following the naming pattern called MXBeans. The Standard MBeans naming pattern for MBeans interface is ClassNameMBean and the implementation class is ClassName. For the MXBeans naming pattern for the interface is AnythingMXBean and the implementation class can have any name. We will discuss this naming matter in more details later on. Dynamic MBeans: A dynamic MBean implements javax.management.DynamicMBean, instead of implementing an static interface with a set of predefined methods. Dynamic MBeans relies on javax.management.MBeanInfo that represents the attributes and operations exposed by them. MBeans client application call generic getters and setters whose implementation must resolve the attribute or operation name to its intended behavior. Faster implementation of JMX management MBeans for an already completed application and the amount of information provided by MBeans metadata classes are two benefits of Dynamic MBeans. Notification Model: JMX technology introduces a notification model based on the Java event model. Using this event model MBeans can emit notifications and any interested party can receive and process them, interested parties can be management applications or other MBeans. MBean Metadata Classes: These classes contain the structures to describe all components of an MBean&rsquo;s management interface including its attributes, operations, notification, and constructors. For each of these, the MBeanInfo class include a name, a description and its particular characteristics (for example, an attribute is readable, writeable, or both; for an operation, the signature of its parameter and return types). <strong>Agent layer</strong> This layer contains the JMX Agents which are intended to expose the MBeans to management applications. The JMX agent’s implementation specifications fall under this layer. Agents are usually located in the same JVM that MBeans are located but it is not an obligation. The JMX agent consisting of an MBean server and some helper services which facilitate MBeans operations. Management software access the agent trough an adapter or connecter based on the management application communication protocol. MBean Server: This is the MBeans registry, where management applications will look to find which MBeans are available to them to use. The registry expose the MBeans management interface and not the implementation class. The MBeans registry provides two interfaces for accessing the MBeans from a remote and in the same JVM client. MBeans can be registered by another MBeans, by the management application or by the Agent itself. MBeans are distinguished by a unique name which we will discuss more in AMX section. Agent Services: there some helper services for MBeans and agent to facilitate some functionalities. These services include: Timer, dynamic class loader, observers to observer numeric or string based properties of MBeans, and finally relation service which define associations between MBeans and enforces the cardinality of the relation based on predefined relation types. <strong>Management layer</strong> The Management tier contains components required for developing management applications capable of communicating with JMX agents. Such components provide an interface for a management application to interact with JMX agents through a connector. This layer may contain multiple adapters and connectors to expose the JMX agent and its attached MBeans to different management platforms like SNMP or exposing them in a semantic rich format like HTML. <strong>JMX related JSRs</strong> There are six different JSRs defined for the JMX related specifications during past 10 years. These JSRs include: JMX 1.2 (JSR 3): First version of JMX which was included in J2SE 1.2 J2EE Management (JSR 77): A set of standard MBeans to expose application servers’ resources like applications, domains, and so on for management purposes. JMX Remote API 1.0 (JSR 160): interaction with the JMX agents using RMI from a remove locaten. Monitoring and Management Specification for the JVM (JSR 174): a set of API and standard MBeans for exposing JVMs management to any interested management software. JMX 2.0 (JSR 255): The new version of JMX for Java 0 which introduces using generics, annotation, extended monitors, and so on. Web Services Connector for JMX Agents (JSR 262): define an specification which leads to use Web Services to access JMX instrumentation remotely.  <strong><em>1.3 JMX benefits</em></strong> What are JMX benefits that JCP defined a lot of JSRs for it and on top of it, why we did not follow another management standard like IEEE Std 828-1990. The reason is behind the following JMX benefits: Java needs an open to extend and close to change API for integration with emerging requirement and technologies, JMX does this by its layered architecture. The JMX is based on already well defined and proven Java technologies like Java event model for providing some of required functionalities. The JMX specification and implementation let us use it in any Java enabled software in any scale. Almost no change is required for an application to become manageable by JMX. Many vendors uses Java to enable their devices, JMX provide one standard to manage both software and hardware. You can imagine many other benefits for JMX which are not listed above. <strong><em>1.4 Managed Beans (MBeans)</em></strong> We discussed that generally there are two types of MBeans which we can choose to implement our instrumentation layer. Dynamic MBeans are a bit more complex and we would rather skip them in this crash course, so in this section we will discuss how MXBeans can be developed, used locally and remotely to prepare ourselves for understanding and using AMX to manage GlassFish. We said that we should write an interface which defines all exposed operation of the MBeans both for the MXBeans and standard MBeans. So first we will write the interface. Listing 1 shows the WorkerMXBean interface, the interface has two methods which supposed to change a configuration in a worker thread and two properties which return the current number of workers threads and maximum number of worker threads. Number of current workers thread is read only and maximum number of threads is both readable and updateable. <strong>Listing 1 The MXBean interface for</strong> <strong>WorkerMXBean</strong> @MXBean public interface WorkerIF { public int getWorkersCount(); public int getMaxWorkers(); public void setMaxWorkers(int newMaxWorkers); public int stopAllWorkers(); } I did not told you that we can forget about the naming conversion for MXBean interfaces if we are intended to use Java annotation. As you can see we simply marked the interface as an MBean interface and defined some setter and getter methods along with one operation which will stop some workers and return the number of stopped workers. The implementation of our MXBean interface will just implement some getter and setters along with a dummy operation which just print a message in standard output. <strong>Listing 2 the Worker MXBean implementation</strong> public class Worker implements WorkerIF { private int maxWorkers; private int workersCount; public Worker() { } public int getWorkersCount() { return workersCount; } public int getMaxWorkers() { return maxWorkers; } public void setMaxWorkers(int newMaxWorkers) { this.maxWorkers = newMaxWorkers; } public int stopAllWorkers() { System.out.println(&ldquo;Stopping all workers&rdquo;); return 5; } } We did not follow any naming convention because we are using MXBean along with the annotation. If it was a standard MBean then we should have named the interface as WorkerMBean and the implementation class should have been Worker. Now we should register the MBean to some MBean server to make it available to any management software. Listing 3 shows how we can develop a simple agent which will host the MBean server along with the registered MBeans. <strong>Please replace the numbers with cueballs</strong> <strong>Listing 3 How MBeans server works in a simple agent named WorkerAgent</strong> public class WorkerAgent { public WorkerAgent() { MBeanServer mbs = ManagementFactory.getPlatformMBeanServer(); #1 Worker workerBean = new Worker();                  #2 ObjectName workerName = null; try { workerName = new                                #3 ObjectName(&ldquo;article:name=firstWorkerBean&rdquo;); mbs.registerMBean(workerBean, workerName);          #4 System.out.println(&ldquo;Enter to exit&hellip;&quot;);            #5 System.in.read(); } catch(Exception e) { e.printStackTrace(); } } public static void main(String argv[]) { WorkerAgent agent = new WorkerAgent(); System.out.println(&ldquo;Worker Agent is running&hellip;&quot;); } } At #1 we get the platform MBean Server to register our MBean. Platform MBean server is the default JVM MBean server. At #2 we initialize an instance of our MBean. At #3 we create a new ObjectName for our MBean. Each JVM may use many libraries which each of them can register tens of MBeans, so MBeans should be uniquely identified in MBean server to prevent any naming collision. The ObjectName follow a format to represent an MBean name in order to ensure that it is shown in a correct place in the management tree and lift any possibility for naming conflict. An ObjectName is made up of two parts, a domain and a name value pair separated by a colon. In our case the domain portion is article and the description is name=name=firstWorkerBean At #4 as register the MBean to the MBean server. At #5 we just make sure that our application will not close automatically and let us examine the MBean. Sample code for this chapter is provided along with the book, you can run the sample codes by following the readme.txt file included in the chapter06 directory of source code bundle. Using the sample code you will just use Maven to build and run the application and JConsole to monitor it. But the behind the scene procedure described in the following paragraph. To run the application and see how our MBean will appear in a management console which is standard JConsole bundled with JDK. To enable the JMX management agent for local access we need to pass the -Dcom.sun.management.jmxremote to the JVM. This command will let the management console to use inter process communication to communicate with the management agent. Now that you have the application running you can run JConsole. Open a terminal window and run jconsle. When JConsole opens, it shows a window which let us select either a remote or a local JVM to connect. Just scan the list of local JVMs to find WorkerAgent under name column; select it and press connect to connect to the JVM. Figure 2 shows the new Connection window of JConsole which we talked about. <img src="http://docs.google.com/File?id=ajhfp4djcnw6_454g345brc8_b" alt=""> Figure 2 The New Connection window of JConsole Now you will see how JConsole shows different aspects of the selected JVM including memory meters, threads status, loaded classes, JVM overview which includes the OS overview and finally the MBeans. Select MBeans tab and you can see a tree of all MBeans registered with the platform MBean server along with your MBean. You should remember what I said about ObjectName class, the tree clearly shows how a domain includes its child MBeans. When you expand article node you will see something similar to figure 3. <img src="http://docs.google.com/File?id=ajhfp4djcnw6_455dgzx8scg_b" alt=""> Figure 3 JConsole navigation tree and effect of ObjectName format on the MBean placing in the tree And if you click on stopAllWorkers node the context panel of the JConsole will load a page similar to figure 4 which also shows the result of executing he method. <img src="http://docs.google.com/File?id=ajhfp4djcnw6_456fhg2d2f6_b" alt=""> Figure 4 The content panel of JConsole after selecting stopAllWorkers method of the WorkerMBean It was how we can connect to a local JVM, in the 1.6 we will discuss connecting to a JVM process from a remote location to manage the system using JMX. <strong><em>1.5 JMX Notification</em></strong> The JMX API defines a notification and notification subscription model to enable MBeans generate notifications to signal a state change, a detected event, or a problem. To generate notifications, an MBean must implement the interface NotificationEmitter or extend NotificationBroadcasterSupport. To send a notification, we need to construct an instance of the class javax.management.Notification or a one of its subclasses like AttributeChangedNotification, and pass the instance to NotificationBroadcasterSupport.sendNotification. Every notification has a source. The source is the object name of the MBean that generated the notification. Each notification has a sequence number. This number can be used to order notifications coming from the same source when order matters and there is a risk of the notifications being handled in the wrong order. The sequence number can be zero, but preferably the number increments for each notification from a given MBean. **Please replace the # with cueball in the source and the paragraph ** <strong><em>1.6</em></strong> <strong><em>Remote</em></strong> <strong><em>management</em></strong> To manage our worker application from a remote location using a JMX console like JConsole we will just need to ensure that an RMI connector is open in our JVM and all appropriate settings like port number, authentication mechanism, transport security and so on are provided. So, to run our sample application with remote management enabled we can pass the following parameters to the java command. -Dcom.sun.management.jmxremote.port=10006     #1 -Dcom.sun.management.jmxremote.authenticate=true #2 -Dcom.sun.management.jmxremote.password.file=passwordFile.txt #3 -Dcom.sun.management.jmxremote.ssl=false #4 At #1 we determine a port for the RMI connector to listen for incoming connections. At #2 we enable authentication in order to protect our management portal. At #3 we provide the path to a password file which contains the list of username and password in plain text. In the password file, each username and password pair are placed in one line with an space between them. At #4 we disable SSL for transport layer. To connect to a JVM which started with these parameters, we should choose remote in the New Connection window of JConsole and provide the service:jmx:rmi:///jndi/rmi://127.0.0.1:10006/jmxrmi as Remote Process URL along with one of the credentials which we defined in the passwordFile.txt. <strong><em>2 Application Server Management eXtension (AMX)</em></strong> GlassFish fully adheres to the J2EE management (JSR 77) in term of exposing the application server configuration as JMX MBeans but dealing with JMX is not easy and likeable for all developers, so Sun has included a set of client side proxies over the JSR 77 MBeans and other additional MBeans of their own to make the presence of JMX completely hidden for the developers who want to develop management extensions for GlassFish. This API set is named AMX and usually we use them to develop management rules. <strong><em>2.1 J2EE management (JSR 77)</em></strong> Before we dig into AMX we need to know what JSR 77 is and how it helps us to using JMX and AMX for managing the application server. JSR 77 specification introduces a set of MBeans and services which let any JMX compatible client manage Java EE container’s deployed objects and Java EE services. The specification defines a set of MBeans which models all Java EE concepts in a hierarchic of MBeans. The specification determines which attributes and operation each MBeans must have and what should be the effect of calling a method on the managed objects. Specification defines a set of events which should be exposed to JMX clients by the MBeans. The specification also defines a set of attributes’ statistics which should be exposed by the JSR 77 MBeans to the JMX client for performance monitoring. Services and MBeans provided by JSR 77 covers: Monitoring performance statistics of managed artifacts in the Java EE container. Managed objects like EJBs, Servlets, and so on. Event subscription for important events of the managed objects like stopping or starting an application. Managing state of different standard managed objects if the Java EE container like changing an attribute of a JDBC connection pool or underplaying an application. Navigation between Managed objects. <strong>Managed objects</strong> The artifacts that JSR 77 exposes their management, monitoring to JMX clients include a broad range of Java EE components and services. Figure 5 shows the first level of the Managed objects in the Managed objects hierarchic. As you can see in the figure all objects inherits four attributes which later on will be used to determine whether an object state is manageable, the object provides statistics or the object provide events for its important performed actions. The objectName attribute which we discussed before has the same use and format, for example amx:j2eeType=X-JDBCConnectionPoolConfig,name=DerbyPool represent a connection pool named DerbyPool in the amx domain, the j2eeType attribute shows the MBean’s type. <img src="http://docs.google.com/File?id=ajhfp4djcnw6_45778vk6jcd_b" alt=""> Figure 5 first level hierarchic of JSR 77 Managed objects which based on the specification must be exposed for JMX management. Now that you saw how broad the scope of JSR 77 is you ask what the use of these MBeans is and how they work and can be used. Simple answer is that as soon as a Managed object become live in the application server a corresponding JSR 77 MBeans will get initialized for it by the application server management layer. For example as soon as you create a JDBC connection pool a new MBeans will appear under the JDBCConnectionPoolConfig node of connected JConsole which represent the newly created JDBC connection. Figure 6 shows the DerbyPool under the JDBCConnectionPoolConfig node in JConsole. <img src="http://docs.google.com/File?id=ajhfp4djcnw6_458fsdxx3fv_b" alt=""> Figure 6 The DerbyPool place under JDBCConnectionPoolConfig node in JConsole In the figure 5 you can see that we can manage All deployed objects using the JSR 77 exposed MBeans, these objects J2EE applications and modules which are shown in figure A deployed application may have EJB, Web, and any other modules; Glassfish management service will initialize a new insistence of appreciated MBeans for each module in the deployed application. The management service uses ObjectName which we discussed before to uniquely identify each MBean instance and later on we will use this unique name to access each deployed artifact independently. <img src="http://docs.google.com/File?id=ajhfp4djcnw6_459d4tk4ggr_b" alt=""> Figure 7 The specification urge implementation of MBeans to manage all shown deployable objects Getting lower into the deployed modules we will have Servlets, EJBs and so on. The JSR 77 specification provided MBeans for managing EJBs and Servlets. The EJB MBeans inherit the EJB MBean and includes all necessary attributes and method to manage different types of EJBs. Figure 8 represent the EJB sub classes. <img src="http://docs.google.com/File?id=ajhfp4djcnw6_460cz2cjqhp_b" alt=""> Figure 8 All MBeans related to EJB management in GlassFish application server, based on JSR 77 Java EE resources is one the most colorful area in the Java EE specification and the JSR 77 provides MBeans for managing all standard resources managed bye Java EE containers. Figure 9 shows which types of resources are exposed for management by the JSR 77. <img src="http://docs.google.com/File?id=ajhfp4djcnw6_461ggntkqzc_b" alt=""> Figure 9 Java EE resources manageable by the JSR 77 MBeans All of Java EE base concepts are covered by the JSR 77 in order to make it possible for the 3rd party management solution developers to integrate Java EE application server management into their solutions. <strong>The events propagated by JSR 77</strong> In the beginning of this section we talked about events that interested parties can receive from JSR 77 MBeans. These events are as follow for different type of JSR 77 MBeans. J2SEEServer: An event when the corresponding server enters RUNNING, STOPPED, or FAILED state EntityBean: An event when the corresponding Entity Bean enters RUNNING, STOPPED, or FAILED state MessageDrivenBean: An event when the corresponding Entity Bean enters RUNNING, STOPPED, or FAILED state J2EEResource: An event when the corresponding J2EE Resource enters RUNNING, STOPPED, or FAILED state JDBCResource: An event when the corresponding JDBC data source enters RUNNING, STOPPED, or FAILED state JCAResource: An event when a JCA connection factory or managed connection factory entered RUNNING, STOPPED, or FAILED state **The monitoring statistics exposed by JSR 77 ** The specification urge exposing some statistics related to different Java EE components by JSR 77 MBeans. The required statistics by the specification includes: Servlet statistics: Servlet related statistics which include Number of currently loaded Servlets; Maximum number of Servlets loaded which were active, and so on. EJB statistics: EJB related statistics which Include include Number of currently loaded EJBs, Maximum number of live EJBs, and so on. JavaMail statistics: JavaMail related statistics which Include maximum number of sessions, total count of connections, and so on. JTA statistics: Statistics for JTA resources which includes successful transactions, failed transactions and so on. JCA statistics: JCA related statistics which includes both the non-pooled connections and the connection pools associated with the referencing JCA resource. JDBC resource statistics: JDBC resource related statistics for both non-pooled connections and the connection pools associated with the referencing JDBC resource, connection factory. The statistics include total number of opened and closed connections, maximum number of connections in the pool, and so on. This is really helpful to find connection leak for an specific connection pool. JMS statistics: The JMS related including statistics for connection session, JMS producer, and JMS consumer. Application server JVM Statistics: The JVM related statistics. Information like different memory sector size, threading information, class loaders and loaded classes and so on.  <strong><em>2.2 Remotely accessing JSR 77 MBeans by Java code</em></strong> Include a sample code which shows accessing JSR 77  MBeans from remote location using java code to show how cumbersome it is and how simple AMX made it. // Done Now that we discussed the details of the JSR 77 MBeans, let’s see how we can access the DerbyPool MBeans from java code and then how we can change an attribute which represent maximum number of connections in the connection pool. Listing 4 show the sample code which will access a GlassFish instance with default port for JMX listener (the default port is 8686) <strong>Listing 4 Accessing a JSR 77 MBean for changing DerbyPool’s</strong> <strong>MaxPoolSize</strong> <strong>attribute.</strong> public class RemoteClient { private MBeanServerConnection mbsc = null; private ObjectName derbyPool; public static void main(String[] args) { try { RemoteClient client = new RemoteClient(); #A client.connect();                          #B client.changeMaxPoolSize();              #c } catch (Exception e) { e.printStackTrace(); } } private void connect() throws Exception { JMXServiceURL jmxUrl = new JMXServiceURL(&ldquo;service:jmx:rmi:///jndi/rmi://127.0.0.1:8686/jmxrmi&rdquo;); #1 Map env = new HashMap(); String[] credentials = new String[]{&ldquo;admin&rdquo;, &ldquo;adminadmin&rdquo;}; env.put(JMXConnector.CREDENTIALS, credentials);              #2 JMXConnector jmxc = JMXConnectorFactory.connect(jmxUrl, env);             #3 mbsc = jmxc.getMBeanServerConnection();                     #4 } private void changeMaxPoolSize() throws Exception { String query = &ldquo;amx:j2eeType=X-JDBCConnectionPoolConfig,name=DerbyPool&rdquo;; ObjectName queryName = new ObjectName(query);             #5 Set s = mbsc.queryNames(queryName, null);                   #6 derbyPool = (ObjectName) s.iterator().next(); mbsc.setAttribute(derbyPool, new Attribute(&ldquo;MaxPoolSize&rdquo;, new Integer(64)));                                                   #7 } } <strong>#A initiate an instance of the class</strong> <strong>#B get the JMX connection</strong> <strong>#C change the attribute’s value</strong> At #1 we create a URL to GlassFish JMX service. At #2 we prepared the credentials which we should provide for connecting to the JMX service. At #3 we initialize the connector. At #4 we create a connection to GlassFish’s MBean server. At #5 we query the registered MBeans for an MBean similar to our DerbyPool MBean. At #6 we get the result of the query inside a set. We are sure that we have an MBean with the give name otherwise we should have checked to see whether the set is empty or not. At #7 we just change the attribute. You can check the attribute in JConsole and you will se that it change in the JConsole as well. In the sample code we just update the DerbyPool’s maximum number of connections to 64. it can be counted as one of the simplest task related to JSR 77, management, and using JMX. Using plain JMX for a complex task will overhaul us with many lines of complex reflection based codes which are hard to maintain and debug. <strong><em>2.3 Application Server Management eXtension (AMX)</em></strong> Now that you see how hard it is to work with JSR 77 MBeans I can tell you that you are not going to use JSR 77 MBeans directly in your management applications, although you can. <strong>What is AMX</strong> In The AMX APIs java.lang.reflect.proxy is used to generate Java objects which implement the various AMX interfaces. Each proxy internally stores the JMX ObjectName of a server-side JMX MBean who’s MBeanInfo corresponds to the AMX interface implemented by the proxy. So, in the same time we have JMX MBeans for using trough any JMX compliant management software and we have the AMX dynamic proxies to use them as easy to use local objects for managing the application server. The GlassFish administration architecture is based on the concept of administration domain. An administration domain is responsible for managing multiple resources which are based on the same administration domain.  A resource can be a cluster of multiple GlassFish instances, a single GlassFish instance, and a JDBC connection pool inside the instance and so on. Hundreds of AMX interfaces are defined to proxy all of the GlassFish managed resources which themselves are defined as JSR 77 MBeans for client side access. All of these interfaces are placed under com.sun.appserv.management package. There are several benefits in AMX dynamic proxies over the JMX MBeans, which are as follow: Strongly typed methods and attributes for compile time type checking Structural consistency with both the domain.xml configuration files. Consistent and structured naming for methods, attributes and interfaces. Possibility to navigate from a leaf AMX bean up to the DAS.  <strong>AMX</strong> <strong>MBeans</strong> AMXdefines different types of MBean for different purposes or reasons, namely, configuration MBeans, monitoring MBeans, utility MBeans and JSR 77 MBeans. All AMX MBeans shares some common characteristics including: They all implement the com.sun.appserv.management.base.AMX interface which contains methods and fields for checking the interface type, group, reaching its container and its root domain. They all have a j2eeType and name property within their ObjectName. The j2eeType attribute specifies the interface we are dealing with. All MBeans that logically contain other MBeans implement the com.sun.appserv.management.base.Container interface. Using the container interface we can navigate from a leaf AMX Bean to the DAS and vice-versa. For example by having the domain AMX Bean we can get a list of all connection pools or EJB modules in deployed in the domain. JSR 77 MBeans that have a corresponding configuration or monitoring peer expose it using getConfigPeer or getMonitoringPeer. However; there are many configuration and monitoring MBeans that do not correspond to JSR 77 MBeans.  <strong>Configuration MBeans</strong> We discussed that there are several types of MBeans in the AMX framework, one of them is the configuration MBeans. Basically these MBeans represent domain.xml and other configuration file content and structure. In GlassFish all configuration information are stored in one central repository named DAS, in a single instance installation the instance act as DAS and in a clustered installation the DAS responsibility is sole taking care of the configuration and propagating it to all instances. The information stored in the repository are exposed to any interested party like an administration console trough AMX interfaces. Any developer with familiarity with domain.xml structure will find him very comfortable with configuration interfaces. <strong>Monitoring MBeans</strong> Monitoring MBeans provide transient monitoring information about all the vital components of the Application Server. A monitoring interface can either provides statistics or not and if it provides statistics it should implements the MonitoringStats interface which is JSR 77 compliant interface for providing statistics. <strong>Utility</strong> <strong>MBeans</strong> UtilityMBeans provide commonly used services to the Application Server. These MBeans all extend either or both of the Utility and Singleton interfaces. All of these MBeans interface are located in com.sun.appserv.management.base package. Notable utility MBeans are listed in table 1 Table 1 AMX Utility MBeans along with description</p>
+<!-- raw HTML omitted -->
+<p><strong>Java EE Management</strong> <strong>MBeans</strong> The Java EE management MBeans implement, and in some cases extend, the management Hierarchy as defined by JSR 77, which specifies the management model for the whole Java EE platform. All JSR 77 MBeans in the AMX domain offer access to configuration and monitoring MBeans using the getMonitoringPeer and getConfigPeer methods. <strong>Dynamic Client Proxies</strong> Dynamic Client Proxies are an important part of the AMX API, and enhance ease-of-use for the programmer. JMX MBeans can be used directly by an MBeanServerConnection to the server. However, client proxies greatly simplify access to Attributes and operations on MBeans, offering get/set methods and type-safe invocation of operations. Compiling against the AMX interfaces means that compile-time checking is performed, as opposed to server-side runtime checking, when invoked generically through MBeanServerConnection. See the API documentation for the com.sun.appserv.management package and its sub-packages for more information about using proxies. The API documentation explains the use of AMX with proxies. If you are using JMX directly (for example, by using MBeanServerConnection), the return type, argument types, and method names might vary as needed for the difference between a strongly-typed proxy interface and generic MBeanServerConnection or ObjectName  interface. <strong>Changing the DerbyPool attributes using AMX</strong> In listing 4 you saw how we can use JMX and pure JSR 77 approach to change the attributes of a JDBC connection pool, in this part we are going to perform the same operation using AMX to see how much easier and more effective the AMX is. <strong>Listing 5 Using AMX to change DerbyPool MaxPoolSize attribute</strong> AppserverConnectionSource appserverConnectionSource = new AppserverConnectionSource(AppserverConnectionSource.PROTOCOL_RMI, &ldquo;127.0.0.1&rdquo;, 8686, &ldquo;admin&rdquo;, &ldquo;adminadmin&rdquo;,null,null);              #1 DomainRoot dRoot = appserverConnectionSource.getDomainRoot(); #2 JDBCConnectionPoolConfig cpConf= dRoot.getContainee(XTypes.JDBC_CONNECTION_POOL_CONFIG, &ldquo;DerbyPool&rdquo;); #3 cpConf.setMaxPoolSize(&ldquo;100&rdquo;);            #4 You are not mistaking it with another idea or code, that four lines of code let us change the maximum pool size of the DerbyPool. At #1 we create a connection to the server that we want to perform our management operation on it. Several protocols can be used to connect to the application server management layer. As you can se when we construct the appserverConnectionSource instance we used AppserverConnectionSource.PROTOCOL_RMI as the communication protocol to ensure that we will not need some JAR files from OpenPDK project. Two other protocols which we can use are AppserverConnectionSource.PROTOCOL_HTTP and AppserverConnectionSource.PROTOCOL_JMXMP. The connection that we made does not uses TLS, but we can use TLS to ensure transport security. At #2 we get the AMX domain root which later on let us navigate between all AMX leafs which are servers, clusters, connection pools, and listeners and so on. At #3 we query for an AMX MBean which its name is DerbyPool and its j2eeType is equal to XTypes.JDBC_CONNECTION_POOL_CONFIG. At #4 we set a new value for the attribute of our choice which is MaxPoolSize attribute. <strong>Monitoring GlassFish using AMX</strong> The monitoring term comes to the developers and administrators mind whenever they are dealing with performance tuning, but monitoring can also be used for management purposes like automation of specific tasks which without automation need an administrator to take care of it. An example of these types of monitoring is critical condition notifications which can be send either via email or SMS or any other gateway which the administrators and system managers prefer. Imagine that you have a system running on top of GlassFish and you want to be notified whenever acquiring connections from a connection pool named DerbyPool is taking longer than 35 seconds. You also want to store all information related to the connection pool when the pool is closing to saturate. For example when there are only 5 connections to give away before the pool get saturated. So we need to write an application which monitor the GlassFish connection pool, check its statistics regularly and if the above criteria meets, our application should send us an email or an SMS along with saving the connection pool information. AMX, provides us with all required means to monitor the connection pool and be notified when any connection pool attributes or any of its monitoring attributes changes so we will just use our current AMX knowledge along with two new concepts about the AMX. The first concept that we will use is AMX monitoring MBeans which provides us with all statistics about the Managed Objects that they monitor. Using the AMX monitoring MBeans is the same as using other AMX MBeans like the connection pool MBean. The other concept is the notification mechanism which AMX provides on top of already established JMX notification mechanism. The notification mechanism is fairly simple, we register our interest for some notification and we will receive the notifications whenever the MBeans emit a notification. We know that we can configure GlassFish to collect statistics about almost all Managed Objects by changing the monitoring level from OFF to either LOW or HIGH. In our sample code we will change the monitoring level manually using our code and then use the same statistics that administration console shows to check for the connection pool consumed connections. Listing 6 shows sample applications which monitor DerbyPool and notify the administrator whenever acquiring connection take longer than accepted. The application saves all statistics information when the connection pool gets close to its saturation. <strong>Please Replace the numbers with cueballs</strong> <strong>Listing 6 monitoring a connection pool and notifying the administrator when connection pool is going to reach the maximum size</strong> public class AMXMonitor implements NotificationListener {      #1 AttributeChangeNotificationFilter filter;                                          #2 AppserverConnectionSource appserverConnectionSource; private int cPoolSize; private DomainRoot dRoot; JDBCConnectionPoolMonitor derbyCPMon;                                          #3 JDBCConnectionPoolConfig cpConf; private void initialize() { try { appserverConnectionSource = new AppserverConnectionSource(AppserverConnectionSource.PROTOCOL_RMI, &ldquo;127.0.0.1&rdquo;, 8686, &ldquo;admin&rdquo;, &ldquo;adminadmin&rdquo;, null, null); dRoot = appserverConnectionSource.getDomainRoot(); Set<!-- raw HTML omitted --> stpr = dRoot.getDomainConfig().getConfigConfigMap().keySet();            #4 ConfigConfig conf=     dRoot.getDomainConfig().getConfigConfigMap().get(&ldquo;server-config&rdquo;); #4 conf.getMonitoringServiceConfig().getModuleMonitoringLevelsConfig().setJDBCConnectionPool(ModuleMonitoringLevelValues.HIGH); #4 cpConf = dRoot.getContainee(XTypes.JDBC_CONNECTION_POOL_CONFIG, &ldquo;DerbyPool&rdquo;); cPoolSize = Integer.getInteger(cpConf.getMaxPoolSize()); filter = new AttributeChangeNotificationFilter();         #2 filter.enableAttribute(&ldquo;ConnRequestWaitTime_Current&rdquo;);       #2 filter.enableAttribute(&ldquo;NumConnUsed_Current&rdquo;);             #2 Set<!-- raw HTML omitted --> jdbcCPM = dRoot.getQueryMgr().queryJ2EETypeSet (XTypes.JDBC_CONNECTION_POOL_MONITOR);                           #5 for (JDBCConnectionPoolMonitor mon : jdbcCPM) { if (mon.getName().equalsIgnoreCase(&ldquo;DerbyPool&rdquo;)) { derbyCPMon = mon; break; } } derbyCPMon = dRoot.getContainee(XTypes.JDBC_CONNECTION_POOL_MONITOR, &ldquo;DerbyPool&rdquo;);   #5 derbyCPMon.addNotificationListener(this, filter, null);  #5 } catch (Exception ex) { ex.printStackTrace(); } } public void handleNotification(Notification notification, Object handback) { AttributeChangeNotification notif = (AttributeChangeNotification) notification;                                                                                                    #6 if (notif.getAttributeName().equals(&ldquo;ConnRequestWaitTime_Current&rdquo;)) { int curWaitTime = Integer.getInteger((String) notif.getNewValue());                                                                                    #7 if (curWaitTime &gt; 3500) { saveInfoToFile(); sendNotification(&ldquo;Current wait time is: &quot; + curWaitTime); } } else { int curPoolSize = Integer.valueOf((String) notif.getNewValue());                                                        #8 if (curPoolSize &gt; cPoolSize - 5) { saveInfoToFile(); sendNotification(&ldquo;Current pool size is: &quot; + curPoolSize); } } } private void saveInfoToFile() { try { FileWriter fw = new FileWriter(new File(&ldquo;stats_&rdquo; + (new Date()).toString()) + &ldquo;.sts&rdquo;); Statistic[] stats = derbyCPMon.getStatistics(derbyCPMon.getStatisticNames()); #9 for (int i = 0; i &lt; stats.length; i++) { fw.write(stats[i].getName() + &quot; : &quot; + stats[i].getUnit()); #10 } } catch (IOException ex) { ex.printStackTrace(); } } private void sendNotification(String message) { } public static void main(String[] args) { AMXMonitor mon = new AMXMonitor(); mon.initialize(); } } At #1 we implement the NotificationListener interface as we are going to use the JMX notification mechanism. At #2 we define an AttributeChangeNotificationFilter which filter the notifications to a subset that we are interested. We also add the attributes that we are interested to the set of non-filtered attribute change notification. At #3 we define and initialize an AMX MBeans which represent DerbyPool monitoring information. We will get an instance not found exception the connection pool had no activities yet. At #4 we change the monitoring level of JDBC connection pools to ensure that GlassFish gather the required statistics. At #5 we find our designated connection pool monitoring MBean and add a new filtered listener to it. The handleNotification method is the only method in the NotificationListener interface which we need to implement. At #6 we convert the received notification to AttributeChangeNotification as we know that the notification is of this type. At #7 we are dealing with change in the ConnRequestWaitTime_Current attribute. We get its new value to check for our condition. In the same time we can get the old value if we are interested. At #8 we are dealing with NumConnUsed_Current attribute and later on with calling the saveToFile method and sendNotification methods. At #9 we get names of all connection pool monitoring factors and at #10 we just write the monitoring attribute’s name along with its value to a text file. **AMX and Dotted Names** AMX is designed with ease of use and efficiency in mind. So in addition to using standard JMX programming model, the getters and setters, we can use another hierarchical model to access all AMX MBeans attributes. In the dotted named model each attribute of an MBean starts from its root which is either the domain for all configuration MBeans and server for all runtime MBeans. For example domain.resources.jdbc-connection-pool.DerbyPool.max-pool-size represents the maximum pool size for the DerbyPool which we discussed before. Two interfaces are provided to access the dotted names either for monitoring or for management and configuration purposes. The MonitoringDottedNames is provided to assists with reading an attribute. The other interface is ConfigDottedNames which provides writing access to attributes using the dotted format. We can get an instance of its implementation using dRoot.getMonitoringDottedNames(). **_3 GlassFish Management Rule_** The above sample application is promising especially when you want to have tens or rules for automatic management, but running a separate process and watching that process is not in taste of many administrators. GlassFish application server provides an very effective way to deploy such management rules into GlassFish application server for sake of simplicity and integration. Benefits and use cases of the Management Rules can be summarized as follow: Manage complexity by self-configuring based on the conditions Keep administrators free for complex tasks by automating mundane management tasks Improve performance by self-tuning in unpredictable run-time conditions Automatically adjusting the system for availability by preventing problems and recovering from one (self healing) Enhancing security measures by taking self-protective actions when security threats are detected A GlassFish Management Rule is a set of: Event: An event uses the JMX notification mechanism to trigger actions. Events can range from an MBean attribute change to specific log messages. Action: Actions are associated with events and are triggered when related events happen. Actions can be MBeans that implement the NotificationListener interface. When we deploy a Management Rule into GlassFish, GlassFish will register our MBean in the MBean server and register its interests for the notification type that we determined. Therefore, upon any event which our MBean is registered for, the handleNotification method of our MBeans will execute. GlassFish provides some pre-defined types of events which we can choose to register our MBean’s interest. These events are as follow: Monitor events: These types of events trigger an action based on an MBean attribute change. Notification events: Every MBean which implements the NotificationBroadcaster interface can be source of this event type. System events: This is a set of predefined events that come from the internal infrastructure of GlassFish application server. These events include: lifecycle, log, timer, trace, and cluster events. Now, let’s see how we can achieve a similar functionality that our AMXMonitor application provides from The GlassFish Management Rules. First we need to change our application to a mere JMX MBean which implements NotificationListener interface and perform required action which is, for example, sending an email or SMS, in the handleNotification method. Changing the application to MBean should be very easy; we just need to define an MBean interface and then the MBean implementation which will just implement one single method, the handleNotification method. Now that we have our MBeans compiled JAR file, we can deploy it using the administration console. So open the GlassFish administration console, navigate to the Custom MBeqns node and deploy the MBeans by providing the path to the JAR file and the name of the MBeans implementation class. Now that we have our MBeans deployed into GlassFish, it is available for the class loader to be used as an action for a Management Rule, so in order to create the Management Rule, use the following procedure. In the navigation tree select Configuration node, select Management Rules node. In the content panel select New and user dcpRule as the name, make sure that you teak the enabled checkbox, select monitor in the event type combo box and let the events to be recorded in the log files, press next to navigate to the second page of the wizard. In the second page, for the Observed MBean field enter amx:X-ServerRootMonitor=server,j2eeType=X-JDBCConnectionPoolMonitor,name=DerbyPool and for the observed attribute enter ConnRequestWaitTime_Current. For the monitor type select counter. The number type is int and the initial threshold is 35000 which indicate the number which if the monitored attribute exceed, our action will start. Scroll down and for the action, select AMXMonitor which is the name of our MBean which we deployed in previous step. You saw that the overall process is fairly simple, but there are some limitations like possibility to monitor one single MBean and attribute at a time. Therefore we need to create another Management Rule for NumConnUsed_Current attribute. Now that we reached to the end of this article, you should be fairly familiar with JMX, AMX and GlassFish Management Rules. In next articles we will use the knowledge that we gained here to create administration commands and create monitoring solutions. **_4 Summary_** We toughly discussed managing GlassFish using Java code by discussing JMX which is the foundation of all Java based management solutions and framework. We discussed JMX architecture, event model and different types of MBeans which are included in the JMX programming model. We also covered AMX as the GlassFish way providing its management functionalities to client side applications which are not interested in using complicated JMX APIs. We discussed GlassFish management using AMX APIs to show how much simpler the AMX is when we compare it to the plain JMX implementation and we covered GlassFish monitoring using the AMX APIs. You saw how we can use GlassFish’s Self management and self administration functionalities to automate some tasks to keep administrators free from dealing with low level repetitive administration and management tasks.</p>
+</div>
+            </div>
+        </div>
+
+        <div class="layui-col-md4 layui-col-sm12 layui-col-xs12">
+            
+            <div class="layui-card single-card">
+                <h2 class="single-title">Relevant Topics</h2>
+                
+                	
+                    <div style="margin-left: 10px;">
+                        <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                            <a href="/post/2010-04-01-oracle-is-not-taking-back-opensolaris-zdnet-dana-blankenhorn-got-it-wrong/">
+                                <h3 class="">Oracle is NOT taking back OpenSolaris, ZDNet Dana Blankenhorn got it wrong.</h3>
+                            </a>
+                            
+                            <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2010-04-01</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                        </blockquote>
+                    </div>
+                	
+                    <div style="margin-left: 10px;">
+                        <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                            <a href="/post/2010-03-29-glassfish-modularity-system-how-extend-glassfish-cli-and-web-administration-console-part-2-developing-sample-modules/">
+                                <h3 class="">GlassFish Modularity System, How extend GlassFish CLI and Web Administration Console (Part 2: Developing Sample Modules)</h3>
+                            </a>
+                            
+                            <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2010-03-29</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                        </blockquote>
+                    </div>
+                	
+                    <div style="margin-left: 10px;">
+                        <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                            <a href="/post/2010-03-18-using-spring-security-to-enforce-authentication-and-authorization-on-spring-remoting-services-invoked-from-a-java-se-client/">
+                                <h3 class="">Using Spring Security to enforce authentication and authorization on Spring Remoting Services Invoked from a Java SE client…</h3>
+                            </a>
+                            
+                            <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2010-03-18</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                        </blockquote>
+                    </div>
+                	
+                    <div style="margin-left: 10px;">
+                        <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                            <a href="/post/2010-03-15-glassfish-modularity-system-how-extend-glassfish-cli-and-web-administration-console-part-i-the-architecture/">
+                                <h3 class="">GlassFish Modularity System, How extend GlassFish CLI and Web Administration Console (Part I, The architecture)</h3>
+                            </a>
+                            
+                            <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2010-03-15</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                        </blockquote>
+                    </div>
+                	
+                    <div style="margin-left: 10px;">
+                        <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                            <a href="/post/2010-03-03-openmq-the-open-source-message-queuing-for-beginners-and-professionals-openmq-from-a-to-z/">
+                                <h3 class="">OpenMQ, the Open source Message Queuing, for beginners and professionals (OpenMQ from A to Z)</h3>
+                            </a>
+                            
+                            <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2010-03-03</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                        </blockquote>
+                    </div>
+                	
+                
+                <br />
+            </div>
+            
+
+            <div class="layui-card single-card">
+                <h2 class="single-title">Recent Posts</h2>
+            
+                
+                <div style="margin-left: 10px;">
+                    <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                    <a href="/post/2013-09-17-getting-started-with-couchdb-and-mongodb-part-ii-beginning-with-security/">
+                        <h3 class="">Getting started with CouchDB and MongoDB, Part II: Beginning with Security</h3>
+                    </a>
+                    <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2013-09-17</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                    </blockquote>
+                </div>
+                
+                <div style="margin-left: 10px;">
+                    <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                    <a href="/post/2013-09-12-getting-started-with-couchdb-and-mongodb-nosql-document-databases-part-i/">
+                        <h3 class="">Getting started with CouchDB and MongoDB, Part I: CRUD operations</h3>
+                    </a>
+                    <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2013-09-12</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                    </blockquote>
+                </div>
+                
+                <div style="margin-left: 10px;">
+                    <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                    <a href="/post/2012-12-27-my-last-blog-in-2012-my-2013-wishes-and-predictions/">
+                        <h3 class="">My last blog in 2012: My 2013 wishes and predictions…</h3>
+                    </a>
+                    <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2012-12-27</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                    </blockquote>
+                </div>
+                
+                <div style="margin-left: 10px;">
+                    <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                    <a href="/post/2012-09-24-my-sessions-in-javaone-2012/">
+                        <h3 class="">My sessions in JavaOne 2012</h3>
+                    </a>
+                    <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2012-09-24</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                    </blockquote>
+                </div>
+                
+                <div style="margin-left: 10px;">
+                    <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                    <a href="/post/2012-04-12-from-netbeans-to-intellij-idea-week-1/">
+                        <h3 class="">From NetBeans to IntelliJ IDEA, Week 1</h3>
+                    </a>
+                    <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2012-04-12</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                    </blockquote>
+                </div>
+                
+            
+            <br />
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+        </div><footer>
+    
+    
+    <div class="layui-container">
+        <p class="copyright">Copyright © 2006–2020, Masoud Kalali. Some rights are reserved</p>
+    </div>
+</footer>
+</body>
+</html>

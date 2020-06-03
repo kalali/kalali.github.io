@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.71.1 with theme Tranquilpeak 0.4.8-BETA">
+<meta name="author" content="Masoud Kalali">
+<meta name="keywords" content=", development, next-gen, Kubernetes, Cloud, Java">
+<meta name="description" content="Masoud Kallai&#39;s blogs about software development and other things!">
+
+
+<meta property="og:description" content="Masoud Kallai&#39;s blogs about software development and other things!">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Java">
+<meta name="twitter:title" content="Java">
+<meta property="og:url" content="/tags/java/">
+<meta property="twitter:url" content="/tags/java/">
+<meta property="og:site_name" content="The Place">
+<meta property="og:description" content="Masoud Kallai&#39;s blogs about software development and other things!">
+<meta name="twitter:description" content="Masoud Kallai&#39;s blogs about software development and other things!">
+<meta property="og:locale" content="en-us">
+
+
+<meta name="twitter:card" content="summary">
+
+  <meta name="twitter:site" content="@masoudkalali">
+
+
+  <meta name="twitter:creator" content="@masoudkalali">
+
+
+
+
+
+
+
+
+
+
+  <meta property="og:image" content="/img/avatar.png">
+  <meta property="twitter:image" content="/img/avatar.png">
+
+
+    <title>Java</title>
+
+    <link rel="icon" href="img/favicon.png">
+    
+      <link rel="alternate" type="application/rss+xml" title="RSS" href="/tags/java/index.xml">
+    
+
+    
+
+    <link rel="canonical" href="/tags/java/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.css" integrity="sha256-vuXZ9LGmmwtjqFX1F+EKin1ThZMub58gKULUyf0qECk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
+    
+    
+    <link rel="stylesheet" href="/css/style-twzjdbqhmnnacqs0pwwdzcdbt8yhv8giawvjqjmyfoqnvazl0dalmnhdkvp7.min.css" />
+    
+    
+
+    
+      
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-137107-12', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="2">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="/">The Place</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="/img/avatar.png" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="2">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="/#about">
+          <img class="sidebar-profile-picture" src="/img/avatar.png" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">Masoud Kalali</h4>
+        
+          <h5 class="sidebar-profile-bio">Software architect with focus on PaaS container platforms, and Java EE, author, technology enthusiast, runner.</h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-home"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/categories">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/tags">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-tags"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/archives">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-archive"></i>
+      
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/#about">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-question"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/https://github.com/kalali">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-github"></i>
+      
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/index.xml">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-rss"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+        
+
+      
+      <div id="main" data-behavior="2"
+        class="
+               hasCoverMetaIn
+               ">
+        
+          <section class="postShorten-group main-content-wrap">
+            
+            
+              
+  
+    
+      
+        
+      
+    
+  
+
+
+  
+
+<article class="postShorten postShorten--thumbnailimg-right" itemscope itemType="http://schema.org/BlogPosting">
+  <div class="postShorten-wrap">
+    
+    <div class="postShorten-header">
+      <h1 class="postShorten-title" itemprop="headline">
+        <a class="link-unstyled" href="/2011/07/how-rest-interface-covers-for-the-absence-of-jmx/amx-administration-and-management-interface-in-glassfish-3.1/">
+          How REST interface covers for the absence of JMX/AMX administration and management interface in GlassFish 3.1
+        </a>
+      </h1>
+      
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2011-07-28T00:00:00Z">
+        
+  July 28, 2011
+
+      </time>
+    
+    
+  </div>
+
+    </div>
+    <div class="postShorten-excerpt" itemprop="articleBody">
+      
+        For sometime I wanted to write this entry and explain what happened to GlassFish JMX/AMX management and administration interface but being busy with other stuff prevented me from doing so. This article here can be an upgrade to my other article about GlassFish 3.0 JMX administration interface which I wrote while ago. Long story short, in GlassFish 3.1 the AMX/JMX is no longer available and instead we can use the REST interface to change the server settings and perform all administration/management and monitoring activities we need.
+      
+      <p>
+        <a href="/2011/07/how-rest-interface-covers-for-the-absence-of-jmx/amx-administration-and-management-interface-in-glassfish-3.1/" class="postShorten-excerpt_link link">Continue reading</a>
+        
+      </p>
+    </div>
+  </div>
+  
+</article>
+
+            
+              
+  
+    
+      
+        
+      
+    
+  
+
+
+  
+
+<article class="postShorten postShorten--thumbnailimg-right" itemscope itemType="http://schema.org/BlogPosting">
+  <div class="postShorten-wrap">
+    
+    <div class="postShorten-header">
+      <h1 class="postShorten-title" itemprop="headline">
+        <a class="link-unstyled" href="/2011/07/updating-web-applications-spring-context-from-beans-definitions-partially-stored-in-the-database/">
+          Updating Web application’s Spring Context from Beans definitions partially stored in the database…
+        </a>
+      </h1>
+      
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2011-07-18T00:00:00Z">
+        
+  July 18, 2011
+
+      </time>
+    
+    
+  </div>
+
+    </div>
+    <div class="postShorten-excerpt" itemprop="articleBody">
+      
+        As you know spring security providers can get complex as you may need several beans like, implementations of UserDetailsService, SaltSource, PasswordEncoder, the JDBC setup and so on. I was working on an spring based application which needed to load the security configuration from the database because the system administrator was able to select the security configuration from several pre-defined templates like LDAP, JDBC, File Based, etc. change some attributes like LDAP address or file location, etc.
+      
+      <p>
+        <a href="/2011/07/updating-web-applications-spring-context-from-beans-definitions-partially-stored-in-the-database/" class="postShorten-excerpt_link link">Continue reading</a>
+        
+      </p>
+    </div>
+  </div>
+  
+</article>
+
+            
+              
+  
+    
+      
+        
+      
+    
+  
+
+
+  
+
+<article class="postShorten postShorten--thumbnailimg-right" itemscope itemType="http://schema.org/BlogPosting">
+  <div class="postShorten-wrap">
+    
+    <div class="postShorten-header">
+      <h1 class="postShorten-title" itemprop="headline">
+        <a class="link-unstyled" href="/2011/07/glassfish-inspired-wallpapers-for-your-desktops/">
+          GlassFish inspired wallpapers for your desktops…
+        </a>
+      </h1>
+      
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2011-07-13T00:00:00Z">
+        
+  July 13, 2011
+
+      </time>
+    
+    
+  </div>
+
+    </div>
+    <div class="postShorten-excerpt" itemprop="articleBody">
+      
+        Well, I saw Markus did some nice wallpapers for GlassFish and I tried to mimic him and do some wallpapers. I should say that he is the man of many talents and my wallpapers are, well, screaming far behind his. The main background, the texture, is coming from ImageAbstraction and are available under (CC BY-NC 2.0). The GlassFish logo is available at GlassFish.org The images themselves are included in the following album in 3 sizes, 1440*900, 1680*1050 and 1600*1200.
+      
+      <p>
+        <a href="/2011/07/glassfish-inspired-wallpapers-for-your-desktops/" class="postShorten-excerpt_link link">Continue reading</a>
+        
+      </p>
+    </div>
+  </div>
+  
+</article>
+
+            
+              
+  
+    
+      
+        
+      
+    
+  
+
+
+  
+
+<article class="postShorten postShorten--thumbnailimg-right" itemscope itemType="http://schema.org/BlogPosting">
+  <div class="postShorten-wrap">
+    
+    <div class="postShorten-header">
+      <h1 class="postShorten-title" itemprop="headline">
+        <a class="link-unstyled" href="/2011/07/proposed-features-and-functionalities-of-javatm-message-service-2.0-jsr-343/">
+          Proposed features and functionalities of JavaTM Message Service 2.0, JSR-343
+        </a>
+      </h1>
+      
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2011-07-11T00:00:00Z">
+        
+  July 11, 2011
+
+      </time>
+    
+    
+  </div>
+
+    </div>
+    <div class="postShorten-excerpt" itemprop="articleBody">
+      
+        This is the second entry on the series of articles I will write on JMS 2.0. You can find the first entry here. In this article I will iterate over the suggested features which might be included in the JMS 2.0 based on the final decisions by the expert group. I classified the features into some meaningful categoriz which are as follow:
+The API ease of use The first set that I am going to cover is around the ease of use of the API which despite being elegant is a little hard to start with specially for new developers whom look for the asynchronous communication solutions in Java EE platform.
+      
+      <p>
+        <a href="/2011/07/proposed-features-and-functionalities-of-javatm-message-service-2.0-jsr-343/" class="postShorten-excerpt_link link">Continue reading</a>
+        
+      </p>
+    </div>
+  </div>
+  
+</article>
+
+            
+              
+  
+    
+      
+        
+      
+    
+  
+
+
+  
+
+<article class="postShorten postShorten--thumbnailimg-right" itemscope itemType="http://schema.org/BlogPosting">
+  <div class="postShorten-wrap">
+    
+    <div class="postShorten-header">
+      <h1 class="postShorten-title" itemprop="headline">
+        <a class="link-unstyled" href="/2011/05/brief-overview-of-jsr-343-javatm-message-service-2.0/">
+          Brief overview of JSR 343: JavaTM Message Service 2.0
+        </a>
+      </h1>
+      
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2011-05-17T00:00:00Z">
+        
+  May 17, 2011
+
+      </time>
+    
+    
+  </div>
+
+    </div>
+    <div class="postShorten-excerpt" itemprop="articleBody">
+      
+        Well, as many of us already know Oracle submitted the JSR for Java EE 7 which is sort of an umbrella JSR for many update in already existing specifications, new versions of some JSRs and some completely new JSRs which will be part of the grand Java EE 7 - JSR 342. One of these JSRs is the JSR 343 which introduces a new version of JMS into the platform as an evolution of its previous version, JSR-914, and will unify the JMS usage with what added to the platform in the past 8 years.
+      
+      <p>
+        <a href="/2011/05/brief-overview-of-jsr-343-javatm-message-service-2.0/" class="postShorten-excerpt_link link">Continue reading</a>
+        
+      </p>
+    </div>
+  </div>
+  
+</article>
+
+            
+            
+  <div class="pagination-bar">
+    <ul class="pagination">
+      
+        
+          <li class="pagination-prev">
+            <a class="btn btn--default btn--small" href="/tags/java/page/2/">
+              <i class="fa fa-angle-left text-base icon-mr"></i>
+              <span>NEWER POSTS</span>
+            </a>
+          </li>
+        
+        
+          <li class="pagination-next">
+            <a class="btn btn--default btn--small" href="/tags/java/page/4/">
+              <span>OLDER POSTS</span>
+              <i class="fa fa-angle-right text-base icon-ml"></i>
+            </a>
+          </li>
+        
+      
+      <li class="pagination-number">page 3 of 20</li>
+    </ul>
+  </div>
+
+
+          </section>
+        
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2020 Masoud Kalali. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="/img/avatar.png" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">Masoud Kalali</h4>
+    
+      <div id="about-card-bio">Software architect with focus on PaaS container platforms, and Java EE, author, technology enthusiast, runner.</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Software engineer
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        Sweden
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      <div id="cover" style="background-image:url('images/cover.jpg');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
+
+
+<script src="/js/script-pcw6v3xilnxydl1vddzazdverrnn9ctynvnxgwho987mfyqkuylcb1nlt.min.js"></script>
+
+
+<script lang="javascript">
+window.onload = updateMinWidth;
+window.onresize = updateMinWidth;
+document.getElementById("sidebar").addEventListener("transitionend", updateMinWidth);
+function updateMinWidth() {
+  var sidebar = document.getElementById("sidebar");
+  var main = document.getElementById("main");
+  main.style.minWidth = "";
+  var w1 = getComputedStyle(main).getPropertyValue("min-width");
+  var w2 = getComputedStyle(sidebar).getPropertyValue("width");
+  var w3 = getComputedStyle(sidebar).getPropertyValue("left");
+  main.style.minWidth = `calc(${w1} - ${w2} - ${w3})`;
+}
+</script>
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+
+
+
+    
+  </body>
+</html>
+

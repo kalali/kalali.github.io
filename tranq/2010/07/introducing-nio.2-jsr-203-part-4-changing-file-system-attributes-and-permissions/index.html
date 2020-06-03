@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.71.1 with theme Tranquilpeak 0.4.8-BETA">
+<meta name="author" content="Masoud Kalali">
+<meta name="keywords" content=", development, next-gen, Kubernetes, Cloud, Java">
+<meta name="description" content="This is the 4th installment of my entries covering NIO.2. In this entry I will discuss more about what we can do with attributes and permissions. The NIO.2 lets us write the permissions and attributes of a file in addition to reading them. For example we can change the rwx permissions using the Attributes utility class and PosixFilePermission. You can execute the following sample code with almost no changes, the only thing you need to change is the path to our sample file and then you are ready to see how it works.">
+
+
+<meta property="og:description" content="This is the 4th installment of my entries covering NIO.2. In this entry I will discuss more about what we can do with attributes and permissions. The NIO.2 lets us write the permissions and attributes of a file in addition to reading them. For example we can change the rwx permissions using the Attributes utility class and PosixFilePermission. You can execute the following sample code with almost no changes, the only thing you need to change is the path to our sample file and then you are ready to see how it works.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Introducing NIO.2 (JSR 203) Part 4: Changing File System Attributes and Permissions">
+<meta name="twitter:title" content="Introducing NIO.2 (JSR 203) Part 4: Changing File System Attributes and Permissions">
+<meta property="og:url" content="/2010/07/introducing-nio.2-jsr-203-part-4-changing-file-system-attributes-and-permissions/">
+<meta property="twitter:url" content="/2010/07/introducing-nio.2-jsr-203-part-4-changing-file-system-attributes-and-permissions/">
+<meta property="og:site_name" content="The Place">
+<meta property="og:description" content="This is the 4th installment of my entries covering NIO.2. In this entry I will discuss more about what we can do with attributes and permissions. The NIO.2 lets us write the permissions and attributes of a file in addition to reading them. For example we can change the rwx permissions using the Attributes utility class and PosixFilePermission. You can execute the following sample code with almost no changes, the only thing you need to change is the path to our sample file and then you are ready to see how it works.">
+<meta name="twitter:description" content="This is the 4th installment of my entries covering NIO.2. In this entry I will discuss more about what we can do with attributes and permissions. The NIO.2 lets us write the permissions and attributes of a file in addition to reading them. For example we can change the rwx permissions using the Attributes utility class and PosixFilePermission. You can execute the following sample code with almost no changes, the only thing you need to change is the path to our sample file and then you are ready to see how it works.">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2010-07-13T00:00:00">
+  
+  
+    <meta property="article:modified_time" content="2010-07-13T00:00:00">
+  
+  
+  
+  
+    
+      <meta property="article:tag" content="Java">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+  <meta name="twitter:site" content="@masoudkalali">
+
+
+  <meta name="twitter:creator" content="@masoudkalali">
+
+
+
+
+
+
+
+
+
+
+  <meta property="og:image" content="/img/avatar.png">
+  <meta property="twitter:image" content="/img/avatar.png">
+
+
+    <title>Introducing NIO.2 (JSR 203) Part 4: Changing File System Attributes and Permissions</title>
+
+    <link rel="icon" href="img/favicon.png">
+    
+
+    
+
+    <link rel="canonical" href="/2010/07/introducing-nio.2-jsr-203-part-4-changing-file-system-attributes-and-permissions/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.css" integrity="sha256-vuXZ9LGmmwtjqFX1F+EKin1ThZMub58gKULUyf0qECk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
+    
+    
+    <link rel="stylesheet" href="/css/style-twzjdbqhmnnacqs0pwwdzcdbt8yhv8giawvjqjmyfoqnvazl0dalmnhdkvp7.min.css" />
+    
+    
+
+    
+      
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-137107-12', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="5">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="/">The Place</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="/img/avatar.png" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="5">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="/#about">
+          <img class="sidebar-profile-picture" src="/img/avatar.png" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">Masoud Kalali</h4>
+        
+          <h5 class="sidebar-profile-bio">Software architect with focus on PaaS container platforms, and Java EE, author, technology enthusiast, runner.</h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-home"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/categories">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/tags">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-tags"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/archives">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-archive"></i>
+      
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/#about">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-question"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/https://github.com/kalali">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-github"></i>
+      
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/index.xml">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-rss"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+
+      <div id="main" data-behavior="5"
+        class="
+               hasCoverMetaIn
+               ">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+            <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title" itemprop="headline">
+      Introducing NIO.2 (JSR 203) Part 4: Changing File System Attributes and Permissions
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2010-07-13T00:00:00Z">
+        
+  July 13, 2010
+
+      </time>
+    
+    
+  </div>
+
+</div>
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              <p>This is the 4th installment of my entries covering NIO.2. In this entry I will discuss more about what we can do with attributes and permissions.  The NIO.2 lets us write the permissions and attributes of a file in addition to reading them. For example we can change the rwx permissions using the Attributes utility class and  PosixFilePermission. You can execute the following sample code with almost no changes, the only thing you need to change is the path to our sample file and then you are ready to see how it works.</p>
+<p>import java.io.IOException;
+import java.nio.file.*;
+import java.nio.file.attribute.*;
+import java.util.*;</p>
+<p>public class Perm2 {</p>
+<pre><code>public static void main(String args\[\]) throws IOException {
+    FileSystem fs = FileSystems.getDefault();
+    Path p = fs.getPath(&quot;/home/masoud/dl&quot;);
+
+    // Reading attributes using attributes views.
+    // here we read both basic and posix attributes of a file
+    Map att = (Map) p.readAttributes(&quot;posix:\*, basic:\*&quot;, LinkOption.NOFOLLOW_LINKS);
+    // printing the attributes to output
+    Set en = att.keySet();
+    for (Iterator it = en.iterator(); it.hasNext();) {
+        String string = it.next();
+        System.out.println(string + &quot;: &quot; + att.get(string));
+    }
+    System.out.println(&quot;-------------Attributes printing finished----------&quot;);
+
+    // definind a new permission set for our file
+    Set
+</code></pre>
+<p>st2 = PosixFilePermissions.fromString(&ldquo;rwxrwxrwx&rdquo;);
+// Setting the attribute using Attributes utility class
+Attributes.setPosixFilePermissions(p, st2);</p>
+<pre><code>    // looking up and creating a principal for the given user. If use does
+    // not exists it will throws a UserPrincipalNotFoundException
+    UserPrincipal up = fs.getUserPrincipalLookupService().lookupPrincipalByName(&quot;masoud&quot;);
+
+    // Setting the owner to the owner we just looked up.
+    // We should have enough permisison to change the owner otherwise it will
+    // throw a FileSystemException: /home/masoud/a: Operation not permitted sort of thing
+    Attributes.setOwner(p, up);
+
+    //another way to read and write the owner value for a file is using FileOwnerAttributeView
+    FileOwnerAttributeView fo = p.getFileAttributeView(FileOwnerAttributeView.class, LinkOption.NOFOLLOW_LINKS);
+    fo.setOwner(up);
+
+    //Now that we have changed the permissions lets see the permissions again:
+    att = (Map) p.readAttributes(&quot;posix:permissions&quot;, LinkOption.NOFOLLOW_LINKS);
+    System.out.println(&quot;New Permissions:&quot; + &quot;: &quot; + att.get(&quot;permissions&quot;));
+}
+</code></pre>
+<p>}</p>
+<p>Let&rsquo;s see what we have done starting from top: at the beginning we have just initialized the FileSystem object and got a file reference to <em>/home/masoud/dl</em>. Then we read all of this files basic and posix attributes using the attributes view notation. The following sample code shows this step</p>
+<p>FileSystem fs = FileSystems.getDefault();
+Path p = fs.getPath(&quot;/home/masoud/dl&rdquo;);</p>
+<pre><code>    // Reading attributes using attributes views.
+    // here we read both basic and posix attributes of a file
+    Map att = (Map) p.readAttributes(&quot;posix:\*, basic:\*&quot;, LinkOption.NOFOLLOW_LINKS);
+    // printing the attributes to output
+    Set en = att.keySet();
+    for (Iterator it = en.iterator(); it.hasNext();) {
+        String string = it.next();
+        System.out.println(string + &quot;: &quot; + att.get(string));
+    }
+</code></pre>
+<p>System.out.println(&quot;&mdash;&mdash;&mdash;&mdash;-Attributes printing finished&mdash;&mdash;&mdash;-&quot;);</p>
+<p>Next step we have use the PosixPermissions class to create a permission set using the OS permissions presentation and then applied these permissions on our file</p>
+<p>// definind a new permission set for our file
+Set
+st2 = PosixFilePermissions.fromString(&ldquo;rwxrwxrwx&rdquo;);
+// Setting the attribute using Attributes utility class
+Attributes.setPosixFilePermissions(p, st2);</p>
+<p>In the next step we created a user principal for a user named <em>masoud</em> and changed the ownership of our file to this user. We have done this using both available methods.</p>
+<p>// looking up and creating a principal for the given user. If use does
+// not exists it will throws a UserPrincipalNotFoundException
+UserPrincipal up = fs.getUserPrincipalLookupService().lookupPrincipalByName(&ldquo;masoud&rdquo;);</p>
+<pre><code>    // Setting the owner to the owner we just looked up.
+    // We should have enough permisison to change the owner otherwise it will
+    // throw a FileSystemException: /home/masoud/a: Operation not permitted sort of thing
+    Attributes.setOwner(p, up);
+
+    //another way to read and write the owner value for a file is using FileOwnerAttributeView
+    FileOwnerAttributeView fo = p.getFileAttributeView(FileOwnerAttributeView.class, LinkOption.NOFOLLOW_LINKS);
+    fo.setOwner(up);
+</code></pre>
+<p>Finally we read the file permissions to see what has changed after we applied this new permissions on our file. using the following snippet.</p>
+<p>//Now that we have changed the permissions lets see the permissions again:
+att = (Map) p.readAttributes(&ldquo;posix:permissions&rdquo;, LinkOption.NOFOLLOW_LINKS);
+System.out.println(&ldquo;New Permissions:&rdquo; + &ldquo;: &quot; + att.get(&ldquo;permissions&rdquo;));</p>
+<p>The output of running the above sample code is shown below:</p>
+<p>lastModifiedTime: 2010-07-06T23:15:32Z
+fileKey: (dev=805,ino=1922268)
+isDirectory: false
+lastAccessTime: 2010-07-11T14:15:46Z
+isOther: false
+isSymbolicLink: false
+owner: masoud
+permissions: [OTHERS_READ, OWNER_WRITE, GROUP_WRITE, OWNER_READ, GROUP_READ, OTHERS_EXECUTE, OWNER_EXECUTE, GROUP_EXECUTE, OTHERS_WRITE]
+isRegularFile: true
+creationTime: null
+group: dip
+size: 219
+&mdash;&mdash;&mdash;&mdash;-Attributes printing finished&mdash;&mdash;&mdash;-
+Permissions:: [OTHERS_READ, OWNER_WRITE, GROUP_WRITE, OWNER_READ, GROUP_READ, OTHERS_EXECUTE, OWNER_EXECUTE, GROUP_EXECUTE, OTHERS_WRITE]</p>
+<p>You may ask what is the attribute view notation and what is meaning of that <em>posix:permissions</em> or <em>posix:*</em>. The first one means that we want to retrieve the permissions property of the file while the second one means that we want to retrieve all attributes of the file which can be seen using the posix view. Now you are asking where you can found list of this attributes view notations, then you question is very right. The following links shows what attributes are available to read using each one of those views. Each attribute is one of the properties included in the interface.</p>
+<ul>
+<li>BasicFileAttributes: <a href="http://download.oracle.com/docs/cd/E17409_01/javase/7/docs/api/java/nio/file/attribute/BasicFileAttributes.html">http://download.oracle.com/docs/cd/E17409_01/javase/7/docs/api/java/nio/file/attribute/BasicFileAttributes.html</a></li>
+<li>PosixFileAttributes: <a href="http://download.oracle.com/docs/cd/E17409_01/javase/7/docs/api/java/nio/file/attribute/PosixFileAttributes.html">http://download.oracle.com/docs/cd/E17409_01/javase/7/docs/api/java/nio/file/attribute/PosixFileAttributes.html</a></li>
+</ul>
+<p>Sure we have other views, you can find them in the JavaDocs linked above. Next entry will be the last entry covering File System functionalities of the NIO.2 including the watch and change notification service and the ACL list. After that we will look at new features included for IO developers. You can find other entries of this series under the <a href="http://kalali.me/tag/nio-2/">NIO.2</a> tag of my weblog.</p>
+
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="/tags/java/">Java</a>
+
+                  </div>
+                
+              
+            
+            <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2010/07/opensolaris-governing-board-effort-on-turning-some-lights-on-opensolaris-future/" data-tooltip="OpenSolaris Governing Board effort on turning some lights on OpenSolaris future">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2010/07/my-weblog-is-now-migrated-to-its-new-location-kalali.me/" data-tooltip="My weblog is now migrated to its new location, kalali.me">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2010/07/introducing-nio.2-jsr-203-part-4-changing-file-system-attributes-and-permissions/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2010/07/introducing-nio.2-jsr-203-part-4-changing-file-system-attributes-and-permissions/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+            
+              
+                <div id="disqus_thread">
+  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2020 Masoud Kalali. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+        <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2010/07/opensolaris-governing-board-effort-on-turning-some-lights-on-opensolaris-future/" data-tooltip="OpenSolaris Governing Board effort on turning some lights on OpenSolaris future">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2010/07/my-weblog-is-now-migrated-to-its-new-location-kalali.me/" data-tooltip="My weblog is now migrated to its new location, kalali.me">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2010/07/introducing-nio.2-jsr-203-part-4-changing-file-system-attributes-and-permissions/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2010/07/introducing-nio.2-jsr-203-part-4-changing-file-system-attributes-and-permissions/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+  <i id="btn-close-shareoptions" class="fa fa-close"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=%2F2010%2F07%2Fintroducing-nio.2-jsr-203-part-4-changing-file-system-attributes-and-permissions%2F">
+          <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=%2F2010%2F07%2Fintroducing-nio.2-jsr-203-part-4-changing-file-system-attributes-and-permissions%2F">
+          <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="/img/avatar.png" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">Masoud Kalali</h4>
+    
+      <div id="about-card-bio">Software architect with focus on PaaS container platforms, and Java EE, author, technology enthusiast, runner.</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Software engineer
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        Sweden
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      <div id="cover" style="background-image:url('images/cover.jpg');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
+
+
+<script src="/js/script-pcw6v3xilnxydl1vddzazdverrnn9ctynvnxgwho987mfyqkuylcb1nlt.min.js"></script>
+
+
+<script lang="javascript">
+window.onload = updateMinWidth;
+window.onresize = updateMinWidth;
+document.getElementById("sidebar").addEventListener("transitionend", updateMinWidth);
+function updateMinWidth() {
+  var sidebar = document.getElementById("sidebar");
+  var main = document.getElementById("main");
+  main.style.minWidth = "";
+  var w1 = getComputedStyle(main).getPropertyValue("min-width");
+  var w2 = getComputedStyle(sidebar).getPropertyValue("width");
+  var w3 = getComputedStyle(sidebar).getPropertyValue("left");
+  main.style.minWidth = `calc(${w1} - ${w2} - ${w3})`;
+}
+</script>
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+  
+    
+      <script>
+        var disqus_config = function () {
+          this.page.url = '\/2010\/07\/introducing-nio.2-jsr-203-part-4-changing-file-system-attributes-and-permissions\/';
+          
+            this.page.identifier = '\/2010\/07\/introducing-nio.2-jsr-203-part-4-changing-file-system-attributes-and-permissions\/'
+          
+        };
+        (function() {
+          
+          
+          if (window.location.hostname == "localhost") {
+            return;
+          }
+          var d = document, s = d.createElement('script');
+          var disqus_shortname = 'hugo-tranquilpeak-theme';
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      </script>
+    
+  
+
+
+
+
+    
+  </body>
+</html>
+

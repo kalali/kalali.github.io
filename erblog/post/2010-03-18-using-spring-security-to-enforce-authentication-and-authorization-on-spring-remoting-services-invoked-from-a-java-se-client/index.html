@@ -1,0 +1,570 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>The Place - Using Spring Security to enforce authentication and authorization on Spring Remoting Services Invoked from a Java SE client… </title>
+    
+    
+    <meta content="Java" name="keywords">
+    
+    <meta content="The Place - Spring framework is one of the biggest and the most comprehensive frameworks Java Community can utilize to cover most of the end to end requirement of a software system when it come to implementation. Spring Security and Spring Remoting are two important parts of the framework which covers security in a descriptive way and let us have remote invocation of a spring bean methods using a local proxy. In this entry I will show you how we can use spring security to secure a spring bean exposed over HTTP and invoke its secured methods from an standalone client." name="description">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    
+        <link rel="icon" href="img/favicon.ico">
+    
+
+    
+
+    
+
+    
+
+    <link rel="stylesheet" href="/layui/css/layui.css">
+    <link rel="stylesheet" href="/self/css/default.css">
+    <script src="/layui/layui.js"></script>
+
+    <link rel="stylesheet" async href="/self/css/markdown.min.css">
+    <link rel="stylesheet" async href="/self/css/gallery.css">
+    
+    
+    
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
+    <script async src="https://cdn.jsdelivr.net/npm/lazysizes@5.2.0/lazysizes.min.js" integrity="sha256-h2tMEmhemR2IN4wbbdNjj9LaDIjzwk2hralQwfJmBOE=" crossorigin="anonymous"></script></head>
+
+<body>
+    
+    <header class="layui-header layui-bg-cyan">
+
+    
+        <a href=""><img src="/img/avatar.png" class="layui-nav-img" style="margin-left:10px;margin-top:-10px"></a>
+    
+    
+    <a class="nav-self-logo" href="/">
+        The Place
+    </a>
+
+    <ul class="layui-nav layui-layout-right layui-bg-cyan" lay-filter="">
+        
+        
+        <li class="layui-nav-item" id="nav_big"><a href="/post/">Posts</a></li>
+        
+
+        
+            
+                <li class="layui-nav-item" id="nav_big"><a href="/about/">About</a></li>
+            
+        
+
+        
+        <li class="layui-nav-item" id="nav_small">
+            <a href="javascript:;">
+                <i class="layui-icon layui-icon-app" style="font-size: 24px;"></i>
+            </a>
+
+            <dl class="layui-nav-child">
+                
+                <dd><a href="/post/">Posts</a></dd>
+                
+
+                
+                    
+                        <dd><a href="/about/">About</a></dd>
+                    
+                
+            </dl>
+        </li>
+    </ul>
+</header>
+
+<script>
+layui.use('element', function(){
+  var element = layui.element;
+});
+</script>
+        <div id="content" style="min-height:80%">
+<div class="layui-container" style="margin-bottom: 10px">
+    
+
+    <div class="layui-row layui-col-space10">
+        <div class="layui-col-md8 layui-col-sm12 layui-col-xs12">
+            <div class="layui-card single-card">
+                <br />
+                <blockquote class="self-elem-quote self-elem-quote-bg-red markdown-body single-title" >
+                    <h1>Using Spring Security to enforce authentication and authorization on Spring Remoting Services Invoked from a Java SE client…</h1>
+                    <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2010-03-18</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                </blockquote>
+                <div class="layui-card-body markdown-body single-content">
+                    <p><a href="http://www.springsource.org/" title="Spring&lt;br &gt;&lt;/a&gt; framework">Spring framework</a> is one of the biggest and the most comprehensive frameworks Java Community can utilize to cover most of the  end to end requirement of a software system when it come to implementation. <a href="http://static.springsource.org/spring-security/site/" title="Spring Security">Spring Security</a> and <a href="http://static.springsource.org/spring/docs/2.0.x/reference/remoting.html" title="Spring Remoting">Spring Remoting</a> are two important parts of the framework which covers security in a descriptive way and let us have remote invocation of a spring bean methods using a local proxy. In this entry I will show you how we can use spring security to secure a spring bean exposed over HTTP and invoke its secured methods from an standalone client. In our sample we are developing an Spring service which returns the list of roles which are assigned to that currently authenticated user. I will develop a simple web application congaing an secured Spring service then I will develop a simple Java SE client to invoke that secured service. To develop the service we need to have a service interface which is as follow:</p>
+<p>package springhttp;
+public interface SecurityServiceIF {
+public String[] getRoles();
+}</p>
+<p>Then we need to have an implementation of this interface which will do the actual job of extracting the roles for the currently authenticated user.</p>
+<p>package springhttp;
+public class SecurityService implements SecurityServiceIF {</p>
+<p>public String[] getRoles() {
+Collection<!-- raw HTML omitted --> col = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+String[] roles = new String[col.size()];
+int i = 0;
+for (Iterator<!-- raw HTML omitted --> it = col.iterator(); it.hasNext();) {</p>
+<p>GrantedAuthority grantedAuthority = it.next();
+roles[i] = grantedAuthority.getAuthority();
+i++;
+}
+return roles;
+}
+}</p>
+<p>Now we should define this remote service in a descriptor file. Here we will use <em>remote-servlet.xml</em> file to describe the service. The file can be placed inside the WEB-INF of the web application. The file content is as follow:</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p><!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted --></p>
+<!-- raw HTML omitted -->
+<p>We are simply using <em>/securityService</em> as the relative URL to expose our <em>SecurityService</em> implementation. The next configuration file is the Spring application context in which we define all of our beans, beans weaving and configurations. The file name is <em>applicationContext.xml</em> and it is located inside the <em>WEB-INF</em> directory.</p>
+<!-- raw HTML omitted -->
+<p><!-- raw HTML omitted --></p>
+<!-- raw HTML omitted -->
+<p>&lt;security:http realm=&quot;SecRemoting&quot;&gt;
+<a href="security:http-basic/">security:http-basic/</a>
+&lt;security:intercept-url pattern=&rdquo;/securityService&rdquo; access=&quot;ROLE_ADMIN&rdquo; /&gt;
+&lt;/security:http&gt;</p>
+<p>&lt;security:authentication-manager alias=&quot;authenticationManager&quot;&gt;
+<a href="security:authentication-provider">security:authentication-provider</a>
+&lt;security:user-service id=&quot;uds&quot;&gt;
+&lt;security:user name=&quot;Jami&rdquo; password=&quot;Jami&rdquo;
+authorities=&quot;ROLE_USER, ROLE_MANAGER&rdquo; /&gt;
+&lt;security:user name=&quot;bob&rdquo; password=&quot;bob&rdquo;
+authorities=&quot;ROLE_USER,ROLE_ADMIN&rdquo; /&gt;
+&lt;/security:user-service&gt;
+&lt;/security:authentication-provider&gt;
+&lt;/security:authentication-manager&gt;</p>
+<p><!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted --></p>
+<p><!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted --></p>
+<p><!-- raw HTML omitted -->
+&lt;security:filter-chain-map path-type=&quot;ant&quot;&gt;
+&lt;security:filter-chain pattern=&rdquo;/**&rdquo;
+filters=&quot;httpSessionContextIntegrationFilter,digestProcessingFilter,exceptionTranslationFilter,filterSecurityInterceptor&rdquo; /&gt;
+&lt;/security:filter-chain-map&gt;
+<!-- raw HTML omitted --></p>
+<p><!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted --></p>
+<p><!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted --></p>
+<p>&lt;bean id=&quot;exceptionTranslationFilter&rdquo;  class=&quot;org.springframework.security.web.access.ExceptionTranslationFilter&quot;&gt;
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted --></p>
+<p>Most of the above code is default spring configurations except for the following parts which I am going to explain in more details. The first snippet is defining the bean itself:</p>
+<!-- raw HTML omitted -->
+<p>The second part is when we specify the security restrictions on the application itself. We are instructing the spring security to only allow an specific role to invoke the <em>securityService</em></p>
+<p>&lt;security:http realm=&quot;SecRemoting&quot;&gt;
+<a href="security:http-basic/">security:http-basic/</a>
+&lt;security:intercept-url pattern=&rdquo;/securityService&rdquo; access=&quot;ROLE_ADMIN&rdquo; /&gt;
+&lt;/security:http&gt;</p>
+<p>The third part is whe n we define the identity repository where our users and role assignment are stored.</p>
+<p>&lt;security:authentication-manager alias=&quot;authenticationManager&quot;&gt;
+<a href="security:authentication-provider">security:authentication-provider</a>
+&lt;security:user-service id=&quot;uds&quot;&gt;
+&lt;security:user name=&quot;jimi&rdquo; password=&quot;jimi&rdquo;
+authorities=&quot;ROLE_USER, ROLE_MANAGER&rdquo; /&gt;
+&lt;security:user name=&quot;bob&rdquo; password=&quot;bob&rdquo;
+authorities=&quot;ROLE_USER,ROLE_ADMIN&rdquo; /&gt;
+&lt;/security:user-service&gt;
+&lt;/security:authentication-provider&gt;
+&lt;/security:authentication-manager&gt;</p>
+<p>As you can see we are using the simple in memory user service, you may configure the an LDAP, JDBC, or a custom user service in the production environment. All other parts of the <em>applicationContext.xml</em> are Spring security filter definition. You can find explanation about any of then in <a href="http://static.springsource.org/spring-security/site/docs/" title="Spring Security Documentation">Spring Security Documentation</a> or by googling for it. <strong>To enforce security restrictions on the SercurityService for any local invocation we can simply change the first disucssed snippet as follow to allow ROLE_ADMIN and ROLE_MANAGER to invoke the service locall.</strong></p>
+<!-- raw HTML omitted -->
+<p>Now that we have all Spring configuration files in place, we need to add some elements to <em>web.xml</em> in order to let spring framework kick start. Following changes need to be included in the <em>web.xml</em> file.</p>
+<!-- raw HTML omitted -->
+<p>Now that the server part is over, we can develop the client application to invoke this service we developed. The code for the client class is as follow:</p>
+<p>package client;
+public class Main {</p>
+<p>public static void main(final String[] arguments) {
+final ApplicationContext context =
+new ClassPathXmlApplicationContext(
+&ldquo;client/spring-http-client-config.xml&rdquo;);
+String user = &ldquo;bob&rdquo;;
+String pw = &ldquo;bob&rdquo;;
+SecurityContextImpl sc = new SecurityContextImpl();
+Authentication auth = new UsernamePasswordAuthenticationToken(user,
+pw);</p>
+<p>sc.setAuthentication(auth);
+SecurityContextHolder.setContext(sc);</p>
+<p>String[] roles = ((SecurityServiceIF) context.getBean(&ldquo;securityService&rdquo;)).getRoles();
+for (int i = 0; i &lt; roles.length; i++) {
+System.out.println(&ldquo;Role:&rdquo; + roles[i]);
+}</p>
+<p>}
+}</p>
+<p>As you can see we are initializing the application context using a xml file. We will discuss that XML file in few minutes. After the application context initialization we are creating a <em>SecurityContextImpl</em>,   and a <em>UsernamePasswordAuthenticationToken</em> then we pass the token to the security context and finally use this security context to pass it on to the server for authentication and further authorization. Finally we invoke the <em>getRoles()</em> method of our <em>SecurityService</em> which returns the set of roles assigned to the currently authenticated user and print its role to the default output stream. Now, the <em>spring-http-client-config.xml</em> content:</p>
+<!-- raw HTML omitted -->
+<p><!-- raw HTML omitted --></p>
+<p><!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+&lt;bean class=&quot;org.springframework.security.remoting.httpinvoker.AuthenticationSimpleHttpInvokerRequestExecutor&rdquo;  /&gt;
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted --></p>
+<p>As you can see we are just setting some properties like <em>serviceURL</em> bean name, the <em>httpInvokerRequestExecutor</em> and so on. the only thing which you may need to change to run the sample is the <em>serviceUrl</em>. You can download the complete sample code form <a href="http://dl.dropbox.com/u/334201/jn-blog-files/Spring-Remoting-Security-Sample.zip">here</a>. These are two <a href="http://netbeans.org/" title="NetBeans">NetBeans</a> project, a web application and a Java SE one. You may need to add Spring libraries to the project prior to any other attempt. The <em>SecurityService</em> implementation is borrowed from Elvis weblog available at <a href="http://elvisfromhell.blogspot.com/2008/06/this-was-hard-one.html" title="http://elvisfromhell.blogspot.com/2008/06/this-was-hard-one.html">http://elvisfromhell.blogspot.com/2008/06/this-was-hard-one.html</a></p>
+</div>
+            </div>
+        </div>
+
+        <div class="layui-col-md4 layui-col-sm12 layui-col-xs12">
+            
+            <div class="layui-card single-card">
+                <h2 class="single-title">Relevant Topics</h2>
+                
+                	
+                    <div style="margin-left: 10px;">
+                        <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                            <a href="/post/2010-03-15-glassfish-modularity-system-how-extend-glassfish-cli-and-web-administration-console-part-i-the-architecture/">
+                                <h3 class="">GlassFish Modularity System, How extend GlassFish CLI and Web Administration Console (Part I, The architecture)</h3>
+                            </a>
+                            
+                            <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2010-03-15</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                        </blockquote>
+                    </div>
+                	
+                    <div style="margin-left: 10px;">
+                        <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                            <a href="/post/2010-03-03-openmq-the-open-source-message-queuing-for-beginners-and-professionals-openmq-from-a-to-z/">
+                                <h3 class="">OpenMQ, the Open source Message Queuing, for beginners and professionals (OpenMQ from A to Z)</h3>
+                            </a>
+                            
+                            <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2010-03-03</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                        </blockquote>
+                    </div>
+                	
+                    <div style="margin-left: 10px;">
+                        <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                            <a href="/post/2010-03-01-how-to-prepare-for-and-install-godaddy-ssl-certificate-into-glassfish-v3/">
+                                <h3 class="">How to prepare for, and install GoDaddy SSL certificate into GlassFish v3</h3>
+                            </a>
+                            
+                            <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2010-03-01</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                        </blockquote>
+                    </div>
+                	
+                    <div style="margin-left: 10px;">
+                        <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                            <a href="/post/2009-12-17-and-glassfish-v3-is-here/">
+                                <h3 class="">And GlassFish v3 is Here</h3>
+                            </a>
+                            
+                            <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2009-12-17</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                        </blockquote>
+                    </div>
+                	
+                    <div style="margin-left: 10px;">
+                        <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                            <a href="/post/2009-12-17-netbeans-6-8-joined-the-glassfish-v3-in-the-release-feast/">
+                                <h3 class="">NetBeans 6.8 joined the GlassFish v3 in the release feast.</h3>
+                            </a>
+                            
+                            <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2009-12-17</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                        </blockquote>
+                    </div>
+                	
+                
+                <br />
+            </div>
+            
+
+            <div class="layui-card single-card">
+                <h2 class="single-title">Recent Posts</h2>
+            
+                
+                <div style="margin-left: 10px;">
+                    <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                    <a href="/post/2013-09-17-getting-started-with-couchdb-and-mongodb-part-ii-beginning-with-security/">
+                        <h3 class="">Getting started with CouchDB and MongoDB, Part II: Beginning with Security</h3>
+                    </a>
+                    <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2013-09-17</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                    </blockquote>
+                </div>
+                
+                <div style="margin-left: 10px;">
+                    <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                    <a href="/post/2013-09-12-getting-started-with-couchdb-and-mongodb-nosql-document-databases-part-i/">
+                        <h3 class="">Getting started with CouchDB and MongoDB, Part I: CRUD operations</h3>
+                    </a>
+                    <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2013-09-12</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                    </blockquote>
+                </div>
+                
+                <div style="margin-left: 10px;">
+                    <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                    <a href="/post/2012-12-27-my-last-blog-in-2012-my-2013-wishes-and-predictions/">
+                        <h3 class="">My last blog in 2012: My 2013 wishes and predictions…</h3>
+                    </a>
+                    <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2012-12-27</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                    </blockquote>
+                </div>
+                
+                <div style="margin-left: 10px;">
+                    <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                    <a href="/post/2012-09-24-my-sessions-in-javaone-2012/">
+                        <h3 class="">My sessions in JavaOne 2012</h3>
+                    </a>
+                    <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2012-09-24</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                    </blockquote>
+                </div>
+                
+                <div style="margin-left: 10px;">
+                    <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                    <a href="/post/2012-04-12-from-netbeans-to-intellij-idea-week-1/">
+                        <h3 class="">From NetBeans to IntelliJ IDEA, Week 1</h3>
+                    </a>
+                    <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2012-04-12</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                    </blockquote>
+                </div>
+                
+            
+            <br />
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+        </div><footer>
+    
+    
+    <div class="layui-container">
+        <p class="copyright">Copyright © 2006–2020, Masoud Kalali. Some rights are reserved</p>
+    </div>
+</footer>
+</body>
+</html>

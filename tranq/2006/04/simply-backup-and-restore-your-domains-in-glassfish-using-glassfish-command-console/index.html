@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.71.1 with theme Tranquilpeak 0.4.8-BETA">
+<meta name="author" content="Masoud Kalali">
+<meta name="keywords" content=", development, next-gen, Kubernetes, Cloud, Java">
+<meta name="description" content="Do you ever though about creating a backup copy of your domains in GlassFish , for example before doing something unpredictable , meanwhile you like your domain because of its configurations ?
+here is simple steps to create backup and restore those backup.
+before we go any further you should know , domaindir that we see in many of asadmin commands has a default value its default value is : GlassFish_home/domains , in all of those commands that has domaindir parameter, if you explicitly do not identify the domaindir asadmin will use the default values.">
+
+
+<meta property="og:description" content="Do you ever though about creating a backup copy of your domains in GlassFish , for example before doing something unpredictable , meanwhile you like your domain because of its configurations ?
+here is simple steps to create backup and restore those backup.
+before we go any further you should know , domaindir that we see in many of asadmin commands has a default value its default value is : GlassFish_home/domains , in all of those commands that has domaindir parameter, if you explicitly do not identify the domaindir asadmin will use the default values.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Simply backup and restore your domains in GlassFish Using GlassFish Command Console">
+<meta name="twitter:title" content="Simply backup and restore your domains in GlassFish Using GlassFish Command Console">
+<meta property="og:url" content="/2006/04/simply-backup-and-restore-your-domains-in-glassfish-using-glassfish-command-console/">
+<meta property="twitter:url" content="/2006/04/simply-backup-and-restore-your-domains-in-glassfish-using-glassfish-command-console/">
+<meta property="og:site_name" content="The Place">
+<meta property="og:description" content="Do you ever though about creating a backup copy of your domains in GlassFish , for example before doing something unpredictable , meanwhile you like your domain because of its configurations ?
+here is simple steps to create backup and restore those backup.
+before we go any further you should know , domaindir that we see in many of asadmin commands has a default value its default value is : GlassFish_home/domains , in all of those commands that has domaindir parameter, if you explicitly do not identify the domaindir asadmin will use the default values.">
+<meta name="twitter:description" content="Do you ever though about creating a backup copy of your domains in GlassFish , for example before doing something unpredictable , meanwhile you like your domain because of its configurations ?
+here is simple steps to create backup and restore those backup.
+before we go any further you should know , domaindir that we see in many of asadmin commands has a default value its default value is : GlassFish_home/domains , in all of those commands that has domaindir parameter, if you explicitly do not identify the domaindir asadmin will use the default values.">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2006-04-25T00:00:00">
+  
+  
+    <meta property="article:modified_time" content="2006-04-25T00:00:00">
+  
+  
+  
+    
+      <meta property="article:section" content="GlassFish">
+    
+  
+  
+    
+      <meta property="article:tag" content="Java">
+    
+      <meta property="article:tag" content="GlassFish">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+  <meta name="twitter:site" content="@masoudkalali">
+
+
+  <meta name="twitter:creator" content="@masoudkalali">
+
+
+
+
+
+
+
+
+
+
+  <meta property="og:image" content="/img/avatar.png">
+  <meta property="twitter:image" content="/img/avatar.png">
+
+
+    <title>Simply backup and restore your domains in GlassFish Using GlassFish Command Console</title>
+
+    <link rel="icon" href="img/favicon.png">
+    
+
+    
+
+    <link rel="canonical" href="/2006/04/simply-backup-and-restore-your-domains-in-glassfish-using-glassfish-command-console/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.css" integrity="sha256-vuXZ9LGmmwtjqFX1F+EKin1ThZMub58gKULUyf0qECk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
+    
+    
+    <link rel="stylesheet" href="/css/style-twzjdbqhmnnacqs0pwwdzcdbt8yhv8giawvjqjmyfoqnvazl0dalmnhdkvp7.min.css" />
+    
+    
+
+    
+      
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-137107-12', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="5">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="/">The Place</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="/img/avatar.png" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="5">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="/#about">
+          <img class="sidebar-profile-picture" src="/img/avatar.png" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">Masoud Kalali</h4>
+        
+          <h5 class="sidebar-profile-bio">Software architect with focus on PaaS container platforms, and Java EE, author, technology enthusiast, runner.</h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-home"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/categories">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/tags">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-tags"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/archives">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-archive"></i>
+      
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/#about">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-question"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/https://github.com/kalali">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-github"></i>
+      
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/index.xml">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-rss"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+
+      <div id="main" data-behavior="5"
+        class="
+               hasCoverMetaIn
+               ">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+            <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title" itemprop="headline">
+      Simply backup and restore your domains in GlassFish Using GlassFish Command Console
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2006-04-25T00:00:00Z">
+        
+  April 25, 2006
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="/categories/glassfish">GlassFish</a>
+    
+  
+
+  </div>
+
+</div>
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              <p>Do you ever though about creating a backup copy of your domains in GlassFish , for example before doing something unpredictable , meanwhile you like your domain because of its configurations ?<br>
+here is simple steps to create backup and restore those backup.<br>
+before we go any further you should know , <em>domaindir</em> that we see in many of asadmin commands has a default value its default value is : <em>GlassFish_home/domains</em> , in all of those commands that has domaindir parameter, if you explicitly do not identify the domaindir asadmin will use the default values. So , when you use domain1 in some command , asadmin will look inside GlassFish_home/domains for that particular domain. steps to create a backup :</p>
+<ol>
+<li>
+<p>Execute asadmin from bin directory under GlassFish_home<br>
+in case that you want to create a backup from a domain named domain1 (which is default domain)</p>
+</li>
+<li>
+<p>execute : <em>backup-domain &ndash;description &ldquo;I made this backup before changing default domain descriptor&rdquo; domain1</em><br>
+after you execute this command , asadmin will create a folder named <em>backups</em> inside GlassFish_home/domains/domain1 and place a zip file there. The zip file is a backup of your domain . For example the zip file could be : <em>sjsas_backup_v00001.zip</em> it means that it is first backup that you create for this domain.<br>
+if you open the zip file you can see a file named <em>backup.properties</em> which contain informations like :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">**  
+<span style="color:#75715e">#Backup Status</span>  
+<span style="color:#75715e">#Wed Apr 26 01:00:40 IRDT 2006</span>  
+timestamp.human<span style="color:#f92672">=</span>Wed Apr <span style="color:#ae81ff">26</span> 01:00:40 IRDT <span style="color:#ae81ff">2006</span>  
+domain.name<span style="color:#f92672">=</span>domain1  
+user.name<span style="color:#f92672">=</span>Masoud Kalali  
+domain.dir<span style="color:#f92672">=</span>F:<span style="color:#ae81ff">\\</span>glassfish<span style="color:#ae81ff">\\</span>domains<span style="color:#ae81ff">\\</span>domain1  
+domains.dir<span style="color:#f92672">=</span>F:<span style="color:#ae81ff">\\</span>glassfish<span style="color:#ae81ff">\\</span>domains  
+timestamp.msec<span style="color:#f92672">=</span><span style="color:#ae81ff">1146004240218</span>  
+description<span style="color:#f92672">=</span>I made this backup before chaning default domain descriptor  
+backup.file<span style="color:#f92672">=</span>F:<span style="color:#ae81ff">\\</span>glassfish<span style="color:#ae81ff">\\</span>domains<span style="color:#ae81ff">\\</span>domain1<span style="color:#ae81ff">\\</span>backups<span style="color:#ae81ff">\\</span>sjsas_backup_v00001.zip  
+**  
+</code></pre></div></li>
+</ol>
+<p><strong>There</strong> is a command which helps you to find out how much backups you have and shows you information related to each backup entry you made.This command is : <em>list-backups</em> it get an operand , the operand will be your domain name. You can also tell it that your domain dir is not the default place using &ndash;domaindir parameter.</p>
+<p>Now lets see how we can restore this backup using asadmin administration console.<br>
+there is a command named <em>restore-domain</em> , this command will restore a domain using a backup file. Simply you need just to pass an operand which is your domain name. If you do this , it will restore your domain using your latest backup .<br>
+<strong>So</strong> if I execute : <em>restore-domain domain1</em> it will looks inside the backups folder (the default place) and select latest backup then it will try to restore the domain using that backup.<br>
+you can use &ndash;filename parameter to specify another backup file which should be passed using a full path.<br>
+I should say that this command accept domaindir parameter as other commands that we talked about them this time.</p>
+
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="/tags/java/">Java</a>
+
+  <a class="tag tag--primary tag--small" href="/tags/glassfish/">GlassFish</a>
+
+                  </div>
+                
+              
+            
+            <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2006/05/step-by-step-toward-a-jms-sample-in-netbeans-and-yes-glassfish/" data-tooltip="Step by Step toward a jms sample in NetBeans and yes GlassFish">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2006/04/overview-of-xml-parsing-in-java-different-methods-and-libraries/" data-tooltip="overview of XML Parsing in java , different methods and libraries">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2006/04/simply-backup-and-restore-your-domains-in-glassfish-using-glassfish-command-console/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2006/04/simply-backup-and-restore-your-domains-in-glassfish-using-glassfish-command-console/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+            
+              
+                <div id="disqus_thread">
+  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2020 Masoud Kalali. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+        <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2006/05/step-by-step-toward-a-jms-sample-in-netbeans-and-yes-glassfish/" data-tooltip="Step by Step toward a jms sample in NetBeans and yes GlassFish">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2006/04/overview-of-xml-parsing-in-java-different-methods-and-libraries/" data-tooltip="overview of XML Parsing in java , different methods and libraries">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2006/04/simply-backup-and-restore-your-domains-in-glassfish-using-glassfish-command-console/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2006/04/simply-backup-and-restore-your-domains-in-glassfish-using-glassfish-command-console/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+  <i id="btn-close-shareoptions" class="fa fa-close"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=%2F2006%2F04%2Fsimply-backup-and-restore-your-domains-in-glassfish-using-glassfish-command-console%2F">
+          <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=%2F2006%2F04%2Fsimply-backup-and-restore-your-domains-in-glassfish-using-glassfish-command-console%2F">
+          <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="/img/avatar.png" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">Masoud Kalali</h4>
+    
+      <div id="about-card-bio">Software architect with focus on PaaS container platforms, and Java EE, author, technology enthusiast, runner.</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Software engineer
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        Sweden
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      <div id="cover" style="background-image:url('images/cover.jpg');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
+
+
+<script src="/js/script-pcw6v3xilnxydl1vddzazdverrnn9ctynvnxgwho987mfyqkuylcb1nlt.min.js"></script>
+
+
+<script lang="javascript">
+window.onload = updateMinWidth;
+window.onresize = updateMinWidth;
+document.getElementById("sidebar").addEventListener("transitionend", updateMinWidth);
+function updateMinWidth() {
+  var sidebar = document.getElementById("sidebar");
+  var main = document.getElementById("main");
+  main.style.minWidth = "";
+  var w1 = getComputedStyle(main).getPropertyValue("min-width");
+  var w2 = getComputedStyle(sidebar).getPropertyValue("width");
+  var w3 = getComputedStyle(sidebar).getPropertyValue("left");
+  main.style.minWidth = `calc(${w1} - ${w2} - ${w3})`;
+}
+</script>
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+  
+    
+      <script>
+        var disqus_config = function () {
+          this.page.url = '\/2006\/04\/simply-backup-and-restore-your-domains-in-glassfish-using-glassfish-command-console\/';
+          
+            this.page.identifier = '\/2006\/04\/simply-backup-and-restore-your-domains-in-glassfish-using-glassfish-command-console\/'
+          
+        };
+        (function() {
+          
+          
+          if (window.location.hostname == "localhost") {
+            return;
+          }
+          var d = document, s = d.createElement('script');
+          var disqus_shortname = 'hugo-tranquilpeak-theme';
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      </script>
+    
+  
+
+
+
+
+    
+  </body>
+</html>
+

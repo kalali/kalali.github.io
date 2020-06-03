@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.71.1 with theme Tranquilpeak 0.4.8-BETA">
+<meta name="author" content="Masoud Kalali">
+<meta name="keywords" content=", development, next-gen, Kubernetes, Cloud, Java">
+<meta name="description" content="The Wall Street Journal Published an article which discuss possibility of IBM buying Sun Microsystems, but why on earth should IBM take over Sun Microsystems when every product which Sun offer has a counterpart in IBM arsenal.
+In software range Sun offers Operating System, Database, Application server family of products, identity management family of product, Integration series of products either developed by Sun or acquired from other companies, Software development tools including NetBeans and its related add-ons.">
+
+
+<meta property="og:description" content="The Wall Street Journal Published an article which discuss possibility of IBM buying Sun Microsystems, but why on earth should IBM take over Sun Microsystems when every product which Sun offer has a counterpart in IBM arsenal.
+In software range Sun offers Operating System, Database, Application server family of products, identity management family of product, Integration series of products either developed by Sun or acquired from other companies, Software development tools including NetBeans and its related add-ons.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="WSJ says: “IBM in Talks to Buy Sun”. But Why would IBM buy Sun Microsystems?">
+<meta name="twitter:title" content="WSJ says: “IBM in Talks to Buy Sun”. But Why would IBM buy Sun Microsystems?">
+<meta property="og:url" content="/2009/03/wsj-says-ibm-in-talks-to-buy-sun.-but-why-would-ibm-buy-sun-microsystems/">
+<meta property="twitter:url" content="/2009/03/wsj-says-ibm-in-talks-to-buy-sun.-but-why-would-ibm-buy-sun-microsystems/">
+<meta property="og:site_name" content="The Place">
+<meta property="og:description" content="The Wall Street Journal Published an article which discuss possibility of IBM buying Sun Microsystems, but why on earth should IBM take over Sun Microsystems when every product which Sun offer has a counterpart in IBM arsenal.
+In software range Sun offers Operating System, Database, Application server family of products, identity management family of product, Integration series of products either developed by Sun or acquired from other companies, Software development tools including NetBeans and its related add-ons.">
+<meta name="twitter:description" content="The Wall Street Journal Published an article which discuss possibility of IBM buying Sun Microsystems, but why on earth should IBM take over Sun Microsystems when every product which Sun offer has a counterpart in IBM arsenal.
+In software range Sun offers Operating System, Database, Application server family of products, identity management family of product, Integration series of products either developed by Sun or acquired from other companies, Software development tools including NetBeans and its related add-ons.">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2009-03-18T00:00:00">
+  
+  
+    <meta property="article:modified_time" content="2009-03-18T00:00:00">
+  
+  
+  
+  
+    
+      <meta property="article:tag" content="Java">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+  <meta name="twitter:site" content="@masoudkalali">
+
+
+  <meta name="twitter:creator" content="@masoudkalali">
+
+
+
+
+
+
+
+
+
+
+  <meta property="og:image" content="/img/avatar.png">
+  <meta property="twitter:image" content="/img/avatar.png">
+
+
+    <title>WSJ says: “IBM in Talks to Buy Sun”. But Why would IBM buy Sun Microsystems?</title>
+
+    <link rel="icon" href="img/favicon.png">
+    
+
+    
+
+    <link rel="canonical" href="/2009/03/wsj-says-ibm-in-talks-to-buy-sun.-but-why-would-ibm-buy-sun-microsystems/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.css" integrity="sha256-vuXZ9LGmmwtjqFX1F+EKin1ThZMub58gKULUyf0qECk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
+    
+    
+    <link rel="stylesheet" href="/css/style-twzjdbqhmnnacqs0pwwdzcdbt8yhv8giawvjqjmyfoqnvazl0dalmnhdkvp7.min.css" />
+    
+    
+
+    
+      
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-137107-12', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="5">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="/">The Place</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="/img/avatar.png" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="5">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="/#about">
+          <img class="sidebar-profile-picture" src="/img/avatar.png" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">Masoud Kalali</h4>
+        
+          <h5 class="sidebar-profile-bio">Software architect with focus on PaaS container platforms, and Java EE, author, technology enthusiast, runner.</h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-home"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/categories">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/tags">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-tags"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/archives">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-archive"></i>
+      
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/#about">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-question"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/https://github.com/kalali">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-github"></i>
+      
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/index.xml">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-rss"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+
+      <div id="main" data-behavior="5"
+        class="
+               hasCoverMetaIn
+               ">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+            <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title" itemprop="headline">
+      WSJ says: “IBM in Talks to Buy Sun”. But Why would IBM buy Sun Microsystems?
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2009-03-18T00:00:00Z">
+        
+  March 18, 2009
+
+      </time>
+    
+    
+  </div>
+
+</div>
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              <p>The Wall Street Journal <a href="http://online.wsj.com/article/SB123735124997967063.html?mod=">Published</a> an article which discuss possibility of IBM buying Sun Microsystems, but why on earth should IBM take over Sun Microsystems when every product which Sun offer has a counterpart in IBM arsenal.</p>
+<p>In software range Sun offers Operating System, Database, Application server family of products, identity management family of product, Integration series of products either developed by Sun or acquired from other companies, Software development tools including NetBeans and its related add-ons. All of these products has a counterpart in IBM series of products.</p>
+<p>In hardware range Sun offers Storages, X86 and Sparc servers, and networking solutions. All of these products have their counterpart in IBM arsenal and having them add no exceptional value to IBM set of available products which make IBM take over Sun Microsystems.</p>
+<p>But Why would IBM think about buying Sun Microsystems and what Sun own that IBM does not?</p>
+<ul>
+<li>First Sun owns Java and all rights over its patents and source codes</li>
+<li>Sun owns some products which I am not aware of any counterpart in IBM offering, these products includes: VirtualBox and X86 virtualization, and Sun xVM Ops for data centre management</li>
+<li>It is told that IBM has the largest patents arsenal but Sun owns enough patents which IBM might be interested to own them</li>
+<li>Although IBM has AIX and there are some undergo efforts to port Solaris to Z architecture but maybe IBM has some more plans with Solaris</li>
+</ul>
+<p>A list of Sun software with their counterpart in IBM arsenal:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">able border=&#34;1&#34; cellspacing=&#34;2&#34; cellpadding=&#34;0&#34;&gt;
+&lt;<span style="color:#f92672">tbody</span>&gt;
+&lt;<span style="color:#f92672">tr</span>&gt;
+    &lt;<span style="color:#f92672">td</span> <span style="color:#a6e22e">bgcolor</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;#c0c0c0&#34;</span>&gt;&lt;<span style="color:#f92672">p</span> <span style="color:#a6e22e">align</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;left&#34;</span>&gt;&lt;<span style="color:#f92672">span</span> <span style="color:#a6e22e">style</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34; background-color:#c0c0c0;&#34;</span>&gt;Sun Product&lt;/<span style="color:#f92672">span</span>&gt;&lt;/<span style="color:#f92672">p</span>&gt;&lt;/<span style="color:#f92672">td</span>&gt;
+    &lt;<span style="color:#f92672">td</span> <span style="color:#a6e22e">bgcolor</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;#c0c0c0&#34;</span>&gt;&lt;<span style="color:#f92672">p</span> <span style="color:#a6e22e">align</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;left&#34;</span>&gt;&lt;<span style="color:#f92672">span</span> <span style="color:#a6e22e">style</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34; background-color:#c0c0c0;&#34;</span>&gt;IBM counterpart&lt;/<span style="color:#f92672">span</span>&gt;&lt;/<span style="color:#f92672">p</span>&gt;
+        &lt;<span style="color:#f92672">p</span> <span style="color:#a6e22e">align</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;left&#34;</span>&gt;&lt;/<span style="color:#f92672">p</span>&gt;
+        &lt;<span style="color:#f92672">p</span>&gt;&lt;/<span style="color:#f92672">p</span>&gt;&lt;/<span style="color:#f92672">td</span>&gt;
+&lt;/<span style="color:#f92672">tr</span>&gt;
+&lt;<span style="color:#f92672">tr</span>&gt;
+    &lt;<span style="color:#f92672">td</span>&gt;&lt;<span style="color:#f92672">p</span> <span style="color:#a6e22e">align</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;left&#34;</span>&gt;&lt;<span style="color:#f92672">a</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;http://openjdk.java.net/&#34;</span>&gt;Sun JDK*&lt;/<span style="color:#f92672">a</span>&gt;&lt;/<span style="color:#f92672">p</span>&gt;&lt;/<span style="color:#f92672">td</span>&gt;
+    &lt;<span style="color:#f92672">td</span>&gt;&lt;<span style="color:#f92672">p</span> <span style="color:#a6e22e">align</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;left&#34;</span>&gt;IBM &lt;<span style="color:#f92672">a</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;http://www.ibm.com/developerworks/java/jdk/&#34;</span>&gt;JDK&lt;/<span style="color:#f92672">a</span>&gt;, although I think IBM licensed
+        Some part of Sun JDK to avoid developing them again (class path?)&lt;/<span style="color:#f92672">p</span>&gt;
+        &lt;<span style="color:#f92672">p</span> <span style="color:#a6e22e">align</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;left&#34;</span>&gt;&lt;/<span style="color:#f92672">p</span>&gt;
+        &lt;<span style="color:#f92672">p</span>&gt;&lt;/<span style="color:#f92672">p</span>&gt;&lt;/<span style="color:#f92672">td</span>&gt;
+&lt;/<span style="color:#f92672">tr</span>&gt;
+&lt;<span style="color:#f92672">tr</span>&gt;
+    &lt;<span style="color:#f92672">td</span>&gt;&lt;<span style="color:#f92672">p</span> <span style="color:#a6e22e">align</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;left&#34;</span>&gt;&lt;<span style="color:#f92672">a</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;http://www.netbeans.org/&#34;</span>&gt;NetBeans&lt;/<span style="color:#f92672">a</span>&gt; and &lt;<span style="color:#f92672">a</span>
+            <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;http://developers.sun.com/sunstudio&#34;</span>&gt;Sun Studio&lt;/<span style="color:#f92672">a</span>&gt; series of products (For Java, C++ and so on)*&lt;/<span style="color:#f92672">p</span>&gt;
+    &lt;/<span style="color:#f92672">td</span>&gt;
+    &lt;<span style="color:#f92672">td</span>&gt;&lt;<span style="color:#f92672">p</span> <span style="color:#a6e22e">align</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;left&#34;</span>&gt;&lt;<span style="color:#f92672">a</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;http://www.eclipse.org/&#34;</span>&gt;Eclipse&lt;/<span style="color:#f92672">a</span>&gt; and &lt;<span style="color:#f92672">a</span>
+            <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;http://www.ibm.com/software/rational/&#34;</span>&gt;Rational line of products&lt;/<span style="color:#f92672">a</span>&gt;(For Java, C++ and so on)&lt;/<span style="color:#f92672">p</span>&gt;
+        &lt;<span style="color:#f92672">p</span> <span style="color:#a6e22e">align</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;left&#34;</span>&gt;&lt;/<span style="color:#f92672">p</span>&gt;
+        &lt;<span style="color:#f92672">p</span>&gt;&lt;/<span style="color:#f92672">p</span>&gt;&lt;/<span style="color:#f92672">td</span>&gt;
+&lt;/<span style="color:#f92672">tr</span>&gt;
+&lt;<span style="color:#f92672">tr</span>&gt;
+    &lt;<span style="color:#f92672">td</span>&gt;&lt;<span style="color:#f92672">p</span> <span style="color:#a6e22e">align</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;left&#34;</span>&gt;Sun middle-ware product line including but not limited to: &lt;<span style="color:#f92672">a</span>
+            <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;http://GlassFish.dev.java.net/&#34;</span>&gt;GlassFish&lt;/<span style="color:#f92672">a</span>&gt;, &lt;<span style="color:#f92672">a</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;https://portlet-container.dev.java.net/&#34;</span>&gt;Portal&lt;/<span style="color:#f92672">a</span>&gt;,
+        Sun Identity management, &lt;<span style="color:#f92672">a</span>
+                <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;https://www.sun.com/software/javaenterprisesystem/javacaps/index.jsp/&#34;</span>&gt;JCAPS&lt;/<span style="color:#f92672">a</span>&gt; and &lt;<span style="color:#f92672">a</span>
+                <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;https://open-esb.dev.java.net/&#34;</span>&gt;OpenESB&lt;/<span style="color:#f92672">a</span>&gt;, and so on.*&lt;/<span style="color:#f92672">p</span>&gt;&lt;/<span style="color:#f92672">td</span>&gt;
+    &lt;<span style="color:#f92672">td</span>&gt;&lt;<span style="color:#f92672">p</span> <span style="color:#a6e22e">align</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;left&#34;</span>&gt;&lt;<span style="color:#f92672">a</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;http://www.ibm.com/websphere/&#34;</span>&gt;IBM Websphere&lt;/<span style="color:#f92672">a</span>&gt; product line including but not limited
+        to: Application server, Portal, Tivoli Identity management, ESB, and so on.&lt;/<span style="color:#f92672">p</span>&gt;
+        &lt;<span style="color:#f92672">p</span> <span style="color:#a6e22e">align</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;left&#34;</span>&gt;&lt;/<span style="color:#f92672">p</span>&gt;
+        &lt;<span style="color:#f92672">p</span>&gt;&lt;/<span style="color:#f92672">p</span>&gt;&lt;/<span style="color:#f92672">td</span>&gt;
+&lt;/<span style="color:#f92672">tr</span>&gt;
+&lt;<span style="color:#f92672">tr</span>&gt;
+    &lt;<span style="color:#f92672">td</span>&gt;&lt;<span style="color:#f92672">p</span> <span style="color:#a6e22e">align</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;left&#34;</span>&gt;&lt;<span style="color:#f92672">a</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;http://www.sun.com/software/solaris/&#34;</span>&gt;Sun Solaris*&lt;/<span style="color:#f92672">a</span>&gt;&lt;/<span style="color:#f92672">p</span>&gt;&lt;/<span style="color:#f92672">td</span>&gt;
+    &lt;<span style="color:#f92672">td</span>&gt;&lt;<span style="color:#f92672">p</span> <span style="color:#a6e22e">align</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;left&#34;</span>&gt;&lt;<span style="color:#f92672">a</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;http://www.ibm.com/servers/aix&#34;</span>&gt;IBM AIX&lt;/<span style="color:#f92672">a</span>&gt;, &lt;<span style="color:#f92672">a</span>
+            <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;http://www.ibm.com/systems/z/os/zos/&#34;</span>&gt;Z/OS&lt;/<span style="color:#f92672">a</span>&gt;, Z/VM and whatever Z starting word that you can write
+        here&lt;/<span style="color:#f92672">p</span>&gt;
+        &lt;<span style="color:#f92672">p</span> <span style="color:#a6e22e">align</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;left&#34;</span>&gt;&lt;/<span style="color:#f92672">p</span>&gt;
+        &lt;<span style="color:#f92672">p</span>&gt;&lt;/<span style="color:#f92672">p</span>&gt;&lt;/<span style="color:#f92672">td</span>&gt;
+&lt;/<span style="color:#f92672">tr</span>&gt;
+&lt;<span style="color:#f92672">tr</span>&gt;
+    &lt;<span style="color:#f92672">td</span>&gt;&lt;<span style="color:#f92672">p</span> <span style="color:#a6e22e">align</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;left&#34;</span>&gt;&lt;<span style="color:#f92672">a</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;http://www.sun.com/software/products/mysql/index.jsp&#34;</span>&gt;MySQL&lt;/<span style="color:#f92672">a</span>&gt; as a product which Sun
+        owns, Java DB and PostGreSQL support*&lt;/<span style="color:#f92672">p</span>&gt;&lt;/<span style="color:#f92672">td</span>&gt;
+    &lt;<span style="color:#f92672">td</span>&gt;&lt;<span style="color:#f92672">p</span> <span style="color:#a6e22e">align</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;left&#34;</span>&gt;&lt;<span style="color:#f92672">a</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;http://www.ibm.com/db2&#34;</span>&gt;DB2&lt;/<span style="color:#f92672">a</span>&gt;, DB2 express edition, DB2 community edition, Informix
+        dynamic server(is it still alive?)&lt;/<span style="color:#f92672">p</span>&gt;
+        &lt;<span style="color:#f92672">p</span> <span style="color:#a6e22e">align</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;left&#34;</span>&gt;&lt;/<span style="color:#f92672">p</span>&gt;
+        &lt;<span style="color:#f92672">p</span>&gt;&lt;/<span style="color:#f92672">p</span>&gt;&lt;/<span style="color:#f92672">td</span>&gt;
+&lt;/<span style="color:#f92672">tr</span>&gt;
+&lt;<span style="color:#f92672">tr</span>&gt;
+    &lt;<span style="color:#f92672">td</span>&gt;&lt;<span style="color:#f92672">p</span> <span style="color:#a6e22e">align</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;left&#34;</span>&gt;&lt;<span style="color:#f92672">a</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;http://www.javafx.com&#34;</span>&gt;JavaFX&lt;/<span style="color:#f92672">a</span>&gt;&lt;/<span style="color:#f92672">p</span>&gt;&lt;/<span style="color:#f92672">td</span>&gt;
+    &lt;<span style="color:#f92672">td</span>&gt;&lt;<span style="color:#f92672">p</span> <span style="color:#a6e22e">align</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;left&#34;</span>&gt;Nothing that I am aware of&lt;/<span style="color:#f92672">p</span>&gt;
+        &lt;<span style="color:#f92672">p</span> <span style="color:#a6e22e">align</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;left&#34;</span>&gt;&lt;/<span style="color:#f92672">p</span>&gt;
+        &lt;<span style="color:#f92672">p</span>&gt;&lt;/<span style="color:#f92672">p</span>&gt;&lt;/<span style="color:#f92672">td</span>&gt;
+&lt;/<span style="color:#f92672">tr</span>&gt;
+&lt;<span style="color:#f92672">tr</span>&gt;
+    &lt;<span style="color:#f92672">td</span>&gt;&lt;<span style="color:#f92672">p</span> <span style="color:#a6e22e">align</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;left&#34;</span>&gt;&lt;<span style="color:#f92672">a</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;http://www.virtualbox.org/&#34;</span>&gt;X86 virtualization*&lt;/<span style="color:#f92672">a</span>&gt;&lt;/<span style="color:#f92672">p</span>&gt;&lt;/<span style="color:#f92672">td</span>&gt;
+    &lt;<span style="color:#f92672">td</span>&gt;&lt;<span style="color:#f92672">p</span> <span style="color:#a6e22e">align</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;left&#34;</span>&gt;Nothing that I am aware of&lt;/<span style="color:#f92672">p</span>&gt;
+        &lt;<span style="color:#f92672">p</span> <span style="color:#a6e22e">align</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;left&#34;</span>&gt;&lt;/<span style="color:#f92672">p</span>&gt;
+        &lt;<span style="color:#f92672">p</span>&gt;&lt;/<span style="color:#f92672">p</span>&gt;&lt;/<span style="color:#f92672">td</span>&gt;
+&lt;/<span style="color:#f92672">tr</span>&gt;
+&lt;<span style="color:#f92672">tr</span>&gt;
+    &lt;<span style="color:#f92672">td</span>&gt;&lt;<span style="color:#f92672">p</span> <span style="color:#a6e22e">align</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;left&#34;</span>&gt;&lt;<span style="color:#f92672">a</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;www.sun.com/software/products/xvmopscenter/index.jsp&#34;</span>&gt;Data Centre management(Sun xVM
+        Ops center)&lt;/<span style="color:#f92672">a</span>&gt;&lt;/<span style="color:#f92672">p</span>&gt;&lt;/<span style="color:#f92672">td</span>&gt;
+    &lt;<span style="color:#f92672">td</span>&gt;&lt;<span style="color:#f92672">p</span> <span style="color:#a6e22e">align</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;left&#34;</span>&gt;Nothing that I am aware of&lt;/<span style="color:#f92672">p</span>&gt;&lt;/<span style="color:#f92672">td</span>&gt;
+&lt;/<span style="color:#f92672">tr</span>&gt;
+&lt;/<span style="color:#f92672">tbody</span>&gt;&lt;/<span style="color:#f92672">table</span>&gt;
+</code></pre></div><p>*All of these products except JCAPS and Sun xVM Ops are open source. And all of them are high quality with a well established community of user and third party companies which are involved in their development.</p>
+<p>Now, Why could be possible reason that we hear &ldquo;IBM in Talks to Buy Sun&rdquo;? The reason can be:</p>
+<ul>
+<li>Patents and rights that Sun is holding over Java, Sparc and Solaris</li>
+<li>The Open Source model which Sun introduced and looks to be successful</li>
+<li>Open Source products that Sun is developing and have gained enough attraction from the community which result in &ldquo;IBM in Talks to Buy Sun&rdquo; once more.</li>
+<li>Brilliant architects, engineers, and evangelists which are working for Sun Microsytems</li>
+<li>Some software and functionalities which IBM does not own</li>
+<li>Customers and community to gain more market share, specially in middle range market</li>
+<li>Maybe IBM is interested in un-released Sun Cloud Computing&hellip; Sun is known to either does not enter an area or if entered provides a very good product or service in that area, technically speaking.</li>
+</ul>
+<p>What can happen if IBM take over Sun Microsytems? The answer is: no one knows expect those IBM super managers which are possibly thinking about this take over. But some predictions:</p>
+<ul>
+<li>Java will evolve much faster as IBM has more man power to assign to it</li>
+<li>OpenSolaris will get more attention and possibly replace AIX in long term</li>
+<li>MySQL and Sun middle-ware products will form a big bundle of highly integrated, high quality Open Source products and bring more revenue to IBM</li>
+<li>IBM will lay off some Sun employees, specially in sales and marketing section because they have many sales and marketing employees</li>
+<li>NetBeans and Eclipse? I can not comment with more than 20 percent of certainty, but I think either IBM kill all middle-ware or work on NetBeans development for as long as they provide all NetBeans functionalities that support Sun middle-ware development in Eclipse</li>
+<li>JavaFX will see a boost in development as IBM can afford more man power</li>
+<li>Swing and SWT story? I think IBM will keep Swing as a part of JRE but hey will push SWT as a part of the JRE to ensure it will get enough chance of growing in the market</li>
+<li>Responsibilities for providing support for Java, JCP, TCK and&hellip; will be given to a foundation organized by IBM, Oracle, RedHat, &hellip;</li>
+</ul>
+<p>I may have missed some items due to short term forgetfulness or being completely unaware of their presence. If you happen to know them, let me know and I will include it in this blog.</p>
+
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="/tags/java/">Java</a>
+
+                  </div>
+                
+              
+            
+            <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2009/03/monitoring-glassfish-application-servers-http-service-using-visualvm./" data-tooltip="Monitoring GlassFish application server’s HTTP Service using VisualVM.">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2009/03/experimenting-replication-and-failover-recovery-high-availability-with-opends-1.3-build-1/" data-tooltip="Experimenting replication and failover recovery (High Availability) with OpenDS 1.3 Build 1">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2009/03/wsj-says-ibm-in-talks-to-buy-sun.-but-why-would-ibm-buy-sun-microsystems/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2009/03/wsj-says-ibm-in-talks-to-buy-sun.-but-why-would-ibm-buy-sun-microsystems/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+            
+              
+                <div id="disqus_thread">
+  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2020 Masoud Kalali. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+        <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2009/03/monitoring-glassfish-application-servers-http-service-using-visualvm./" data-tooltip="Monitoring GlassFish application server’s HTTP Service using VisualVM.">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2009/03/experimenting-replication-and-failover-recovery-high-availability-with-opends-1.3-build-1/" data-tooltip="Experimenting replication and failover recovery (High Availability) with OpenDS 1.3 Build 1">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2009/03/wsj-says-ibm-in-talks-to-buy-sun.-but-why-would-ibm-buy-sun-microsystems/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2009/03/wsj-says-ibm-in-talks-to-buy-sun.-but-why-would-ibm-buy-sun-microsystems/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+  <i id="btn-close-shareoptions" class="fa fa-close"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=%2F2009%2F03%2Fwsj-says-ibm-in-talks-to-buy-sun.-but-why-would-ibm-buy-sun-microsystems%2F">
+          <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=%2F2009%2F03%2Fwsj-says-ibm-in-talks-to-buy-sun.-but-why-would-ibm-buy-sun-microsystems%2F">
+          <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="/img/avatar.png" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">Masoud Kalali</h4>
+    
+      <div id="about-card-bio">Software architect with focus on PaaS container platforms, and Java EE, author, technology enthusiast, runner.</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Software engineer
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        Sweden
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      <div id="cover" style="background-image:url('images/cover.jpg');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
+
+
+<script src="/js/script-pcw6v3xilnxydl1vddzazdverrnn9ctynvnxgwho987mfyqkuylcb1nlt.min.js"></script>
+
+
+<script lang="javascript">
+window.onload = updateMinWidth;
+window.onresize = updateMinWidth;
+document.getElementById("sidebar").addEventListener("transitionend", updateMinWidth);
+function updateMinWidth() {
+  var sidebar = document.getElementById("sidebar");
+  var main = document.getElementById("main");
+  main.style.minWidth = "";
+  var w1 = getComputedStyle(main).getPropertyValue("min-width");
+  var w2 = getComputedStyle(sidebar).getPropertyValue("width");
+  var w3 = getComputedStyle(sidebar).getPropertyValue("left");
+  main.style.minWidth = `calc(${w1} - ${w2} - ${w3})`;
+}
+</script>
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+  
+    
+      <script>
+        var disqus_config = function () {
+          this.page.url = '\/2009\/03\/wsj-says-ibm-in-talks-to-buy-sun.-but-why-would-ibm-buy-sun-microsystems\/';
+          
+            this.page.identifier = '\/2009\/03\/wsj-says-ibm-in-talks-to-buy-sun.-but-why-would-ibm-buy-sun-microsystems\/'
+          
+        };
+        (function() {
+          
+          
+          if (window.location.hostname == "localhost") {
+            return;
+          }
+          var d = document, s = d.createElement('script');
+          var disqus_shortname = 'hugo-tranquilpeak-theme';
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      </script>
+    
+  
+
+
+
+
+    
+  </body>
+</html>
+

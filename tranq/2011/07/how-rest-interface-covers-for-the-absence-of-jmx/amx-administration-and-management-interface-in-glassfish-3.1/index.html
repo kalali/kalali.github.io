@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.71.1 with theme Tranquilpeak 0.4.8-BETA">
+<meta name="author" content="Masoud Kalali">
+<meta name="keywords" content=", development, next-gen, Kubernetes, Cloud, Java">
+<meta name="description" content="For sometime I wanted to write this entry and explain what happened to GlassFish JMX/AMX management and administration interface but being busy with other stuff prevented me from doing so. This article here can be an upgrade to my other article about GlassFish 3.0 JMX administration interface which I wrote while ago. Long story short, in GlassFish 3.1 the AMX/JMX is no longer available and instead we can use the REST interface to change the server settings and perform all administration/management and monitoring activities we need.">
+
+
+<meta property="og:description" content="For sometime I wanted to write this entry and explain what happened to GlassFish JMX/AMX management and administration interface but being busy with other stuff prevented me from doing so. This article here can be an upgrade to my other article about GlassFish 3.0 JMX administration interface which I wrote while ago. Long story short, in GlassFish 3.1 the AMX/JMX is no longer available and instead we can use the REST interface to change the server settings and perform all administration/management and monitoring activities we need.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="How REST interface covers for the absence of JMX/AMX administration and management interface in GlassFish 3.1">
+<meta name="twitter:title" content="How REST interface covers for the absence of JMX/AMX administration and management interface in GlassFish 3.1">
+<meta property="og:url" content="/2011/07/how-rest-interface-covers-for-the-absence-of-jmx/amx-administration-and-management-interface-in-glassfish-3.1/">
+<meta property="twitter:url" content="/2011/07/how-rest-interface-covers-for-the-absence-of-jmx/amx-administration-and-management-interface-in-glassfish-3.1/">
+<meta property="og:site_name" content="The Place">
+<meta property="og:description" content="For sometime I wanted to write this entry and explain what happened to GlassFish JMX/AMX management and administration interface but being busy with other stuff prevented me from doing so. This article here can be an upgrade to my other article about GlassFish 3.0 JMX administration interface which I wrote while ago. Long story short, in GlassFish 3.1 the AMX/JMX is no longer available and instead we can use the REST interface to change the server settings and perform all administration/management and monitoring activities we need.">
+<meta name="twitter:description" content="For sometime I wanted to write this entry and explain what happened to GlassFish JMX/AMX management and administration interface but being busy with other stuff prevented me from doing so. This article here can be an upgrade to my other article about GlassFish 3.0 JMX administration interface which I wrote while ago. Long story short, in GlassFish 3.1 the AMX/JMX is no longer available and instead we can use the REST interface to change the server settings and perform all administration/management and monitoring activities we need.">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2011-07-28T00:00:00">
+  
+  
+    <meta property="article:modified_time" content="2011-07-28T00:00:00">
+  
+  
+  
+  
+    
+      <meta property="article:tag" content="Java">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+  <meta name="twitter:site" content="@masoudkalali">
+
+
+  <meta name="twitter:creator" content="@masoudkalali">
+
+
+
+
+
+
+
+
+
+
+  <meta property="og:image" content="/img/avatar.png">
+  <meta property="twitter:image" content="/img/avatar.png">
+
+
+    <title>How REST interface covers for the absence of JMX/AMX administration and management interface in GlassFish 3.1</title>
+
+    <link rel="icon" href="img/favicon.png">
+    
+
+    
+
+    <link rel="canonical" href="/2011/07/how-rest-interface-covers-for-the-absence-of-jmx/amx-administration-and-management-interface-in-glassfish-3.1/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.css" integrity="sha256-vuXZ9LGmmwtjqFX1F+EKin1ThZMub58gKULUyf0qECk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
+    
+    
+    <link rel="stylesheet" href="/css/style-twzjdbqhmnnacqs0pwwdzcdbt8yhv8giawvjqjmyfoqnvazl0dalmnhdkvp7.min.css" />
+    
+    
+
+    
+      
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-137107-12', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="5">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="/">The Place</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="/img/avatar.png" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="5">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="/#about">
+          <img class="sidebar-profile-picture" src="/img/avatar.png" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">Masoud Kalali</h4>
+        
+          <h5 class="sidebar-profile-bio">Software architect with focus on PaaS container platforms, and Java EE, author, technology enthusiast, runner.</h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-home"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/categories">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/tags">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-tags"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/archives">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-archive"></i>
+      
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/#about">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-question"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/https://github.com/kalali">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-github"></i>
+      
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/index.xml">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-rss"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+
+      <div id="main" data-behavior="5"
+        class="
+               hasCoverMetaIn
+               ">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+            <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title" itemprop="headline">
+      How REST interface covers for the absence of JMX/AMX administration and management interface in GlassFish 3.1
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2011-07-28T00:00:00Z">
+        
+  July 28, 2011
+
+      </time>
+    
+    
+  </div>
+
+</div>
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              <p>For sometime I wanted to write this entry and explain what happened to GlassFish JMX/AMX management and administration interface but being busy with other stuff prevented me from doing so. This article here can be an upgrade to my other article about <a href="http://kalali.me/manage-administrate-and-monitor-glassfish-v3-from-java-code-using-amx-jmx/">GlassFish 3.0 JMX administration interface</a> which I wrote while ago. Long story short, in GlassFish 3.1 the AMX/JMX is no longer available and instead we can use the <a href="http://wiki.glassfish.java.net/attach/V3FunctionalSpecs/HTTPInterfaceForAdministartion.html">REST interface</a> to change the server settings and perform all administration/management and monitoring activities we need. There are fair number of articles and blog entries all over the web about the RESTful interface which I included them at the end of this blog. Firs of all the rest interface is available trough the administration console application meaning that we can access the interface using a URL similar to: <a href="http://localhost:4848/management/domain/">http://localhost:4848/management/domain/</a> The administration console and the rest interface  are running on a separate virtual server and therefore a separate HTTP Listener and if required transport configuration. What I will explain here will be the following items:</p>
+<ul>
+<li>How to use Apache HttpClient to perform administration tasks using GlassFish REST interface</li>
+<li>How to find the request parameters for different commands.</li>
+<li>GlassFish administration, authentication and transport security</li>
+</ul>
+<h3 id="how-to-use-apache-httpclient-to-interact-with-glassfish-administration-and-management-application">How to use Apache HttpClient to interact with GlassFish administration and management application</h3>
+<p>Now back to the RESTful interface, this is a HTTP based interaction channel with the GlassFish administration infrastructure which basically allows us to do almost anything possible to do using asadmin trhough HTTP in a RESTful manner. We can use basically any programming language capable to writing on a socket to interact with the RESTFul interface. Here we will use <a href="http://hc.apache.org/httpcomponents-client-ga/index.html" title="Apche HTTPClient">Apache HTTPClient</a> to take care of sending the commands to GlassFish RESTFul console. When using GlassFish REST management we can use any of the POST/GET and DELETE methods to perform the following tasks:</p>
+<ul>
+<li>POST: create and partially update a resource</li>
+<li>GET: get information like details of a connection pool</li>
+<li>DELETE: to delete a resource</li>
+</ul>
+<p>Following sample code shows how to use the  to perform some basic operations including updating a resource, getting some resources list, creating a resource and finally deleting it. [java] import java.io.BufferedReader; import java.io.IOException; import java.io.InputStream; import java.io.InputStreamReader; import java.net.URISyntaxException; import java.util.logging.Logger; import org.apache.http.HttpEntity; import org.apache.http.HttpException; import org.apache.http.HttpResponse; import org.apache.http.auth.AuthenticationException; import org.apache.http.client.HttpClient; import org.apache.http.client.methods.HttpDelete; import org.apache.http.client.methods.HttpGet; import org.apache.http.client.methods.HttpPost; import org.apache.http.entity.StringEntity; import org.apache.http.impl.client.DefaultHttpClient; import org.apache.http.message.BasicHeader; import org.apache.http.protocol.HTTP; /** * * @author Masoud Kalali */ public class AdminGlassFish { //change the ports to your own settng private static final String ADMINISTRATION_URL = &ldquo;http://localhost:4848/management&rdquo;; private static final String MONITORING_URL = &ldquo;http://localhost:4848/monitoring&rdquo;; private static final String CONTENT_TYPE_JSON = &ldquo;application/json&rdquo;; private static final String CONTENT_TYPE_XML = &ldquo;application/xml&rdquo;; private static final String ACCEPT_ALL = &ldquo;text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8&rdquo;; private static final Logger LOG = Logger.getLogger(AdminGlassFish.class.getName()); public static void main(String args[]) throws IOException, HttpException, URISyntaxException { //just chaning the indent level for the JSON and XML output to make them readable, for humans&hellip; String prettyFormatRestInterfaceOutput = &ldquo;{&ldquo;indentLevel&rdquo;:2}&quot;; String response = postInformation(&quot;/domain/configs/config/server-config/_set-rest-admin-config&rdquo;, prettyFormatRestInterfaceOutput); LOG.info(response); //getting list of all JDBC resources String jdbcResources = getInformation(&quot;/domain/resources/list-jdbc-resources&rdquo;); LOG.info(jdbcResources); // creating a JDBC resource on top of the default pool String createJDBCResource = &ldquo;{&ldquo;id&rdquo;:&ldquo;jdbc/Made-By-Rest&rdquo;,&ldquo;poolName&rdquo;:&ldquo;DerbyPool&rdquo;}&quot;; String resourceCreationResponse = postInformation(&quot;/domain/resources/jdbc-resource&rdquo;, createJDBCResource); LOG.info(resourceCreationResponse); // deleting a JDBC resource String deletionReponse = deleteResource(&quot;/domain/resources/jdbc-resource/jdbc%2FMade-By-Rest&rdquo;); LOG.info(deletionReponse); } //using HTTP get public static String getInformation(String resourcePath) throws IOException, AuthenticationException { DefaultHttpClient httpClient = new DefaultHttpClient(); HttpGet httpG = new HttpGet(ADMINISTRATION_URL + resourcePath); httpG.setHeader(&ldquo;Accept&rdquo;, CONTENT_TYPE_XML); HttpResponse response = httpClient.execute(httpG); HttpEntity entity = response.getEntity(); InputStream instream = entity.getContent(); return isToString(instream); } //using HTTP post for creating and partially updating resources public static String postInformation(String resourcePath, String content) throws IOException { HttpClient httpClient = new DefaultHttpClient(); HttpPost httpPost = new HttpPost(ADMINISTRATION_URL + resourcePath); StringEntity entity = new StringEntity(content); //setting the content type entity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, CONTENT_TYPE_JSON)); httpPost.addHeader(&ldquo;Accept&rdquo;,ACCEPT_ALL); httpPost.setEntity(entity); HttpResponse response = httpClient.execute(httpPost); return response.toString(); } //using HTTP delete to delete a resource public static String deleteResource(String resourcePath) throws IOException { HttpClient httpClient = new DefaultHttpClient(); HttpDelete httpDelete = new HttpDelete(ADMINISTRATION_URL + resourcePath); httpDelete.addHeader(&ldquo;Accept&rdquo;, ACCEPT_ALL); HttpResponse response = httpClient.execute(httpDelete); return response.toString(); } //converting the get output stream to something printable private static String isToString(InputStream in) throws IOException { StringBuilder sb = new StringBuilder(); BufferedReader br = new BufferedReader(new InputStreamReader(in), 1024); for (String line = br.readLine(); line != null; line = br.readLine()) { sb.append(line); } in.close(); return sb.toString(); } } [/java] You may ask how could one know what are the required attributes names, there are several ways to do it:</p>
+<ul>
+<li>Look at the reference documents&hellip;</li>
+<li>View the source code of the html page representing that kind of resource, for example for the JDBC resource it is like http://localhost:4848/management/domain/resources/jdbc-resource which if you open it in the browser you will see an html page and viewing its source will give you the names of different attributes. I think the label for the attributes is also the same as the attributes themselves.</li>
+</ul>
+<p><a href="http://dl.dropbox.com/u/334201/jn-blog-files/html_form.png"><img src="http://dl.dropbox.com/u/334201/jn-blog-files/html_form.png" alt="" title="Using the HTML representation"></a></p>
+<ul>
+<li>Submit the above page and monitor the request using your browser plugin, for example in case of chrome and for the JDBC resource it is like the following picture</li>
+</ul>
+<p><a href="http://dl.dropbox.com/u/334201/jn-blog-files/http_request.png"><img src="http://dl.dropbox.com/u/334201/jn-blog-files/http_request.png" alt="" title="Using Chrome Development tools"></a></p>
+<h3 id="glassfish-administration-authentication-and-transport-security">GlassFish administration, authentication and transport security</h3>
+<p>By default when we install GlassFish or we create a domain the domain administration console is not protected by authentication nor it is protected by HTTPS so whatever we send to the application server from through this channel will be readable by someone sniffing around. Therefore you may need to enable authentication using the following command:</p>
+<p>./asadmin change-admin-password</p>
+<p>You may ask now that we enabled the authenticaiton for the admin console, how we can use it by our sample code, the answer is quite simple,  Just set the credentials for the request object and you are done. Something like: [java] UsernamePasswordCredentials cred = new UsernamePasswordCredentials(&ldquo;admin&rdquo;, &ldquo;admin&rdquo;); httpget.addHeader(new BasicScheme().authenticate(cred, httpget)); [/java] Make sure that you are using correct username and passwords as well as correct request object. In this case the request object is httpGet Now about the HTTPs to have have encryption during the transport we need to enable the SSL for the admin HTTP listener. following steps show how to use the RESTFul interface through a browser to enable HTTPS for the admin console. When using the browser, GlassFish admin console shows basic HML forms for different resources.</p>
+<ol>
+<li>Open the <a href="http://localhost:4848/management/domain/configs/config/server-config/network-config/protocols/protocol/admin-listener" title="http://localhost:4848/management/domain/configs/config/server-config/network-config/protocols/protocol/admin-listener">http://localhost:4848/management/domain/configs/config/server-config/network-config/protocols/protocol/admin-listener</a> in the browser</li>
+<li>Select true for security-enabled option element</li>
+<li>Click Update to save the settings.</li>
+<li>Restart server using <a href="http://localhost:4848/management/domain/restart" title="http://localhost:4848/management/domain/restart">http://localhost:4848/management/domain/restart</a></li>
+</ol>
+<p>The above steps have the same effect as</p>
+<p>./asadmin enable-secure-admin</p>
+<p>This will enable the SSL layer for the admin-listener but it will use the default, self singed certificate. Here I explained how to <a href="http://kalali.me/how-to-prepare-for-and-install-godaddy-ssl-certificate-into-glassfish-v3/">install a GoDaddy digital certificate into GlassFish</a> application server to be sure that none can listen during the transport of command parameters and on the other hand the certificate is valid instead of being self signed. And here I explained <a href="http://kalali.me/glassfish-v3-and-ejbca-3-x-a-fair-couple-for-mutual-ssl-authentication/">how one can use the EJBCA to setup and use an small inter-corporate certificate authority with GlassFish</a>, though the manual is a little old but it will give you enough understanding to use the newer version of EJBCA. If you are asking about how our small sample application can work with this dummy self signed certificate of GlassFish you need to wait till next time that I will explain how to bypass the invalid certificate installed on our test server. In the next part of this series I will cover more details on the monitoring part as well as discussing  how to bypass the self signed Digital certificate during the development&hellip;</p>
+
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="/tags/java/">Java</a>
+
+                  </div>
+                
+              
+            
+            <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2011/08/a-walkthrough-for-the-fork/join-framework-introduced-in-java-se-7/" data-tooltip="A walkthrough for the fork/join framework introduced in Java SE 7">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2011/07/updating-web-applications-spring-context-from-beans-definitions-partially-stored-in-the-database/" data-tooltip="Updating Web application’s Spring Context from Beans definitions partially stored in the database…">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2011/07/how-rest-interface-covers-for-the-absence-of-jmx/amx-administration-and-management-interface-in-glassfish-3.1/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2011/07/how-rest-interface-covers-for-the-absence-of-jmx/amx-administration-and-management-interface-in-glassfish-3.1/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+            
+              
+                <div id="disqus_thread">
+  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2020 Masoud Kalali. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+        <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2011/08/a-walkthrough-for-the-fork/join-framework-introduced-in-java-se-7/" data-tooltip="A walkthrough for the fork/join framework introduced in Java SE 7">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2011/07/updating-web-applications-spring-context-from-beans-definitions-partially-stored-in-the-database/" data-tooltip="Updating Web application’s Spring Context from Beans definitions partially stored in the database…">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2011/07/how-rest-interface-covers-for-the-absence-of-jmx/amx-administration-and-management-interface-in-glassfish-3.1/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2011/07/how-rest-interface-covers-for-the-absence-of-jmx/amx-administration-and-management-interface-in-glassfish-3.1/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+  <i id="btn-close-shareoptions" class="fa fa-close"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=%2F2011%2F07%2Fhow-rest-interface-covers-for-the-absence-of-jmx%2Famx-administration-and-management-interface-in-glassfish-3.1%2F">
+          <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=%2F2011%2F07%2Fhow-rest-interface-covers-for-the-absence-of-jmx%2Famx-administration-and-management-interface-in-glassfish-3.1%2F">
+          <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="/img/avatar.png" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">Masoud Kalali</h4>
+    
+      <div id="about-card-bio">Software architect with focus on PaaS container platforms, and Java EE, author, technology enthusiast, runner.</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Software engineer
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        Sweden
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      <div id="cover" style="background-image:url('images/cover.jpg');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
+
+
+<script src="/js/script-pcw6v3xilnxydl1vddzazdverrnn9ctynvnxgwho987mfyqkuylcb1nlt.min.js"></script>
+
+
+<script lang="javascript">
+window.onload = updateMinWidth;
+window.onresize = updateMinWidth;
+document.getElementById("sidebar").addEventListener("transitionend", updateMinWidth);
+function updateMinWidth() {
+  var sidebar = document.getElementById("sidebar");
+  var main = document.getElementById("main");
+  main.style.minWidth = "";
+  var w1 = getComputedStyle(main).getPropertyValue("min-width");
+  var w2 = getComputedStyle(sidebar).getPropertyValue("width");
+  var w3 = getComputedStyle(sidebar).getPropertyValue("left");
+  main.style.minWidth = `calc(${w1} - ${w2} - ${w3})`;
+}
+</script>
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+  
+    
+      <script>
+        var disqus_config = function () {
+          this.page.url = '\/2011\/07\/how-rest-interface-covers-for-the-absence-of-jmx\/amx-administration-and-management-interface-in-glassfish-3.1\/';
+          
+            this.page.identifier = '\/2011\/07\/how-rest-interface-covers-for-the-absence-of-jmx\/amx-administration-and-management-interface-in-glassfish-3.1\/'
+          
+        };
+        (function() {
+          
+          
+          if (window.location.hostname == "localhost") {
+            return;
+          }
+          var d = document, s = d.createElement('script');
+          var disqus_shortname = 'hugo-tranquilpeak-theme';
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      </script>
+    
+  
+
+
+
+
+    
+  </body>
+</html>
+

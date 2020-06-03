@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>XML on The Place</title>
+    <link>/tags/xml/</link>
+    <description>Recent content in XML on The Place</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Mon, 24 Apr 2006 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/xml/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>overview of XML Parsing in java , different methods and libraries</title>
+      <link>/post/2006-04-24-overview-of-xml-parsing-in-java-different-methods-and-libraries/</link>
+      <pubDate>Mon, 24 Apr 2006 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2006-04-24-overview-of-xml-parsing-in-java-different-methods-and-libraries/</guid>
+      <description>what are different technologies and implementations to simply pars some XML files ?
+What Java provide you to pars XML files ?
+Iin this blog entry After answering the above questions , i will introduce (by name and method of parsing) some XML parser available in java land.we may talk more about each of them in next entries.
+First lets see what are different methods to pars XML files. There are Two major XML parsing method , one of them is Old and Standard method using a DOM (Documet Object Model) and the other is Stream and Event Based Parsing.</description>
+    </item>
+    
+  </channel>
+</rss>

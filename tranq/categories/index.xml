@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Categories on The Place</title>
+    <link>/categories/</link>
+    <description>Recent content in Categories on The Place</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 11 Dec 2007 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/categories/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>GlassFish</title>
+      <link>/categories/glassfish/</link>
+      <pubDate>Tue, 11 Dec 2007 00:00:00 +0000</pubDate>
+      
+      <guid>/categories/glassfish/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Security</title>
+      <link>/categories/security/</link>
+      <pubDate>Wed, 05 Dec 2007 00:00:00 +0000</pubDate>
+      
+      <guid>/categories/security/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>NetBeans</title>
+      <link>/categories/netbeans/</link>
+      <pubDate>Thu, 14 Jun 2007 00:00:00 +0000</pubDate>
+      
+      <guid>/categories/netbeans/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Linux</title>
+      <link>/categories/linux/</link>
+      <pubDate>Fri, 01 Jun 2007 00:00:00 +0000</pubDate>
+      
+      <guid>/categories/linux/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Java</title>
+      <link>/categories/java/</link>
+      <pubDate>Fri, 11 May 2007 00:00:00 +0000</pubDate>
+      
+      <guid>/categories/java/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>JavaEE</title>
+      <link>/categories/javaee/</link>
+      <pubDate>Wed, 10 May 2006 00:00:00 +0000</pubDate>
+      
+      <guid>/categories/javaee/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>SoftwareCraftsmanship</title>
+      <link>/categories/softwarecraftsmanship/</link>
+      <pubDate>Thu, 20 Apr 2006 00:00:00 +0000</pubDate>
+      
+      <guid>/categories/softwarecraftsmanship/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

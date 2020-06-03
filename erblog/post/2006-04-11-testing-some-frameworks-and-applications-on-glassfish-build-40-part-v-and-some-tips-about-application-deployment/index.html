@@ -1,0 +1,554 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>The Place - Testing some FrameWorks and applications on Glassfish build 40&#43; part V , And some tips about Application deployment </title>
+    
+    
+    <meta content="Java, JavaEE, GlassFish, DWR" name="keywords">
+    
+    <meta content="The Place - It is a short entry that shows i used DWR Ajax Toolkit On GlassFish But to make the entry a bit more useful , i would like to tell you how you can deploy an application to GlassFish .
+so far I know two methods that allows us to deploy application into GlassFish ,
+ Using its web based Admin console which usually run on port 4848 Using the Autodeply library of your desired Domain Using Asadmin administration console  Lets see how we can deploy sample war file of DWR Ajax Toolkit using each of the above methods." name="description">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    
+        <link rel="icon" href="img/favicon.ico">
+    
+
+    
+
+    
+
+    
+
+    <link rel="stylesheet" href="/layui/css/layui.css">
+    <link rel="stylesheet" href="/self/css/default.css">
+    <script src="/layui/layui.js"></script>
+
+    <link rel="stylesheet" async href="/self/css/markdown.min.css">
+    <link rel="stylesheet" async href="/self/css/gallery.css">
+    
+    
+    
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
+    <script async src="https://cdn.jsdelivr.net/npm/lazysizes@5.2.0/lazysizes.min.js" integrity="sha256-h2tMEmhemR2IN4wbbdNjj9LaDIjzwk2hralQwfJmBOE=" crossorigin="anonymous"></script></head>
+
+<body>
+    
+    <header class="layui-header layui-bg-cyan">
+
+    
+        <a href=""><img src="/img/avatar.png" class="layui-nav-img" style="margin-left:10px;margin-top:-10px"></a>
+    
+    
+    <a class="nav-self-logo" href="/">
+        The Place
+    </a>
+
+    <ul class="layui-nav layui-layout-right layui-bg-cyan" lay-filter="">
+        
+        
+        <li class="layui-nav-item" id="nav_big"><a href="/post/">Posts</a></li>
+        
+
+        
+            
+                <li class="layui-nav-item" id="nav_big"><a href="/about/">About</a></li>
+            
+        
+
+        
+        <li class="layui-nav-item" id="nav_small">
+            <a href="javascript:;">
+                <i class="layui-icon layui-icon-app" style="font-size: 24px;"></i>
+            </a>
+
+            <dl class="layui-nav-child">
+                
+                <dd><a href="/post/">Posts</a></dd>
+                
+
+                
+                    
+                        <dd><a href="/about/">About</a></dd>
+                    
+                
+            </dl>
+        </li>
+    </ul>
+</header>
+
+<script>
+layui.use('element', function(){
+  var element = layui.element;
+});
+</script>
+        <div id="content" style="min-height:80%">
+<div class="layui-container" style="margin-bottom: 10px">
+    
+
+    <div class="layui-row layui-col-space10">
+        <div class="layui-col-md8 layui-col-sm12 layui-col-xs12">
+            <div class="layui-card single-card">
+                <br />
+                <blockquote class="self-elem-quote self-elem-quote-bg-red markdown-body single-title" >
+                    <h1>Testing some FrameWorks and applications on Glassfish build 40&#43; part V , And some tips about Application deployment</h1>
+                    <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2006-04-11</span>
+
+    
+     
+    <i class="layui-icon layui-icon-list" style="font-size: 32px; vertical-align: -3px;"></i>
+    
+
+    
+        <a href="/categories/javaee/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">JavaEE</span>
+        </a>
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+        <a href="/tags/javaee/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">JavaEE</span>
+        </a>
+    
+        <a href="/tags/glassfish/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">GlassFish</span>
+        </a>
+    
+        <a href="/tags/dwr/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">DWR</span>
+        </a>
+    
+    
+</h3>
+                </blockquote>
+                <div class="layui-card-body markdown-body single-content">
+                    <p>It is a short entry that shows i used <a href="http://getahead.ltd.uk/dwr/" title="DWR Ajax Toolkit">DWR Ajax Toolkit</a> On <a href="http://glassfish.dev.java.net" title="GlassFish ">GlassFish</a> But to make the entry a bit more useful , i would like to tell you how you can deploy an application to <a href="http://glassfish.dev.java.net" title="GlassFish ">GlassFish</a> .<br>
+so far I know two methods that allows us to deploy application into <a href="http://glassfish.dev.java.net" title="GlassFish ">GlassFish</a> ,</p>
+<ol>
+<li>Using its web based Admin console which usually run on port 4848</li>
+<li>Using the Autodeply library of your desired Domain</li>
+<li>Using Asadmin administration console</li>
+</ol>
+<p>Lets see how we can deploy sample war file of <a href="http://getahead.ltd.uk/dwr/" title="DWR Ajax Toolkit">DWR Ajax Toolkit</a> using each of the above methods. A war file like this one has simplest form of deployment because we have no resource definition , for example there is no datasource , connection pool , jms destination ,&hellip;. which needs to be defined. To start your server goto GlassFish_Home/bin and execute<br>
+<em>asadmin start-domain</em> it will start the application server default domain , in case that you did not change the administration port then you can access the web based admin console using <a href="http://127.0.0.1:4848/asadmin/admingui/TopFrameset" title="http://127.0.0.1:4848/asadmin/admingui/TopFrameset">http://127.0.0.1:4848/asadmin/admingui/TopFrameset</a><br>
+after you logged in just in your left panel click on the web applications node , you will see that content frame shows you all deployed application and also provide some buttons to deploy new web application something like :</p>
+<p><a href="http://weblogs.java.net/blog/kalali/archive/images/DWR_1.JPG" title="Web based admin console"><img src="http://weblogs.java.net/blog/kalali/archive/images/DWR_1_small.jpg" alt=""></a></p>
+<p>click on deploy and you will see the web application deployment page , here you can browse to WAR file ad select it to be deployed into current Domain.lets do it by selecting DWR.war which we download from DWR website. next image show how the war file deployment will looks like</p>
+<p><img src="http://weblogs.java.net/blog/kalali/archive/images/DWR_2.JPG" alt="" title="Web application deployment"></p>
+<p>Now press next , and you will see that DWR is deployed very easily. Now you can navigate to Web applications node and see your DWR entry in web application list , lets check and see how does it works on glassfish.<br>
+To check that it works on <a href="http://glassfish.dev.java.net" title="GlassFish ">GlassFish</a> it will be enough to run one of its samples. so do it yourself to see what happens. I for my self <a href="http://127.0.0.1:8080/dwr/dwr/test/JDate" title="JDate Sample">JDate Sample</a> as the first one and i saw that it works fine.</p>
+<p><a href="http://weblogs.java.net/blog/kalali/archive/images/DWR_3.JPG" title="DWR Working in GlassFish"><img src="http://weblogs.java.net/blog/kalali/archive/images/DWR_3_small.jpg" alt=""></a></p>
+<p>Now lets see how we can deploy the application using auto-deploy folder , this folder is located in your domain folder somewhere like :</p>
+<p><img src="http://weblogs.java.net/blog/kalali/archive/images/DWR_4.JPG" alt="Auto Deploy Folder Place"></p>
+<p>you can use this folder to deploy all kind of applications , so you can put a war file inside that folder and GlassFish will deploy it for you , you can put an EAR file there and <a href="http://glassfish.dev.java.net" title="GlassFish ">GlassFish</a> will deploy it for you even You can deploy Resource Adapters (RAR files) using this folder.<br>
+to test this folder , goto web administration console and inside web applications management page undeploy DWR project then come back here and put DWR.war inside auto-deploy folder now go to web based management console and you will see DWR in deployed web application list.</p>
+<p>Now that you find out how this magic folder works , lets see how that administration Script ( asadmin.bat/sh) works for us. it is even easier than the previous one , you just need to call : <em>Glassfish_Home/bin/asadmin deploy c:/DWR.war</em></p>
+<p><img src="http://weblogs.java.net/blog/kalali/archive/images/DWR_5.JPG" alt="Deployment Using Console"></p>
+<p>In next parts i will talk more about deploying application into GlassFish , we will see how an ear file or RAR file can be deployed and be configured to works inside <a href="http://glassfish.dev.java.net" title="GlassFish ">GlassFish</a> .</p>
+</div>
+            </div>
+        </div>
+
+        <div class="layui-col-md4 layui-col-sm12 layui-col-xs12">
+            
+            <div class="layui-card single-card">
+                <h2 class="single-title">Relevant Topics</h2>
+                
+                	
+                    <div style="margin-left: 10px;">
+                        <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                            <a href="/post/2006-03-31-testing-some-frameworks-and-applications-on-glassfish-build-40-part-iv/">
+                                <h3 class="">Testing some FrameWorks and applications on Glassfish build 40&#43; part IV</h3>
+                            </a>
+                            
+                            <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2006-03-31</span>
+
+    
+     
+    <i class="layui-icon layui-icon-list" style="font-size: 32px; vertical-align: -3px;"></i>
+    
+
+    
+        <a href="/categories/javaee/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">JavaEE</span>
+        </a>
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/javaee/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">JavaEE</span>
+        </a>
+    
+        <a href="/tags/jmx/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">JMX</span>
+        </a>
+    
+        <a href="/tags/glassfish/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">GlassFish</span>
+        </a>
+    
+    
+</h3>
+                        </blockquote>
+                    </div>
+                	
+                    <div style="margin-left: 10px;">
+                        <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                            <a href="/post/2006-03-30-testing-some-frameworks-and-applications-on-glassfish-build-40-part-iii/">
+                                <h3 class="">Testing some FrameWorks and applications on Glassfish build 40&#43; part III</h3>
+                            </a>
+                            
+                            <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2006-03-30</span>
+
+    
+     
+    <i class="layui-icon layui-icon-list" style="font-size: 32px; vertical-align: -3px;"></i>
+    
+
+    
+        <a href="/categories/javaee/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">JavaEE</span>
+        </a>
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/javaee/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">JavaEE</span>
+        </a>
+    
+        <a href="/tags/glassfish/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">GlassFish</span>
+        </a>
+    
+    
+</h3>
+                        </blockquote>
+                    </div>
+                	
+                    <div style="margin-left: 10px;">
+                        <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                            <a href="/post/2006-03-25-testing-some-frameworks-and-applications-on-glassfish-build-40/">
+                                <h3 class="">Testing some FrameWorks and applications on Glassfish build 40&#43;</h3>
+                            </a>
+                            
+                            <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2006-03-25</span>
+
+    
+     
+    <i class="layui-icon layui-icon-list" style="font-size: 32px; vertical-align: -3px;"></i>
+    
+
+    
+        <a href="/categories/javaee/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">JavaEE</span>
+        </a>
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/javaee/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">JavaEE</span>
+        </a>
+    
+        <a href="/tags/glassfish/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">GlassFish</span>
+        </a>
+    
+        <a href="/tags/jboss/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">JBoss</span>
+        </a>
+    
+        <a href="/tags/jsr168/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">jsr168</span>
+        </a>
+    
+    
+</h3>
+                        </blockquote>
+                    </div>
+                	
+                    <div style="margin-left: 10px;">
+                        <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                            <a href="/post/2006-03-26-testing-some-frameworks-and-applications-on-glassfish-build-40-part-ii/">
+                                <h3 class="">Testing some FrameWorks and applications on Glassfish build 40&#43; part II</h3>
+                            </a>
+                            
+                            <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2006-03-26</span>
+
+    
+     
+    <i class="layui-icon layui-icon-list" style="font-size: 32px; vertical-align: -3px;"></i>
+    
+
+    
+        <a href="/categories/javaee/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">JavaEE</span>
+        </a>
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+        <a href="/tags/jsf/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">JSF</span>
+        </a>
+    
+        <a href="/tags/glassfish/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Glassfish</span>
+        </a>
+    
+    
+</h3>
+                        </blockquote>
+                    </div>
+                	
+                    <div style="margin-left: 10px;">
+                        <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                            <a href="/post/2006-03-07-a-new-module-for-netbeans-ide-an-statistical-cvs-reporter/">
+                                <h3 class="">A New Module for Netbeans IDE , an statistical CVS Reporter…</h3>
+                            </a>
+                            
+                            <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2006-03-07</span>
+
+    
+     
+    <i class="layui-icon layui-icon-list" style="font-size: 32px; vertical-align: -3px;"></i>
+    
+
+    
+        <a href="/categories/netbeans/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">NetBeans</span>
+        </a>
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+        <a href="/tags/netbeans/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">NetBeans</span>
+        </a>
+    
+        <a href="/tags/cvs/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">CVS</span>
+        </a>
+    
+    
+</h3>
+                        </blockquote>
+                    </div>
+                	
+                
+                <br />
+            </div>
+            
+
+            <div class="layui-card single-card">
+                <h2 class="single-title">Recent Posts</h2>
+            
+                
+                <div style="margin-left: 10px;">
+                    <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                    <a href="/post/2013-09-17-getting-started-with-couchdb-and-mongodb-part-ii-beginning-with-security/">
+                        <h3 class="">Getting started with CouchDB and MongoDB, Part II: Beginning with Security</h3>
+                    </a>
+                    <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2013-09-17</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                    </blockquote>
+                </div>
+                
+                <div style="margin-left: 10px;">
+                    <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                    <a href="/post/2013-09-12-getting-started-with-couchdb-and-mongodb-nosql-document-databases-part-i/">
+                        <h3 class="">Getting started with CouchDB and MongoDB, Part I: CRUD operations</h3>
+                    </a>
+                    <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2013-09-12</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                    </blockquote>
+                </div>
+                
+                <div style="margin-left: 10px;">
+                    <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                    <a href="/post/2012-12-27-my-last-blog-in-2012-my-2013-wishes-and-predictions/">
+                        <h3 class="">My last blog in 2012: My 2013 wishes and predictions…</h3>
+                    </a>
+                    <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2012-12-27</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                    </blockquote>
+                </div>
+                
+                <div style="margin-left: 10px;">
+                    <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                    <a href="/post/2012-09-24-my-sessions-in-javaone-2012/">
+                        <h3 class="">My sessions in JavaOne 2012</h3>
+                    </a>
+                    <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2012-09-24</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                    </blockquote>
+                </div>
+                
+                <div style="margin-left: 10px;">
+                    <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                    <a href="/post/2012-04-12-from-netbeans-to-intellij-idea-week-1/">
+                        <h3 class="">From NetBeans to IntelliJ IDEA, Week 1</h3>
+                    </a>
+                    <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2012-04-12</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                    </blockquote>
+                </div>
+                
+            
+            <br />
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+        </div><footer>
+    
+    
+    <div class="layui-container">
+        <p class="copyright">Copyright © 2006–2020, Masoud Kalali. Some rights are reserved</p>
+    </div>
+</footer>
+</body>
+</html>

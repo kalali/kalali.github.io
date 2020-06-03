@@ -1,0 +1,469 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>The Place - A walkthrough for the fork/join framework introduced in Java SE 7 </title>
+    
+    
+    <meta content="Java" name="keywords">
+    
+    <meta content="The Place - Java SE 7 brought some neat features on the table for Java developers, one of these features is the fork/join framework or basically the new parallel programming framework we can use to easily to implement our divide and conquer solutions. The point is that a solution to a problem should be devised with the following characteristics to use the fork/join framework effectively:
+ The problem domain whether it is a file, list, etc to be processed or a computation should be dividable to smaller subtasks." name="description">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    
+        <link rel="icon" href="img/favicon.ico">
+    
+
+    
+
+    
+
+    
+
+    <link rel="stylesheet" href="/layui/css/layui.css">
+    <link rel="stylesheet" href="/self/css/default.css">
+    <script src="/layui/layui.js"></script>
+
+    <link rel="stylesheet" async href="/self/css/markdown.min.css">
+    <link rel="stylesheet" async href="/self/css/gallery.css">
+    
+    
+    
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
+    <script async src="https://cdn.jsdelivr.net/npm/lazysizes@5.2.0/lazysizes.min.js" integrity="sha256-h2tMEmhemR2IN4wbbdNjj9LaDIjzwk2hralQwfJmBOE=" crossorigin="anonymous"></script></head>
+
+<body>
+    
+    <header class="layui-header layui-bg-cyan">
+
+    
+        <a href=""><img src="/img/avatar.png" class="layui-nav-img" style="margin-left:10px;margin-top:-10px"></a>
+    
+    
+    <a class="nav-self-logo" href="/">
+        The Place
+    </a>
+
+    <ul class="layui-nav layui-layout-right layui-bg-cyan" lay-filter="">
+        
+        
+        <li class="layui-nav-item" id="nav_big"><a href="/post/">Posts</a></li>
+        
+
+        
+            
+                <li class="layui-nav-item" id="nav_big"><a href="/about/">About</a></li>
+            
+        
+
+        
+        <li class="layui-nav-item" id="nav_small">
+            <a href="javascript:;">
+                <i class="layui-icon layui-icon-app" style="font-size: 24px;"></i>
+            </a>
+
+            <dl class="layui-nav-child">
+                
+                <dd><a href="/post/">Posts</a></dd>
+                
+
+                
+                    
+                        <dd><a href="/about/">About</a></dd>
+                    
+                
+            </dl>
+        </li>
+    </ul>
+</header>
+
+<script>
+layui.use('element', function(){
+  var element = layui.element;
+});
+</script>
+        <div id="content" style="min-height:80%">
+<div class="layui-container" style="margin-bottom: 10px">
+    
+
+    <div class="layui-row layui-col-space10">
+        <div class="layui-col-md8 layui-col-sm12 layui-col-xs12">
+            <div class="layui-card single-card">
+                <br />
+                <blockquote class="self-elem-quote self-elem-quote-bg-red markdown-body single-title" >
+                    <h1>A walkthrough for the fork/join framework introduced in Java SE 7</h1>
+                    <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2011-08-02</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                </blockquote>
+                <div class="layui-card-body markdown-body single-content">
+                    <p>Java SE 7 brought some neat features on the table for Java developers, one of these features is the <a href="http://download.oracle.com/javase/tutorial/essential/concurrency/forkjoin.html">fork/join framework</a> or basically the new parallel programming framework we can use to easily to implement our divide and conquer solutions. The point is that a solution to a problem should be devised with the following characteristics to use the fork/join framework effectively:</p>
+<ul>
+<li>The problem domain whether it is a file, list, etc to be processed or a computation should be dividable to smaller subtasks.</li>
+<li>Processing chunks should be possible without requiring the result of other chunks.</li>
+</ul>
+<p>To summarize it, solving or processing the problem domain should require no self-feedback to make it possible to use the framework. For example if you want to process a list and processing each element in the list require the result of processing previous element then it is impossible to use any parallel computing for doing that job. If you want to apply some FFT over a sound stream which require feedback for processing each pulse from the previous pulses it is not possible to speedup the processing using the fork/join framework, etc. Well, before we start learning the fork/join framework we better know what it is and what it is not: What fork/join framework is:</p>
+<ul>
+<li>A parallel programming framework for Java</li>
+<li>Part of Java SE 7</li>
+<li>Suitable for implementing parallel processing solutions, mostly data intensive with small or no shared resources between the workers who process the data chunks.</li>
+<li>Suitable when no synchronization is required between the workers</li>
+</ul>
+<p>What fork/join framework is not:</p>
+<ul>
+<li>It is not a magic that turns your code to run fast on machines with multiple processors, you need to think and implement your solutions in a parallel manner.</li>
+<li>It is not hard and obscure like other frameworks, MPI for example. Using the framework is way easier than anything I used before.</li>
+</ul>
+<p>If you want to learn the mechanics behind the fork/join framework you can read the original article written by Doug Le which explains the motive and the design. The article is available at <a href="http://gee.cs.oswego.edu/dl/papers/fj.pdf">http://gee.cs.oswego.edu/dl/papers/fj.pdf</a>. If you want to see how we can use the framework then continue on reading this article. First let&rsquo;s see what are the important classes that one need to know in order to implement a divide and conquer solution using fork/join framework and then we will start using those classes.</p>
+<ul>
+<li>The <a href="http://download.oracle.com/javase/7/docs/api/java/util/concurrent/ForkJoinPool.html">ForkJoinPool</a>: This is the workers pool where you can post your <a href="http://download.oracle.com/javase/7/docs/api/java/util/concurrent/ForkJoinTask.html">ForkJoinTask</a> to be executed. The default parallelism level is the number of processors available to the runtime.</li>
+<li>The <a href="http://download.oracle.com/javase/7/docs/api/java/util/concurrent/RecursiveTask.html">RecursiveTask<!-- raw HTML omitted --></a>: This is a task, subclass of the <a href="http://download.oracle.com/javase/7/docs/api/java/util/concurrent/ForkJoinTask.html">ForkJoinTask</a> which can return some value of type V. For example processing a list of DTOs and returning the result of process.</li>
+<li>The <a href="http://download.oracle.com/javase/7/docs/api/java/util/concurrent/RecursiveAction.html">RecursiveAction</a>: Another subclass of the <a href="http://download.oracle.com/javase/7/docs/api/java/util/concurrent/ForkJoinTask.html">ForkJoinTask</a> without any return value, for example processing an array&hellip;</li>
+</ul>
+<p>I looked at this new API mainly for data pipelining in which I need to process a pretty huge list of object and turn it to another format to keep the processing result of one library consumable for the next one in the data flow and I am happy with the result pretty easy and straight forward.</p>
+<p>Following is an small sample showing how to process a list of Row objects and convert them a list of Entity Objects. In my case it was something similar with processing Row objects and turning them to OData OEntity objects.</p>
+<p>[java] import java.util.ArrayList; import java.util.List; import java.util.concurrent.ForkJoinPool; import java.util.concurrent.RecursiveTask; /** * * @author Masoud Kalali <!-- raw HTML omitted --> */ class RowConverter extends RecursiveTask&lt;List<!-- raw HTML omitted -->&gt; { //if more than 5000 we will use the parallel processing static final int SINGLE_TREAD_TOP = 5000; int begin; int end; List<!-- raw HTML omitted --> rows; public RowConverter(int begin, int end, List<!-- raw HTML omitted --> rows) { this.begin = begin; this.end = end; this.rows = rows; } @Override protected List<!-- raw HTML omitted --> compute() { if (end - begin &lt;= SINGLE_TREAD_TOP) { //actual processing happens here List<!-- raw HTML omitted --> preparedEntities = new ArrayList<!-- raw HTML omitted -->(end - begin); System.out.println(&rdquo; beging: &quot; + begin + &quot; end: &quot; + end); for (int i = begin; i &lt; end; ++i) { preparedEntities.add(convertRow(rows.get(i))); } return preparedEntities; } else { //here we do the dividing the work and combining the results // specifies the number of chunks you want to break the data to int divider = 5000; // one can calculate the divider based on the list size and the number of processor available // using the <a href="http://download.oracle.com/javase/7/docs/api/java/lang/Runtime.html#availableProcessors()">http://download.oracle.com/javase/7/docs/api/java/lang/Runtime.html#availableProcessors()</a> // decrease the divider number and examine the changes. RowConverter curLeft = new RowConverter(begin, divider, rows); RowConverter curRight = new RowConverter(divider, end, rows); curLeft.fork(); List<!-- raw HTML omitted --> leftReslt = curRight.compute(); List<!-- raw HTML omitted --> rightRes = curLeft.join(); leftReslt.addAll(rightRes); return leftReslt; } } //dummy converted method converting one DTO to another private Entity convertRow(Row row) { return new Entity(row.getId()); } } // the driver class which own the pool public class Fjf { public static void main(String[] args) { List<!-- raw HTML omitted --> rawData = initDummyList(10000); ForkJoinPool pool = new ForkJoinPool(); System.out.println(&ldquo;number of worker threads: &quot; + pool.getParallelism()); List<!-- raw HTML omitted --> res = pool.invoke(new RowConverter(0, rawData.size(), rawData)); // add a breakpoint here and examine the pool object. //check how the stealCount, which shows number of subtasks taken on by available workers, //changes when you use an smaller divider and thus produce more tasks System.out.println(&ldquo;processed list: &quot; + res.size()); } /** * creates a dummy list of rows * * @param size number of rows int he list * @return the list of @see Row objects */ private static List<!-- raw HTML omitted --> initDummyList(int size) { List<!-- raw HTML omitted --> rows = new ArrayList<!-- raw HTML omitted -->(size); for (int i = 0; i &lt; size; i++) { rows.add(new Row(i)); } return rows; } } //dummy classes which should be converted from one form to another class Row { int id; public Row(int id) { this.id = id; } public int getId() { return id; } } class Entity { int id; public Entity(int id) { this.id = id; } public int getId() { return id; } } [/java]</p>
+<p>Just copy and paste the code into your IDE and try running and examining it to get deeper understanding of how the framework can be used. post any comment and possible questions that you may have here and I will try to help you own with them.</p>
+</div>
+            </div>
+        </div>
+
+        <div class="layui-col-md4 layui-col-sm12 layui-col-xs12">
+            
+            <div class="layui-card single-card">
+                <h2 class="single-title">Relevant Topics</h2>
+                
+                	
+                    <div style="margin-left: 10px;">
+                        <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                            <a href="/post/2011-07-28-how-rest-interface-covers-for-the-absence-of-jmxamx-administration-and-management-interface-in-glassfish-3-1/">
+                                <h3 class="">How REST interface covers for the absence of JMX/AMX administration and management interface in GlassFish 3.1</h3>
+                            </a>
+                            
+                            <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2011-07-28</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                        </blockquote>
+                    </div>
+                	
+                    <div style="margin-left: 10px;">
+                        <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                            <a href="/post/2011-07-18-updating-web-applications-spring-applicationcontext-from-beans-definition-stored-in-the-db/">
+                                <h3 class="">Updating Web application’s Spring Context from Beans definitions partially stored in the database…</h3>
+                            </a>
+                            
+                            <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2011-07-18</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                        </blockquote>
+                    </div>
+                	
+                    <div style="margin-left: 10px;">
+                        <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                            <a href="/post/2011-07-13-glassfish-inspired-wallpapers-for-your-desktops/">
+                                <h3 class="">GlassFish inspired wallpapers for your desktops…</h3>
+                            </a>
+                            
+                            <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2011-07-13</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                        </blockquote>
+                    </div>
+                	
+                    <div style="margin-left: 10px;">
+                        <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                            <a href="/post/2011-07-11-part-02-jsr-343/">
+                                <h3 class="">Proposed features and functionalities of JavaTM Message Service 2.0, JSR-343</h3>
+                            </a>
+                            
+                            <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2011-07-11</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                        </blockquote>
+                    </div>
+                	
+                    <div style="margin-left: 10px;">
+                        <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                            <a href="/post/2011-05-17-jms2-jsr/">
+                                <h3 class="">Brief overview of JSR 343: JavaTM Message Service 2.0</h3>
+                            </a>
+                            
+                            <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2011-05-17</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                        </blockquote>
+                    </div>
+                	
+                
+                <br />
+            </div>
+            
+
+            <div class="layui-card single-card">
+                <h2 class="single-title">Recent Posts</h2>
+            
+                
+                <div style="margin-left: 10px;">
+                    <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                    <a href="/post/2013-09-17-getting-started-with-couchdb-and-mongodb-part-ii-beginning-with-security/">
+                        <h3 class="">Getting started with CouchDB and MongoDB, Part II: Beginning with Security</h3>
+                    </a>
+                    <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2013-09-17</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                    </blockquote>
+                </div>
+                
+                <div style="margin-left: 10px;">
+                    <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                    <a href="/post/2013-09-12-getting-started-with-couchdb-and-mongodb-nosql-document-databases-part-i/">
+                        <h3 class="">Getting started with CouchDB and MongoDB, Part I: CRUD operations</h3>
+                    </a>
+                    <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2013-09-12</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                    </blockquote>
+                </div>
+                
+                <div style="margin-left: 10px;">
+                    <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                    <a href="/post/2012-12-27-my-last-blog-in-2012-my-2013-wishes-and-predictions/">
+                        <h3 class="">My last blog in 2012: My 2013 wishes and predictions…</h3>
+                    </a>
+                    <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2012-12-27</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                    </blockquote>
+                </div>
+                
+                <div style="margin-left: 10px;">
+                    <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                    <a href="/post/2012-09-24-my-sessions-in-javaone-2012/">
+                        <h3 class="">My sessions in JavaOne 2012</h3>
+                    </a>
+                    <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2012-09-24</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                    </blockquote>
+                </div>
+                
+                <div style="margin-left: 10px;">
+                    <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                    <a href="/post/2012-04-12-from-netbeans-to-intellij-idea-week-1/">
+                        <h3 class="">From NetBeans to IntelliJ IDEA, Week 1</h3>
+                    </a>
+                    <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2012-04-12</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                    </blockquote>
+                </div>
+                
+            
+            <br />
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+        </div><footer>
+    
+    
+    <div class="layui-container">
+        <p class="copyright">Copyright © 2006–2020, Masoud Kalali. Some rights are reserved</p>
+    </div>
+</footer>
+</body>
+</html>

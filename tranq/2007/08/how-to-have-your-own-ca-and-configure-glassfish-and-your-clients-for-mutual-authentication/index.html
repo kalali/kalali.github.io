@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.71.1 with theme Tranquilpeak 0.4.8-BETA">
+<meta name="author" content="Masoud Kalali">
+<meta name="keywords" content=", development, next-gen, Kubernetes, Cloud, Java">
+<meta name="description" content="One of the most repeated question in GlassFish mailing list is SSL, Certification, Mutual Authentication,&hellip;. In this Entry I will try to address some of this questions by giving an step by step guide for using EJBCA to issue certificate, use them in both GlassFish and clients which connect to GlassFish in some manner. clients like web browser, standalone java applications,&hellip;
+There are several tutorial and blog entry about configuring GlassFish to use some specific certification in order to perform server authentication for clients over SSL and each of those weblog is an invaluable source of information.">
+
+
+<meta property="og:description" content="One of the most repeated question in GlassFish mailing list is SSL, Certification, Mutual Authentication,&hellip;. In this Entry I will try to address some of this questions by giving an step by step guide for using EJBCA to issue certificate, use them in both GlassFish and clients which connect to GlassFish in some manner. clients like web browser, standalone java applications,&hellip;
+There are several tutorial and blog entry about configuring GlassFish to use some specific certification in order to perform server authentication for clients over SSL and each of those weblog is an invaluable source of information.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="How to have your Own CA and configure Glassfish and your clients for mutual authentication?">
+<meta name="twitter:title" content="How to have your Own CA and configure Glassfish and your clients for mutual authentication?">
+<meta property="og:url" content="/2007/08/how-to-have-your-own-ca-and-configure-glassfish-and-your-clients-for-mutual-authentication/">
+<meta property="twitter:url" content="/2007/08/how-to-have-your-own-ca-and-configure-glassfish-and-your-clients-for-mutual-authentication/">
+<meta property="og:site_name" content="The Place">
+<meta property="og:description" content="One of the most repeated question in GlassFish mailing list is SSL, Certification, Mutual Authentication,&hellip;. In this Entry I will try to address some of this questions by giving an step by step guide for using EJBCA to issue certificate, use them in both GlassFish and clients which connect to GlassFish in some manner. clients like web browser, standalone java applications,&hellip;
+There are several tutorial and blog entry about configuring GlassFish to use some specific certification in order to perform server authentication for clients over SSL and each of those weblog is an invaluable source of information.">
+<meta name="twitter:description" content="One of the most repeated question in GlassFish mailing list is SSL, Certification, Mutual Authentication,&hellip;. In this Entry I will try to address some of this questions by giving an step by step guide for using EJBCA to issue certificate, use them in both GlassFish and clients which connect to GlassFish in some manner. clients like web browser, standalone java applications,&hellip;
+There are several tutorial and blog entry about configuring GlassFish to use some specific certification in order to perform server authentication for clients over SSL and each of those weblog is an invaluable source of information.">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2007-08-16T00:00:00">
+  
+  
+    <meta property="article:modified_time" content="2007-08-16T00:00:00">
+  
+  
+  
+    
+      <meta property="article:section" content="Security">
+    
+  
+  
+    
+      <meta property="article:tag" content="Java">
+    
+      <meta property="article:tag" content="GlassFish">
+    
+      <meta property="article:tag" content="TLS">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+  <meta name="twitter:site" content="@masoudkalali">
+
+
+  <meta name="twitter:creator" content="@masoudkalali">
+
+
+
+
+
+
+
+
+
+
+  <meta property="og:image" content="/img/avatar.png">
+  <meta property="twitter:image" content="/img/avatar.png">
+
+
+    <title>How to have your Own CA and configure Glassfish and your clients for mutual authentication?</title>
+
+    <link rel="icon" href="img/favicon.png">
+    
+
+    
+
+    <link rel="canonical" href="/2007/08/how-to-have-your-own-ca-and-configure-glassfish-and-your-clients-for-mutual-authentication/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.css" integrity="sha256-vuXZ9LGmmwtjqFX1F+EKin1ThZMub58gKULUyf0qECk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
+    
+    
+    <link rel="stylesheet" href="/css/style-twzjdbqhmnnacqs0pwwdzcdbt8yhv8giawvjqjmyfoqnvazl0dalmnhdkvp7.min.css" />
+    
+    
+
+    
+      
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-137107-12', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="5">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="/">The Place</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="/img/avatar.png" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="5">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="/#about">
+          <img class="sidebar-profile-picture" src="/img/avatar.png" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">Masoud Kalali</h4>
+        
+          <h5 class="sidebar-profile-bio">Software architect with focus on PaaS container platforms, and Java EE, author, technology enthusiast, runner.</h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-home"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/categories">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/tags">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-tags"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/archives">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-archive"></i>
+      
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/#about">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-question"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/https://github.com/kalali">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-github"></i>
+      
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/index.xml">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-rss"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+
+      <div id="main" data-behavior="5"
+        class="
+               hasCoverMetaIn
+               ">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+            <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title" itemprop="headline">
+      How to have your Own CA and configure Glassfish and your clients for mutual authentication?
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2007-08-16T00:00:00Z">
+        
+  August 16, 2007
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="/categories/security">Security</a>
+    
+  
+
+  </div>
+
+</div>
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              <p>One of the most repeated question in GlassFish mailing list is SSL, Certification, Mutual Authentication,&hellip;. In this Entry I will try to address some of this questions by giving an step by step guide for using EJBCA to issue certificate, use them in both GlassFish and clients which connect to GlassFish in some manner. clients like web browser, standalone java applications,&hellip;</p>
+<p>There are several tutorial and blog entry about configuring GlassFish to use some specific certification in order to perform server authentication for clients over SSL and each of those weblog is an invaluable source of information. In this blog entry and perhaps the next one I will address another concerns which some people has for their <a href="http://glassfish.dev.java.net">GlassFish</a> and client security. Some times we are running an application within an enterprise and we need to have mutual authentication for every clients that connect to server so we will need to have one certification for client and another one for our GlassFish server. both of this certification should be valid (issued by an already known CA within GlassFish trust store and client trust store). For these two entries I assume that our client and server will just accept certification issued by our own CA which is based on EJBCA.</p>
+<p>Before we start the main job you will need to download and install EJBCA from its <a href="http://sourceforge.net/projects/ejbca">web site</a>, then you will need to install it according to its manual which you can find in <a href="http://ejbca.sourceforge.net/manual.html">documentation</a> section. After you installed and could view EJBCA administration console then you can follow the rest of the entry.</p>
+<p>In order to create server certification we will need to perform following steps as described in <strong>4 sections</strong>:</p>
+<h5 id="section-1-creating-servers-certification-profile">Section 1: Creating servers certification profile:</h5>
+<ul>
+<li>
+<p>Go to <a href="https://localhost:8080/ejbca/">https://localhost:8080/ejbca/</a> and select <strong>Administration</strong>.</p>
+</li>
+<li>
+<p>Select <strong>Edit Certification profiles</strong> from the left side menu.</p>
+</li>
+<li>
+<p>Enter a name for the profile and press add button. I choose <strong>servers</strong> as the name.</p>
+</li>
+<li>
+<p>From the list select <strong>servers</strong> Item and press <strong>Edit</strong> button.</p>
+</li>
+<li>
+<p>Now profile edit page will open change the attribute as follow:</p>
+</li>
+<li>
+<p>for <strong>Key Usage</strong>  you should select at least Digital Signature and <strong>Key Encypherment.</strong></p>
+</li>
+<li>
+<p>From  <strong>Extended Key Usage</strong> select <strong>Server Authentication</strong></p>
+</li>
+<li>
+<p>press save button.</p>
+</li>
+</ul>
+<h5 id="section-2-create-servers-end-entities-profile">Section 2: Create servers end entities profile:</h5>
+<p>Now you have create a profile which in next sections you can create certifications which will comply with it. Now we will need to create an <strong>End Entity Profile</strong> so follow these steps to create it.</p>
+<ul>
+<li>From the left side menu click on  <strong>edit end entities profile</strong> .</li>
+<li>Enter <strong>ServersProfile</strong> as profile name and press add button.</li>
+<li>From the list select <strong>ServersProfile</strong> and press <strong>Edit End Entity Profile</strong> button.</li>
+<li>Enter a user name and a password for the profile, I choose sAdmin/ sAdminAdmin.</li>
+<li>Enter the common name</li>
+<li>From the list of <strong>Available Certificate Profiles</strong> select <strong>Servers</strong> which we made in last step.</li>
+<li>select <strong>JKS</strong> as <strong>default token.</strong></li>
+<li>click Save</li>
+</ul>
+<p>Now we are reaching an step in which we will create the real certificate that Glassfish will use  in its SSL enabled listener. To create the certificate perform following steps:</p>
+<h5 id="section-3-create-server-certification">Section 3: Create server certification</h5>
+<ul>
+<li>From the left side menu select <strong>add end entity</strong> link.</li>
+<li>Select <strong>ServersProfile</strong> as <strong>End Entity Profile.</strong></li>
+<li>Enter all information as you like but make sure that CN should be Exact and fully qualified name of your sever as will access it from clients, for example if you are going to access the serve as <strong>computer1.mydomain.com</strong> then the CN should be the same if you are going to access it as Comuter1 then the CN should be that.</li>
+<li>Select <strong>JKS</strong> as <strong>Token.</strong></li>
+<li>press <strong>add end entity</strong> button</li>
+</ul>
+<h5 id="section-4-use-the-certification-in-application-server">Section 4: Use the certification in Application Server.</h5>
+<p>You are done, the certification is ready to be downloaded and used.</p>
+<ul>
+<li>Go to <a href="https://localhost:8080/ejbca/">https://localhost:8080/ejbca/</a>  and select <strong>Certification Enrollment.</strong></li>
+<li>Select Manually for a Server</li>
+<li>enter user name and password which you have entered for end entity in previous step.</li>
+<li>Click OK.</li>
+</ul>
+<p>By pressing OK a JKS file will download to your computer.</p>
+<ul>
+<li>Create two copies of the file and Rename them  to keystore.JKS and cacerts.jks.</li>
+<li>Goto Glassfish/domains/domain1 (If domain 1 is the domain that you want to configure for SSL).</li>
+<li>Make sure that application server is stopped by issuing the following command.</li>
+</ul>
+<pre><code>    	Glassfish_home/bin/asadmin  stop-domain domain1	
+</code></pre><ul>
+<li>Now we need to change the master password in order to let GlassFish open our new cacert.jks and keystore.jks so perform following command.</li>
+</ul>
+<pre><code>    	Glassfish_home/bin/asadmin  change-master-password  \Here you should write the password that you choosed in last step/// --savemasterpassword=true
+</code></pre><ul>
+<li>Now Goto glassfish_home/domains/domain1/config and create a backup from cacert.jks and keystore.jks.</li>
+<li>Copy files that we create in first step of this section to this folder (overwrite the original files).</li>
+<li>Open domain.xml (it is in domain1/config folder) by a text editor and replace all <strong>s1as</strong> occurrences with <strong>CN</strong> name that you have choose in <strong>section 3</strong>.</li>
+<li>Start the application server.</li>
+</ul>
+<p>You are done, you application server should start normally, but you have some more steps before you complete the mutual authentication capability.</p>
+<h5 id="section-5-enabling-mutual-authentication-for-a-listener">Section 5: Enabling mutual authentication for a listener.</h5>
+<p>Open application server administration console and from the left side menu select <strong>Configuration&gt; HTTP Service&gt; HTTP Listeners&gt; http-listener-2,</strong> now you should check the <strong>Security</strong> check box and select <strong>SSL</strong> tab, now make sure that you have checked <strong>Client Authentication</strong> check box.</p>
+<p>You are done, point your browser to <a href="https://computer1.mydomain.com:8181">https://computer1.mydomain.com:8181</a> you will see that this page will only open for the browser that you have imported EJBCA administration certification. it means that both server and client must prove their identity before they could communicate.</p>
+<p>In next entry of this series I will demonstrate steps that you need to follow in order to create a stand alone web service client.</p>
+<p>Make sure that you need to delete the private key of you server from cacerts.jks (it is not necessary by the way). Best way to explore you key stores is using keytool which you can find more information about it <a href="http://members.aon.at/bhuber14/nbm.html">Here</a>. Also if you are may find more cool key store editor in <a href="plugins.netbeans.org/PluginPortal/">NetBeans Module Portal</a></p>
+<p>For more information or maybe to find some of your questions answered you may take a look at:</p>
+<ul>
+<li><a href="http://www.ryandelaplante.com/rdelaplante/entry/ssl_and_http_basic_authentication">http://w ww.ryandelaplante.com/rdelaplante/entry/ssl_and_http_basic_authentication</a></li>
+<li><a href="blogs.sun.com/swchan/entry/how_to_use_verisign_cert">blogs.sun.com/swchan/entry/how_to_use_verisign_cert</a></li>
+</ul>
+
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="/tags/java/">Java</a>
+
+  <a class="tag tag--primary tag--small" href="/tags/glassfish/">GlassFish</a>
+
+  <a class="tag tag--primary tag--small" href="/tags/tls/">TLS</a>
+
+                  </div>
+                
+              
+            
+            <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2007/08/how-to-have-your-own-ca-and-configure-glassfish-and-your-clients-for-mutual-authentication-part-ii/" data-tooltip="How to have your Own CA and configure Glassfish and your clients for mutual authentication?, Part II">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2007/06/shift-alt-enter-a-cool-netbeans-shortcut/" data-tooltip="SHIFT&#43;ALT&#43;ENTER, a cool NetBeans shortcut">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2007/08/how-to-have-your-own-ca-and-configure-glassfish-and-your-clients-for-mutual-authentication/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2007/08/how-to-have-your-own-ca-and-configure-glassfish-and-your-clients-for-mutual-authentication/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+            
+              
+                <div id="disqus_thread">
+  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2020 Masoud Kalali. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+        <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2007/08/how-to-have-your-own-ca-and-configure-glassfish-and-your-clients-for-mutual-authentication-part-ii/" data-tooltip="How to have your Own CA and configure Glassfish and your clients for mutual authentication?, Part II">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2007/06/shift-alt-enter-a-cool-netbeans-shortcut/" data-tooltip="SHIFT&#43;ALT&#43;ENTER, a cool NetBeans shortcut">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2007/08/how-to-have-your-own-ca-and-configure-glassfish-and-your-clients-for-mutual-authentication/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2007/08/how-to-have-your-own-ca-and-configure-glassfish-and-your-clients-for-mutual-authentication/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+  <i id="btn-close-shareoptions" class="fa fa-close"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=%2F2007%2F08%2Fhow-to-have-your-own-ca-and-configure-glassfish-and-your-clients-for-mutual-authentication%2F">
+          <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=%2F2007%2F08%2Fhow-to-have-your-own-ca-and-configure-glassfish-and-your-clients-for-mutual-authentication%2F">
+          <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="/img/avatar.png" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">Masoud Kalali</h4>
+    
+      <div id="about-card-bio">Software architect with focus on PaaS container platforms, and Java EE, author, technology enthusiast, runner.</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Software engineer
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        Sweden
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      <div id="cover" style="background-image:url('images/cover.jpg');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
+
+
+<script src="/js/script-pcw6v3xilnxydl1vddzazdverrnn9ctynvnxgwho987mfyqkuylcb1nlt.min.js"></script>
+
+
+<script lang="javascript">
+window.onload = updateMinWidth;
+window.onresize = updateMinWidth;
+document.getElementById("sidebar").addEventListener("transitionend", updateMinWidth);
+function updateMinWidth() {
+  var sidebar = document.getElementById("sidebar");
+  var main = document.getElementById("main");
+  main.style.minWidth = "";
+  var w1 = getComputedStyle(main).getPropertyValue("min-width");
+  var w2 = getComputedStyle(sidebar).getPropertyValue("width");
+  var w3 = getComputedStyle(sidebar).getPropertyValue("left");
+  main.style.minWidth = `calc(${w1} - ${w2} - ${w3})`;
+}
+</script>
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+  
+    
+      <script>
+        var disqus_config = function () {
+          this.page.url = '\/2007\/08\/how-to-have-your-own-ca-and-configure-glassfish-and-your-clients-for-mutual-authentication\/';
+          
+            this.page.identifier = '\/2007\/08\/how-to-have-your-own-ca-and-configure-glassfish-and-your-clients-for-mutual-authentication\/'
+          
+        };
+        (function() {
+          
+          
+          if (window.location.hostname == "localhost") {
+            return;
+          }
+          var d = document, s = d.createElement('script');
+          var disqus_shortname = 'hugo-tranquilpeak-theme';
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      </script>
+    
+  
+
+
+
+
+    
+  </body>
+</html>
+

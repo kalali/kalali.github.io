@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>CVS on The Place</title>
+    <link>/tags/cvs/</link>
+    <description>Recent content in CVS on The Place</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Tue, 07 Mar 2006 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/cvs/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>A New Module for Netbeans IDE , an statistical CVS Reporter…</title>
+      <link>/post/2006-03-07-a-new-module-for-netbeans-ide-an-statistical-cvs-reporter/</link>
+      <pubDate>Tue, 07 Mar 2006 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2006-03-07-a-new-module-for-netbeans-ide-an-statistical-cvs-reporter/</guid>
+      <description>2 weeks ago I was looking at www.sourceforge.Net for a utility that allows me to get some statistical information from CVS repositories. There are some commercial products that do this job in a very perfect manner , but those are commercial and feature over loaded.after some search I find VCS Report , I get the package and get some chart from my CVS repositories.
+Some days ago I get the source code of the project and looked at the source ,Amazing , it uses a NetBeans library to connect to CVS servers , but there is no NetBeans plugin available in the download section , so I start and create a plugin for NetBeans , although it is in very early step and throw some exceptions some times but it works fine with NetBeans .</description>
+    </item>
+    
+  </channel>
+</rss>

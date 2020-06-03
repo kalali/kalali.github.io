@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>TLS on The Place</title>
+    <link>/tags/tls/</link>
+    <description>Recent content in TLS on The Place</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Thu, 23 Aug 2007 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/tls/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>How to have your Own CA and configure Glassfish and your clients for mutual authentication?, Part II</title>
+      <link>/post/2007-08-23-how-to-have-your-own-ca-and-configure-glassfish-and-your-clients-for-mutual-authentication-part-ii/</link>
+      <pubDate>Thu, 23 Aug 2007 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2007-08-23-how-to-have-your-own-ca-and-configure-glassfish-and-your-clients-for-mutual-authentication-part-ii/</guid>
+      <description>In the second part of the series, you can see how we can utilize EJBCA to create certification for a client side application which will communicate with Glassfish server when Client cert authentication (Mutual Authentication) is enabled whether by changing the listener attributes or by describing it in the web-config.xml.
+In order to create client certification we will need to perform following steps as described in 4 sections:
+Section 1: Creating clients certification profile:  Go to https://localhost:8080/ejbca/ and select Administration.</description>
+    </item>
+    
+    <item>
+      <title>How to have your Own CA and configure Glassfish and your clients for mutual authentication?</title>
+      <link>/post/2007-08-16-how-to-have-your-own-ca-and-configure-glassfish-and-your-clients-for-mutual-authentication/</link>
+      <pubDate>Thu, 16 Aug 2007 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2007-08-16-how-to-have-your-own-ca-and-configure-glassfish-and-your-clients-for-mutual-authentication/</guid>
+      <description>One of the most repeated question in GlassFish mailing list is SSL, Certification, Mutual Authentication,&amp;hellip;. In this Entry I will try to address some of this questions by giving an step by step guide for using EJBCA to issue certificate, use them in both GlassFish and clients which connect to GlassFish in some manner. clients like web browser, standalone java applications,&amp;hellip;
+There are several tutorial and blog entry about configuring GlassFish to use some specific certification in order to perform server authentication for clients over SSL and each of those weblog is an invaluable source of information.</description>
+    </item>
+    
+  </channel>
+</rss>

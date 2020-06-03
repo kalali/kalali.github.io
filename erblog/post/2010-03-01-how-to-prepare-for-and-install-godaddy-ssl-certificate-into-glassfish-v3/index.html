@@ -1,0 +1,498 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>The Place - How to prepare for, and install GoDaddy SSL certificate into GlassFish v3 </title>
+    
+    
+    <meta content="Java" name="keywords">
+    
+    <meta content="The Place - Here are steps showing you how to prepare and install a SSL certificate purchased from Godaddy into GlassFish v3 server. To learn more about Godaddy certificates and step to buy a certificate you need to take a look at http://www.godaddy.com/ssl/ssl-certificates.aspx?app_hdr=. After you understand what Godaddy offer and whether it suites your requirement you can use the following steps to get and install the certificate into GlassFish.
+ Generate a keypair for your server using the following command." name="description">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    
+        <link rel="icon" href="img/favicon.ico">
+    
+
+    
+
+    
+
+    
+
+    <link rel="stylesheet" href="/layui/css/layui.css">
+    <link rel="stylesheet" href="/self/css/default.css">
+    <script src="/layui/layui.js"></script>
+
+    <link rel="stylesheet" async href="/self/css/markdown.min.css">
+    <link rel="stylesheet" async href="/self/css/gallery.css">
+    
+    
+    
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
+    <script async src="https://cdn.jsdelivr.net/npm/lazysizes@5.2.0/lazysizes.min.js" integrity="sha256-h2tMEmhemR2IN4wbbdNjj9LaDIjzwk2hralQwfJmBOE=" crossorigin="anonymous"></script></head>
+
+<body>
+    
+    <header class="layui-header layui-bg-cyan">
+
+    
+        <a href=""><img src="/img/avatar.png" class="layui-nav-img" style="margin-left:10px;margin-top:-10px"></a>
+    
+    
+    <a class="nav-self-logo" href="/">
+        The Place
+    </a>
+
+    <ul class="layui-nav layui-layout-right layui-bg-cyan" lay-filter="">
+        
+        
+        <li class="layui-nav-item" id="nav_big"><a href="/post/">Posts</a></li>
+        
+
+        
+            
+                <li class="layui-nav-item" id="nav_big"><a href="/about/">About</a></li>
+            
+        
+
+        
+        <li class="layui-nav-item" id="nav_small">
+            <a href="javascript:;">
+                <i class="layui-icon layui-icon-app" style="font-size: 24px;"></i>
+            </a>
+
+            <dl class="layui-nav-child">
+                
+                <dd><a href="/post/">Posts</a></dd>
+                
+
+                
+                    
+                        <dd><a href="/about/">About</a></dd>
+                    
+                
+            </dl>
+        </li>
+    </ul>
+</header>
+
+<script>
+layui.use('element', function(){
+  var element = layui.element;
+});
+</script>
+        <div id="content" style="min-height:80%">
+<div class="layui-container" style="margin-bottom: 10px">
+    
+
+    <div class="layui-row layui-col-space10">
+        <div class="layui-col-md8 layui-col-sm12 layui-col-xs12">
+            <div class="layui-card single-card">
+                <br />
+                <blockquote class="self-elem-quote self-elem-quote-bg-red markdown-body single-title" >
+                    <h1>How to prepare for, and install GoDaddy SSL certificate into GlassFish v3</h1>
+                    <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2010-03-01</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                </blockquote>
+                <div class="layui-card-body markdown-body single-content">
+                    <p>Here are steps showing you how to prepare and install a SSL certificate purchased from Godaddy into GlassFish v3 server. To learn more about Godaddy certificates and step to buy a certificate you need to take a look at <a href="http://www.godaddy.com/ssl/ssl-certificates.aspx?app_hdr=">http://www.godaddy.com/ssl/ssl-certificates.aspx?app_hdr=</a>. After you understand what Godaddy offer and whether it suites your requirement you can use the following steps to get and install the certificate into GlassFish.</p>
+<ul>
+<li>Generate a keypair for your server using the following command. This command will generate a <a href="http://en.wikipedia.org/wiki/Public-key_cryptography">keypair</a> and store it into a keystore of type <a href="http://java.sun.com/javase/6/docs/api/java/security/KeyStore.html">JKS</a>. later on we will submit the public key portion and other details provided during the key generation to a CA to sing it for us.</li>
+</ul>
+<p><code>keytool -keysize 2048 -genkey -alias wwww.domain.com -keyalg RSA -dname &quot;CN=wwww.domain.com,O=company,L=city,S=State,C=Countery&quot; -keypass changeit -storepass changeit -keystore server.keystore</code></p>
+<ul>
+<li>You may check whether you entered correct information in the key generation phase by checking the key using the following command:</li>
+</ul>
+<p><code>keytool -list -v -alias wwww.domain.com -keystore server.keystore</code></p>
+<ul>
+<li>Generate a CSR which you should submit to Godaddy to sing it for you. This CSR contains the public key which matchs the private key you generated previously.:</li>
+</ul>
+<p><code>keytool -certreq -alias www.domain.com -keystore server.keystore -storepass changeit -keypass changeit -file server-2048.csr</code></p>
+<p><strong>Now, before you submit the CSR, make sure that you backed-up the server.keystore in a safe place because it contains your PK and if you lose it your certificate will be useless. Make sure that the file is in a safe place because if a malicious person gets his hands on it you will be in trouble unless you change your certificate. Using the PK included in that file anyone, with basic knowledge, can decrypt messages encrypted with your public key.</strong></p>
+<p>Now that you created a backup of the server.keystore and purchased your certificate from godaddy its time to import them into designated keystores. Note that godaddy will give you a certificate named something like domain.com.crt, you will need to download godaddy CA certificates from its repository located at <a href="https://certs.godaddy.com/repository/">https://certs.godaddy.com/repository/</a>. You will need to download the following ones:</p>
+<ul>
+<li><a href="https://certs.godaddy.com/anonymous/repository.seam;jsessionid=FB5374DEBF8288372FDCDDC54114EF72.web001?streamfilename=valicert_class2_root.crt&amp;actionMethod=anonymous%2Frepository.xhtml%3Arepository.streamFile%28%27%27%29&amp;cid=50373">valicert_class2_root.crt</a></li>
+<li><a href="https://certs.godaddy.com/anonymous/repository.seam;jsessionid=FB5374DEBF8288372FDCDDC54114EF72.web001?streamfilename=gd_cross_intermediate.crt&amp;actionMethod=anonymous%2Frepository.xhtml%3Arepository.streamFile%28%27%27%29&amp;cid=50373">gd_cross_intermediate.crt</a></li>
+<li><a href="https://certs.godaddy.com/anonymous/repository.seam;jsessionid=FB5374DEBF8288372FDCDDC54114EF72.web001?streamfilename=gd_intermediate.crt&amp;actionMethod=anonymous%2Frepository.xhtml%3Arepository.streamFile%28%27%27%29&amp;cid=50373">gd_intermediate.crt</a></li>
+</ul>
+<p>Now place all of the following files into a $domain.dir and fire a terminal (cmd) and execute the following commands:</p>
+<ul>
+<li>
+<p><a href="https://certs.godaddy.com/anonymous/repository.seam;jsessionid=FB5374DEBF8288372FDCDDC54114EF72.web001?streamfilename=valicert_class2_root.crt&amp;actionMethod=anonymous%2Frepository.xhtml%3Arepository.streamFile%28%27%27%29&amp;cid=50373">valicert_class2_root.crt</a></p>
+</li>
+<li>
+<p><a href="https://certs.godaddy.com/anonymous/repository.seam;jsessionid=FB5374DEBF8288372FDCDDC54114EF72.web001?streamfilename=gd_cross_intermediate.crt&amp;actionMethod=anonymous%2Frepository.xhtml%3Arepository.streamFile%28%27%27%29&amp;cid=50373">gd_cross_intermediate.crt</a></p>
+</li>
+<li>
+<p><a href="https://certs.godaddy.com/anonymous/repository.seam;jsessionid=FB5374DEBF8288372FDCDDC54114EF72.web001?streamfilename=gd_intermediate.crt&amp;actionMethod=anonymous%2Frepository.xhtml%3Arepository.streamFile%28%27%27%29&amp;cid=50373">gd_intermediate.crt</a></p>
+</li>
+<li>
+<p>domain.com.crt, this is what Godaddy gives you as the certificate.</p>
+</li>
+<li>
+<p>Import the root certificate into the GlassFish key store to make it possible for the secondary certificates to get validated. The keytool may tell you that the certificate already exists in the global ca cert store. If so, do not import this one:</p>
+</li>
+</ul>
+<p><code>keytool -import -alias root -keystore keystore.jks -trustcacerts -file valicert_class2_root.crt</code></p>
+<ul>
+<li>import secondary CA certificates into the keystore to make it possible for the server certificate signed by godaddy to validated and accepted.</li>
+</ul>
+<p><code>keytool -import -alias cross -keystore keystore.jks -trustcacerts -file gd_cross_intermediate.crt</code></p>
+<p><code>keytool -import -alias intermed -keystore keystore.jks -trustcacerts -file gd_intermediate.crt</code></p>
+<ul>
+<li>import the server certificate into tke keystore. Make sure that the alias used for the certificate must be same as the alias used for the PK. otherwise the validation chain wont get completed and therefore the certificate won’t be imported into the keystore.</li>
+</ul>
+<p><code>keytool -import -alias www.domain.com -keystore keystore.jks -trustcacerts -file shoptalkk.com.crt</code></p>
+<p>The certificate installation is finished, the only left step is chaning the certificate nickname in your domain.xml file to the new alias name we used in the above commands.</p>
+<ul>
+<li>Make sure that the domain is stopped using asadmin stop-domain domain_name</li>
+<li>create a backup of the domain.xml</li>
+<li>Open domain.xml in a text editor like gedit, kate or wordpad and replace all occurrence of s1as with <a href="http://www.domain.com">www.domain.com</a> which is the certificate alias</li>
+<li>save the domain and start the domain in verbose mode using asadmin start-domain &ndash;verbose domain_name</li>
+<li>Open https://server:8181/ and see whether it works properly or not. if you use the exact <a href="https://domain.com">https://domain.com</a>:8181/ you should get no warning and the whole thing should work properly. If you use https://localhost:8181/ you will get a warning about a misused certificate. it will explain that the certiificate is issued for <a href="http://www.domain.com">www.domain.com</a> but it is installed on localhost&hellip;.</li>
+</ul>
+</div>
+            </div>
+        </div>
+
+        <div class="layui-col-md4 layui-col-sm12 layui-col-xs12">
+            
+            <div class="layui-card single-card">
+                <h2 class="single-title">Relevant Topics</h2>
+                
+                	
+                    <div style="margin-left: 10px;">
+                        <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                            <a href="/post/2009-12-17-and-glassfish-v3-is-here/">
+                                <h3 class="">And GlassFish v3 is Here</h3>
+                            </a>
+                            
+                            <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2009-12-17</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                        </blockquote>
+                    </div>
+                	
+                    <div style="margin-left: 10px;">
+                        <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                            <a href="/post/2009-12-17-netbeans-6-8-joined-the-glassfish-v3-in-the-release-feast/">
+                                <h3 class="">NetBeans 6.8 joined the GlassFish v3 in the release feast.</h3>
+                            </a>
+                            
+                            <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2009-12-17</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                        </blockquote>
+                    </div>
+                	
+                    <div style="margin-left: 10px;">
+                        <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                            <a href="/post/2009-11-22-architecting-a-system-need-a-wide-knowledge-of-technologies-cots-projects-standards/">
+                                <h3 class="">Architecting a system need a wide knowledge of technologies, COTS, projects, standards….</h3>
+                            </a>
+                            
+                            <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2009-11-22</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                        </blockquote>
+                    </div>
+                	
+                    <div style="margin-left: 10px;">
+                        <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                            <a href="/post/2009-11-22-glassfish-application-server-v3-refcard-available-download-now/">
+                                <h3 class="">GlassFish Application Server v3 Refcard Available – Download Now</h3>
+                            </a>
+                            
+                            <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2009-11-22</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                        </blockquote>
+                    </div>
+                	
+                    <div style="margin-left: 10px;">
+                        <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                            <a href="/post/2009-11-17-state-of-open-source-java-ee-application-servers/">
+                                <h3 class="">State of Open Source Java EE Application Servers</h3>
+                            </a>
+                            
+                            <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2009-11-17</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                        </blockquote>
+                    </div>
+                	
+                
+                <br />
+            </div>
+            
+
+            <div class="layui-card single-card">
+                <h2 class="single-title">Recent Posts</h2>
+            
+                
+                <div style="margin-left: 10px;">
+                    <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                    <a href="/post/2013-09-17-getting-started-with-couchdb-and-mongodb-part-ii-beginning-with-security/">
+                        <h3 class="">Getting started with CouchDB and MongoDB, Part II: Beginning with Security</h3>
+                    </a>
+                    <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2013-09-17</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                    </blockquote>
+                </div>
+                
+                <div style="margin-left: 10px;">
+                    <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                    <a href="/post/2013-09-12-getting-started-with-couchdb-and-mongodb-nosql-document-databases-part-i/">
+                        <h3 class="">Getting started with CouchDB and MongoDB, Part I: CRUD operations</h3>
+                    </a>
+                    <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2013-09-12</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                    </blockquote>
+                </div>
+                
+                <div style="margin-left: 10px;">
+                    <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                    <a href="/post/2012-12-27-my-last-blog-in-2012-my-2013-wishes-and-predictions/">
+                        <h3 class="">My last blog in 2012: My 2013 wishes and predictions…</h3>
+                    </a>
+                    <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2012-12-27</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                    </blockquote>
+                </div>
+                
+                <div style="margin-left: 10px;">
+                    <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                    <a href="/post/2012-09-24-my-sessions-in-javaone-2012/">
+                        <h3 class="">My sessions in JavaOne 2012</h3>
+                    </a>
+                    <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2012-09-24</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                    </blockquote>
+                </div>
+                
+                <div style="margin-left: 10px;">
+                    <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                    <a href="/post/2012-04-12-from-netbeans-to-intellij-idea-week-1/">
+                        <h3 class="">From NetBeans to IntelliJ IDEA, Week 1</h3>
+                    </a>
+                    <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2012-04-12</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                    </blockquote>
+                </div>
+                
+            
+            <br />
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+        </div><footer>
+    
+    
+    <div class="layui-container">
+        <p class="copyright">Copyright © 2006–2020, Masoud Kalali. Some rights are reserved</p>
+    </div>
+</footer>
+</body>
+</html>

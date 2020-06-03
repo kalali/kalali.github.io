@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>OpenSSO on The Place</title>
+    <link>/tags/opensso/</link>
+    <description>Recent content in OpenSSO on The Place</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Thu, 17 May 2007 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/opensso/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>How to install and use OpenSSO CLI (Command Line Administration Interface)</title>
+      <link>/post/2007-05-17-how-to-install-and-use-opensso-cli-command-line-administration-interface/</link>
+      <pubDate>Thu, 17 May 2007 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2007-05-17-how-to-install-and-use-opensso-cli-command-line-administration-interface/</guid>
+      <description>OpenSSO which is open source branch of Sun Java Access Manager has several module which you should install and configure in case that you want to have similar bundle from its open source branch.
+One of main components is OpenSSO itself which you can obtain from Its nightly builds page; just make sure to select latest link which will take you to the download page with links to OpenSSO modules.</description>
+    </item>
+    
+  </channel>
+</rss>

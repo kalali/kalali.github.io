@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>RUP on The Place</title>
+    <link>/tags/rup/</link>
+    <description>Recent content in RUP on The Place</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 20 Apr 2006 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/rup/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>An overview of Different Software development models with a deeper look at RUP Development model</title>
+      <link>/2006/04/an-overview-of-different-software-development-models-with-a-deeper-look-at-rup-development-model/</link>
+      <pubDate>Thu, 20 Apr 2006 00:00:00 +0000</pubDate>
+      
+      <guid>/2006/04/an-overview-of-different-software-development-models-with-a-deeper-look-at-rup-development-model/</guid>
+      <description>Here is a Presentation that i made last year . it is about different lifecycle models like spiral , waterfall and iterative models. this presentation contain following contents :
+ Part I  Basics and Explanations Terms and definitions Well known Life Cycle models / Methodologies Waterfall Spiral Iterative XP   Part II  RUP as a SDP Life Cycle Model  Phases and Milestones RUP and System Evolution   EUP (Explanation)    You can get the ODP from Here Hoping you find it useful.</description>
+    </item>
+    
+    <item>
+      <title>I want to share an RUP presentation that I have made before …</title>
+      <link>/2006/03/i-want-to-share-an-rup-presentation-that-i-have-made-before/</link>
+      <pubDate>Thu, 09 Mar 2006 00:00:00 +0000</pubDate>
+      
+      <guid>/2006/03/i-want-to-share-an-rup-presentation-that-i-have-made-before/</guid>
+      <description>I saw that there is a poll in java.Net about Software development process. sure I vote in favor of Process that I have work in its framework before (RUP) and I prefer to work in adhere to its rules. And now I wan to share a fast overview presentation about RUP with users that like to know this process and need a very straight and simple to follow presentation. The presentation come in 68 pages and cover the following issues.</description>
+    </item>
+    
+  </channel>
+</rss>

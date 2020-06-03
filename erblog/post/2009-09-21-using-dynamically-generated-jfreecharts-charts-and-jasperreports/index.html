@@ -1,0 +1,623 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>The Place - Using dynamically generated JFreeChart’s charts and JasperReports </title>
+    
+    
+    <meta content="Java" name="keywords">
+    
+    <meta content="The Place - If you are reading this blog it means you want to use JasperReport with dynamically programmatically generated images. An example of such use cases in generating complex charts using JFreeChart and then including these charts into reports.
+Each report in JasperReport uses a datasource to populate the fields, we need to use JRBeanCollectionDataSource which can be considered as a simple collection of JavaBeans. Each object in the JRBeanCollectionDataSource can be used to populate one row of the report or it can be used to prepare calculated values and so on." name="description">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    
+        <link rel="icon" href="img/favicon.ico">
+    
+
+    
+
+    
+
+    
+
+    <link rel="stylesheet" href="/layui/css/layui.css">
+    <link rel="stylesheet" href="/self/css/default.css">
+    <script src="/layui/layui.js"></script>
+
+    <link rel="stylesheet" async href="/self/css/markdown.min.css">
+    <link rel="stylesheet" async href="/self/css/gallery.css">
+    
+    
+    
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
+    <script async src="https://cdn.jsdelivr.net/npm/lazysizes@5.2.0/lazysizes.min.js" integrity="sha256-h2tMEmhemR2IN4wbbdNjj9LaDIjzwk2hralQwfJmBOE=" crossorigin="anonymous"></script></head>
+
+<body>
+    
+    <header class="layui-header layui-bg-cyan">
+
+    
+        <a href=""><img src="/img/avatar.png" class="layui-nav-img" style="margin-left:10px;margin-top:-10px"></a>
+    
+    
+    <a class="nav-self-logo" href="/">
+        The Place
+    </a>
+
+    <ul class="layui-nav layui-layout-right layui-bg-cyan" lay-filter="">
+        
+        
+        <li class="layui-nav-item" id="nav_big"><a href="/post/">Posts</a></li>
+        
+
+        
+            
+                <li class="layui-nav-item" id="nav_big"><a href="/about/">About</a></li>
+            
+        
+
+        
+        <li class="layui-nav-item" id="nav_small">
+            <a href="javascript:;">
+                <i class="layui-icon layui-icon-app" style="font-size: 24px;"></i>
+            </a>
+
+            <dl class="layui-nav-child">
+                
+                <dd><a href="/post/">Posts</a></dd>
+                
+
+                
+                    
+                        <dd><a href="/about/">About</a></dd>
+                    
+                
+            </dl>
+        </li>
+    </ul>
+</header>
+
+<script>
+layui.use('element', function(){
+  var element = layui.element;
+});
+</script>
+        <div id="content" style="min-height:80%">
+<div class="layui-container" style="margin-bottom: 10px">
+    
+
+    <div class="layui-row layui-col-space10">
+        <div class="layui-col-md8 layui-col-sm12 layui-col-xs12">
+            <div class="layui-card single-card">
+                <br />
+                <blockquote class="self-elem-quote self-elem-quote-bg-red markdown-body single-title" >
+                    <h1>Using dynamically generated JFreeChart’s charts and JasperReports</h1>
+                    <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2009-09-21</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                </blockquote>
+                <div class="layui-card-body markdown-body single-content">
+                    <p>If you are reading this blog it means you want to use JasperReport with dynamically programmatically generated images. An example of such use cases in generating complex charts using JFreeChart and then including these charts into reports.</p>
+<p>Each report in JasperReport uses a datasource to populate the fields, we need to use JRBeanCollectionDataSource which can be considered as a simple collection of JavaBeans. Each object in the JRBeanCollectionDataSource can be used to populate one row of the report or it can be used to prepare calculated values and so on.</p>
+<p>Each Report in JasperReport is basically an XML file which describe the report. in our case the report description document is like:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+<span style="color:#f92672">&lt;jasperReport</span> <span style="color:#a6e22e">xmlns=</span><span style="color:#e6db74">&#34;http://jasperreports.sourceforge.net/jasperreports&#34;</span> <span style="color:#a6e22e">xmlns:xsi=</span><span style="color:#e6db74">&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span> <span style="color:#a6e22e">xsi:schemaLocation=</span><span style="color:#e6db74">&#34;http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd&#34;</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;DataSourceReport&#34;</span> <span style="color:#a6e22e">pageWidth=</span><span style="color:#e6db74">&#34;595&#34;</span> <span style="color:#a6e22e">pageHeight=</span><span style="color:#e6db74">&#34;842&#34;</span> <span style="color:#a6e22e">columnWidth=</span><span style="color:#e6db74">&#34;515&#34;</span> <span style="color:#a6e22e">leftMargin=</span><span style="color:#e6db74">&#34;40&#34;</span> <span style="color:#a6e22e">rightMargin=</span><span style="color:#e6db74">&#34;40&#34;</span> <span style="color:#a6e22e">topMargin=</span><span style="color:#e6db74">&#34;50&#34;</span> <span style="color:#a6e22e">bottomMargin=</span><span style="color:#e6db74">&#34;50&#34;</span><span style="color:#f92672">&gt;</span>
+   <span style="color:#f92672">&lt;style</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;Sans_Normal&#34;</span> <span style="color:#a6e22e">isDefault=</span><span style="color:#e6db74">&#34;true&#34;</span> <span style="color:#a6e22e">fontName=</span><span style="color:#e6db74">&#34;DejaVu Sans&#34;</span> <span style="color:#a6e22e">fontSize=</span><span style="color:#e6db74">&#34;12&#34;</span> <span style="color:#a6e22e">isBold=</span><span style="color:#e6db74">&#34;false&#34;</span> <span style="color:#a6e22e">isItalic=</span><span style="color:#e6db74">&#34;false&#34;</span> <span style="color:#a6e22e">isUnderline=</span><span style="color:#e6db74">&#34;false&#34;</span> <span style="color:#a6e22e">isStrikeThrough=</span><span style="color:#e6db74">&#34;false&#34;</span><span style="color:#f92672">/&gt;</span>
+   <span style="color:#f92672">&lt;style</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;Sans_Bold&#34;</span> <span style="color:#a6e22e">isDefault=</span><span style="color:#e6db74">&#34;false&#34;</span> <span style="color:#a6e22e">fontName=</span><span style="color:#e6db74">&#34;DejaVu Sans&#34;</span> <span style="color:#a6e22e">fontSize=</span><span style="color:#e6db74">&#34;12&#34;</span> <span style="color:#a6e22e">isBold=</span><span style="color:#e6db74">&#34;true&#34;</span> <span style="color:#a6e22e">isItalic=</span><span style="color:#e6db74">&#34;false&#34;</span> <span style="color:#a6e22e">isUnderline=</span><span style="color:#e6db74">&#34;false&#34;</span> <span style="color:#a6e22e">isStrikeThrough=</span><span style="color:#e6db74">&#34;false&#34;</span><span style="color:#f92672">/&gt;</span>
+   <span style="color:#f92672">&lt;style</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;Sans_Italic&#34;</span> <span style="color:#a6e22e">isDefault=</span><span style="color:#e6db74">&#34;false&#34;</span> <span style="color:#a6e22e">fontName=</span><span style="color:#e6db74">&#34;DejaVu Sans&#34;</span> <span style="color:#a6e22e">fontSize=</span><span style="color:#e6db74">&#34;12&#34;</span> <span style="color:#a6e22e">isBold=</span><span style="color:#e6db74">&#34;false&#34;</span> <span style="color:#a6e22e">isItalic=</span><span style="color:#e6db74">&#34;true&#34;</span> <span style="color:#a6e22e">isUnderline=</span><span style="color:#e6db74">&#34;false&#34;</span> <span style="color:#a6e22e">isStrikeThrough=</span><span style="color:#e6db74">&#34;false&#34;</span><span style="color:#f92672">/&gt;</span>
+   <span style="color:#f92672">&lt;field</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;image&#34;</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;java.awt.image.BufferedImage&#34;</span><span style="color:#f92672">/&gt;</span>
+   <span style="color:#f92672">&lt;field</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;description&#34;</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;java.lang.String&#34;</span><span style="color:#f92672">/&gt;</span>
+   <span style="color:#f92672">&lt;detail&gt;</span>
+       <span style="color:#f92672">&lt;band</span> <span style="color:#a6e22e">height=</span><span style="color:#e6db74">&#34;180&#34;</span><span style="color:#f92672">&gt;</span>
+           <span style="color:#f92672">&lt;image</span> <span style="color:#a6e22e">scaleImage=</span><span style="color:#e6db74">&#34;RetainShape&#34;</span> <span style="color:#a6e22e">hAlign=</span><span style="color:#e6db74">&#34;Center&#34;</span> <span style="color:#a6e22e">isUsingCache=</span><span style="color:#e6db74">&#34;true&#34;</span> <span style="color:#a6e22e">isLazy=</span><span style="color:#e6db74">&#34;true&#34;</span><span style="color:#f92672">&gt;</span>
+               <span style="color:#f92672">&lt;reportElement</span> <span style="color:#a6e22e">x=</span><span style="color:#e6db74">&#34;67&#34;</span> <span style="color:#a6e22e">y=</span><span style="color:#e6db74">&#34;17&#34;</span> <span style="color:#a6e22e">width=</span><span style="color:#e6db74">&#34;344&#34;</span> <span style="color:#a6e22e">height=</span><span style="color:#e6db74">&#34;140&#34;</span><span style="color:#f92672">/&gt;</span>
+               <span style="color:#f92672">&lt;imageExpression</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;java.awt.Image&#34;</span><span style="color:#f92672">&gt;</span><span style="color:#75715e">&lt;!\[CDATA\[$F{image}\]\]&gt;</span><span style="color:#f92672">&lt;/imageExpression&gt;</span>
+           <span style="color:#f92672">&lt;/image&gt;</span>
+           <span style="color:#f92672">&lt;textField&gt;</span>
+               <span style="color:#f92672">&lt;reportElement</span> <span style="color:#a6e22e">x=</span><span style="color:#e6db74">&#34;83&#34;</span> <span style="color:#a6e22e">y=</span><span style="color:#e6db74">&#34;157&#34;</span> <span style="color:#a6e22e">width=</span><span style="color:#e6db74">&#34;311&#34;</span> <span style="color:#a6e22e">height=</span><span style="color:#e6db74">&#34;20&#34;</span><span style="color:#f92672">/&gt;</span>
+               <span style="color:#f92672">&lt;textElement/&gt;</span>
+               <span style="color:#f92672">&lt;textFieldExpression</span> <span style="color:#a6e22e">class=</span><span style="color:#e6db74">&#34;java.lang.String&#34;</span><span style="color:#f92672">&gt;</span><span style="color:#75715e">&lt;!\[CDATA\[$F{description}\]\]&gt;</span><span style="color:#f92672">&lt;/textFieldExpression&gt;</span>
+           <span style="color:#f92672">&lt;/textField&gt;</span>
+       <span style="color:#f92672">&lt;/band&gt;</span>
+   <span style="color:#f92672">&lt;/detail&gt;</span>
+<span style="color:#f92672">&lt;/jasperReport&gt;</span>
+</code></pre></div><p>As you can see I defined two fields named <em>image</em> and <em>description</em> which are two property of the ReportBean objects included in the data source. The report looks as follow in the IreportDesigner (I am using NetBeans plugin for developing reports).</p>
+<p><img src="http://www.java.net/sites/default/files/image1-kalali.jpg" alt="report in the designer"></p>
+<p>Lets see what is the JavaBean class we want to use to carry the report fields from our Java code to the JasperReport engine.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ChartBean</span> <span style="color:#f92672">{</span>  
+       <span style="color:#66d9ef">private</span> java<span style="color:#f92672">.</span><span style="color:#a6e22e">awt</span><span style="color:#f92672">.</span><span style="color:#a6e22e">image</span><span style="color:#f92672">.</span><span style="color:#a6e22e">BufferedImage</span> image<span style="color:#f92672">;</span>  
+       <span style="color:#66d9ef">private</span> String description<span style="color:#f92672">;</span>      
+   
+    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">ChartBean</span><span style="color:#f92672">(</span>BufferedImage image<span style="color:#f92672">,</span> String description<span style="color:#f92672">)</span> 
+    <span style="color:#f92672">{</span> 
+    setImage<span style="color:#f92672">(</span>image<span style="color:#f92672">);</span> setDescription<span style="color:#f92672">(</span>description<span style="color:#f92672">);</span>    
+     <span style="color:#f92672">}</span>          
+         <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getDescription</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>  
+                <span style="color:#66d9ef">return</span> description<span style="color:#f92672">;</span>     <span style="color:#f92672">}</span>      
+                <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setDescription</span><span style="color:#f92672">(</span>String description<span style="color:#f92672">)</span> <span style="color:#f92672">{</span> 
+                        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">description</span> <span style="color:#f92672">=</span> description<span style="color:#f92672">;</span>     <span style="color:#f92672">}</span>      
+                        <span style="color:#66d9ef">public</span> BufferedImage <span style="color:#a6e22e">getImage</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>   
+                              <span style="color:#66d9ef">return</span> image<span style="color:#f92672">;</span>     <span style="color:#f92672">}</span>   
+                                 <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setImage</span><span style="color:#f92672">(</span>BufferedImage image<span style="color:#f92672">)</span> <span style="color:#f92672">{</span> 
+                                         <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">image</span> <span style="color:#f92672">=</span> image<span style="color:#f92672">;</span>     <span style="color:#f92672">}</span>  
+                                          <span style="color:#f92672">}</span> 
+</code></pre></div><p>Now we need to prepare the datasource for the report, to prepare the datasource I wrote a method like the following snippet which uses another method to extract the BufferedImage from the JFreeChart items which we want to include in the report.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">        <span style="color:#66d9ef">public</span> JRBeanCollectionDataSource <span style="color:#a6e22e">prepareDataSource</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>           List charts <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">();</span>
+   
+           <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> 5<span style="color:#f92672">;</span> i<span style="color:#f92672">++)</span> <span style="color:#f92672">{</span>
+               JFreeChart chart <span style="color:#f92672">=</span> createChart<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;This is chart number: &#34;</span> <span style="color:#f92672">+</span> i<span style="color:#f92672">);</span>
+               BufferedImage bi <span style="color:#f92672">=</span> extractImage<span style="color:#f92672">(</span>chart<span style="color:#f92672">,</span> 800<span style="color:#f92672">,</span> 600<span style="color:#f92672">);</span>
+               ChartBean chartBean <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ChartBean<span style="color:#f92672">(</span>bi<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;This is description for Chart: &#34;</span> <span style="color:#f92672">+</span> i<span style="color:#f92672">);</span>
+               charts<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>chartBean<span style="color:#f92672">);</span>
+           <span style="color:#f92672">}</span>
+   
+           <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> JRBeanCollectionDataSource<span style="color:#f92672">(</span>charts<span style="color:#f92672">);</span>
+       <span style="color:#f92672">}</span>
+   <span style="color:#960050;background-color:#1e0010">```</span> 
+
+The createChart method create some sample charts which we will include in the report<span style="color:#f92672">.</span> the method is simpley creating some dummy ring charts without any specific and meaningful data<span style="color:#f92672">.</span>
+<span style="color:#960050;background-color:#1e0010">```</span>java
+    <span style="color:#66d9ef">private</span> JFreeChart <span style="color:#a6e22e">createChart</span><span style="color:#f92672">(</span>String chartTitle<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>         
+      DefaultPieDataset piedataset <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> DefaultPieDataset<span style="color:#f92672">();</span>     
+    piedataset<span style="color:#f92672">.</span><span style="color:#a6e22e">setValue</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;One&#34;</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> Double<span style="color:#f92672">(</span>43<span style="color:#f92672">.</span><span style="color:#a6e22e">200000000000003D</span><span style="color:#f92672">));</span>
+     piedataset<span style="color:#f92672">.</span><span style="color:#a6e22e">setValue</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Two&#34;</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> Double<span style="color:#f92672">(</span>10D<span style="color:#f92672">));</span>         piedataset<span style="color:#f92672">.</span><span style="color:#a6e22e">setValue</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Three&#34;</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> Double<span style="color:#f92672">(</span>27<span style="color:#f92672">.</span><span style="color:#a6e22e">5D</span><span style="color:#f92672">));</span>         piedataset<span style="color:#f92672">.</span><span style="color:#a6e22e">setValue</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Four&#34;</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> Double<span style="color:#f92672">(</span>17<span style="color:#f92672">.</span><span style="color:#a6e22e">5D</span><span style="color:#f92672">));</span>         piedataset<span style="color:#f92672">.</span><span style="color:#a6e22e">setValue</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Five&#34;</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> Double<span style="color:#f92672">(</span>11D<span style="color:#f92672">));</span>         piedataset<span style="color:#f92672">.</span><span style="color:#a6e22e">setValue</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Six&#34;</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> Double<span style="color:#f92672">(</span>19<span style="color:#f92672">.</span><span style="color:#a6e22e">399999999999999D</span><span style="color:#f92672">));</span>           JFreeChart jfreechart <span style="color:#f92672">=</span> ChartFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">createRingChart</span><span style="color:#f92672">(</span>chartTitle<span style="color:#f92672">,</span> piedataset<span style="color:#f92672">,</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">);</span>          RingPlot ringplot <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>RingPlot<span style="color:#f92672">)</span> jfreechart<span style="color:#f92672">.</span><span style="color:#a6e22e">getPlot</span><span style="color:#f92672">();</span>         ringplot<span style="color:#f92672">.</span><span style="color:#a6e22e">setLabelFont</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Font<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;SansSerif&#34;</span><span style="color:#f92672">,</span> 0<span style="color:#f92672">,</span> 12<span style="color:#f92672">));</span>         ringplot<span style="color:#f92672">.</span><span style="color:#a6e22e">setNoDataMessage</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;No data available&#34;</span><span style="color:#f92672">);</span>         ringplot<span style="color:#f92672">.</span><span style="color:#a6e22e">setSectionDepth</span><span style="color:#f92672">(</span>0<span style="color:#f92672">.</span><span style="color:#a6e22e">34999999999999998D</span><span style="color:#f92672">);</span>         ringplot<span style="color:#f92672">.</span><span style="color:#a6e22e">setCircular</span><span style="color:#f92672">(</span><span style="color:#66d9ef">false</span><span style="color:#f92672">);</span>         ringplot<span style="color:#f92672">.</span><span style="color:#a6e22e">setLabelGap</span><span style="color:#f92672">(</span>0<span style="color:#f92672">.</span><span style="color:#a6e22e">02D</span><span style="color:#f92672">);</span>         <span style="color:#66d9ef">return</span> jfreechart<span style="color:#f92672">;</span>     <span style="color:#f92672">}</span> 
+</code></pre></div><p>The other method which need to be explained is extractImage which simply create a BufferedImage from a given JfreeChart object.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">     <span style="color:#66d9ef">public</span> BufferedImage <span style="color:#a6e22e">extractImage</span><span style="color:#f92672">(</span>JFreeChart chart<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> width<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> height<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>         BufferedImage img <span style="color:#f92672">=</span>                 <span style="color:#66d9ef">new</span> BufferedImage<span style="color:#f92672">(</span>width<span style="color:#f92672">,</span> height<span style="color:#f92672">,</span>                 BufferedImage<span style="color:#f92672">.</span><span style="color:#a6e22e">TYPE_INT_RGB</span><span style="color:#f92672">);</span>          Graphics2D g2 <span style="color:#f92672">=</span> img<span style="color:#f92672">.</span><span style="color:#a6e22e">createGraphics</span><span style="color:#f92672">();</span>        chart<span style="color:#f92672">.</span><span style="color:#a6e22e">draw</span><span style="color:#f92672">(</span>g2<span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> Rectangle2D<span style="color:#f92672">.</span><span style="color:#a6e22e">Double</span><span style="color:#f92672">(</span>0<span style="color:#f92672">,</span> 0<span style="color:#f92672">,</span> width<span style="color:#f92672">,</span> height<span style="color:#f92672">));</span>          g2<span style="color:#f92672">.</span><span style="color:#a6e22e">dispose</span><span style="color:#f92672">();</span>         <span style="color:#66d9ef">return</span> img<span style="color:#f92672">;</span>      <span style="color:#f92672">}</span> 
+</code></pre></div><p>Finally I have a method named showReport which uses the created datasource to prepare a report and then uses JRViewer to show the report. The code snippet is as follow:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">      <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">showReport</span><span style="color:#f92672">(</span>JRBeanCollectionDataSource dataSource<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>          <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>             Map parameters <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HashMap<span style="color:#f92672">();</span>             JasperDesign jasperDesign <span style="color:#f92672">=</span> JRXmlLoader<span style="color:#f92672">.</span><span style="color:#a6e22e">load</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getClass</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getResourceAsStream</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/jasperdynamic/report.jrxml&#34;</span><span style="color:#f92672">));</span>             JasperReport jasperReport <span style="color:#f92672">=</span> JasperCompileManager<span style="color:#f92672">.</span><span style="color:#a6e22e">compileReport</span><span style="color:#f92672">(</span>jasperDesign<span style="color:#f92672">);</span>             JasperPrint jasperPrint <span style="color:#f92672">=</span> JasperFillManager<span style="color:#f92672">.</span><span style="color:#a6e22e">fillReport</span><span style="color:#f92672">(</span>jasperReport<span style="color:#f92672">,</span> parameters<span style="color:#f92672">,</span> dataSource<span style="color:#f92672">);</span>             JRViewer viewer <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> JRViewer<span style="color:#f92672">(</span>jasperPrint<span style="color:#f92672">);</span>             viewer<span style="color:#f92672">.</span><span style="color:#a6e22e">setSize</span><span style="color:#f92672">(</span>850<span style="color:#f92672">,</span> 500<span style="color:#f92672">);</span>             viewer<span style="color:#f92672">.</span><span style="color:#a6e22e">setMinimumSize</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Dimension<span style="color:#f92672">(</span>850<span style="color:#f92672">,</span> 510<span style="color:#f92672">));</span>             viewer<span style="color:#f92672">.</span><span style="color:#a6e22e">setPreferredSize</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Dimension<span style="color:#f92672">(</span>850<span style="color:#f92672">,</span> 510<span style="color:#f92672">));</span>              <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">setLayout</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> BorderLayout<span style="color:#f92672">(</span>10<span style="color:#f92672">,</span> 10<span style="color:#f92672">));</span>              <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">setSize</span><span style="color:#f92672">(</span>850<span style="color:#f92672">,</span> 500<span style="color:#f92672">);</span>              <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getContentPane</span><span style="color:#f92672">().</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>viewer<span style="color:#f92672">);</span>             <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">setVisible</span><span style="color:#f92672">(</span><span style="color:#66d9ef">true</span><span style="color:#f92672">);</span>          <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Exception ex<span style="color:#f92672">)</span> <span style="color:#f92672">{</span> ex<span style="color:#f92672">.</span><span style="color:#a6e22e">printStackTrace</span><span style="color:#f92672">();</span>         <span style="color:#f92672">}</span>     <span style="color:#f92672">}</span> 
+</code></pre></div><p>And the complete code for the application application class is as follow:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">package</span> jasperdynamic<span style="color:#f92672">;</span>
+
+<span style="color:#f92672">import</span> net.sf.jasperreports.engine.JasperCompileManager<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> net.sf.jasperreports.engine.JasperFillManager<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> net.sf.jasperreports.engine.JasperPrint<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> net.sf.jasperreports.engine.JasperReport<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> net.sf.jasperreports.engine.data.JRBeanCollectionDataSource<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> net.sf.jasperreports.engine.design.JasperDesign<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> net.sf.jasperreports.engine.xml.JRXmlLoader<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> net.sf.jasperreports.view.JRViewer<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.jfree.chart.ChartFactory<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.jfree.chart.JFreeChart<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.jfree.chart.plot.RingPlot<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.jfree.data.general.DefaultPieDataset<span style="color:#f92672">;</span>
+
+<span style="color:#f92672">import</span> javax.swing.*<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> java.awt.*<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> java.awt.geom.Rectangle2D<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> java.awt.image.BufferedImage<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> java.util.ArrayList<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> java.util.HashMap<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> java.util.List<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> java.util.Map<span style="color:#f92672">;</span>
+
+<span style="color:#75715e">/**
+</span><span style="color:#75715e"> * * @author masoud
+</span><span style="color:#75715e"> */</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Main</span> <span style="color:#66d9ef">extends</span> JFrame <span style="color:#f92672">{</span>
+
+    <span style="color:#75715e">/**
+</span><span style="color:#75715e">     * @param args the command line arguments
+</span><span style="color:#75715e">     */</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        Main m <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Main<span style="color:#f92672">();</span>
+        m<span style="color:#f92672">.</span><span style="color:#a6e22e">showReport</span><span style="color:#f92672">(</span>m<span style="color:#f92672">.</span><span style="color:#a6e22e">prepareDataSource</span><span style="color:#f92672">());</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">public</span> JRBeanCollectionDataSource <span style="color:#a6e22e">prepareDataSource</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        List charts <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">();</span>
+
+        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> 5<span style="color:#f92672">;</span> i<span style="color:#f92672">++)</span> <span style="color:#f92672">{</span>
+            JFreeChart chart <span style="color:#f92672">=</span> createChart<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;This is chart number: &#34;</span> <span style="color:#f92672">+</span> i<span style="color:#f92672">);</span>
+            BufferedImage bi <span style="color:#f92672">=</span> extractImage<span style="color:#f92672">(</span>chart<span style="color:#f92672">,</span> 800<span style="color:#f92672">,</span> 600<span style="color:#f92672">);</span>
+            ChartBean chartBean <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ChartBean<span style="color:#f92672">(</span>bi<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;This is description for Chart: &#34;</span> <span style="color:#f92672">+</span> i<span style="color:#f92672">);</span>
+            charts<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>chartBean<span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span>
+
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> JRBeanCollectionDataSource<span style="color:#f92672">(</span>charts<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">public</span> BufferedImage <span style="color:#a6e22e">extractImage</span><span style="color:#f92672">(</span>JFreeChart chart<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> width<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> height<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        BufferedImage img <span style="color:#f92672">=</span>
+                <span style="color:#66d9ef">new</span> BufferedImage<span style="color:#f92672">(</span>width<span style="color:#f92672">,</span> height<span style="color:#f92672">,</span>
+                        BufferedImage<span style="color:#f92672">.</span><span style="color:#a6e22e">TYPE_INT_RGB</span><span style="color:#f92672">);</span>
+
+        Graphics2D g2 <span style="color:#f92672">=</span> img<span style="color:#f92672">.</span><span style="color:#a6e22e">createGraphics</span><span style="color:#f92672">();</span>
+        chart<span style="color:#f92672">.</span><span style="color:#a6e22e">draw</span><span style="color:#f92672">(</span>g2<span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> Rectangle2D<span style="color:#f92672">.</span><span style="color:#a6e22e">Double</span><span style="color:#f92672">(</span>0<span style="color:#f92672">,</span> 0<span style="color:#f92672">,</span> width<span style="color:#f92672">,</span> height<span style="color:#f92672">));</span>
+
+        g2<span style="color:#f92672">.</span><span style="color:#a6e22e">dispose</span><span style="color:#f92672">();</span>
+        <span style="color:#66d9ef">return</span> img<span style="color:#f92672">;</span>
+
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">showReport</span><span style="color:#f92672">(</span>JRBeanCollectionDataSource dataSource<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+
+        <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+            Map parameters <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HashMap<span style="color:#f92672">();</span>
+            JasperDesign jasperDesign <span style="color:#f92672">=</span> JRXmlLoader<span style="color:#f92672">.</span><span style="color:#a6e22e">load</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getClass</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getResourceAsStream</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/jasperdynamic/report.jrxml&#34;</span><span style="color:#f92672">));</span>
+            JasperReport jasperReport <span style="color:#f92672">=</span> JasperCompileManager<span style="color:#f92672">.</span><span style="color:#a6e22e">compileReport</span><span style="color:#f92672">(</span>jasperDesign<span style="color:#f92672">);</span>
+            JasperPrint jasperPrint <span style="color:#f92672">=</span> JasperFillManager<span style="color:#f92672">.</span><span style="color:#a6e22e">fillReport</span><span style="color:#f92672">(</span>jasperReport<span style="color:#f92672">,</span> parameters<span style="color:#f92672">,</span> dataSource<span style="color:#f92672">);</span>
+            JRViewer viewer <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> JRViewer<span style="color:#f92672">(</span>jasperPrint<span style="color:#f92672">);</span>
+            viewer<span style="color:#f92672">.</span><span style="color:#a6e22e">setSize</span><span style="color:#f92672">(</span>850<span style="color:#f92672">,</span> 500<span style="color:#f92672">);</span>
+            viewer<span style="color:#f92672">.</span><span style="color:#a6e22e">setMinimumSize</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Dimension<span style="color:#f92672">(</span>850<span style="color:#f92672">,</span> 510<span style="color:#f92672">));</span>
+            viewer<span style="color:#f92672">.</span><span style="color:#a6e22e">setPreferredSize</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Dimension<span style="color:#f92672">(</span>850<span style="color:#f92672">,</span> 510<span style="color:#f92672">));</span>
+
+            <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">setLayout</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> BorderLayout<span style="color:#f92672">(</span>10<span style="color:#f92672">,</span> 10<span style="color:#f92672">));</span>
+
+            <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">setSize</span><span style="color:#f92672">(</span>850<span style="color:#f92672">,</span> 500<span style="color:#f92672">);</span>
+
+            <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getContentPane</span><span style="color:#f92672">().</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>viewer<span style="color:#f92672">);</span>
+            <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">setVisible</span><span style="color:#f92672">(</span><span style="color:#66d9ef">true</span><span style="color:#f92672">);</span>
+
+        <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Exception ex<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            ex<span style="color:#f92672">.</span><span style="color:#a6e22e">printStackTrace</span><span style="color:#f92672">();</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#66d9ef">private</span> JFreeChart <span style="color:#a6e22e">createChart</span><span style="color:#f92672">(</span>String chartTitle<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+
+
+        DefaultPieDataset piedataset <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> DefaultPieDataset<span style="color:#f92672">();</span>
+        piedataset<span style="color:#f92672">.</span><span style="color:#a6e22e">setValue</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;One&#34;</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> Double<span style="color:#f92672">(</span>43<span style="color:#f92672">.</span><span style="color:#a6e22e">200000000000003D</span><span style="color:#f92672">));</span>
+        piedataset<span style="color:#f92672">.</span><span style="color:#a6e22e">setValue</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Two&#34;</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> Double<span style="color:#f92672">(</span>10D<span style="color:#f92672">));</span>
+        piedataset<span style="color:#f92672">.</span><span style="color:#a6e22e">setValue</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Three&#34;</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> Double<span style="color:#f92672">(</span>27<span style="color:#f92672">.</span><span style="color:#a6e22e">5D</span><span style="color:#f92672">));</span>
+        piedataset<span style="color:#f92672">.</span><span style="color:#a6e22e">setValue</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Four&#34;</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> Double<span style="color:#f92672">(</span>17<span style="color:#f92672">.</span><span style="color:#a6e22e">5D</span><span style="color:#f92672">));</span>
+        piedataset<span style="color:#f92672">.</span><span style="color:#a6e22e">setValue</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Five&#34;</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> Double<span style="color:#f92672">(</span>11D<span style="color:#f92672">));</span>
+        piedataset<span style="color:#f92672">.</span><span style="color:#a6e22e">setValue</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Six&#34;</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> Double<span style="color:#f92672">(</span>19<span style="color:#f92672">.</span><span style="color:#a6e22e">399999999999999D</span><span style="color:#f92672">));</span>
+
+
+        JFreeChart jfreechart <span style="color:#f92672">=</span> ChartFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">createRingChart</span><span style="color:#f92672">(</span>chartTitle<span style="color:#f92672">,</span> piedataset<span style="color:#f92672">,</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">);</span>
+
+        RingPlot ringplot <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>RingPlot<span style="color:#f92672">)</span> jfreechart<span style="color:#f92672">.</span><span style="color:#a6e22e">getPlot</span><span style="color:#f92672">();</span>
+        ringplot<span style="color:#f92672">.</span><span style="color:#a6e22e">setLabelFont</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Font<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;SansSerif&#34;</span><span style="color:#f92672">,</span> 0<span style="color:#f92672">,</span> 12<span style="color:#f92672">));</span>
+        ringplot<span style="color:#f92672">.</span><span style="color:#a6e22e">setNoDataMessage</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;No data available&#34;</span><span style="color:#f92672">);</span>
+        ringplot<span style="color:#f92672">.</span><span style="color:#a6e22e">setSectionDepth</span><span style="color:#f92672">(</span>0<span style="color:#f92672">.</span><span style="color:#a6e22e">34999999999999998D</span><span style="color:#f92672">);</span>
+        ringplot<span style="color:#f92672">.</span><span style="color:#a6e22e">setCircular</span><span style="color:#f92672">(</span><span style="color:#66d9ef">false</span><span style="color:#f92672">);</span>
+        ringplot<span style="color:#f92672">.</span><span style="color:#a6e22e">setLabelGap</span><span style="color:#f92672">(</span>0<span style="color:#f92672">.</span><span style="color:#a6e22e">02D</span><span style="color:#f92672">);</span>
+        <span style="color:#66d9ef">return</span> jfreechart<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>Following image shows how the report will look like after we run the program. and the complete source code can be downloaded from <a href="http://www.java.net/sites/default/files/JasperDynamic.zip"><strong>Here</strong></a></p>
+<p><img src="http://www.java.net/sites/default/files/image2-kalali.jpg" alt="report in the designer">var</p>
+</div>
+            </div>
+        </div>
+
+        <div class="layui-col-md4 layui-col-sm12 layui-col-xs12">
+            
+            <div class="layui-card single-card">
+                <h2 class="single-title">Relevant Topics</h2>
+                
+                	
+                    <div style="margin-left: 10px;">
+                        <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                            <a href="/post/2009-09-04-so-you-want-to-develop-a-rich-client-application-on-top-of-netbeans-rcp/">
+                                <h3 class="">So you want to develop a rich client application on top of NetBeans RCP?</h3>
+                            </a>
+                            
+                            <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2009-09-04</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                        </blockquote>
+                    </div>
+                	
+                    <div style="margin-left: 10px;">
+                        <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                            <a href="/post/2009-09-03-jpa-and-a-first-tier-application-performance-problems/">
+                                <h3 class="">JPA and a First tier application performance problems</h3>
+                            </a>
+                            
+                            <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2009-09-03</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                        </blockquote>
+                    </div>
+                	
+                    <div style="margin-left: 10px;">
+                        <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                            <a href="/post/2009-09-01-my-refcard-for-oracle-berkeley-db-java-edition-published-by-dzone/">
+                                <h3 class="">My refcard for Oracle Berkeley DB Java edition published by DZone</h3>
+                            </a>
+                            
+                            <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2009-09-01</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                        </blockquote>
+                    </div>
+                	
+                    <div style="margin-left: 10px;">
+                        <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                            <a href="/post/2009-08-06-quick-netbeans-rcp-tip-how-to-reuse-an-already-open-topcomponent-instead-of-creating-a-new-one/">
+                                <h3 class="">Quick NetBeans RCP Tip: How to reuse an already open TopComponent instead of creating a new one.</h3>
+                            </a>
+                            
+                            <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2009-08-06</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                        </blockquote>
+                    </div>
+                	
+                    <div style="margin-left: 10px;">
+                        <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                            <a href="/post/2009-06-29-netbeans-6-7-is-here-grab-your-copy-and-explore-tens-of-new-features/">
+                                <h3 class="">NetBeans 6.7 is here. Grab your copy and explore tens of new features</h3>
+                            </a>
+                            
+                            <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2009-06-29</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                        </blockquote>
+                    </div>
+                	
+                
+                <br />
+            </div>
+            
+
+            <div class="layui-card single-card">
+                <h2 class="single-title">Recent Posts</h2>
+            
+                
+                <div style="margin-left: 10px;">
+                    <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                    <a href="/post/2013-09-17-getting-started-with-couchdb-and-mongodb-part-ii-beginning-with-security/">
+                        <h3 class="">Getting started with CouchDB and MongoDB, Part II: Beginning with Security</h3>
+                    </a>
+                    <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2013-09-17</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                    </blockquote>
+                </div>
+                
+                <div style="margin-left: 10px;">
+                    <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                    <a href="/post/2013-09-12-getting-started-with-couchdb-and-mongodb-nosql-document-databases-part-i/">
+                        <h3 class="">Getting started with CouchDB and MongoDB, Part I: CRUD operations</h3>
+                    </a>
+                    <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2013-09-12</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                    </blockquote>
+                </div>
+                
+                <div style="margin-left: 10px;">
+                    <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                    <a href="/post/2012-12-27-my-last-blog-in-2012-my-2013-wishes-and-predictions/">
+                        <h3 class="">My last blog in 2012: My 2013 wishes and predictions…</h3>
+                    </a>
+                    <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2012-12-27</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                    </blockquote>
+                </div>
+                
+                <div style="margin-left: 10px;">
+                    <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                    <a href="/post/2012-09-24-my-sessions-in-javaone-2012/">
+                        <h3 class="">My sessions in JavaOne 2012</h3>
+                    </a>
+                    <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2012-09-24</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                    </blockquote>
+                </div>
+                
+                <div style="margin-left: 10px;">
+                    <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                    <a href="/post/2012-04-12-from-netbeans-to-intellij-idea-week-1/">
+                        <h3 class="">From NetBeans to IntelliJ IDEA, Week 1</h3>
+                    </a>
+                    <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2012-04-12</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                    </blockquote>
+                </div>
+                
+            
+            <br />
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+        </div><footer>
+    
+    
+    <div class="layui-container">
+        <p class="copyright">Copyright © 2006–2020, Masoud Kalali. Some rights are reserved</p>
+    </div>
+</footer>
+</body>
+</html>

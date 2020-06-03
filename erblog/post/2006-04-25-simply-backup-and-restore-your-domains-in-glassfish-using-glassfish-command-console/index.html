@@ -1,0 +1,563 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>The Place - Simply backup and restore your domains in GlassFish Using GlassFish Command Console </title>
+    
+    
+    <meta content="Java, GlassFish" name="keywords">
+    
+    <meta content="The Place - Do you ever though about creating a backup copy of your domains in GlassFish , for example before doing something unpredictable , meanwhile you like your domain because of its configurations ?
+here is simple steps to create backup and restore those backup.
+before we go any further you should know , domaindir that we see in many of asadmin commands has a default value its default value is : GlassFish_home/domains , in all of those commands that has domaindir parameter, if you explicitly do not identify the domaindir asadmin will use the default values." name="description">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    
+        <link rel="icon" href="img/favicon.ico">
+    
+
+    
+
+    
+
+    
+
+    <link rel="stylesheet" href="/layui/css/layui.css">
+    <link rel="stylesheet" href="/self/css/default.css">
+    <script src="/layui/layui.js"></script>
+
+    <link rel="stylesheet" async href="/self/css/markdown.min.css">
+    <link rel="stylesheet" async href="/self/css/gallery.css">
+    
+    
+    
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
+    <script async src="https://cdn.jsdelivr.net/npm/lazysizes@5.2.0/lazysizes.min.js" integrity="sha256-h2tMEmhemR2IN4wbbdNjj9LaDIjzwk2hralQwfJmBOE=" crossorigin="anonymous"></script></head>
+
+<body>
+    
+    <header class="layui-header layui-bg-cyan">
+
+    
+        <a href=""><img src="/img/avatar.png" class="layui-nav-img" style="margin-left:10px;margin-top:-10px"></a>
+    
+    
+    <a class="nav-self-logo" href="/">
+        The Place
+    </a>
+
+    <ul class="layui-nav layui-layout-right layui-bg-cyan" lay-filter="">
+        
+        
+        <li class="layui-nav-item" id="nav_big"><a href="/post/">Posts</a></li>
+        
+
+        
+            
+                <li class="layui-nav-item" id="nav_big"><a href="/about/">About</a></li>
+            
+        
+
+        
+        <li class="layui-nav-item" id="nav_small">
+            <a href="javascript:;">
+                <i class="layui-icon layui-icon-app" style="font-size: 24px;"></i>
+            </a>
+
+            <dl class="layui-nav-child">
+                
+                <dd><a href="/post/">Posts</a></dd>
+                
+
+                
+                    
+                        <dd><a href="/about/">About</a></dd>
+                    
+                
+            </dl>
+        </li>
+    </ul>
+</header>
+
+<script>
+layui.use('element', function(){
+  var element = layui.element;
+});
+</script>
+        <div id="content" style="min-height:80%">
+<div class="layui-container" style="margin-bottom: 10px">
+    
+
+    <div class="layui-row layui-col-space10">
+        <div class="layui-col-md8 layui-col-sm12 layui-col-xs12">
+            <div class="layui-card single-card">
+                <br />
+                <blockquote class="self-elem-quote self-elem-quote-bg-red markdown-body single-title" >
+                    <h1>Simply backup and restore your domains in GlassFish Using GlassFish Command Console</h1>
+                    <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2006-04-25</span>
+
+    
+     
+    <i class="layui-icon layui-icon-list" style="font-size: 32px; vertical-align: -3px;"></i>
+    
+
+    
+        <a href="/categories/glassfish/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">GlassFish</span>
+        </a>
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+        <a href="/tags/glassfish/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">GlassFish</span>
+        </a>
+    
+    
+</h3>
+                </blockquote>
+                <div class="layui-card-body markdown-body single-content">
+                    <p>Do you ever though about creating a backup copy of your domains in GlassFish , for example before doing something unpredictable , meanwhile you like your domain because of its configurations ?<br>
+here is simple steps to create backup and restore those backup.<br>
+before we go any further you should know , <em>domaindir</em> that we see in many of asadmin commands has a default value its default value is : <em>GlassFish_home/domains</em> , in all of those commands that has domaindir parameter, if you explicitly do not identify the domaindir asadmin will use the default values. So , when you use domain1 in some command , asadmin will look inside GlassFish_home/domains for that particular domain. steps to create a backup :</p>
+<ol>
+<li>
+<p>Execute asadmin from bin directory under GlassFish_home<br>
+in case that you want to create a backup from a domain named domain1 (which is default domain)</p>
+</li>
+<li>
+<p>execute : <em>backup-domain &ndash;description &ldquo;I made this backup before changing default domain descriptor&rdquo; domain1</em><br>
+after you execute this command , asadmin will create a folder named <em>backups</em> inside GlassFish_home/domains/domain1 and place a zip file there. The zip file is a backup of your domain . For example the zip file could be : <em>sjsas_backup_v00001.zip</em> it means that it is first backup that you create for this domain.<br>
+if you open the zip file you can see a file named <em>backup.properties</em> which contain informations like :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">**  
+<span style="color:#75715e">#Backup Status</span>  
+<span style="color:#75715e">#Wed Apr 26 01:00:40 IRDT 2006</span>  
+timestamp.human<span style="color:#f92672">=</span>Wed Apr <span style="color:#ae81ff">26</span> 01:00:40 IRDT <span style="color:#ae81ff">2006</span>  
+domain.name<span style="color:#f92672">=</span>domain1  
+user.name<span style="color:#f92672">=</span>Masoud Kalali  
+domain.dir<span style="color:#f92672">=</span>F:<span style="color:#ae81ff">\\</span>glassfish<span style="color:#ae81ff">\\</span>domains<span style="color:#ae81ff">\\</span>domain1  
+domains.dir<span style="color:#f92672">=</span>F:<span style="color:#ae81ff">\\</span>glassfish<span style="color:#ae81ff">\\</span>domains  
+timestamp.msec<span style="color:#f92672">=</span><span style="color:#ae81ff">1146004240218</span>  
+description<span style="color:#f92672">=</span>I made this backup before chaning default domain descriptor  
+backup.file<span style="color:#f92672">=</span>F:<span style="color:#ae81ff">\\</span>glassfish<span style="color:#ae81ff">\\</span>domains<span style="color:#ae81ff">\\</span>domain1<span style="color:#ae81ff">\\</span>backups<span style="color:#ae81ff">\\</span>sjsas_backup_v00001.zip  
+**  
+</code></pre></div></li>
+</ol>
+<p><strong>There</strong> is a command which helps you to find out how much backups you have and shows you information related to each backup entry you made.This command is : <em>list-backups</em> it get an operand , the operand will be your domain name. You can also tell it that your domain dir is not the default place using &ndash;domaindir parameter.</p>
+<p>Now lets see how we can restore this backup using asadmin administration console.<br>
+there is a command named <em>restore-domain</em> , this command will restore a domain using a backup file. Simply you need just to pass an operand which is your domain name. If you do this , it will restore your domain using your latest backup .<br>
+<strong>So</strong> if I execute : <em>restore-domain domain1</em> it will looks inside the backups folder (the default place) and select latest backup then it will try to restore the domain using that backup.<br>
+you can use &ndash;filename parameter to specify another backup file which should be passed using a full path.<br>
+I should say that this command accept domaindir parameter as other commands that we talked about them this time.</p>
+</div>
+            </div>
+        </div>
+
+        <div class="layui-col-md4 layui-col-sm12 layui-col-xs12">
+            
+            <div class="layui-card single-card">
+                <h2 class="single-title">Relevant Topics</h2>
+                
+                	
+                    <div style="margin-left: 10px;">
+                        <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                            <a href="/post/2006-04-11-testing-some-frameworks-and-applications-on-glassfish-build-40-part-v-and-some-tips-about-application-deployment/">
+                                <h3 class="">Testing some FrameWorks and applications on Glassfish build 40&#43; part V , And some tips about Application deployment</h3>
+                            </a>
+                            
+                            <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2006-04-11</span>
+
+    
+     
+    <i class="layui-icon layui-icon-list" style="font-size: 32px; vertical-align: -3px;"></i>
+    
+
+    
+        <a href="/categories/javaee/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">JavaEE</span>
+        </a>
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+        <a href="/tags/javaee/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">JavaEE</span>
+        </a>
+    
+        <a href="/tags/glassfish/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">GlassFish</span>
+        </a>
+    
+        <a href="/tags/dwr/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">DWR</span>
+        </a>
+    
+    
+</h3>
+                        </blockquote>
+                    </div>
+                	
+                    <div style="margin-left: 10px;">
+                        <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                            <a href="/post/2006-04-24-overview-of-xml-parsing-in-java-different-methods-and-libraries/">
+                                <h3 class="">overview of XML Parsing in java , different methods and libraries</h3>
+                            </a>
+                            
+                            <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2006-04-24</span>
+
+    
+     
+    <i class="layui-icon layui-icon-list" style="font-size: 32px; vertical-align: -3px;"></i>
+    
+
+    
+        <a href="/categories/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+        <a href="/tags/xml/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">XML</span>
+        </a>
+    
+        <a href="/tags/dom/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">DOM</span>
+        </a>
+    
+        <a href="/tags/javaee/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">JavaEE</span>
+        </a>
+    
+        <a href="/tags/stax/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">StaX</span>
+        </a>
+    
+    
+</h3>
+                        </blockquote>
+                    </div>
+                	
+                    <div style="margin-left: 10px;">
+                        <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                            <a href="/post/2006-03-31-testing-some-frameworks-and-applications-on-glassfish-build-40-part-iv/">
+                                <h3 class="">Testing some FrameWorks and applications on Glassfish build 40&#43; part IV</h3>
+                            </a>
+                            
+                            <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2006-03-31</span>
+
+    
+     
+    <i class="layui-icon layui-icon-list" style="font-size: 32px; vertical-align: -3px;"></i>
+    
+
+    
+        <a href="/categories/javaee/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">JavaEE</span>
+        </a>
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/javaee/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">JavaEE</span>
+        </a>
+    
+        <a href="/tags/jmx/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">JMX</span>
+        </a>
+    
+        <a href="/tags/glassfish/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">GlassFish</span>
+        </a>
+    
+    
+</h3>
+                        </blockquote>
+                    </div>
+                	
+                    <div style="margin-left: 10px;">
+                        <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                            <a href="/post/2006-03-30-testing-some-frameworks-and-applications-on-glassfish-build-40-part-iii/">
+                                <h3 class="">Testing some FrameWorks and applications on Glassfish build 40&#43; part III</h3>
+                            </a>
+                            
+                            <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2006-03-30</span>
+
+    
+     
+    <i class="layui-icon layui-icon-list" style="font-size: 32px; vertical-align: -3px;"></i>
+    
+
+    
+        <a href="/categories/javaee/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">JavaEE</span>
+        </a>
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/javaee/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">JavaEE</span>
+        </a>
+    
+        <a href="/tags/glassfish/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">GlassFish</span>
+        </a>
+    
+    
+</h3>
+                        </blockquote>
+                    </div>
+                	
+                    <div style="margin-left: 10px;">
+                        <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                            <a href="/post/2006-03-26-testing-some-frameworks-and-applications-on-glassfish-build-40-part-ii/">
+                                <h3 class="">Testing some FrameWorks and applications on Glassfish build 40&#43; part II</h3>
+                            </a>
+                            
+                            <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2006-03-26</span>
+
+    
+     
+    <i class="layui-icon layui-icon-list" style="font-size: 32px; vertical-align: -3px;"></i>
+    
+
+    
+        <a href="/categories/javaee/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">JavaEE</span>
+        </a>
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+        <a href="/tags/jsf/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">JSF</span>
+        </a>
+    
+        <a href="/tags/glassfish/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Glassfish</span>
+        </a>
+    
+    
+</h3>
+                        </blockquote>
+                    </div>
+                	
+                
+                <br />
+            </div>
+            
+
+            <div class="layui-card single-card">
+                <h2 class="single-title">Recent Posts</h2>
+            
+                
+                <div style="margin-left: 10px;">
+                    <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                    <a href="/post/2013-09-17-getting-started-with-couchdb-and-mongodb-part-ii-beginning-with-security/">
+                        <h3 class="">Getting started with CouchDB and MongoDB, Part II: Beginning with Security</h3>
+                    </a>
+                    <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2013-09-17</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                    </blockquote>
+                </div>
+                
+                <div style="margin-left: 10px;">
+                    <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                    <a href="/post/2013-09-12-getting-started-with-couchdb-and-mongodb-nosql-document-databases-part-i/">
+                        <h3 class="">Getting started with CouchDB and MongoDB, Part I: CRUD operations</h3>
+                    </a>
+                    <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2013-09-12</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                    </blockquote>
+                </div>
+                
+                <div style="margin-left: 10px;">
+                    <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                    <a href="/post/2012-12-27-my-last-blog-in-2012-my-2013-wishes-and-predictions/">
+                        <h3 class="">My last blog in 2012: My 2013 wishes and predictions…</h3>
+                    </a>
+                    <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2012-12-27</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                    </blockquote>
+                </div>
+                
+                <div style="margin-left: 10px;">
+                    <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                    <a href="/post/2012-09-24-my-sessions-in-javaone-2012/">
+                        <h3 class="">My sessions in JavaOne 2012</h3>
+                    </a>
+                    <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2012-09-24</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                    </blockquote>
+                </div>
+                
+                <div style="margin-left: 10px;">
+                    <blockquote class="self-elem-quote self-elem-quote-bg-red" style="background-color:#FFFFFF;margin-top: 10px;">
+                    <a href="/post/2012-04-12-from-netbeans-to-intellij-idea-week-1/">
+                        <h3 class="">From NetBeans to IntelliJ IDEA, Week 1</h3>
+                    </a>
+                    <h3 style="margin-top:10px; margin-bottom:10px"> 
+    <i class="layui-icon layui-icon-date" style="font-size: 28px; vertical-align: -2px;"></i>
+    <span>2012-04-12</span>
+
+    
+    
+
+    
+
+    
+    <i class="layui-icon layui-icon-tabs" style="font-size: 22px; vertical-align: 1px;margin-right:2px;"></i>
+    
+
+    
+        <a href="/tags/java/">
+            <span class="layui-badge layui-bg-orange" style="vertical-align: 2px;">Java</span>
+        </a>
+    
+    
+</h3>
+                    </blockquote>
+                </div>
+                
+            
+            <br />
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+        </div><footer>
+    
+    
+    <div class="layui-container">
+        <p class="copyright">Copyright © 2006–2020, Masoud Kalali. Some rights are reserved</p>
+    </div>
+</footer>
+</body>
+</html>

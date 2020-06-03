@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.71.1 with theme Tranquilpeak 0.4.8-BETA">
+<meta name="author" content="Masoud Kalali">
+<meta name="keywords" content=", development, next-gen, Kubernetes, Cloud, Java">
+<meta name="description" content="In the first part of this series I discussed how can we perform CRUD operation in MongoDB and CouchDB. In this part we will look into security features of MongoDB and CouchDB. In the next two installments of this series I will go into how to apply the configuration that are described here and how to write codes that work with them.
+Basic security requirements There are some basic features and functionalities which are required by different applications, in addition to tons of other more advanced fine grained features, which one can expect a semi-structured data storage server to provide.">
+
+
+<meta property="og:description" content="In the first part of this series I discussed how can we perform CRUD operation in MongoDB and CouchDB. In this part we will look into security features of MongoDB and CouchDB. In the next two installments of this series I will go into how to apply the configuration that are described here and how to write codes that work with them.
+Basic security requirements There are some basic features and functionalities which are required by different applications, in addition to tons of other more advanced fine grained features, which one can expect a semi-structured data storage server to provide.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Getting started with CouchDB and MongoDB, Part II: Beginning with Security">
+<meta name="twitter:title" content="Getting started with CouchDB and MongoDB, Part II: Beginning with Security">
+<meta property="og:url" content="/2013/09/getting-started-with-couchdb-and-mongodb-part-ii-beginning-with-security/">
+<meta property="twitter:url" content="/2013/09/getting-started-with-couchdb-and-mongodb-part-ii-beginning-with-security/">
+<meta property="og:site_name" content="The Place">
+<meta property="og:description" content="In the first part of this series I discussed how can we perform CRUD operation in MongoDB and CouchDB. In this part we will look into security features of MongoDB and CouchDB. In the next two installments of this series I will go into how to apply the configuration that are described here and how to write codes that work with them.
+Basic security requirements There are some basic features and functionalities which are required by different applications, in addition to tons of other more advanced fine grained features, which one can expect a semi-structured data storage server to provide.">
+<meta name="twitter:description" content="In the first part of this series I discussed how can we perform CRUD operation in MongoDB and CouchDB. In this part we will look into security features of MongoDB and CouchDB. In the next two installments of this series I will go into how to apply the configuration that are described here and how to write codes that work with them.
+Basic security requirements There are some basic features and functionalities which are required by different applications, in addition to tons of other more advanced fine grained features, which one can expect a semi-structured data storage server to provide.">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2013-09-17T00:00:00">
+  
+  
+    <meta property="article:modified_time" content="2013-09-17T00:00:00">
+  
+  
+  
+  
+    
+      <meta property="article:tag" content="Java">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+  <meta name="twitter:site" content="@masoudkalali">
+
+
+  <meta name="twitter:creator" content="@masoudkalali">
+
+
+
+
+
+
+
+
+
+
+  <meta property="og:image" content="/img/avatar.png">
+  <meta property="twitter:image" content="/img/avatar.png">
+
+
+    <title>Getting started with CouchDB and MongoDB, Part II: Beginning with Security</title>
+
+    <link rel="icon" href="img/favicon.png">
+    
+
+    
+
+    <link rel="canonical" href="/2013/09/getting-started-with-couchdb-and-mongodb-part-ii-beginning-with-security/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.css" integrity="sha256-vuXZ9LGmmwtjqFX1F+EKin1ThZMub58gKULUyf0qECk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
+    
+    
+    <link rel="stylesheet" href="/css/style-twzjdbqhmnnacqs0pwwdzcdbt8yhv8giawvjqjmyfoqnvazl0dalmnhdkvp7.min.css" />
+    
+    
+
+    
+      
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-137107-12', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="5">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="/">The Place</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="/img/avatar.png" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="5">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="/#about">
+          <img class="sidebar-profile-picture" src="/img/avatar.png" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">Masoud Kalali</h4>
+        
+          <h5 class="sidebar-profile-bio">Software architect with focus on PaaS container platforms, and Java EE, author, technology enthusiast, runner.</h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-home"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/categories">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/tags">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-tags"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/archives">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-archive"></i>
+      
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/#about">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-question"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/https://github.com/kalali">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-github"></i>
+      
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/index.xml">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-rss"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+
+      <div id="main" data-behavior="5"
+        class="
+               hasCoverMetaIn
+               ">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+            <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title" itemprop="headline">
+      Getting started with CouchDB and MongoDB, Part II: Beginning with Security
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2013-09-17T00:00:00Z">
+        
+  September 17, 2013
+
+      </time>
+    
+    
+  </div>
+
+</div>
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              <p>In the first part of this series I discussed how can we <a href="http://kalali.me/getting-started-with-couchdb-and-mongodb-nosql-document-databases-part-i/">perform CRUD operation in MongoDB and CouchDB</a>. In this part we will look into security features of MongoDB and CouchDB. In the next two installments of this series I will go into how to apply the configuration that are described here and how to write codes that work with them.</p>
+<h2 id="basic-security-requirements">Basic security requirements</h2>
+<p>There are some basic features and functionalities which are required by different applications, in addition to tons of other more advanced fine grained features, which one can expect a semi-structured data storage server to provide. If the not provided, other measures should be applied to limit the effect of missing features risks. The basic features are as listed below:</p>
+<ul>
+<li><strong>Authentication</strong>: Authentication refers to ensuring that if a token is presented to our system the system can verify that the token is valid, for example a username can be verified using the password that accompany it.</li>
+<li>**Access control: **To limit the access to specific resources/ set of resources to an authenticated client or a group of authenticated clients sharing common characteristics like a assigned role_name.</li>
+<li>**Transport safety: **To ensure that the data is being transferred over the network safely without possibility of tampering or reading depending on the required level of confidentiality.</li>
+<li>**On-Disk/In-memory Data Encryption: **To keep the data encrypted on disk to prevent RAW access to the data without presence of the decryption key/token. Same applies to the systems that are data memory intensive, the memory data in memory should be protected from memory dump/views.</li>
+</ul>
+<h2 id="general-security-precautions">General Security precautions</h2>
+<ul>
+<li>Do not run the server on default network interface which it is configured, usually 0.0.0.0 which means all available interfaces. Imagine you having a LAN and WAN interface and you want your NoSQL storage to only listen on the LAN interface while by default it listens on all interfaces (including your outbound WAN).</li>
+<li>Do not use the default port numbers, change the port numbers that your backend application server, database, NoSQL storage, ABCD network server listen on. No need to wait for intrusion on the default port number.</li>
+<li>Do not run your network server, e.g NoSQL server on root or any other privileged user.  Create a user which is relaxed enough in disk/network access to let the network server perform its task and not relaxer!</li>
+<li>Do not let the above user to have access to any portion of file server other than the one that it requires.</li>
+<li>Enable disk quota!</li>
+<li>If on-disk/in-memory encryption is supported depending on sensitivity of the data, enable it.</li>
+<li>Enable transport security. One way or another transport security is required to prevent others peeping, tampering the data or request responses!</li>
+<li>Make sure you enable your iptable and limit the above user to only have access to port/interfaces that it meant to have access nothing more.</li>
+<li>Disable any sample welcome page, any default &ldquo;I am UP&rdquo; message, any default &ldquo;Welcome page&rdquo; or anything else that your network server may have out of the box. This will prevent people from peeping into seeing what version of what network server you are running.</li>
+<li>Disable any extra interface/communication channel that your network server has and you are not using it. E.g In an application server we just don&rsquo;t need the JMX interface and thus we disable it rather than having a door into the application server, although the door is locked but&hellip;</li>
+<li>Do not use anything default, no port, no default username, no default password, no default welcome message, no default&hellip; Nothing default!</li>
+</ul>
+<h2 id="mongodb-and-security">MongoDB and Security</h2>
+<p>Below is some description on how MongoDB cover the basic security requirements.</p>
+<ul>
+<li><strong>Authentication</strong>: Supports two types of access. Either no authentication is enabled and anonymous users can do read/write or authentication is enabled (per database) and users are authenticated and then checked for their authorization before accessing the database. At the token level, CouchDB supports OAuth, cookie based authentication and http basic authentication. We will go into details of these in the next installments of this blog series.</li>
+<li><strong>Authorization</strong>: Supports role based access control. There are several roles which can be assigned to users. each role add some more privilege to the user(remember unauthenticated users cannot interact with the database when authentication is enabled). Details of the roles <a href="http://docs.mongodb.org/manual/reference/user-privileges/">MongoDB access control documentation</a>.</li>
+<li><strong>Transport</strong> Security: In the community edition there is no build-in transport security out of the box, you can use the MongoDB enterprise or you need to build it from the source to get SSL included in your non-enterprise copy. Procedure described at <a href="http://docs.mongodb.org/manual/tutorial/configure-ssl/">Configure SSL</a>.</li>
+<li><strong>On-disk/In-memory encryption</strong>: I am not aware of any built-in support for any of these. One possibility is to use OS level disk encryption and/or use application level encryption for the sensitive fields, which imposes limitation on indexing and similarity searches, in the document.</li>
+</ul>
+<h2 id="couchdb-and-security">CouchDB and Security</h2>
+<p>Below is some description on how Apache CouchDB cover the basic security requirements.</p>
+<ul>
+<li><strong>Authentication</strong>: By default any connection to CouchDB has access to perform CRUD on the server (creating/reading/deleting databases) and also CRUD operations on documents stored in the databases. When authentication is enabled, we go into how each one of these tasks can be performed in next blog entry, the user&rsquo;s credentials is checked to let it perform CRUD on server or on databases or to perform read action on the database.</li>
+<li><strong>Authorization</strong>: There are 3 roles in CouchDB, the server admin role which can do anything and everything possible in the server, the database admin role on a database and the read-only role on a database.</li>
+<li><strong>Transport</strong>: Apache CouchDB has built-in supports for transport security using SSL and thus all communication that requires transport security (encryption, integrity) can be made over HTTPS.</li>
+<li><strong>On-Disk/In-memory encryption</strong>: I am not aware of any built-in support for any of these. One possibility is to use OS level disk encryption and/or use application level encryption for the sensitive fields in the document. Application level encryption will imposes limitation on indexing and similarity searches.</li>
+</ul>
+<p>This blog entry is wrote based on CouchDB 1.3.1 and MongoDB 2.4.5 and thus the descriptions are valid for these versions and they may differ in other versions. The sample codes should work with the mentioned versions and any newer release.</p>
+
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="/tags/java/">Java</a>
+
+                  </div>
+                
+              
+            
+            <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--disabled">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2013/09/getting-started-with-couchdb-and-mongodb-part-i-crud-operations/" data-tooltip="Getting started with CouchDB and MongoDB, Part I: CRUD operations">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2013/09/getting-started-with-couchdb-and-mongodb-part-ii-beginning-with-security/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2013/09/getting-started-with-couchdb-and-mongodb-part-ii-beginning-with-security/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+            
+              
+                <div id="disqus_thread">
+  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2020 Masoud Kalali. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+        <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--disabled">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2013/09/getting-started-with-couchdb-and-mongodb-part-i-crud-operations/" data-tooltip="Getting started with CouchDB and MongoDB, Part I: CRUD operations">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2013/09/getting-started-with-couchdb-and-mongodb-part-ii-beginning-with-security/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2013/09/getting-started-with-couchdb-and-mongodb-part-ii-beginning-with-security/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+  <i id="btn-close-shareoptions" class="fa fa-close"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=%2F2013%2F09%2Fgetting-started-with-couchdb-and-mongodb-part-ii-beginning-with-security%2F">
+          <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=%2F2013%2F09%2Fgetting-started-with-couchdb-and-mongodb-part-ii-beginning-with-security%2F">
+          <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="/img/avatar.png" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">Masoud Kalali</h4>
+    
+      <div id="about-card-bio">Software architect with focus on PaaS container platforms, and Java EE, author, technology enthusiast, runner.</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Software engineer
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        Sweden
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      <div id="cover" style="background-image:url('images/cover.jpg');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
+
+
+<script src="/js/script-pcw6v3xilnxydl1vddzazdverrnn9ctynvnxgwho987mfyqkuylcb1nlt.min.js"></script>
+
+
+<script lang="javascript">
+window.onload = updateMinWidth;
+window.onresize = updateMinWidth;
+document.getElementById("sidebar").addEventListener("transitionend", updateMinWidth);
+function updateMinWidth() {
+  var sidebar = document.getElementById("sidebar");
+  var main = document.getElementById("main");
+  main.style.minWidth = "";
+  var w1 = getComputedStyle(main).getPropertyValue("min-width");
+  var w2 = getComputedStyle(sidebar).getPropertyValue("width");
+  var w3 = getComputedStyle(sidebar).getPropertyValue("left");
+  main.style.minWidth = `calc(${w1} - ${w2} - ${w3})`;
+}
+</script>
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+  
+    
+      <script>
+        var disqus_config = function () {
+          this.page.url = '\/2013\/09\/getting-started-with-couchdb-and-mongodb-part-ii-beginning-with-security\/';
+          
+            this.page.identifier = '\/2013\/09\/getting-started-with-couchdb-and-mongodb-part-ii-beginning-with-security\/'
+          
+        };
+        (function() {
+          
+          
+          if (window.location.hostname == "localhost") {
+            return;
+          }
+          var d = document, s = d.createElement('script');
+          var disqus_shortname = 'hugo-tranquilpeak-theme';
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      </script>
+    
+  
+
+
+
+
+    
+  </body>
+</html>
+
