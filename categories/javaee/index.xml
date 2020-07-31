@@ -2,41 +2,41 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>JavaEE on The Place</title>
-    <link>https://kalali.github.io/categories/javaee/</link>
+    <link>/categories/javaee/</link>
     <description>Recent content in JavaEE on The Place</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Wed, 10 May 2006 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://kalali.github.io/categories/javaee/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/categories/javaee/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Step by Step toward a jms sample in NetBeans and yes GlassFish. part 2 : Remote Client</title>
-      <link>https://kalali.github.io/2006/05/step-by-step-toward-a-jms-sample-in-netbeans-and-yes-glassfish.-part-2-remote-client/</link>
+      <link>/2006/05/step-by-step-toward-a-jms-sample-in-netbeans-and-yes-glassfish.-part-2-remote-client/</link>
       <pubDate>Wed, 10 May 2006 00:00:00 +0000</pubDate>
       
-      <guid>https://kalali.github.io/2006/05/step-by-step-toward-a-jms-sample-in-netbeans-and-yes-glassfish.-part-2-remote-client/</guid>
+      <guid>/2006/05/step-by-step-toward-a-jms-sample-in-netbeans-and-yes-glassfish.-part-2-remote-client/</guid>
       <description>In previous part you saw that how easy is to make an MDB to consume messages and a jsp/Servlet Front End to send message to a queue.
 in this part i will show you how you can send message to a queue from a remote j2se client. you should know that in JMS sending and receiving messages has similar steps , some small changes require to consume message from a j2se client instead of sending messages.</description>
     </item>
     
     <item>
       <title>Step by Step toward a jms sample in NetBeans and yes GlassFish</title>
-      <link>https://kalali.github.io/2006/05/step-by-step-toward-a-jms-sample-in-netbeans-and-yes-glassfish/</link>
+      <link>/2006/05/step-by-step-toward-a-jms-sample-in-netbeans-and-yes-glassfish/</link>
       <pubDate>Fri, 05 May 2006 00:00:00 +0000</pubDate>
       
-      <guid>https://kalali.github.io/2006/05/step-by-step-toward-a-jms-sample-in-netbeans-and-yes-glassfish/</guid>
+      <guid>/2006/05/step-by-step-toward-a-jms-sample-in-netbeans-and-yes-glassfish/</guid>
       <description>Java EE 5 brings many ease of use in EJB development world and certainly it is one of biggest step ahead in java EE land.
 NetBeans 5.5 is another big step toward making development on top Java EE some easier. NetBeans is a very easy to learn and use because it does not bring many stuff on the screen to &amp;ldquo;Occupy all the space&amp;rdquo; instead it provide maximum useability by means of limited number of views.</description>
     </item>
     
     <item>
       <title>Testing some FrameWorks and applications on Glassfish build 40&#43; part V , And some tips about Application deployment</title>
-      <link>https://kalali.github.io/2006/04/testing-some-frameworks-and-applications-on-glassfish-build-40-part-v-and-some-tips-about-application-deployment/</link>
+      <link>/2006/04/testing-some-frameworks-and-applications-on-glassfish-build-40-part-v-and-some-tips-about-application-deployment/</link>
       <pubDate>Tue, 11 Apr 2006 00:00:00 +0000</pubDate>
       
-      <guid>https://kalali.github.io/2006/04/testing-some-frameworks-and-applications-on-glassfish-build-40-part-v-and-some-tips-about-application-deployment/</guid>
+      <guid>/2006/04/testing-some-frameworks-and-applications-on-glassfish-build-40-part-v-and-some-tips-about-application-deployment/</guid>
       <description>It is a short entry that shows i used DWR Ajax Toolkit On GlassFish But to make the entry a bit more useful , i would like to tell you how you can deploy an application to GlassFish .
 so far I know two methods that allows us to deploy application into GlassFish ,
  Using its web based Admin console which usually run on port 4848 Using the Autodeply library of your desired Domain Using Asadmin administration console  Lets see how we can deploy sample war file of DWR Ajax Toolkit using each of the above methods.</description>
@@ -44,10 +44,10 @@ so far I know two methods that allows us to deploy application into GlassFish ,
     
     <item>
       <title>Testing some FrameWorks and applications on Glassfish build 40&#43; part IV</title>
-      <link>https://kalali.github.io/2006/03/testing-some-frameworks-and-applications-on-glassfish-build-40-part-iv/</link>
+      <link>/2006/03/testing-some-frameworks-and-applications-on-glassfish-build-40-part-iv/</link>
       <pubDate>Fri, 31 Mar 2006 00:00:00 +0000</pubDate>
       
-      <guid>https://kalali.github.io/2006/03/testing-some-frameworks-and-applications-on-glassfish-build-40-part-iv/</guid>
+      <guid>/2006/03/testing-some-frameworks-and-applications-on-glassfish-build-40-part-iv/</guid>
       <description>This time i want to setup and test a utility that i am using with my Application server to mange them and monitor them.
 Utility that i will use is Mc4j A very powerful and flexible jmx console built on top of Netbeans Platform .
 so to follow this blog entry you will need GlassFish build 40+ , although i am testing it on buid 42 .Also you will need to have Mc4j version 1.</description>
@@ -55,20 +55,20 @@ so to follow this blog entry you will need GlassFish build 40+ , although i am t
     
     <item>
       <title>Testing some FrameWorks and applications on Glassfish build 40&#43; part III</title>
-      <link>https://kalali.github.io/2006/03/testing-some-frameworks-and-applications-on-glassfish-build-40-part-iii/</link>
+      <link>/2006/03/testing-some-frameworks-and-applications-on-glassfish-build-40-part-iii/</link>
       <pubDate>Thu, 30 Mar 2006 00:00:00 +0000</pubDate>
       
-      <guid>https://kalali.github.io/2006/03/testing-some-frameworks-and-applications-on-glassfish-build-40-part-iii/</guid>
+      <guid>/2006/03/testing-some-frameworks-and-applications-on-glassfish-build-40-part-iii/</guid>
       <description>This time I want to test OSWorkflow on GlassFish , for this purpose I get latest version of this application , I mean osworkflow-2.8.0.
 Lets see What a workFlow engine is and what is its usage , a workFlow Engine is an engine that is capable of executing WorkFlows in different level. a workFlow is a graph of works , so it means that a workFlow engine can execute a graph of works , this graph describe when , how and under which circumstance a node must be executed and/or which branch of graph should be followd.</description>
     </item>
     
     <item>
       <title>Testing some FrameWorks and applications on Glassfish build 40&#43; part II</title>
-      <link>https://kalali.github.io/2006/03/testing-some-frameworks-and-applications-on-glassfish-build-40-part-ii/</link>
+      <link>/2006/03/testing-some-frameworks-and-applications-on-glassfish-build-40-part-ii/</link>
       <pubDate>Sun, 26 Mar 2006 00:00:00 +0000</pubDate>
       
-      <guid>https://kalali.github.io/2006/03/testing-some-frameworks-and-applications-on-glassfish-build-40-part-ii/</guid>
+      <guid>/2006/03/testing-some-frameworks-and-applications-on-glassfish-build-40-part-ii/</guid>
       <description>In this part I am going to test two other Open source frameworks on GlassFish. first of all I like to say that it is funny to test frameworks on GlassFish , at least until now , I faced no problem with deploying sample applications that come with frameworks distribution.
 in this part I will test : OSCache from opensymphony and The famous Facelets .
 but why I should test OSCache, and what is OSCache?</description>
@@ -76,10 +76,10 @@ but why I should test OSCache, and what is OSCache?</description>
     
     <item>
       <title>Testing some FrameWorks and applications on Glassfish build 40&#43;</title>
-      <link>https://kalali.github.io/2006/03/testing-some-frameworks-and-applications-on-glassfish-build-40-/</link>
+      <link>/2006/03/testing-some-frameworks-and-applications-on-glassfish-build-40-/</link>
       <pubDate>Sat, 25 Mar 2006 00:00:00 +0000</pubDate>
       
-      <guid>https://kalali.github.io/2006/03/testing-some-frameworks-and-applications-on-glassfish-build-40-/</guid>
+      <guid>/2006/03/testing-some-frameworks-and-applications-on-glassfish-build-40-/</guid>
       <description>Now with EJB 3 , (I am talking about current date take a look at date that this entry is written) options in application server market are so limited because there are just few application server that support EJB3. some of them that i know are Jboss and GlassFish project.
 But GlassFish provide more than being EJB3 container , it is aimed to be a full Java ee 5 container.</description>
     </item>

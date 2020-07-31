@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Sport on The Place</title>
-    <link>https://kalali.github.io/categories/sport/</link>
+    <link>/categories/sport/</link>
     <description>Recent content in Sport on The Place</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Fri, 31 Jul 2020 13:16:25 +0200</lastBuildDate>
     
-	<atom:link href="https://kalali.github.io/categories/sport/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/categories/sport/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>On Running Gadget and Tech Incompatibility</title>
-      <link>https://kalali.github.io/2020/07/on-running-gadget-and-tech-incompatibility/</link>
+      <link>/2020/07/on-running-gadget-and-tech-incompatibility/</link>
       <pubDate>Fri, 31 Jul 2020 13:16:25 +0200</pubDate>
       
-      <guid>https://kalali.github.io/2020/07/on-running-gadget-and-tech-incompatibility/</guid>
+      <guid>/2020/07/on-running-gadget-and-tech-incompatibility/</guid>
       <description>I have always been active outdoors and more recently I started being more invested in running. So I switched away from my Apple watch to a Garmin ForeRunner 645m!
 My assumption when I did the switching was that the leading companies like Apple and Garmin are actually following and producign products that are workign fine according to whatever standard they are following, bluetooth in this case!
 But hold and behold, combination of Airpods Pro, Garmin FR 645M and iPhone 11 pro is such a mismatch that I cannot fathom.</description>

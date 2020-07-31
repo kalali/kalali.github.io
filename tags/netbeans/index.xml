@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Netbeans on The Place</title>
-    <link>https://kalali.github.io/tags/netbeans/</link>
+    <link>/tags/netbeans/</link>
     <description>Recent content in Netbeans on The Place</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Thu, 14 Jun 2007 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://kalali.github.io/tags/netbeans/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/tags/netbeans/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>SHIFT&#43;ALT&#43;ENTER, a cool NetBeans shortcut</title>
-      <link>https://kalali.github.io/2007/06/shift-alt-enter-a-cool-netbeans-shortcut/</link>
+      <link>/2007/06/shift-alt-enter-a-cool-netbeans-shortcut/</link>
       <pubDate>Thu, 14 Jun 2007 00:00:00 +0000</pubDate>
       
-      <guid>https://kalali.github.io/2007/06/shift-alt-enter-a-cool-netbeans-shortcut/</guid>
+      <guid>/2007/06/shift-alt-enter-a-cool-netbeans-shortcut/</guid>
       <description>Today accidentally I find a coll shortcut in NetBeans, it do something fun, if you press ALT+SHIFT+ENTER IDE switch to full screen, it will remove Title bar, status bar, and toolbar to give you a little more space when you are writing your code.
 Here is an image of netbeans in this mode, you will find it usefull.
 
@@ -25,20 +25,20 @@ Also If you are looking for some NetBeans sample you can take a look at NetBeans
     
     <item>
       <title>NetBeans 6 M7 released. There are some cool features available and cool modules in UC.</title>
-      <link>https://kalali.github.io/2007/02/netbeans-6-m7-released.-there-are-some-cool-features-available-and-cool-modules-in-uc./</link>
+      <link>/2007/02/netbeans-6-m7-released.-there-are-some-cool-features-available-and-cool-modules-in-uc./</link>
       <pubDate>Thu, 22 Feb 2007 00:00:00 +0000</pubDate>
       
-      <guid>https://kalali.github.io/2007/02/netbeans-6-m7-released.-there-are-some-cool-features-available-and-cool-modules-in-uc./</guid>
+      <guid>/2007/02/netbeans-6-m7-released.-there-are-some-cool-features-available-and-cool-modules-in-uc./</guid>
       <description>NetBeans 6 milestone 7 has released and you can download it from NetBeans web site by at least two methods
  Traditional setup file for separate packs using new NetBeans installer which allows you to customize your package before you download it.  Traditional method for downloading NetBeans 6 which is a development build is using http://www.netbeans.info/downloads/dev.php and the new installer which I am going to talk about is available at http://nbi.</description>
     </item>
     
     <item>
       <title>Netbeans 5.5 and Jdeveloper 10.1.3.1 both sounds very good…</title>
-      <link>https://kalali.github.io/2006/08/netbeans-5.5-and-jdeveloper-10.1.3.1-both-sounds-very-good/</link>
+      <link>/2006/08/netbeans-5.5-and-jdeveloper-10.1.3.1-both-sounds-very-good/</link>
       <pubDate>Fri, 25 Aug 2006 00:00:00 +0000</pubDate>
       
-      <guid>https://kalali.github.io/2006/08/netbeans-5.5-and-jdeveloper-10.1.3.1-both-sounds-very-good/</guid>
+      <guid>/2006/08/netbeans-5.5-and-jdeveloper-10.1.3.1-both-sounds-very-good/</guid>
       <description>Netbeans 5.5 and Jdeveloper 10.1.3.1 which one ?
 Both Jdeveloper and Netbeans that i am talking about them are in beta and developer preview stage.
 Netbeans as an Opensource IDE has its own fast growing user community.
@@ -48,10 +48,10 @@ Netbeans 5.5 beta 2 let features include :
     
     <item>
       <title>Develop web application with netbeans, seam and Glassfish</title>
-      <link>https://kalali.github.io/2006/08/develop-web-application-with-netbeans-seam-and-glassfish/</link>
+      <link>/2006/08/develop-web-application-with-netbeans-seam-and-glassfish/</link>
       <pubDate>Tue, 15 Aug 2006 00:00:00 +0000</pubDate>
       
-      <guid>https://kalali.github.io/2006/08/develop-web-application-with-netbeans-seam-and-glassfish/</guid>
+      <guid>/2006/08/develop-web-application-with-netbeans-seam-and-glassfish/</guid>
       <description>In this two part series I will try to show you how easily you can build applications using NetBeans 5.5 based on seam , facelets , jsf and new EJB 3 standard.
 I will not discuss any of framework in details as you can find detailed information about each of them in their homepage and some other articles.
 I want just show , How you can use NetBeans with some leading frameworks to build your web based applications.</description>
@@ -59,30 +59,30 @@ I want just show , How you can use NetBeans with some leading frameworks to buil
     
     <item>
       <title>Step by Step toward a jms sample in NetBeans and yes GlassFish</title>
-      <link>https://kalali.github.io/2006/05/step-by-step-toward-a-jms-sample-in-netbeans-and-yes-glassfish/</link>
+      <link>/2006/05/step-by-step-toward-a-jms-sample-in-netbeans-and-yes-glassfish/</link>
       <pubDate>Fri, 05 May 2006 00:00:00 +0000</pubDate>
       
-      <guid>https://kalali.github.io/2006/05/step-by-step-toward-a-jms-sample-in-netbeans-and-yes-glassfish/</guid>
+      <guid>/2006/05/step-by-step-toward-a-jms-sample-in-netbeans-and-yes-glassfish/</guid>
       <description>Java EE 5 brings many ease of use in EJB development world and certainly it is one of biggest step ahead in java EE land.
 NetBeans 5.5 is another big step toward making development on top Java EE some easier. NetBeans is a very easy to learn and use because it does not bring many stuff on the screen to &amp;ldquo;Occupy all the space&amp;rdquo; instead it provide maximum useability by means of limited number of views.</description>
     </item>
     
     <item>
       <title>A New Module for Netbeans IDE , an statistical CVS Reporter…</title>
-      <link>https://kalali.github.io/2006/03/a-new-module-for-netbeans-ide-an-statistical-cvs-reporter/</link>
+      <link>/2006/03/a-new-module-for-netbeans-ide-an-statistical-cvs-reporter/</link>
       <pubDate>Tue, 07 Mar 2006 00:00:00 +0000</pubDate>
       
-      <guid>https://kalali.github.io/2006/03/a-new-module-for-netbeans-ide-an-statistical-cvs-reporter/</guid>
+      <guid>/2006/03/a-new-module-for-netbeans-ide-an-statistical-cvs-reporter/</guid>
       <description>2 weeks ago I was looking at www.sourceforge.Net for a utility that allows me to get some statistical information from CVS repositories. There are some commercial products that do this job in a very perfect manner , but those are commercial and feature over loaded.after some search I find VCS Report , I get the package and get some chart from my CVS repositories.
 Some days ago I get the source code of the project and looked at the source ,Amazing , it uses a NetBeans library to connect to CVS servers , but there is no NetBeans plugin available in the download section , so I start and create a plugin for NetBeans , although it is in very early step and throw some exceptions some times but it works fine with NetBeans .</description>
     </item>
     
     <item>
       <title>A Simple Netbeans Module , a Gmail Checker…</title>
-      <link>https://kalali.github.io/2006/03/a-simple-netbeans-module-a-gmail-checker/</link>
+      <link>/2006/03/a-simple-netbeans-module-a-gmail-checker/</link>
       <pubDate>Sat, 04 Mar 2006 00:00:00 +0000</pubDate>
       
-      <guid>https://kalali.github.io/2006/03/a-simple-netbeans-module-a-gmail-checker/</guid>
+      <guid>/2006/03/a-simple-netbeans-module-a-gmail-checker/</guid>
       <description>Some times ago I participate in NetCat 50 - a process for NetBeans IDE version 5 QA -During NetCat I find that NetBeans RCP is something that I can Pick for later Swing based clients.
 I start learning NetBeans RCP platform during NetCat 50 , and to evaluate my learnings I write a simple Module for NetBeans IDE .
 The module is a GMail Checker , Module make it possible for you to see your new emails within your IDE and allows you to rotate between subjects.</description>

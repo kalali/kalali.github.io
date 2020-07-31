@@ -2,84 +2,84 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on The Place</title>
-    <link>https://kalali.github.io/categories/</link>
+    <link>/categories/</link>
     <description>Recent content in Categories on The Place</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Fri, 31 Jul 2020 13:16:25 +0200</lastBuildDate>
     
-	<atom:link href="https://kalali.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/categories/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Sport</title>
-      <link>https://kalali.github.io/categories/sport/</link>
+      <link>/categories/sport/</link>
       <pubDate>Fri, 31 Jul 2020 13:16:25 +0200</pubDate>
       
-      <guid>https://kalali.github.io/categories/sport/</guid>
+      <guid>/categories/sport/</guid>
       <description></description>
     </item>
     
     <item>
       <title>GlassFish</title>
-      <link>https://kalali.github.io/categories/glassfish/</link>
+      <link>/categories/glassfish/</link>
       <pubDate>Tue, 11 Dec 2007 00:00:00 +0000</pubDate>
       
-      <guid>https://kalali.github.io/categories/glassfish/</guid>
+      <guid>/categories/glassfish/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Security</title>
-      <link>https://kalali.github.io/categories/security/</link>
+      <link>/categories/security/</link>
       <pubDate>Wed, 05 Dec 2007 00:00:00 +0000</pubDate>
       
-      <guid>https://kalali.github.io/categories/security/</guid>
+      <guid>/categories/security/</guid>
       <description></description>
     </item>
     
     <item>
       <title>NetBeans</title>
-      <link>https://kalali.github.io/categories/netbeans/</link>
+      <link>/categories/netbeans/</link>
       <pubDate>Thu, 14 Jun 2007 00:00:00 +0000</pubDate>
       
-      <guid>https://kalali.github.io/categories/netbeans/</guid>
+      <guid>/categories/netbeans/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Linux</title>
-      <link>https://kalali.github.io/categories/linux/</link>
+      <link>/categories/linux/</link>
       <pubDate>Fri, 01 Jun 2007 00:00:00 +0000</pubDate>
       
-      <guid>https://kalali.github.io/categories/linux/</guid>
+      <guid>/categories/linux/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Java</title>
-      <link>https://kalali.github.io/categories/java/</link>
+      <link>/categories/java/</link>
       <pubDate>Fri, 11 May 2007 00:00:00 +0000</pubDate>
       
-      <guid>https://kalali.github.io/categories/java/</guid>
+      <guid>/categories/java/</guid>
       <description></description>
     </item>
     
     <item>
       <title>JavaEE</title>
-      <link>https://kalali.github.io/categories/javaee/</link>
+      <link>/categories/javaee/</link>
       <pubDate>Wed, 10 May 2006 00:00:00 +0000</pubDate>
       
-      <guid>https://kalali.github.io/categories/javaee/</guid>
+      <guid>/categories/javaee/</guid>
       <description></description>
     </item>
     
     <item>
       <title>SoftwareCraftsmanship</title>
-      <link>https://kalali.github.io/categories/softwarecraftsmanship/</link>
+      <link>/categories/softwarecraftsmanship/</link>
       <pubDate>Thu, 20 Apr 2006 00:00:00 +0000</pubDate>
       
-      <guid>https://kalali.github.io/categories/softwarecraftsmanship/</guid>
+      <guid>/categories/softwarecraftsmanship/</guid>
       <description></description>
     </item>
     
