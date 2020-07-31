@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Hugo 0.72.0 with theme Tranquilpeak 0.4.8-BETA">
+<meta name="generator" content="Hugo 0.74.3 with theme Tranquilpeak 0.4.8-BETA">
 <meta name="author" content="Masoud Kalali">
 <meta name="keywords" content=", development, next-gen, Kubernetes, Cloud, Java, Spring Boot, Microservices">
 <meta name="description" content="In this part we will discuss the basic classes that we will work with them to have file system operations like copying a file, dealing with symbolic links, deleting a file, and so on. I will write a separate entry to introduce classes which are new to Java 7 for dealing with streams and file contents, watching service and directory tree walking. If you want to know what are new features in Java SE 7 for dealing with IO take a look at Introducing NIO.">
@@ -15,8 +15,8 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="Introducing NIO.2 (JSR 203) Part 2: The Basics">
 <meta name="twitter:title" content="Introducing NIO.2 (JSR 203) Part 2: The Basics">
-<meta property="og:url" content="https://kalali.github.io/2010/06/introducing-nio.2-jsr-203-part-2-the-basics/">
-<meta property="twitter:url" content="https://kalali.github.io/2010/06/introducing-nio.2-jsr-203-part-2-the-basics/">
+<meta property="og:url" content="/2010/06/introducing-nio.2-jsr-203-part-2-the-basics/">
+<meta property="twitter:url" content="/2010/06/introducing-nio.2-jsr-203-part-2-the-basics/">
 <meta property="og:site_name" content="The Place">
 <meta property="og:description" content="In this part we will discuss the basic classes that we will work with them to have file system operations like copying a file, dealing with symbolic links, deleting a file, and so on. I will write a separate entry to introduce classes which are new to Java 7 for dealing with streams and file contents, watching service and directory tree walking. If you want to know what are new features in Java SE 7 for dealing with IO take a look at Introducing NIO.">
 <meta name="twitter:description" content="In this part we will discuss the basic classes that we will work with them to have file system operations like copying a file, dealing with symbolic links, deleting a file, and so on. I will write a separate entry to introduce classes which are new to Java 7 for dealing with streams and file contents, watching service and directory tree walking. If you want to know what are new features in Java SE 7 for dealing with IO take a look at Introducing NIO.">
@@ -53,18 +53,18 @@
 
 
 
-  <meta property="og:image" content="https://kalali.github.io/img/avatar.png">
-  <meta property="twitter:image" content="https://kalali.github.io/img/avatar.png">
+  <meta property="og:image" content="/img/avatar.png">
+  <meta property="twitter:image" content="/img/avatar.png">
 
 
     <title>Introducing NIO.2 (JSR 203) Part 2: The Basics</title>
 
-    <link rel="icon" href="https://kalali.github.io/img/favicon.png">
+    <link rel="icon" href="/img/favicon.png">
     
 
     
 
-    <link rel="canonical" href="https://kalali.github.io/2010/06/introducing-nio.2-jsr-203-part-2-the-basics/">
+    <link rel="canonical" href="/2010/06/introducing-nio.2-jsr-203-part-2-the-basics/">
 
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
@@ -72,7 +72,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
     
     
-    <link rel="stylesheet" href="https://kalali.github.io/css/style-twzjdbqhmnnacqs0pwwdzcdbt8yhv8giawvjqjmyfoqnvazl0dalmnhdkvp7.min.css" />
+    <link rel="stylesheet" href="/css/style-twzjdbqhmnnacqs0pwwdzcdbt8yhv8giawvjqjmyfoqnvazl0dalmnhdkvp7.min.css" />
     
     
 
@@ -100,17 +100,17 @@ if (!doNotTrack) {
       <header id="header" data-behavior="5">
   <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
   <div class="header-title">
-    <a class="header-title-link" href="https://kalali.github.io/">The Place</a>
+    <a class="header-title-link" href="/">The Place</a>
   </div>
   
     
       <a class="header-right-picture "
-         href="https://kalali.github.io/#about">
+         href="/#about">
     
     
     
       
-        <img class="header-picture" src="https://kalali.github.io/img/avatar.png" alt="Author&#39;s picture" />
+        <img class="header-picture" src="/img/avatar.png" alt="Author&#39;s picture" />
       
     
     </a>
@@ -121,8 +121,8 @@ if (!doNotTrack) {
   <div class="sidebar-container">
     
       <div class="sidebar-profile">
-        <a href="https://kalali.github.io/#about">
-          <img class="sidebar-profile-picture" src="https://kalali.github.io/img/avatar.png" alt="Author&#39;s picture" />
+        <a href="/#about">
+          <img class="sidebar-profile-picture" src="/img/avatar.png" alt="Author&#39;s picture" />
         </a>
         <h4 class="sidebar-profile-name">Masoud Kalali</h4>
         
@@ -134,7 +134,7 @@ if (!doNotTrack) {
       
   <li class="sidebar-button">
     
-      <a class="sidebar-button-link " href="https://kalali.github.io/">
+      <a class="sidebar-button-link " href="/">
     
       <i class="sidebar-button-icon fa fa-lg fa-home"></i>
       
@@ -144,7 +144,7 @@ if (!doNotTrack) {
 
   <li class="sidebar-button">
     
-      <a class="sidebar-button-link " href="https://kalali.github.io/categories">
+      <a class="sidebar-button-link " href="/categories">
     
       <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i>
       
@@ -154,7 +154,7 @@ if (!doNotTrack) {
 
   <li class="sidebar-button">
     
-      <a class="sidebar-button-link " href="https://kalali.github.io/tags">
+      <a class="sidebar-button-link " href="/tags">
     
       <i class="sidebar-button-icon fa fa-lg fa-tags"></i>
       
@@ -164,7 +164,7 @@ if (!doNotTrack) {
 
   <li class="sidebar-button">
     
-      <a class="sidebar-button-link " href="https://kalali.github.io/archives">
+      <a class="sidebar-button-link " href="/archives">
     
       <i class="sidebar-button-icon fa fa-lg fa-archive"></i>
       
@@ -174,7 +174,7 @@ if (!doNotTrack) {
 
   <li class="sidebar-button">
     
-      <a class="sidebar-button-link " href="https://kalali.github.io/#about">
+      <a class="sidebar-button-link " href="/#about">
     
       <i class="sidebar-button-icon fa fa-lg fa-question"></i>
       
@@ -188,7 +188,7 @@ if (!doNotTrack) {
       
   <li class="sidebar-button">
     
-      <a class="sidebar-button-link " href="https://github.com/kalali" target="_blank" rel="noopener">
+      <a class="sidebar-button-link " href="/https://github.com/kalali">
     
       <i class="sidebar-button-icon fa fa-lg fa-github"></i>
       
@@ -202,7 +202,7 @@ if (!doNotTrack) {
       
   <li class="sidebar-button">
     
-      <a class="sidebar-button-link " href="https://kalali.github.io/index.xml">
+      <a class="sidebar-button-link " href="/index.xml">
     
       <i class="sidebar-button-icon fa fa-lg fa-rss"></i>
       
@@ -246,7 +246,7 @@ if (!doNotTrack) {
           
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
-              <p>In this part we will discuss the basic classes that we will work with them to have file system operations like copying a file, dealing with symbolic links, deleting a file, and so on. I will write a separate entry to introduce classes which are new to Java 7 for dealing with streams and file contents, watching service and directory tree walking. If you want to know what are new features in Java SE 7 for dealing with IO take a look at   <a href="https://kalali.github.io/blog/kalali/archive/2010/05/19/introducing-nio2-jsr-203-part-1-what-are-new-features">Introducing NIO.2 (JSR 203) Part 1: What are new features?</a> Before NIO.2, dealing with file system was mainly done using the File class and no other base class was available. In NIO.2 it there are some new classes at our disposal to take advantage of their existence to do our job. <a href="http://openjdk.java.net/projects/nio/javadoc/java/nio/file/FileSystems.html">FileSystems</a>: Everything starts with this factory class. We use this class to get an instance of the FileSystem we want to work on. The nio.2 provides a SPI to developed support for new file systems. For example an in-memory file system, a ZIP file system and so on. Following two methods are most important methods in FileSystems class.</p>
+              <p>In this part we will discuss the basic classes that we will work with them to have file system operations like copying a file, dealing with symbolic links, deleting a file, and so on. I will write a separate entry to introduce classes which are new to Java 7 for dealing with streams and file contents, watching service and directory tree walking. If you want to know what are new features in Java SE 7 for dealing with IO take a look at   <a href="/blog/kalali/archive/2010/05/19/introducing-nio2-jsr-203-part-1-what-are-new-features">Introducing NIO.2 (JSR 203) Part 1: What are new features?</a> Before NIO.2, dealing with file system was mainly done using the File class and no other base class was available. In NIO.2 it there are some new classes at our disposal to take advantage of their existence to do our job. <a href="http://openjdk.java.net/projects/nio/javadoc/java/nio/file/FileSystems.html">FileSystems</a>: Everything starts with this factory class. We use this class to get an instance of the FileSystem we want to work on. The nio.2 provides a SPI to developed support for new file systems. For example an in-memory file system, a ZIP file system and so on. Following two methods are most important methods in FileSystems class.</p>
 <ol>
 <li>The getDefault() returns the default file system available to the JVM. Usually the operating system default files system.</li>
 <li>The getFileSystem(URI uri) returns a file system from the set of available file system providers that match the given uir schema.</li>
@@ -298,7 +298,7 @@ if (!doNotTrack) {
                   <div class="post-footer-tags">
                     <span class="text-color-light text-small">TAGGED IN</span><br/>
                     
-  <a class="tag tag--primary tag--small" href="https://kalali.github.io/tags/java/">Java</a>
+  <a class="tag tag--primary tag--small" href="/tags/java/">Java</a>
 
                   </div>
                 
@@ -311,7 +311,7 @@ if (!doNotTrack) {
           
             <li class="post-action">
               
-                <a class="post-action-btn btn btn--default tooltip--top" href="https://kalali.github.io/2010/06/introducing-nio.2-jsr-203-part-3-file-system-attributes-and-permissions-support-in-nio.2/" data-tooltip="Introducing NIO.2 (JSR 203) Part 3: File System Attributes and Permissions support in NIO.2">
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2010/06/introducing-nio.2-jsr-203-part-3-file-system-attributes-and-permissions-support-in-nio.2/" data-tooltip="Introducing NIO.2 (JSR 203) Part 3: File System Attributes and Permissions support in NIO.2">
               
                   <i class="fa fa-angle-left"></i>
                   <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
@@ -319,7 +319,7 @@ if (!doNotTrack) {
             </li>
             <li class="post-action">
               
-                <a class="post-action-btn btn btn--default tooltip--top" href="https://kalali.github.io/2010/05/introducing-openesb-from-development-to-administration-and-management./" data-tooltip="Introducing OpenESB from development to administration and management.">
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2010/05/introducing-openesb-from-development-to-administration-and-management./" data-tooltip="Introducing OpenESB from development to administration and management.">
               
                   <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
                   <i class="fa fa-angle-right"></i>
@@ -337,13 +337,13 @@ if (!doNotTrack) {
         </li>
         
           <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://kalali.github.io/2010/06/introducing-nio.2-jsr-203-part-2-the-basics/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2010/06/introducing-nio.2-jsr-203-part-2-the-basics/">
               <i class="fa fa-facebook-official"></i>
             </a>
           </li>
         
           <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://kalali.github.io/2010/06/introducing-nio.2-jsr-203-part-2-the-basics/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2010/06/introducing-nio.2-jsr-203-part-2-the-basics/">
               <i class="fa fa-twitter"></i>
             </a>
           </li>
@@ -391,7 +391,7 @@ if (!doNotTrack) {
           
             <li class="post-action">
               
-                <a class="post-action-btn btn btn--default tooltip--top" href="https://kalali.github.io/2010/06/introducing-nio.2-jsr-203-part-3-file-system-attributes-and-permissions-support-in-nio.2/" data-tooltip="Introducing NIO.2 (JSR 203) Part 3: File System Attributes and Permissions support in NIO.2">
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2010/06/introducing-nio.2-jsr-203-part-3-file-system-attributes-and-permissions-support-in-nio.2/" data-tooltip="Introducing NIO.2 (JSR 203) Part 3: File System Attributes and Permissions support in NIO.2">
               
                   <i class="fa fa-angle-left"></i>
                   <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
@@ -399,7 +399,7 @@ if (!doNotTrack) {
             </li>
             <li class="post-action">
               
-                <a class="post-action-btn btn btn--default tooltip--top" href="https://kalali.github.io/2010/05/introducing-openesb-from-development-to-administration-and-management./" data-tooltip="Introducing OpenESB from development to administration and management.">
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2010/05/introducing-openesb-from-development-to-administration-and-management./" data-tooltip="Introducing OpenESB from development to administration and management.">
               
                   <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
                   <i class="fa fa-angle-right"></i>
@@ -417,13 +417,13 @@ if (!doNotTrack) {
         </li>
         
           <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://kalali.github.io/2010/06/introducing-nio.2-jsr-203-part-2-the-basics/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2010/06/introducing-nio.2-jsr-203-part-2-the-basics/">
               <i class="fa fa-facebook-official"></i>
             </a>
           </li>
         
           <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://kalali.github.io/2010/06/introducing-nio.2-jsr-203-part-2-the-basics/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2010/06/introducing-nio.2-jsr-203-part-2-the-basics/">
               <i class="fa fa-twitter"></i>
             </a>
           </li>
@@ -453,13 +453,13 @@ if (!doNotTrack) {
   <ul class="share-options">
     
       <li class="share-option">
-        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fkalali.github.io%2F2010%2F06%2Fintroducing-nio.2-jsr-203-part-2-the-basics%2F">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=%2F2010%2F06%2Fintroducing-nio.2-jsr-203-part-2-the-basics%2F">
           <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
         </a>
       </li>
     
       <li class="share-option">
-        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https%3A%2F%2Fkalali.github.io%2F2010%2F06%2Fintroducing-nio.2-jsr-203-part-2-the-basics%2F">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=%2F2010%2F06%2Fintroducing-nio.2-jsr-203-part-2-the-basics%2F">
           <i class="fa fa-twitter"></i><span>Share on Twitter</span>
         </a>
       </li>
@@ -475,7 +475,7 @@ if (!doNotTrack) {
       <i class="fa fa-remove"></i>
     </div>
     
-      <img id="about-card-picture" src="https://kalali.github.io/img/avatar.png" alt="Author&#39;s picture" />
+      <img id="about-card-picture" src="/img/avatar.png" alt="Author&#39;s picture" />
     
     <h4 id="about-card-name">Masoud Kalali</h4>
     
@@ -503,7 +503,7 @@ if (!doNotTrack) {
     
   
     
-      <div id="cover" style="background-image:url('https://kalali.github.io/img/cover.jpg');"></div>
+      <div id="cover" style="background-image:url('img/cover.jpg');"></div>
     
   
 
@@ -516,7 +516,7 @@ if (!doNotTrack) {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
 
 
-<script src="https://kalali.github.io/js/script-pcw6v3xilnxydl1vddzazdverrnn9ctynvnxgwho987mfyqkuylcb1nlt.min.js"></script>
+<script src="/js/script-pcw6v3xilnxydl1vddzazdverrnn9ctynvnxgwho987mfyqkuylcb1nlt.min.js"></script>
 
 
 <script lang="javascript">
@@ -551,7 +551,7 @@ $(document).ready(function() {
     
       <script>
         var disqus_config = function () {
-          this.page.url = 'https:\/\/kalali.github.io\/2010\/06\/introducing-nio.2-jsr-203-part-2-the-basics\/';
+          this.page.url = '\/2010\/06\/introducing-nio.2-jsr-203-part-2-the-basics\/';
           
             this.page.identifier = '\/2010\/06\/introducing-nio.2-jsr-203-part-2-the-basics\/'
           
