@@ -1,0 +1,18 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>Architecture - Tag - The Pensieve</title>
+        <link>https://kalali.blog/tags/architecture/</link>
+        <description>Architecture - Tag - The Pensieve</description>
+        <generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>kalali@gmail.com (Masoud Kalali)</managingEditor>
+            <webMaster>kalali@gmail.com (Masoud Kalali)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Wed, 20 Apr 2022 10:40:13 &#43;0200</lastBuildDate><atom:link href="https://kalali.blog/tags/architecture/" rel="self" type="application/rss+xml" /><item>
+    <title>Few tips for more success with architecture description</title>
+    <link>https://kalali.blog/2022/04/how-to-be-successful-in-documenting-software-architecture/</link>
+    <pubDate>Wed, 20 Apr 2022 10:40:13 &#43;0200</pubDate>
+    <author>Author</author>
+    <guid>https://kalali.blog/2022/04/how-to-be-successful-in-documenting-software-architecture/</guid>
+    <description><![CDATA[<div class="featured-image">
+                <img src="/post-img/how-to-be-successful-in-documenting-software-architecture.jpg" referrerpolicy="no-referrer">
+            </div>Introduction During the past 20 years I have seen trends come and go; one of the thing that has stayed around in one or another form is the term architecture and the architect role. Of course, there are plenty of overloads for the term and plenty of architect archetype like domain architect, enterprise architects, IT architect, network architect, software architect and you name it.
+Wikipedia has a good definition of software architecture that I quote below:]]></description>
+</item></channel>
+</rss>

@@ -1,0 +1,17 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>platform engineering - Tag - The Pensieve</title>
+        <link>https://kalali.blog/tags/platform-engineering/</link>
+        <description>platform engineering - Tag - The Pensieve</description>
+        <generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>kalali@gmail.com (Masoud Kalali)</managingEditor>
+            <webMaster>kalali@gmail.com (Masoud Kalali)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Mon, 18 Apr 2022 09:16:32 &#43;0200</lastBuildDate><atom:link href="https://kalali.blog/tags/platform-engineering/" rel="self" type="application/rss+xml" /><item>
+    <title>Building a development platform</title>
+    <link>https://kalali.blog/2022/04/effective-internal-platform-product-manager/</link>
+    <pubDate>Mon, 18 Apr 2022 09:16:32 &#43;0200</pubDate>
+    <author>Author</author>
+    <guid>https://kalali.blog/2022/04/effective-internal-platform-product-manager/</guid>
+    <description><![CDATA[<div class="featured-image">
+                <img src="/post-img/building-a-development-platform.jpg" referrerpolicy="no-referrer">
+            </div>Intro Building a new development platform, for example a new microservices oriented platform to replace an existing monolith software system, is a massive endeavour. I have been working on a development platform, the whole ecosystem from ways of working to pipeline in the past 3 years and the experience might help others. So I thought to write down some of the observation and experience before they fully turn into intrinsic/implicit knowledge and hard to pen.]]></description>
+</item></channel>
+</rss>
