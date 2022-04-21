@@ -9,7 +9,9 @@ If we divide the software development within an organization into two very broad
 
 The applications are usually customer/end-user facing or directly facilitating a particular business use-case, for example a login routine or a batch job that runs every night to process schedule payments. Applications most often have a clear business goal and  defining OKRs is easier and ROI can be observed within a shorter period of time.
 
-On the other hand, platform development which can be anything from shared components for different applications to release pipelines, development tools, or combination of many things together is not as straight forward. A platform is usually hard to justify for budgeting, not easy to have any meaningful OKRs and usually have no immediate ROI. For example, If the platform team develops a pipeline and related libraries, the adoption of such pipeline takes time and after a reasonable number of applications have enrolled in using the said pipeline product owner would slowly see an indirect ROI from:
+On the other hand, platform development which can be anything from shared components for different applications to release pipelines, development tools, or combination of many things together is not as straight forward. Platforms and platform teams are there to not only save initial cost of starting a new project or product but to save on the cost of maintenance and owning such product but introducing familiar concepts and ways of working across the vertical and horizontal integration points.
+
+Sometimes a platform/team is hard to justify, not easy to have any meaningful OKRs and usually have no immediate ROI. For example, If the platform team develops a pipeline and related libraries, the adoption of such pipeline takes time. After a reasonable number of applications have started using the said pipeline, product owner would slowly see an indirect ROI from:
 
 - Better compliance baked into the pipeline
 - Automation in release practices rather than throw over the wall and hand overs
@@ -19,8 +21,16 @@ On the other hand, platform development which can be anything from shared compon
 - Less regressions because of frequent small releases
 - etc.
 
+That is when the justification for existence of a platform become easier and the platform teams and products will become necessities.
+
 # Why Platforms?
 {{< image src="post-img/why-to-have-a-development-platform.jpg"  >}}
+
+Simply put platforms help with the following:
+- Time saving as they prevent inventing the same thing again and again; e.g. a pipeline.
+- Time saving as, when done right, they introduce a consistent way of working across diferent layers. Being applications, infrastructure or tooling. That will in turn makes transfer of knowledge and understanding easier
+- Time saving as teams with expertise build re-usable components that other team can incorporate rather than every time having to acquire such expertise
+- Governance, and compliance and other orthogonal aspects can be addressed via automation backing variety of self services. 
 
 Let's say that there an enterprise with the very well established process for software development, delivery, operation and support. This has been the case for the past couple of decades and individuals, teams, organisational units, and organisation as a whole developed a culture around the development process (for good or bad). The process can be something along the line of the following for simple features/functionalities. Imagine a handover between most steps.
 

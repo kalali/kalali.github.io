@@ -2,14 +2,18 @@
     xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
     xmlns:xhtml="http://www.w3.org/1999/xhtml"
     ><url>
+            <loc>https://kalali.blog/tags/case-study/</loc><lastmod>2022-04-21T07:01:23&#43;02:00</lastmod><changefreq>weekly</changefreq><priority>1</priority></url><url>
+            <loc>https://kalali.blog/categories/</loc><lastmod>2022-04-21T07:01:23&#43;02:00</lastmod><changefreq>weekly</changefreq><priority>1</priority></url><url>
+            <loc>https://kalali.blog/2022/04/impacts-of-a-few-in-depth-write-ups-and-an-abundance-of-getting-started/</loc><lastmod>2022-04-21T07:01:23&#43;02:00</lastmod><changefreq>weekly</changefreq><priority>1</priority></url><url>
+            <loc>https://kalali.blog/posts/</loc><lastmod>2022-04-21T07:01:23&#43;02:00</lastmod><changefreq>weekly</changefreq><priority>1</priority></url><url>
+            <loc>https://kalali.blog/categories/product-adoption/</loc><lastmod>2022-04-21T07:01:23&#43;02:00</lastmod><changefreq>weekly</changefreq><priority>1</priority></url><url>
+            <loc>https://kalali.blog/tags/</loc><lastmod>2022-04-21T07:01:23&#43;02:00</lastmod><changefreq>weekly</changefreq><priority>1</priority></url><url>
+            <loc>https://kalali.blog/</loc><lastmod>2022-04-21T07:01:23&#43;02:00</lastmod><changefreq>weekly</changefreq><priority>1</priority></url><url>
+            <loc>https://kalali.blog/tags/vendor/</loc><lastmod>2022-04-21T07:01:23&#43;02:00</lastmod><changefreq>weekly</changefreq><priority>1</priority></url><url>
             <loc>https://kalali.blog/2022/04/effective-internal-platform-product-manager/</loc><lastmod>2022-04-18T09:16:32&#43;02:00</lastmod><changefreq>weekly</changefreq><priority>1</priority></url><url>
-            <loc>https://kalali.blog/categories/</loc><lastmod>2022-04-18T09:16:32&#43;02:00</lastmod><changefreq>weekly</changefreq><priority>1</priority></url><url>
             <loc>https://kalali.blog/tags/microservices/</loc><lastmod>2022-04-18T09:16:32&#43;02:00</lastmod><changefreq>weekly</changefreq><priority>1</priority></url><url>
             <loc>https://kalali.blog/tags/platform-engineering/</loc><lastmod>2022-04-18T09:16:32&#43;02:00</lastmod><changefreq>weekly</changefreq><priority>1</priority></url><url>
             <loc>https://kalali.blog/categories/platform-engineering/</loc><lastmod>2022-04-18T09:16:32&#43;02:00</lastmod><changefreq>weekly</changefreq><priority>1</priority></url><url>
             <loc>https://kalali.blog/tags/pm/</loc><lastmod>2022-04-18T09:16:32&#43;02:00</lastmod><changefreq>weekly</changefreq><priority>1</priority></url><url>
-            <loc>https://kalali.blog/posts/</loc><lastmod>2022-04-18T09:16:32&#43;02:00</lastmod><changefreq>weekly</changefreq><priority>1</priority></url><url>
             <loc>https://kalali.blog/tags/product-owner/</loc><lastmod>2022-04-18T09:16:32&#43;02:00</lastmod><changefreq>weekly</changefreq><priority>1</priority></url><url>
-            <loc>https://kalali.blog/tags/</loc><lastmod>2022-04-18T09:16:32&#43;02:00</lastmod><changefreq>weekly</changefreq><priority>1</priority></url><url>
-            <loc>https://kalali.blog/</loc><lastmod>2022-04-18T09:16:32&#43;02:00</lastmod><changefreq>weekly</changefreq><priority>1</priority></url><url>
             <loc>https://kalali.blog/about/</loc><lastmod>2022-04-18T00:00:00&#43;00:00</lastmod><changefreq>weekly</changefreq><priority>1</priority></url></urlset>

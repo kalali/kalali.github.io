@@ -8,19 +8,19 @@
         <title>Building a development platform - The Pensieve</title><meta name="Description" content="Software architect with focus on PaaS container platforms, and Java EE, author, technology enthusiast, runner."><meta property="og:title" content="Building a development platform" />
 <meta property="og:description" content="Intro Building a new development platform, for example a new microservices oriented platform to replace an existing monolith software system, is a massive endeavour. I have been working on a development platform, the whole ecosystem from ways of working to pipeline in the past 3 years and the experience might help others. So I thought to write down some of the observation and experience before they fully turn into intrinsic/implicit knowledge and hard to pen." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://kalali.blog/2022/04/effective-internal-platform-product-manager/" /><meta property="og:image" content="https://kalali.blog/img/avatar.png"/><meta property="article:section" content="posts" />
+<meta property="og:url" content="https://kalali.blog/2022/04/effective-internal-platform-product-manager/" /><meta property="og:image" content="https://kalali.blog/img/avatar.svg"/><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2022-04-18T09:16:32+02:00" />
 <meta property="article:modified_time" content="2022-04-18T09:16:32+02:00" />
 
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="https://kalali.blog/img/avatar.png"/>
+<meta name="twitter:image" content="https://kalali.blog/img/avatar.svg"/>
 
 <meta name="twitter:title" content="Building a development platform"/>
 <meta name="twitter:description" content="Intro Building a new development platform, for example a new microservices oriented platform to replace an existing monolith software system, is a massive endeavour. I have been working on a development platform, the whole ecosystem from ways of working to pipeline in the past 3 years and the experience might help others. So I thought to write down some of the observation and experience before they fully turn into intrinsic/implicit knowledge and hard to pen."/>
 <meta name="application-name" content="The Pensieve">
 <meta name="apple-mobile-web-app-title" content="The Pensieve"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://kalali.blog/2022/04/effective-internal-platform-product-manager/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><meta name="google-site-verification" content="cDJVSx1L3UB6AwrPKeSQszOyhtjHYvPYkDxZw_Me4Z4" /><meta name="msvalidate.01" content="cDJVSx1L3UB6AwrPKeSQszOyhtjHYvPYkDxZw_Me4Z4" /><script type="application/ld+json">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://kalali.blog/2022/04/effective-internal-platform-product-manager/" /><link rel="next" href="https://kalali.blog/2022/04/impacts-of-a-few-in-depth-write-ups-and-an-abundance-of-getting-started/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><meta name="google-site-verification" content="cDJVSx1L3UB6AwrPKeSQszOyhtjHYvPYkDxZw_Me4Z4" /><meta name="msvalidate.01" content="cDJVSx1L3UB6AwrPKeSQszOyhtjHYvPYkDxZw_Me4Z4" /><script type="application/ld+json">
     {
         "@context": "http://schema.org",
         "@type": "BlogPosting",
@@ -34,8 +34,8 @@
                             "url": "https:\/\/kalali.blog\/img\/preview.png",
                             "width":  1027 ,
                             "height":  833 
-                        }],"genre": "posts","keywords": "product owner, PM, platform engineering, microservices","wordcount":  1465 ,
-        "url": "https:\/\/kalali.blog\/2022\/04\/effective-internal-platform-product-manager\/","datePublished": "2022-04-18T09:16:32+02:00","dateModified": "2022-04-18T09:16:32+02:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+                        }],"genre": "posts","keywords": "product owner, PM, platform engineering, microservices","wordcount":  1622 ,
+        "url": "https:\/\/kalali.blog\/2022\/04\/effective-internal-platform-product-manager\/","datePublished": "2022-04-18T09:16:32+02:00","dateModified": "2022-04-18T09:16:32+02:00","license": "This work is licensed under a Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)","publisher": {
             "@type": "Organization",
             "name": "Masoud Kalali","logo": {
                     "@type": "ImageObject",
@@ -113,8 +113,8 @@
 <main class="main">
                 <div class="container"><article class="page single"><h1 class="single-title animated flipInX">Building a development platform</h1><div class="post-meta">
             <div class="post-meta-line"><span class="post-author"><a href="https://www.linkedin.com/in/masoudkalali/" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw"></i>Masoud Kalali</a></span>&nbsp;<span class="post-category">included in <a href="/categories/platform-engineering/"><i class="far fa-folder fa-fw"></i>Platform Engineering</a></span></div>
-            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2022-04-18">2022-04-18</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;1465 words&nbsp;
-                <i class="far fa-clock fa-fw"></i>&nbsp;7 minutes&nbsp;</div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2022-04-18">2022-04-18</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;1622 words&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;8 minutes&nbsp;</div>
         </div><div class="featured-image"><img
         class="lazyload"
         src="/svg/loading.min.svg"
@@ -127,7 +127,8 @@
 <h1 id="platform">Platform?</h1>
 <p>If we divide the software development within an organization into two very broad categories, there is platform development, and platform products in one layer and and application development in another, which is usually consumes the platform.</p>
 <p>The applications are usually customer/end-user facing or directly facilitating a particular business use-case, for example a login routine or a batch job that runs every night to process schedule payments. Applications most often have a clear business goal and  defining OKRs is easier and ROI can be observed within a shorter period of time.</p>
-<p>On the other hand, platform development which can be anything from shared components for different applications to release pipelines, development tools, or combination of many things together is not as straight forward. A platform is usually hard to justify for budgeting, not easy to have any meaningful OKRs and usually have no immediate ROI. For example, If the platform team develops a pipeline and related libraries, the adoption of such pipeline takes time and after a reasonable number of applications have enrolled in using the said pipeline product owner would slowly see an indirect ROI from:</p>
+<p>On the other hand, platform development which can be anything from shared components for different applications to release pipelines, development tools, or combination of many things together is not as straight forward. Platforms and platform teams are there to not only save initial cost of starting a new project or product but to save on the cost of maintenance and owning such product but introducing familiar concepts and ways of working across the vertical and horizontal integration points.</p>
+<p>Sometimes a platform/team is hard to justify, not easy to have any meaningful OKRs and usually have no immediate ROI. For example, If the platform team develops a pipeline and related libraries, the adoption of such pipeline takes time. After a reasonable number of applications have started using the said pipeline, product owner would slowly see an indirect ROI from:</p>
 <ul>
 <li>Better compliance baked into the pipeline</li>
 <li>Automation in release practices rather than throw over the wall and hand overs</li>
@@ -137,6 +138,7 @@
 <li>Less regressions because of frequent small releases</li>
 <li>etc.</li>
 </ul>
+<p>That is when the justification for existence of a platform become easier and the platform teams and products will become necessities.</p>
 <h1 id="why-platforms">Why Platforms?</h1>
 <a class="lightgallery" href="/post-img/why-to-have-a-development-platform.jpg" title="/post-img/why-to-have-a-development-platform.jpg" data-thumbnail="/post-img/why-to-have-a-development-platform.jpg">
         <img
@@ -147,6 +149,13 @@
             data-sizes="auto"
             alt="/post-img/why-to-have-a-development-platform.jpg" />
     </a>
+<p>Simply put platforms help with the following:</p>
+<ul>
+<li>Time saving as they prevent inventing the same thing again and again; e.g. a pipeline.</li>
+<li>Time saving as, when done right, they introduce a consistent way of working across diferent layers. Being applications, infrastructure or tooling. That will in turn makes transfer of knowledge and understanding easier</li>
+<li>Time saving as teams with expertise build re-usable components that other team can incorporate rather than every time having to acquire such expertise</li>
+<li>Governance, and compliance and other orthogonal aspects can be addressed via automation backing variety of self services.</li>
+</ul>
 <p>Let&rsquo;s say that there an enterprise with the very well established process for software development, delivery, operation and support. This has been the case for the past couple of decades and individuals, teams, organisational units, and organisation as a whole developed a culture around the development process (for good or bad). The process can be something along the line of the following for simple features/functionalities. Imagine a handover between most steps.</p>
 <ol>
 <li>Long contemplations and many meetings of the domain architect/s</li>
@@ -237,11 +246,12 @@
         </section>
     </div>
 
-    <div class="post-nav"></div>
+    <div class="post-nav">
+            <a href="/2022/04/impacts-of-a-few-in-depth-write-ups-and-an-abundance-of-getting-started/" class="next" rel="next" title="Impacts of a few in-depth write-ups and an abundance of getting started">Impacts of a few in-depth write-ups and an abundance of getting started<i class="fas fa-angle-right fa-fw"></i></a></div>
 </div>
 </article></div>
             </main><footer class="footer">
-        <div class="footer-container"><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2005 - 2022</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://www.linkedin.com/in/masoudkalali/" target="_blank">Masoud Kalali</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+        <div class="footer-container"><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2005 - 2022</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://www.linkedin.com/in/masoudkalali/" target="_blank">Masoud Kalali</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span></div>
         </div>
     </footer></div>
 
