@@ -51,7 +51,7 @@ Now with such a list of steps for delivering a functionality to end user it can 
 - Bug ridden, slow, barebone user functionalities failing to retain current customers
 - Legacy development culture failing to attract or retain technology taskforce 
 
-The organisation decides to go with a new development platform that addresses the trade-offs and divergence made in the previous platform (and make a whole new collection of them while doing that). The new platform is supposed to ease the feature and functionalities delivery to reduce the gap with the competition.
+The organisation decides to go with a new development platform that addresses the trade-offs and divergence made in the previous platform (and make a whole new collection of them while doing that). The new platform is supposed to ease the feature and functionalities delivery to reduce the gap with the competition. The team building such platform goes and does the user research to see what can constitute a helpful platfrom to address the painpoints and also incorporate platform users (development teams) requirement that may not be reflected by analysing the painpoints.
 
 The following list is a few aspects of a new development platform's responsibilities. Some may already exist, some might be completely new, and some might be a revamp of existing criteria.
 
@@ -67,7 +67,7 @@ The following list is a few aspects of a new development platform's responsibili
 
 ### Setting up the expectations
 
-Being a product owner or an advocate for a platform requires more conversation and investigation about pain points existing in the organization as a whole. Being the application/program development teams or the relationship between compliance/security/process divisions with the application development heirarcy.
+Being a product owner or an advocate for a platform requires more conversation and investigation about painpoints existing in the organization as a whole. Being the application/program development teams or the relationship between compliance/security/process divisions with the application development hierarchy.
 
 Setting clear expectations for external customers and goals for the platform team itself is an important task that the product owner, in combination with engineering teams (and management) should set. This expectation setting will make it clear to management on what timeline and outcome to expect for given organisational support, runway and budget.
 
@@ -76,9 +76,9 @@ At the same time, a platform development team must make it clear to the manageme
 # Platform adoption
 {{< image src="post-img/properly-position-for-adoption.jpg"  >}}
 
-A development platform like any other product will need adoption and use to survive the next budget definition. Let's say that the platform teams understood the painpoints and the platform is developed to not only remedy the painpoints but also ensure the viability of the application ecosystem over the next few decades. There is still the work on convincing the individuals, teams and the organisation to switch to this unknown and largely unproven platform. 
+A development platform like any other product will need adoption and use to get the feedback cycle going. Let's say that the platform teams understood the painpoints and the platform is developed to not only remedy the painpoints but also ensure the viability of the application ecosystem over the next decad. If the platform is not being used and has an established feedback cycle it will be hard for it to grow and cover the majority of use-cases or valid viewpoints.  
 
-There are some general approach in spreading the adoption of the platform, similar rules applies to anything to some extent.
+There are some general approach in spreading the adoption of the platform and starting a feedback cycle.
 
 #### Platform team owning applications
 One approach that I have employed, and seems to work for adoption of the platform, is ensuring the platform team owns some programs built on top of the platform. This service can be the example to showcase how platform works and how does it help with the pain-points that it exists to remedy and how does it propel the organisation into the new ways of working and tech landscape.
