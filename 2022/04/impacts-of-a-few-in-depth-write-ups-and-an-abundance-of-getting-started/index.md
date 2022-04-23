@@ -1,6 +1,6 @@
 # Impacts of a few in-depth write-ups and an abundance of getting started
 
-Amount of information about hot new tech components is amazing. The hotter the topic or the framework the more information is scattered around the web for it. For example:
+Amount of information about how a new component or software system can solve all the problem in a specific area is sometimes overboard. The hotter the topic or the framework the more information is scattered around the web for it. For example:
 
 - Have you seen the plenty of use cases that every vendor in every segment of tech stack provide as part of the adoption or success story?
 - How about the tutorial that shows how quickly and easily something as significant as a an observability solution can be set and be up and running?

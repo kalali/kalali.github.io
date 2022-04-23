@@ -1,5 +1,6 @@
 # Building a development platform
 
+
 # Intro
 Building a new development platform, for example a new microservices oriented platform to replace an existing monolith software system, is a massive endeavour. I have been working on a development platform, the whole ecosystem from ways of working to pipeline in the past 3 years and the experience might help others. So I thought to write down some of the observation and experience before they fully turn into intrinsic/implicit knowledge and hard to pen. 
 
