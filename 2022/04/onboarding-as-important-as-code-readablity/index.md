@@ -1,4 +1,4 @@
-# Onboarding Developers is as Important as Code Readability
+# Smooth Developer Onboarding is as Important as Code Readability
 
 
 When a new hire joins a team dealing with the development or sustaining of a large-scale application there are a few things that they would need to form a basic understanding of the system:
