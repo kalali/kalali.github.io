@@ -1,8 +1,8 @@
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
     <channel>
-        <title>Documentation - Tag - The Pensieve</title>
+        <title>Documentation - Tag - The Pensieve - Masoud Kalali&#39;s Blog</title>
         <link>https://kalali.blog/tags/documentation/</link>
-        <description>Documentation - Tag - The Pensieve</description>
+        <description>Documentation - Tag - The Pensieve - Masoud Kalali&#39;s Blog</description>
         <generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>kalali@gmail.com (Masoud Kalali)</managingEditor>
             <webMaster>kalali@gmail.com (Masoud Kalali)</webMaster><copyright>This work is licensed under a Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)</copyright><lastBuildDate>Tue, 26 Apr 2022 20:09:54 &#43;0200</lastBuildDate><atom:link href="https://kalali.blog/tags/documentation/" rel="self" type="application/rss+xml" /><item>
     <title>Smooth Developer Onboarding is as Important as Code Readability</title>
