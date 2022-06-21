@@ -1,0 +1,72 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>JCP - Tag - The Pensieve - Masoud Kalali&#39;s Blog</title>
+        <link>https://kalali.blog/tags/jcp/</link>
+        <description>JCP - Tag - The Pensieve - Masoud Kalali&#39;s Blog</description>
+        <generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>kalali@gmail.com (Masoud Kalali)</managingEditor>
+            <webMaster>kalali@gmail.com (Masoud Kalali)</webMaster><copyright>This work is licensed under a Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)</copyright><lastBuildDate>Mon, 24 Oct 2011 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://kalali.blog/tags/jcp/" rel="self" type="application/rss+xml" /><item>
+    <title>My thoughts on JSR 351, Java Identity API</title>
+    <link>https://kalali.blog/2011/10/some-thought-on-jsr-351-java-identity-api/</link>
+    <pubDate>Mon, 24 Oct 2011 00:00:00 &#43;0000</pubDate>
+    <author>Masoud Kalali</author>
+    <guid>https://kalali.blog/2011/10/some-thought-on-jsr-351-java-identity-api/</guid>
+    <description><![CDATA[Identity, something that we hear more often these days with the whole web 2.0 and social services and more and more web based public services growing around us. The identity notion is an integral part of a security system in distributed services. Developing effective software system require an effective security and access control system which java provides, not exactly in the way that it should be in 2011 but it does provide what is the bare bone necessity to develop applications and frameworks on top of it and benefit from its presence.]]></description>
+</item>
+<item>
+    <title>Brief overview of JSR 343: JavaTM Message Service 2.0</title>
+    <link>https://kalali.blog/2011/05/jms2-jsr/</link>
+    <pubDate>Tue, 17 May 2011 00:00:00 &#43;0000</pubDate>
+    <author>Masoud Kalali</author>
+    <guid>https://kalali.blog/2011/05/jms2-jsr/</guid>
+    <description><![CDATA[Well, as many of us already know Oracle submitted the JSR for Java EE 7 which is sort of an umbrella JSR for many update in already existing specifications, new versions of some JSRs and some completely new JSRs which will be part of the grand Java EE 7 - JSR 342. One of these JSRs is the JSR 343 which introduces a new version of JMS into the platform as an evolution of its previous version, JSR-914, and will unify the JMS usage with what added to the platform in the past 8 years.]]></description>
+</item>
+<item>
+    <title>Introducing NIO.2 (JSR 203) Part 6: Filtering directory content and walking over a file tree</title>
+    <link>https://kalali.blog/2010/08/introducing-nio-2-jsr-203-part-6-filtering-directory-content-and-walking-over-a-file-tree/</link>
+    <pubDate>Mon, 23 Aug 2010 00:00:00 &#43;0000</pubDate>
+    <author>Masoud Kalali</author>
+    <guid>https://kalali.blog/2010/08/introducing-nio-2-jsr-203-part-6-filtering-directory-content-and-walking-over-a-file-tree/</guid>
+    <description><![CDATA[In this part we will look at how the directory tree walker and the directory stream reader works. These two features are another couple of long requested features which was not included in the core java before Java 7. First, lets see what directory stream reader is, this API allows us to filter content of a directory on the file system and extract the file names that matches our filter criteria.]]></description>
+</item>
+<item>
+    <title>Introducing NIO.2 (JSR 203) Part 5: Watch Service and Change Notification</title>
+    <link>https://kalali.blog/2010/08/introducing-nio-2-jsr-203-part-5-watch-service-and-change-notification/</link>
+    <pubDate>Tue, 10 Aug 2010 00:00:00 &#43;0000</pubDate>
+    <author>Masoud Kalali</author>
+    <guid>https://kalali.blog/2010/08/introducing-nio-2-jsr-203-part-5-watch-service-and-change-notification/</guid>
+    <description><![CDATA[For long time Java developers used in-house developed solutions to monitor the file system for changes. Some developed general purpose libraries to ease the task of others who deal with the same requirement. Commercial and free/ open source libraries like http://jnotify.sourceforge.net/, http://jpathwatch.wordpress.com/ and http://www.teamdev.com/jxfilewatcher among others. Java 7 comes with NIO.2 or JSR 203 which provides native file system watch service. The watch service provided in Java 7 uses the underlying file system functionalities to watch the file system for changes, so if we are running on Windows, MacOS or Linux&hellip; we are sure that the watch service is not imposing polling overhead on our application because the underlying OS and file system provides the required functionalities to allow Java to register for receiving notification on file system changes.]]></description>
+</item>
+<item>
+    <title>Introducing NIO.2 (JSR 203) Part 4: Changing File System Attributes and Permissions</title>
+    <link>https://kalali.blog/2010/07/introducing-nio-2-jsr-203-part-4-changing-file-system-attributes-and-permissions/</link>
+    <pubDate>Tue, 13 Jul 2010 00:00:00 &#43;0000</pubDate>
+    <author>Masoud Kalali</author>
+    <guid>https://kalali.blog/2010/07/introducing-nio-2-jsr-203-part-4-changing-file-system-attributes-and-permissions/</guid>
+    <description><![CDATA[This is the 4th installment of my entries covering NIO.2. In this entry I will discuss more about what we can do with attributes and permissions. The NIO.2 lets us write the permissions and attributes of a file in addition to reading them. For example we can change the rwx permissions using the Attributes utility class and PosixFilePermission. You can execute the following sample code with almost no changes, the only thing you need to change is the path to our sample file and then you are ready to see how it works.]]></description>
+</item>
+<item>
+    <title>Introducing NIO.2 (JSR 203) Part 3: File System Attributes and Permissions support in NIO.2</title>
+    <link>https://kalali.blog/2010/06/introducing-nio-2-jsr-203-part-3-file-system-attributes-and-permissions-support-in-nio-2/</link>
+    <pubDate>Wed, 23 Jun 2010 00:00:00 &#43;0000</pubDate>
+    <author>Masoud Kalali</author>
+    <guid>https://kalali.blog/2010/06/introducing-nio-2-jsr-203-part-3-file-system-attributes-and-permissions-support-in-nio-2/</guid>
+    <description><![CDATA[In two previous entries I covered Introducing NIO.2 (JSR 203) Part 1: What are new features? and Introducing NIO.2 (JSR 203) Part 2: The Basics In this entry I will discuss Attributes introduced in NIO.2. Using attributes we can read platform specific attributes of an element in the file system. For example to hide a file system in DOS file system or to check the last access date of a file in a UNIX machine.]]></description>
+</item>
+<item>
+    <title>Introducing NIO.2 (JSR 203) Part 2: The Basics</title>
+    <link>https://kalali.blog/2010/06/introducing-nio-2-jsr-203-part-2-the-basics/</link>
+    <pubDate>Tue, 01 Jun 2010 00:00:00 &#43;0000</pubDate>
+    <author>Masoud Kalali</author>
+    <guid>https://kalali.blog/2010/06/introducing-nio-2-jsr-203-part-2-the-basics/</guid>
+    <description><![CDATA[In this part we will discuss the basic classes that we will work with them to have file system operations like copying a file, dealing with symbolic links, deleting a file, and so on. I will write a separate entry to introduce classes which are new to Java 7 for dealing with streams and file contents, watching service and directory tree walking. If you want to know what are new features in Java SE 7 for dealing with IO take a look at Introducing NIO.]]></description>
+</item>
+<item>
+    <title>Introducing NIO.2 (JSR 203) Part 1: What are new features?</title>
+    <link>https://kalali.blog/2010/05/introducing-nio-2-jsr-203-part-1-what-are-new-features/</link>
+    <pubDate>Thu, 20 May 2010 00:00:00 &#43;0000</pubDate>
+    <author>Masoud Kalali</author>
+    <guid>https://kalali.blog/2010/05/introducing-nio-2-jsr-203-part-1-what-are-new-features/</guid>
+    <description><![CDATA[I will write a series of blog to discuss what are the new features introduced in NIO.2 (JSR 203). The NIO.2 implementation is a part of OpenJDK project and we can alreay use it by downloading a copy of OpenJDK binary. In the first entry I will just go through what are these new I/O features of Java 7, which help developer iron out better applications easier. Talking about File systems support and features which let us deal with file system we can name the following features:]]></description>
+</item>
+</channel>
+</rss>

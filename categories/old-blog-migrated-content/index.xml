@@ -1,0 +1,92 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>Old Blog Migrated Content - Category - The Pensieve - Masoud Kalali&#39;s Blog</title>
+        <link>https://kalali.blog/categories/old-blog-migrated-content/</link>
+        <description>Old Blog Migrated Content - Category - The Pensieve - Masoud Kalali&#39;s Blog</description>
+        <generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>kalali@gmail.com (Masoud Kalali)</managingEditor>
+            <webMaster>kalali@gmail.com (Masoud Kalali)</webMaster><copyright>This work is licensed under a Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)</copyright><lastBuildDate>Mon, 24 Oct 2011 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://kalali.blog/categories/old-blog-migrated-content/" rel="self" type="application/rss+xml" /><item>
+    <title>My thoughts on JSR 351, Java Identity API</title>
+    <link>https://kalali.blog/2011/10/some-thought-on-jsr-351-java-identity-api/</link>
+    <pubDate>Mon, 24 Oct 2011 00:00:00 &#43;0000</pubDate>
+    <author>Masoud Kalali</author>
+    <guid>https://kalali.blog/2011/10/some-thought-on-jsr-351-java-identity-api/</guid>
+    <description><![CDATA[Identity, something that we hear more often these days with the whole web 2.0 and social services and more and more web based public services growing around us. The identity notion is an integral part of a security system in distributed services. Developing effective software system require an effective security and access control system which java provides, not exactly in the way that it should be in 2011 but it does provide what is the bare bone necessity to develop applications and frameworks on top of it and benefit from its presence.]]></description>
+</item>
+<item>
+    <title>Brief overview of JSR 343: JavaTM Message Service 2.0</title>
+    <link>https://kalali.blog/2011/05/jms2-jsr/</link>
+    <pubDate>Tue, 17 May 2011 00:00:00 &#43;0000</pubDate>
+    <author>Masoud Kalali</author>
+    <guid>https://kalali.blog/2011/05/jms2-jsr/</guid>
+    <description><![CDATA[Well, as many of us already know Oracle submitted the JSR for Java EE 7 which is sort of an umbrella JSR for many update in already existing specifications, new versions of some JSRs and some completely new JSRs which will be part of the grand Java EE 7 - JSR 342. One of these JSRs is the JSR 343 which introduces a new version of JMS into the platform as an evolution of its previous version, JSR-914, and will unify the JMS usage with what added to the platform in the past 8 years.]]></description>
+</item>
+<item>
+    <title>Writing Solaris Service Management Facility (SMF) service manifest</title>
+    <link>https://kalali.blog/2011/01/authoring-solaris-service-management-facility-smf-service-manifest/</link>
+    <pubDate>Mon, 31 Jan 2011 00:00:00 &#43;0000</pubDate>
+    <author>Masoud Kalali</author>
+    <guid>https://kalali.blog/2011/01/authoring-solaris-service-management-facility-smf-service-manifest/</guid>
+    <description><![CDATA[SMF services are basically daemons staying in background and waiting for the requests which they should server, when the request come the daemon wake ups, serve the request and then wait for the next request to come. The services are building using software development platforms and languages but they have one common aspect which we are going to discuss here. The service manifests which describe the service for the SMF and let the SMF manage and understand the service life cycle.]]></description>
+</item>
+<item>
+    <title>Solaris fault administration using fmadm command</title>
+    <link>https://kalali.blog/2011/01/solaris-fault-administration-using-fmadm-command/</link>
+    <pubDate>Wed, 12 Jan 2011 00:00:00 &#43;0000</pubDate>
+    <author>Masoud Kalali</author>
+    <guid>https://kalali.blog/2011/01/solaris-fault-administration-using-fmadm-command/</guid>
+    <description><![CDATA[In this article we will study how we can use the fmadm command to get the list of faulty components along with the detailed information about the fault. Before starting this article we should have a command console open and then we can proceed with using the fmadm command. The most basic form of using fmadm command is using its faulty subcommand as follow 1 \# fmadm faulty When we have no error in the system, this command will not show anything and exit normally but with a faulty component the output will be different, for example in the following sample we have a faulty ZFS pool because some of its underlying devices are missing.]]></description>
+</item>
+<item>
+    <title>Monitoring ZFS pools performance using zpool iostat</title>
+    <link>https://kalali.blog/2010/12/monitoring-zfs-pools-performance-using-zpool-iostat/</link>
+    <pubDate>Thu, 30 Dec 2010 00:00:00 &#43;0000</pubDate>
+    <author>Masoud Kalali</author>
+    <guid>https://kalali.blog/2010/12/monitoring-zfs-pools-performance-using-zpool-iostat/</guid>
+    <description><![CDATA[Performance, performance, performance; this is what we hear in all software development and management sessions. ZFS provides few utility commands to monitor one or more pools&rsquo; performance. You should remember that we used fsstat command to monitor the UFS performance metrics. We can use iostat subcommand of the zpool command to monitor the performance metrics of ZFS pools. The iostat subcommand provides some options and arguments which we can see in its syntax shown below: 1 iostat \[-v\] \[pool\] .]]></description>
+</item>
+<item>
+    <title>Managing Logical network interfaces in Solaris</title>
+    <link>https://kalali.blog/2010/12/managing-logical-network-interfaces-in-solaris/</link>
+    <pubDate>Thu, 09 Dec 2010 00:00:00 &#43;0000</pubDate>
+    <author>Masoud Kalali</author>
+    <guid>https://kalali.blog/2010/12/managing-logical-network-interfaces-in-solaris/</guid>
+    <description><![CDATA[Like other operating system we can assign multiple IP address to a network interface. This secondary address are called logical interfaces and we can use them to make one machine with one single network interface own multiple IP addresses for different purposes. We may need to assign multiple IP address to an interface to make it available to both internal and external networks or for testing purposes. We should have one network interface configured in our system in order to create additional logical interfaces.]]></description>
+</item>
+<item>
+    <title>Configuring Solaris Link Aggregation (Ethernet bonding)</title>
+    <link>https://kalali.blog/2010/11/configuring-solaris-link-aggregation-ethernet-bonding/</link>
+    <pubDate>Thu, 25 Nov 2010 00:00:00 &#43;0000</pubDate>
+    <author>Masoud Kalali</author>
+    <guid>https://kalali.blog/2010/11/configuring-solaris-link-aggregation-ethernet-bonding/</guid>
+    <description><![CDATA[Link aggregation or commonly known Ethernet bonding allows us to enhance the network availability and performance by combining multiple network interfaces together and form an aggregation of those interfaces which act as a single network interface with greatly enhanced availability and performance.
+When we aggregate two or more network interfaces, we are forming a new network interface on top of those physical interfaces combined in the link layer.
+We need to have at least two network interfaces in our machine to create a link aggregation.]]></description>
+</item>
+<item>
+    <title>Introducing NIO.2 (JSR 203) Part 6: Filtering directory content and walking over a file tree</title>
+    <link>https://kalali.blog/2010/08/introducing-nio-2-jsr-203-part-6-filtering-directory-content-and-walking-over-a-file-tree/</link>
+    <pubDate>Mon, 23 Aug 2010 00:00:00 &#43;0000</pubDate>
+    <author>Masoud Kalali</author>
+    <guid>https://kalali.blog/2010/08/introducing-nio-2-jsr-203-part-6-filtering-directory-content-and-walking-over-a-file-tree/</guid>
+    <description><![CDATA[In this part we will look at how the directory tree walker and the directory stream reader works. These two features are another couple of long requested features which was not included in the core java before Java 7. First, lets see what directory stream reader is, this API allows us to filter content of a directory on the file system and extract the file names that matches our filter criteria.]]></description>
+</item>
+<item>
+    <title>Introducing NIO.2 (JSR 203) Part 5: Watch Service and Change Notification</title>
+    <link>https://kalali.blog/2010/08/introducing-nio-2-jsr-203-part-5-watch-service-and-change-notification/</link>
+    <pubDate>Tue, 10 Aug 2010 00:00:00 &#43;0000</pubDate>
+    <author>Masoud Kalali</author>
+    <guid>https://kalali.blog/2010/08/introducing-nio-2-jsr-203-part-5-watch-service-and-change-notification/</guid>
+    <description><![CDATA[For long time Java developers used in-house developed solutions to monitor the file system for changes. Some developed general purpose libraries to ease the task of others who deal with the same requirement. Commercial and free/ open source libraries like http://jnotify.sourceforge.net/, http://jpathwatch.wordpress.com/ and http://www.teamdev.com/jxfilewatcher among others. Java 7 comes with NIO.2 or JSR 203 which provides native file system watch service. The watch service provided in Java 7 uses the underlying file system functionalities to watch the file system for changes, so if we are running on Windows, MacOS or Linux&hellip; we are sure that the watch service is not imposing polling overhead on our application because the underlying OS and file system provides the required functionalities to allow Java to register for receiving notification on file system changes.]]></description>
+</item>
+<item>
+    <title>Learning how to use zfs in OpenSolaris</title>
+    <link>https://kalali.blog/2010/08/learning-how-to-use-zfs-in-opensolaris/</link>
+    <pubDate>Mon, 09 Aug 2010 00:00:00 &#43;0000</pubDate>
+    <author>Masoud Kalali</author>
+    <guid>https://kalali.blog/2010/08/learning-how-to-use-zfs-in-opensolaris/</guid>
+    <description><![CDATA[What is a file system File systems make it possible to store and retrieve files and containing data into storages like hard disks, optical disks and other types of storages.
+OpenSolaris support both legacy file systems like UNIX File System (UFS) and its own file system called Zettabyte File System (ZFS). Following figure show how UFS and other legacy file systems work.
+As you can see we can partition each storage device into one or more volumes with different file systems.]]></description>
+</item>
+</channel>
+</rss>

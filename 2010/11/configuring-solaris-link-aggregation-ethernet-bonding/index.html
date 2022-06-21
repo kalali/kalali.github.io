@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>Configuring Solaris Link Aggregation (Ethernet bonding) - The Pensieve - Masoud Kalali&#39;s Blog</title><meta name="Description" content="Masoud Kalali&#39;s personal blog. Covering subjects ranging from tech strategy, leadership, software architecture, cloud native, and software development in general."><meta property="og:title" content="Configuring Solaris Link Aggregation (Ethernet bonding)" />
+<meta property="og:description" content="Link aggregation or commonly known Ethernet bonding allows us to enhance the network availability and performance by combining multiple network interfaces together and form an aggregation of those interfaces which act as a single network interface with greatly enhanced availability and performance.
+When we aggregate two or more network interfaces, we are forming a new network interface on top of those physical interfaces combined in the link layer.
+We need to have at least two network interfaces in our machine to create a link aggregation." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://kalali.blog/2010/11/configuring-solaris-link-aggregation-ethernet-bonding/" /><meta property="og:image" content="https://kalali.blog/img/avatar.jpg"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2010-11-25T00:00:00+00:00" />
+<meta property="article:modified_time" content="2010-11-25T00:00:00+00:00" /><meta property="og:site_name" content="My cool site" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://kalali.blog/img/avatar.jpg"/>
+
+<meta name="twitter:title" content="Configuring Solaris Link Aggregation (Ethernet bonding)"/>
+<meta name="twitter:description" content="Link aggregation or commonly known Ethernet bonding allows us to enhance the network availability and performance by combining multiple network interfaces together and form an aggregation of those interfaces which act as a single network interface with greatly enhanced availability and performance.
+When we aggregate two or more network interfaces, we are forming a new network interface on top of those physical interfaces combined in the link layer.
+We need to have at least two network interfaces in our machine to create a link aggregation."/>
+<meta name="application-name" content="The Pensieve - Masoud Kalali&#39;s Blog">
+<meta name="apple-mobile-web-app-title" content="The Pensieve - Masoud Kalali&#39;s Blog"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://kalali.blog/2010/11/configuring-solaris-link-aggregation-ethernet-bonding/" /><link rel="prev" href="https://kalali.blog/2010/08/introducing-nio-2-jsr-203-part-6-filtering-directory-content-and-walking-over-a-file-tree/" /><link rel="next" href="https://kalali.blog/2010/12/managing-logical-network-interfaces-in-solaris/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css"></noscript><link rel="preload" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css"></noscript><meta name="google-site-verification" content="cDJVSx1L3UB6AwrPKeSQszOyhtjHYvPYkDxZw_Me4Z4" /><meta name="msvalidate.01" content="cDJVSx1L3UB6AwrPKeSQszOyhtjHYvPYkDxZw_Me4Z4" /><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Configuring Solaris Link Aggregation (Ethernet bonding)",
+        "inLanguage": "en",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/kalali.blog\/2010\/11\/configuring-solaris-link-aggregation-ethernet-bonding\/"
+        },"image": [{
+                            "@type": "ImageObject",
+                            "url": "https:\/\/kalali.blog\/img\/preview.png",
+                            "width":  1027 ,
+                            "height":  833 
+                        }],"genre": "posts","keywords": "Solaris, Networking","wordcount":  754 ,
+        "url": "https:\/\/kalali.blog\/2010\/11\/configuring-solaris-link-aggregation-ethernet-bonding\/","datePublished": "2010-11-25T00:00:00+00:00","dateModified": "2010-11-25T00:00:00+00:00","license": "This work is licensed under a Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)","publisher": {
+            "@type": "Organization",
+            "name": "Masoud Kalali"},"author": {
+                "@type": "Person",
+                "name": "Masoud Kalali"
+            },"description": ""
+    }
+    </script></head>
+    <body data-header-desktop="auto" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="The Pensieve - Masoud Kalali&#39;s Blog">The Pensieve - Masoud Kalali&#39;s Blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/" title="Blog posts"> Posts </a><a class="menu-item" href="/tags/" title="All the blog tags"> Tags </a><a class="menu-item" href="/categories/" title="List of all categories I blogged bout"> Categories </a><a class="menu-item" href="/about/" title="About Masoud Kalali, Author"> About </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="The Pensieve - Masoud Kalali&#39;s Blog">The Pensieve - Masoud Kalali&#39;s Blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        Cancel
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="Blog posts">Posts</a><a class="menu-item" href="/tags/" title="All the blog tags">Tags</a><a class="menu-item" href="/categories/" title="List of all categories I blogged bout">Categories</a><a class="menu-item" href="/about/" title="About Masoud Kalali, Author">About</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><div class="search-dropdown desktop">
+        <div id="search-dropdown-desktop"></div>
+    </div>
+    <div class="search-dropdown mobile">
+        <div id="search-dropdown-mobile"></div>
+    </div><main class="main">
+                <div class="container"><article class="page single"><h1 class="single-title animate__animated animate__flipInX">Configuring Solaris Link Aggregation (Ethernet bonding)</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="https://www.linkedin.com/in/masoudkalali/" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>Masoud Kalali</a></span>&nbsp;<span class="post-category">included in <a href="/categories/solaris/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Solaris</a>&nbsp;<a href="/categories/old-blog-migrated-content/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Old Blog Migrated Content</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2010-11-25">2010-11-25</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;754 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;4 minutes&nbsp;</div>
+        </div><div class="content" id="content"><p>Link aggregation or commonly known Ethernet bonding allows us to enhance the network availability and performance by combining multiple network interfaces together and form an aggregation of those interfaces which act as a single network interface with greatly enhanced availability and performance.</p>
+<p>When we aggregate two or more network interfaces, we are forming a new network interface on top of those physical interfaces combined in the link layer.</p>
+<p>We need to have at least two network interfaces in our machine to create a link aggregation. The interfaces must be unplumb-ed in order for us to use them in a link aggregation. Following command shows how to unplumb a network interface.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="se">\#</span> ifconfig e1000g1 down unplumb</span></span></code></pre></td></tr></table>
+</div>
+</div>
+We should disable the NWAM because link aggregation and NWAM cannot co-exist.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="se">\#</span> svcadm disable network/physical:nwam</span></span></code></pre></td></tr></table>
+</div>
+</div>
+The interfaces we want to use in a link aggregation must not be part of virtual interface; otherwise it will not be possible to create the aggregation. To ensure that an interface is not part of a virtual interface checks the output for the following command.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="se">\#</span> dladm show-link</span></span></code></pre></td></tr></table>
+</div>
+</div>
+Following figure shows that my e1000g0 has a virtual interface on top of it so it cannot be used in an aggregation.</p>
+<p><a href="/post-img/3180_04_14.png" rel=""><figure><a class="lightgallery" href="/post-img/3180_04_14.png" title="/post-img/3180_04_14.png" data-thumbnail="/post-img/3180_04_14.png" data-sub-html="<h2>3180_04_14</h2>">
+        <img
+            class="lazyload"
+            src="/svg/loading.min.svg"
+            data-src="/post-img/3180_04_14.png"
+            data-srcset="/post-img/3180_04_14.png, /post-img/3180_04_14.png 1.5x, /post-img/3180_04_14.png 2x"
+            data-sizes="auto"
+            alt="/post-img/3180_04_14.png" width="408" height="137" />
+    </a><figcaption class="image-caption">3180_04_14</figcaption>
+    </figure></a></p>
+<p>To delete the virtual interface we can use the dladm command as follow
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="se">\#</span> dladm delete-vlan vlan0</span></span></code></pre></td></tr></table>
+</div>
+</div>
+The link aggregation as the name suggests works in the link layer and therefore we will use dladm command to make the necessary configurations.  We use create-aggr subcommand of dladm command with the following syntax to create aggregation links.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">dladm  create-aggr <span class="se">\[</span>-l interface_name<span class="se">\]\*</span>  aggregation_name</span></span></code></pre></td></tr></table>
+</div>
+</div>
+In this syntax we should have at least two occurrence of -l interface_name option followed by the aggregation name.</p>
+<p>Assuming that we have e1000g0 and e1000g1 in our disposal following commands configure an aggregation link on top of them.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="se">\#</span> dladm create-aggr -l e1000g0 -l e1000g1 aggr0</span></span></code></pre></td></tr></table>
+</div>
+</div>
+Now that the aggregation is created we can configure its IP allocation in the same way that we configure a physical or virtual network interface. Following command plumb the aggr0 interface, assign a static IP address to it and bring the interface up.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="se">\#</span> ifconfig aggr0 plumb 10.0.2.25/24 up</span></span></code></pre></td></tr></table>
+</div>
+</div>
+Now we can use ifconfig command to see status of our new aggregated interface.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="se">\#</span> ifconfig aggr0</span></span></code></pre></td></tr></table>
+</div>
+</div>
+The result of the above command should be similar to the following figure.</p>
+<p><a href="/post-img/3180_04_15.png" rel=""><figure><a class="lightgallery" href="/post-img/3180_04_15.png" title="/post-img/3180_04_15.png" data-thumbnail="/post-img/3180_04_15.png" data-sub-html="<h2>3180_04_15</h2>">
+        <img
+            class="lazyload"
+            src="/svg/loading.min.svg"
+            data-src="/post-img/3180_04_15.png"
+            data-srcset="/post-img/3180_04_15.png, /post-img/3180_04_15.png 1.5x, /post-img/3180_04_15.png 2x"
+            data-sizes="auto"
+            alt="/post-img/3180_04_15.png" width="610" height="103" />
+    </a><figcaption class="image-caption">3180_04_15</figcaption>
+    </figure></a></p>
+<p>To get a list of all available network interfaces either virtual or physical we can use the dladm command as follow
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="se">\#</span> dladm show-link</span></span></code></pre></td></tr></table>
+</div>
+</div>
+And to get a list of aggregated interfaces we can use another subcommand of dladm as follow.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="se">\#</span> dladm show-aggr</span></span></code></pre></td></tr></table>
+</div>
+</div>
+The output for previous dladm commands is shown in the following figure.</p>
+<p><a href="/post-img/3180_04_16.png" rel=""><figure><a class="lightgallery" href="/post-img/3180_04_16.png" title="/post-img/3180_04_16.png" data-thumbnail="/post-img/3180_04_16.png" data-sub-html="<h2>3180_04_16</h2>">
+        <img
+            class="lazyload"
+            src="/svg/loading.min.svg"
+            data-src="/post-img/3180_04_16.png"
+            data-srcset="/post-img/3180_04_16.png, /post-img/3180_04_16.png 1.5x, /post-img/3180_04_16.png 2x"
+            data-sizes="auto"
+            alt="/post-img/3180_04_16.png" width="639" height="189" />
+    </a><figcaption class="image-caption">3180_04_16</figcaption>
+    </figure></a></p>
+<p>We can change an aggregation link underlying interfaces by adding an interface to the aggregation or removing one from the aggregation using add-aggr and remove-aggr subcommands of dladm command.  For example:
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="se">\#</span> dladm add-aggr -l e1000g2 aggr0
+</span></span><span class="line"><span class="cl"><span class="se">\#</span> dladm remove-aggr -l e1000g1 aggr0</span></span></code></pre></td></tr></table>
+</div>
+</div>
+The aggregation we created will survive the reboot but our ifconfig configuration will not survive a reboot unless we persist it using the interface configuration files.</p>
+<p>To make the aggregation IP configuration persistent we just need to add create /etc/hostname.aggr0 file with the following content:
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">10.0.2.25/24</span></span></code></pre></td></tr></table>
+</div>
+</div>
+The interface configuration files are discussed in recipe 2 and 3 of this chapter in great details. Reviewing them is recommended.</p>
+<p>To delete an aggregation we can use delete-aggr subcommand of dladm command. For example to delete aggr0 we can use the following commands.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="se">\#</span> ifconfig aggr0 down unplumb
+</span></span><span class="line"><span class="cl"><span class="se">\#</span> dladm delete-aggr aggr0</span></span></code></pre></td></tr></table>
+</div>
+</div>
+As you can see before we could delete the aggregation we should bring down its interface and unplumb it.</p>
+<p>In recipe 11 we discussed IPMP which allows us to have high availability by grouping network interfaces and when required automatically failing over the IP address of any failed interface to a healthy one. In this recipe we saw how we can join a group of interfaces together to have a better performance. By grouping a set of aggregations we can have the high availability that IPMP offers along with the performance boost that link aggregation offers.</p>
+<p>The link aggregation works in layer 2 meaning that the aggregation groups the interfaces in layer 2 of network where network packets are dealt with. In this layer the network layer’s packets are extracted or created with the designated IP address of the aggregation and then are delivered to the lower, higher layer.</p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2010-11-25</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://kalali.blog/2010/11/configuring-solaris-link-aggregation-ethernet-bonding/" data-title="Configuring Solaris Link Aggregation (Ethernet bonding)" data-via="masoudkalali" data-hashtags="Solaris,Networking"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://kalali.blog/2010/11/configuring-solaris-link-aggregation-ethernet-bonding/" data-hashtag="Solaris"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="https://kalali.blog/2010/11/configuring-solaris-link-aggregation-ethernet-bonding/"><i class="fab fa-linkedin fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Hacker News" data-sharer="hackernews" data-url="https://kalali.blog/2010/11/configuring-solaris-link-aggregation-ethernet-bonding/" data-title="Configuring Solaris Link Aggregation (Ethernet bonding)"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="https://kalali.blog/2010/11/configuring-solaris-link-aggregation-ethernet-bonding/" data-title="Configuring Solaris Link Aggregation (Ethernet bonding)"><i data-svg-src="https://cdn.jsdelivr.net/npm/simple-icons@7.0.0/icons/line.svg" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/solaris/">Solaris</a>,&nbsp;<a href="/tags/networking/">Networking</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/2010/08/introducing-nio-2-jsr-203-part-6-filtering-directory-content-and-walking-over-a-file-tree/" class="prev" rel="prev" title="Introducing NIO.2 (JSR 203) Part 6: Filtering directory content and walking over a file tree"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>Introducing NIO.2 (JSR 203) Part 6: Filtering directory content and walking over a file tree</a>
+            <a href="/2010/12/managing-logical-network-interfaces-in-solaris/" class="next" rel="next" title="Managing Logical network interfaces in Solaris">Managing Logical network interfaces in Solaris<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2005 - 2022</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://www.linkedin.com/in/masoudkalali/" target="_blank">Masoud Kalali</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@2.4.0/css/lightgallery-bundle.min.css"><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/autocomplete.js@0.38.1/dist/autocomplete.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lunr@2.3.9/lunr.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.1/lazysizes.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/twemoji@14.0.2/dist/twemoji.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lightgallery@2.4.0/lightgallery.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lightgallery@2.4.0/plugins/thumbnail/lg-thumbnail.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lightgallery@2.4.0/plugins/zoom/lg-zoom.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sharer.js@0.5.1/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":10},"comment":{},"lightgallery":true,"search":{"highlightTag":"em","lunrIndexURL":"/index.json","maxResultLength":10,"noResultsFound":"No results found","snippetLength":30,"type":"lunr"},"twemoji":true};</script><script type="text/javascript" src="/js/theme.min.js"></script><script type="text/javascript">
+            window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());
+            gtag('config', ' UA-137107-12');
+        </script><script type="text/javascript" src="https://www.googletagmanager.com/gtag/js?id= UA-137107-12" async></script></body>
+</html>

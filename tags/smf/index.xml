@@ -1,0 +1,16 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>SMF - Tag - The Pensieve - Masoud Kalali&#39;s Blog</title>
+        <link>https://kalali.blog/tags/smf/</link>
+        <description>SMF - Tag - The Pensieve - Masoud Kalali&#39;s Blog</description>
+        <generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>kalali@gmail.com (Masoud Kalali)</managingEditor>
+            <webMaster>kalali@gmail.com (Masoud Kalali)</webMaster><copyright>This work is licensed under a Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)</copyright><lastBuildDate>Mon, 31 Jan 2011 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://kalali.blog/tags/smf/" rel="self" type="application/rss+xml" /><item>
+    <title>Writing Solaris Service Management Facility (SMF) service manifest</title>
+    <link>https://kalali.blog/2011/01/authoring-solaris-service-management-facility-smf-service-manifest/</link>
+    <pubDate>Mon, 31 Jan 2011 00:00:00 &#43;0000</pubDate>
+    <author>Masoud Kalali</author>
+    <guid>https://kalali.blog/2011/01/authoring-solaris-service-management-facility-smf-service-manifest/</guid>
+    <description><![CDATA[SMF services are basically daemons staying in background and waiting for the requests which they should server, when the request come the daemon wake ups, serve the request and then wait for the next request to come. The services are building using software development platforms and languages but they have one common aspect which we are going to discuss here. The service manifests which describe the service for the SMF and let the SMF manage and understand the service life cycle.]]></description>
+</item>
+</channel>
+</rss>

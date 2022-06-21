@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>Monitoring ZFS pools performance using zpool iostat - The Pensieve - Masoud Kalali&#39;s Blog</title><meta name="Description" content="Masoud Kalali&#39;s personal blog. Covering subjects ranging from tech strategy, leadership, software architecture, cloud native, and software development in general."><meta property="og:title" content="Monitoring ZFS pools performance using zpool iostat" />
+<meta property="og:description" content="Performance, performance, performance; this is what we hear in all software development and management sessions. ZFS provides few utility commands to monitor one or more pools&rsquo; performance. You should remember that we used fsstat command to monitor the UFS performance metrics. We can use iostat subcommand of the zpool command to monitor the performance metrics of ZFS pools. The iostat subcommand provides some options and arguments which we can see in its syntax shown below: 1 iostat \[-v\] \[pool\] ." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://kalali.blog/2010/12/monitoring-zfs-pools-performance-using-zpool-iostat/" /><meta property="og:image" content="https://kalali.blog/img/avatar.jpg"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2010-12-30T00:00:00+00:00" />
+<meta property="article:modified_time" content="2010-12-30T00:00:00+00:00" /><meta property="og:site_name" content="My cool site" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://kalali.blog/img/avatar.jpg"/>
+
+<meta name="twitter:title" content="Monitoring ZFS pools performance using zpool iostat"/>
+<meta name="twitter:description" content="Performance, performance, performance; this is what we hear in all software development and management sessions. ZFS provides few utility commands to monitor one or more pools&rsquo; performance. You should remember that we used fsstat command to monitor the UFS performance metrics. We can use iostat subcommand of the zpool command to monitor the performance metrics of ZFS pools. The iostat subcommand provides some options and arguments which we can see in its syntax shown below: 1 iostat \[-v\] \[pool\] ."/>
+<meta name="application-name" content="The Pensieve - Masoud Kalali&#39;s Blog">
+<meta name="apple-mobile-web-app-title" content="The Pensieve - Masoud Kalali&#39;s Blog"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://kalali.blog/2010/12/monitoring-zfs-pools-performance-using-zpool-iostat/" /><link rel="prev" href="https://kalali.blog/2010/12/managing-logical-network-interfaces-in-solaris/" /><link rel="next" href="https://kalali.blog/2011/01/solaris-fault-administration-using-fmadm-command/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css"></noscript><link rel="preload" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css"></noscript><meta name="google-site-verification" content="cDJVSx1L3UB6AwrPKeSQszOyhtjHYvPYkDxZw_Me4Z4" /><meta name="msvalidate.01" content="cDJVSx1L3UB6AwrPKeSQszOyhtjHYvPYkDxZw_Me4Z4" /><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Monitoring ZFS pools performance using zpool iostat",
+        "inLanguage": "en",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/kalali.blog\/2010\/12\/monitoring-zfs-pools-performance-using-zpool-iostat\/"
+        },"image": [{
+                            "@type": "ImageObject",
+                            "url": "https:\/\/kalali.blog\/img\/preview.png",
+                            "width":  1027 ,
+                            "height":  833 
+                        }],"genre": "posts","keywords": "Solaris, ZFS","wordcount":  290 ,
+        "url": "https:\/\/kalali.blog\/2010\/12\/monitoring-zfs-pools-performance-using-zpool-iostat\/","datePublished": "2010-12-30T00:00:00+00:00","dateModified": "2010-12-30T00:00:00+00:00","license": "This work is licensed under a Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)","publisher": {
+            "@type": "Organization",
+            "name": "Masoud Kalali"},"author": {
+                "@type": "Person",
+                "name": "Masoud Kalali"
+            },"description": ""
+    }
+    </script></head>
+    <body data-header-desktop="auto" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="The Pensieve - Masoud Kalali&#39;s Blog">The Pensieve - Masoud Kalali&#39;s Blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/" title="Blog posts"> Posts </a><a class="menu-item" href="/tags/" title="All the blog tags"> Tags </a><a class="menu-item" href="/categories/" title="List of all categories I blogged bout"> Categories </a><a class="menu-item" href="/about/" title="About Masoud Kalali, Author"> About </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="The Pensieve - Masoud Kalali&#39;s Blog">The Pensieve - Masoud Kalali&#39;s Blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        Cancel
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="Blog posts">Posts</a><a class="menu-item" href="/tags/" title="All the blog tags">Tags</a><a class="menu-item" href="/categories/" title="List of all categories I blogged bout">Categories</a><a class="menu-item" href="/about/" title="About Masoud Kalali, Author">About</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><div class="search-dropdown desktop">
+        <div id="search-dropdown-desktop"></div>
+    </div>
+    <div class="search-dropdown mobile">
+        <div id="search-dropdown-mobile"></div>
+    </div><main class="main">
+                <div class="container"><article class="page single"><h1 class="single-title animate__animated animate__flipInX">Monitoring ZFS pools performance using zpool iostat</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="https://www.linkedin.com/in/masoudkalali/" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>Masoud Kalali</a></span>&nbsp;<span class="post-category">included in <a href="/categories/solaris/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Solaris</a>&nbsp;<a href="/categories/old-blog-migrated-content/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Old Blog Migrated Content</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2010-12-30">2010-12-30</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;290 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;2 minutes&nbsp;</div>
+        </div><div class="content" id="content"><p>Performance, performance, performance; this is what we hear in all software development and management sessions. ZFS provides few utility commands to monitor one or more pools&rsquo; performance. You should remember that we used fsstat command to monitor the UFS performance metrics. We can use iostat subcommand of the zpool command to monitor the performance metrics of ZFS pools. The iostat subcommand provides some options and arguments which we can see in its syntax shown below:
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">iostat <span class="se">\[</span>-v<span class="se">\]</span> <span class="se">\[</span>pool<span class="se">\]</span> ... <span class="se">\[</span>interval <span class="se">\[</span>count<span class="se">\]\]</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+The -v option will show detailed performance metrics about the pools it monitor including the underlying devices.  We can pass as many pools as we want to monitor or we can omit passing a pool name so the command shows performance metrics of all commands.  The interval and count specifies how many times we want the sampling to happen what is the interval between each subsequent sampling. For example we can use the following command to view detailed performance metrics of fpool for 100 times in 5 seconds interval we can use the following command.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="se">\#</span> zpool iostat -v fpool <span class="m">5</span> <span class="m">100</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+The output for this command is shown in the following figure.</p>
+<p><figure><a class="lightgallery" href="/post-img/3180_02_24.png" title="/post-img/3180_02_24.png" data-thumbnail="/post-img/3180_02_24.png" data-sub-html="<h2>Monitor ZFS pool performance</h2>">
+        <img
+            class="lazyload"
+            src="/svg/loading.min.svg"
+            data-src="/post-img/3180_02_24.png"
+            data-srcset="/post-img/3180_02_24.png, /post-img/3180_02_24.png 1.5x, /post-img/3180_02_24.png 2x"
+            data-sizes="auto"
+            alt="/post-img/3180_02_24.png" width="431" height="341" />
+    </a><figcaption class="image-caption">Monitor ZFS pool performance</figcaption>
+    </figure></p>
+<p>The first row shows the entire pool capacity stats including how much space were used upon the sampling and how much was available. The second row shows how many reads and writes operations performed during the interval time and finally the last column shows the band width used for reading from this pools and writing into the pool.</p>
+<p>The zpool iostat retrieve some of its information from the read-only attributes of the requested pools and the system metadata and calculate some other outputs by collecting sample information on each interval.</p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2010-12-30</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://kalali.blog/2010/12/monitoring-zfs-pools-performance-using-zpool-iostat/" data-title="Monitoring ZFS pools performance using zpool iostat" data-via="masoudkalali" data-hashtags="Solaris,ZFS"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://kalali.blog/2010/12/monitoring-zfs-pools-performance-using-zpool-iostat/" data-hashtag="Solaris"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="https://kalali.blog/2010/12/monitoring-zfs-pools-performance-using-zpool-iostat/"><i class="fab fa-linkedin fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Hacker News" data-sharer="hackernews" data-url="https://kalali.blog/2010/12/monitoring-zfs-pools-performance-using-zpool-iostat/" data-title="Monitoring ZFS pools performance using zpool iostat"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="https://kalali.blog/2010/12/monitoring-zfs-pools-performance-using-zpool-iostat/" data-title="Monitoring ZFS pools performance using zpool iostat"><i data-svg-src="https://cdn.jsdelivr.net/npm/simple-icons@7.0.0/icons/line.svg" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/solaris/">Solaris</a>,&nbsp;<a href="/tags/zfs/">ZFS</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/2010/12/managing-logical-network-interfaces-in-solaris/" class="prev" rel="prev" title="Managing Logical network interfaces in Solaris"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>Managing Logical network interfaces in Solaris</a>
+            <a href="/2011/01/solaris-fault-administration-using-fmadm-command/" class="next" rel="next" title="Solaris fault administration using fmadm command">Solaris fault administration using fmadm command<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2005 - 2022</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://www.linkedin.com/in/masoudkalali/" target="_blank">Masoud Kalali</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@2.4.0/css/lightgallery-bundle.min.css"><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/autocomplete.js@0.38.1/dist/autocomplete.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lunr@2.3.9/lunr.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.1/lazysizes.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/twemoji@14.0.2/dist/twemoji.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lightgallery@2.4.0/lightgallery.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lightgallery@2.4.0/plugins/thumbnail/lg-thumbnail.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lightgallery@2.4.0/plugins/zoom/lg-zoom.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sharer.js@0.5.1/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":10},"comment":{},"lightgallery":true,"search":{"highlightTag":"em","lunrIndexURL":"/index.json","maxResultLength":10,"noResultsFound":"No results found","snippetLength":30,"type":"lunr"},"twemoji":true};</script><script type="text/javascript" src="/js/theme.min.js"></script><script type="text/javascript">
+            window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());
+            gtag('config', ' UA-137107-12');
+        </script><script type="text/javascript" src="https://www.googletagmanager.com/gtag/js?id= UA-137107-12" async></script></body>
+</html>

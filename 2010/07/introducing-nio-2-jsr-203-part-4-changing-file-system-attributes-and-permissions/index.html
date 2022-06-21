@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>Introducing NIO.2 (JSR 203) Part 4: Changing File System Attributes and Permissions - The Pensieve - Masoud Kalali&#39;s Blog</title><meta name="Description" content="Masoud Kalali&#39;s personal blog. Covering subjects ranging from tech strategy, leadership, software architecture, cloud native, and software development in general."><meta property="og:title" content="Introducing NIO.2 (JSR 203) Part 4: Changing File System Attributes and Permissions" />
+<meta property="og:description" content="This is the 4th installment of my entries covering NIO.2. In this entry I will discuss more about what we can do with attributes and permissions. The NIO.2 lets us write the permissions and attributes of a file in addition to reading them. For example we can change the rwx permissions using the Attributes utility class and PosixFilePermission. You can execute the following sample code with almost no changes, the only thing you need to change is the path to our sample file and then you are ready to see how it works." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://kalali.blog/2010/07/introducing-nio-2-jsr-203-part-4-changing-file-system-attributes-and-permissions/" /><meta property="og:image" content="https://kalali.blog/img/avatar.jpg"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2010-07-13T00:00:00+00:00" />
+<meta property="article:modified_time" content="2010-07-13T00:00:00+00:00" /><meta property="og:site_name" content="My cool site" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://kalali.blog/img/avatar.jpg"/>
+
+<meta name="twitter:title" content="Introducing NIO.2 (JSR 203) Part 4: Changing File System Attributes and Permissions"/>
+<meta name="twitter:description" content="This is the 4th installment of my entries covering NIO.2. In this entry I will discuss more about what we can do with attributes and permissions. The NIO.2 lets us write the permissions and attributes of a file in addition to reading them. For example we can change the rwx permissions using the Attributes utility class and PosixFilePermission. You can execute the following sample code with almost no changes, the only thing you need to change is the path to our sample file and then you are ready to see how it works."/>
+<meta name="application-name" content="The Pensieve - Masoud Kalali&#39;s Blog">
+<meta name="apple-mobile-web-app-title" content="The Pensieve - Masoud Kalali&#39;s Blog"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://kalali.blog/2010/07/introducing-nio-2-jsr-203-part-4-changing-file-system-attributes-and-permissions/" /><link rel="prev" href="https://kalali.blog/2010/06/introducing-nio-2-jsr-203-part-3-file-system-attributes-and-permissions-support-in-nio-2/" /><link rel="next" href="https://kalali.blog/2010/08/learning-how-to-use-zfs-in-opensolaris/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css"></noscript><link rel="preload" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css"></noscript><meta name="google-site-verification" content="cDJVSx1L3UB6AwrPKeSQszOyhtjHYvPYkDxZw_Me4Z4" /><meta name="msvalidate.01" content="cDJVSx1L3UB6AwrPKeSQszOyhtjHYvPYkDxZw_Me4Z4" /><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Introducing NIO.2 (JSR 203) Part 4: Changing File System Attributes and Permissions",
+        "inLanguage": "en",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/kalali.blog\/2010\/07\/introducing-nio-2-jsr-203-part-4-changing-file-system-attributes-and-permissions\/"
+        },"image": [{
+                            "@type": "ImageObject",
+                            "url": "https:\/\/kalali.blog\/img\/preview.png",
+                            "width":  1027 ,
+                            "height":  833 
+                        }],"genre": "posts","keywords": "Java, JCP","wordcount":  958 ,
+        "url": "https:\/\/kalali.blog\/2010\/07\/introducing-nio-2-jsr-203-part-4-changing-file-system-attributes-and-permissions\/","datePublished": "2010-07-13T00:00:00+00:00","dateModified": "2010-07-13T00:00:00+00:00","license": "This work is licensed under a Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)","publisher": {
+            "@type": "Organization",
+            "name": "Masoud Kalali"},"author": {
+                "@type": "Person",
+                "name": "Masoud Kalali"
+            },"description": ""
+    }
+    </script></head>
+    <body data-header-desktop="auto" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="The Pensieve - Masoud Kalali&#39;s Blog">The Pensieve - Masoud Kalali&#39;s Blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/" title="Blog posts"> Posts </a><a class="menu-item" href="/tags/" title="All the blog tags"> Tags </a><a class="menu-item" href="/categories/" title="List of all categories I blogged bout"> Categories </a><a class="menu-item" href="/about/" title="About Masoud Kalali, Author"> About </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="The Pensieve - Masoud Kalali&#39;s Blog">The Pensieve - Masoud Kalali&#39;s Blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        Cancel
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="Blog posts">Posts</a><a class="menu-item" href="/tags/" title="All the blog tags">Tags</a><a class="menu-item" href="/categories/" title="List of all categories I blogged bout">Categories</a><a class="menu-item" href="/about/" title="About Masoud Kalali, Author">About</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><div class="search-dropdown desktop">
+        <div id="search-dropdown-desktop"></div>
+    </div>
+    <div class="search-dropdown mobile">
+        <div id="search-dropdown-mobile"></div>
+    </div><main class="main">
+                <div class="container"><article class="page single"><h1 class="single-title animate__animated animate__flipInX">Introducing NIO.2 (JSR 203) Part 4: Changing File System Attributes and Permissions</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="https://www.linkedin.com/in/masoudkalali/" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>Masoud Kalali</a></span>&nbsp;<span class="post-category">included in <a href="/categories/programming/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Programming</a>&nbsp;<a href="/categories/old-blog-migrated-content/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Old Blog Migrated Content</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2010-07-13">2010-07-13</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;958 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;5 minutes&nbsp;</div>
+        </div><div class="content" id="content"><p>This is the 4th installment of my entries covering NIO.2. In this entry I will discuss more about what we can do with attributes and permissions.  The NIO.2 lets us write the permissions and attributes of a file in addition to reading them. For example we can change the rwx permissions using the Attributes utility class and  PosixFilePermission. You can execute the following sample code with almost no changes, the only thing you need to change is the path to our sample file and then you are ready to see how it works.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">java.io.IOException</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">java.nio.file.</span><span class="err">\</span><span class="o">*;</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">java.nio.file.attribute.</span><span class="err">\</span><span class="o">*;</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">java.util.</span><span class="err">\</span><span class="o">*;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Perm2</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span> <span class="n">args</span><span class="err">\</span><span class="o">[</span><span class="err">\</span><span class="o">])</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">FileSystem</span> <span class="n">fs</span> <span class="o">=</span> <span class="n">FileSystems</span><span class="o">.</span><span class="na">getDefault</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Path</span> <span class="n">p</span> <span class="o">=</span> <span class="n">fs</span><span class="o">.</span><span class="na">getPath</span><span class="o">(</span><span class="s">&#34;/home/masoud/dl&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1">// Reading attributes using attributes views.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="c1">// here we read both basic and posix attributes of a file
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">Map</span> <span class="n">att</span> <span class="o">=</span> <span class="o">(</span><span class="n">Map</span><span class="o">)</span> <span class="n">p</span><span class="o">.</span><span class="na">readAttributes</span><span class="o">(</span><span class="s">&#34;posix:\*, basic:\*&#34;</span><span class="o">,</span> <span class="n">LinkOption</span><span class="o">.</span><span class="na">NOFOLLOW_LINKS</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// printing the attributes to output
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">Set</span> <span class="n">en</span> <span class="o">=</span> <span class="n">att</span><span class="o">.</span><span class="na">keySet</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="o">(</span><span class="n">Iterator</span> <span class="n">it</span> <span class="o">=</span> <span class="n">en</span><span class="o">.</span><span class="na">iterator</span><span class="o">();</span> <span class="n">it</span><span class="o">.</span><span class="na">hasNext</span><span class="o">();)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">String</span> <span class="n">string</span> <span class="o">=</span> <span class="n">it</span><span class="o">.</span><span class="na">next</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">string</span> <span class="o">+</span> <span class="s">&#34;: &#34;</span> <span class="o">+</span> <span class="n">att</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">string</span><span class="o">));</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span>
+</span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;-------------Attributes printing finished----------&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1">// definind a new permission set for our file
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">Set</span>
+</span></span><span class="line"><span class="cl"> <span class="n">st2</span> <span class="o">=</span> <span class="n">PosixFilePermissions</span><span class="o">.</span><span class="na">fromString</span><span class="o">(</span><span class="s">&#34;rwxrwxrwx&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// Setting the attribute using Attributes utility class
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">Attributes</span><span class="o">.</span><span class="na">setPosixFilePermissions</span><span class="o">(</span><span class="n">p</span><span class="o">,</span> <span class="n">st2</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1">// looking up and creating a principal for the given user. If use does
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="c1">// not exists it will throws a UserPrincipalNotFoundException
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">UserPrincipal</span> <span class="n">up</span> <span class="o">=</span> <span class="n">fs</span><span class="o">.</span><span class="na">getUserPrincipalLookupService</span><span class="o">().</span><span class="na">lookupPrincipalByName</span><span class="o">(</span><span class="s">&#34;masoud&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1">// Setting the owner to the owner we just looked up.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="c1">// We should have enough permisison to change the owner otherwise it will
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="c1">// throw a FileSystemException: /home/masoud/a: Operation not permitted sort of thing
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">Attributes</span><span class="o">.</span><span class="na">setOwner</span><span class="o">(</span><span class="n">p</span><span class="o">,</span> <span class="n">up</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1">//another way to read and write the owner value for a file is using FileOwnerAttributeView
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">FileOwnerAttributeView</span> <span class="n">fo</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="na">getFileAttributeView</span><span class="o">(</span><span class="n">FileOwnerAttributeView</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">LinkOption</span><span class="o">.</span><span class="na">NOFOLLOW_LINKS</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">fo</span><span class="o">.</span><span class="na">setOwner</span><span class="o">(</span><span class="n">up</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1">//Now that we have changed the permissions lets see the permissions again:
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">att</span> <span class="o">=</span> <span class="o">(</span><span class="n">Map</span><span class="o">)</span> <span class="n">p</span><span class="o">.</span><span class="na">readAttributes</span><span class="o">(</span><span class="s">&#34;posix:permissions&#34;</span><span class="o">,</span> <span class="n">LinkOption</span><span class="o">.</span><span class="na">NOFOLLOW_LINKS</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;New Permissions:&#34;</span> <span class="o">+</span> <span class="s">&#34;: &#34;</span> <span class="o">+</span> <span class="n">att</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">&#34;permissions&#34;</span><span class="o">));</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+Let&rsquo;s see what we have done starting from top: at the beginning we have just initialized the FileSystem object and got a file reference to <em>/home/masoud/dl</em>. Then we read all of this files basic and posix attributes using the attributes view notation. The following sample code shows this step
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"> <span class="n">FileSystem</span> <span class="n">fs</span> <span class="o">=</span> <span class="n">FileSystems</span><span class="o">.</span><span class="na">getDefault</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Path</span> <span class="n">p</span> <span class="o">=</span> <span class="n">fs</span><span class="o">.</span><span class="na">getPath</span><span class="o">(</span><span class="s">&#34;/home/masoud/dl&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1">// Reading attributes using attributes views.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="c1">// here we read both basic and posix attributes of a file
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">Map</span> <span class="n">att</span> <span class="o">=</span> <span class="o">(</span><span class="n">Map</span><span class="o">)</span> <span class="n">p</span><span class="o">.</span><span class="na">readAttributes</span><span class="o">(</span><span class="s">&#34;posix:\*, basic:\*&#34;</span><span class="o">,</span> <span class="n">LinkOption</span><span class="o">.</span><span class="na">NOFOLLOW_LINKS</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// printing the attributes to output
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">Set</span> <span class="n">en</span> <span class="o">=</span> <span class="n">att</span><span class="o">.</span><span class="na">keySet</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="o">(</span><span class="n">Iterator</span> <span class="n">it</span> <span class="o">=</span> <span class="n">en</span><span class="o">.</span><span class="na">iterator</span><span class="o">();</span> <span class="n">it</span><span class="o">.</span><span class="na">hasNext</span><span class="o">();)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">String</span> <span class="n">string</span> <span class="o">=</span> <span class="n">it</span><span class="o">.</span><span class="na">next</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">string</span> <span class="o">+</span> <span class="s">&#34;: &#34;</span> <span class="o">+</span> <span class="n">att</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">string</span><span class="o">));</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;-------------Attributes printing finished----------&#34;</span><span class="o">);</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+Next step we have use the PosixPermissions class to create a permission set using the OS permissions presentation and then applied these permissions on our file
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"> <span class="c1">// definind a new permission set for our file
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">Set</span>
+</span></span><span class="line"><span class="cl"> <span class="n">st2</span> <span class="o">=</span> <span class="n">PosixFilePermissions</span><span class="o">.</span><span class="na">fromString</span><span class="o">(</span><span class="s">&#34;rwxrwxrwx&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// Setting the attribute using Attributes utility class
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">Attributes</span><span class="o">.</span><span class="na">setPosixFilePermissions</span><span class="o">(</span><span class="n">p</span><span class="o">,</span> <span class="n">st2</span><span class="o">);</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+In the next step we created a user principal for a user named <em>masoud</em> and changed the ownership of our file to this user. We have done this using both available methods.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="c1">// looking up and creating a principal for the given user. If use does
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="c1">// not exists it will throws a UserPrincipalNotFoundException
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">UserPrincipal</span> <span class="n">up</span> <span class="o">=</span> <span class="n">fs</span><span class="o">.</span><span class="na">getUserPrincipalLookupService</span><span class="o">().</span><span class="na">lookupPrincipalByName</span><span class="o">(</span><span class="s">&#34;masoud&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1">// Setting the owner to the owner we just looked up.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="c1">// We should have enough permisison to change the owner otherwise it will
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="c1">// throw a FileSystemException: /home/masoud/a: Operation not permitted sort of thing
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">Attributes</span><span class="o">.</span><span class="na">setOwner</span><span class="o">(</span><span class="n">p</span><span class="o">,</span> <span class="n">up</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1">//another way to read and write the owner value for a file is using FileOwnerAttributeView
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">FileOwnerAttributeView</span> <span class="n">fo</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="na">getFileAttributeView</span><span class="o">(</span><span class="n">FileOwnerAttributeView</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">LinkOption</span><span class="o">.</span><span class="na">NOFOLLOW_LINKS</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">fo</span><span class="o">.</span><span class="na">setOwner</span><span class="o">(</span><span class="n">up</span><span class="o">);</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+Finally we read the file permissions to see what has changed after we applied this new permissions on our file. using the following snippet.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"> <span class="c1">//Now that we have changed the permissions lets see the permissions again:
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">att</span> <span class="o">=</span> <span class="o">(</span><span class="n">Map</span><span class="o">)</span> <span class="n">p</span><span class="o">.</span><span class="na">readAttributes</span><span class="o">(</span><span class="s">&#34;posix:permissions&#34;</span><span class="o">,</span> <span class="n">LinkOption</span><span class="o">.</span><span class="na">NOFOLLOW_LINKS</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&#34;New Permissions:&#34;</span> <span class="o">+</span> <span class="s">&#34;: &#34;</span> <span class="o">+</span> <span class="n">att</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">&#34;permissions&#34;</span><span class="o">));</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+The output of running the above sample code is shown below:
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">lastModifiedTime: 2010-07-06T23:15:32Z
+</span></span><span class="line"><span class="cl">fileKey: <span class="o">(</span><span class="nv">dev</span><span class="o">=</span>805,ino<span class="o">=</span>1922268<span class="o">)</span>
+</span></span><span class="line"><span class="cl">isDirectory: <span class="nb">false</span>
+</span></span><span class="line"><span class="cl">lastAccessTime: 2010-07-11T14:15:46Z
+</span></span><span class="line"><span class="cl">isOther: <span class="nb">false</span>
+</span></span><span class="line"><span class="cl">isSymbolicLink: <span class="nb">false</span>
+</span></span><span class="line"><span class="cl">owner: masoud
+</span></span><span class="line"><span class="cl">permissions: <span class="se">\[</span>OTHERS_READ, OWNER_WRITE, GROUP_WRITE, OWNER_READ, GROUP_READ, OTHERS_EXECUTE, OWNER_EXECUTE, GROUP_EXECUTE, OTHERS_WRITE<span class="se">\]</span>
+</span></span><span class="line"><span class="cl">isRegularFile: <span class="nb">true</span>
+</span></span><span class="line"><span class="cl">creationTime: null
+</span></span><span class="line"><span class="cl">group: dip
+</span></span><span class="line"><span class="cl">size: <span class="m">219</span>
+</span></span><span class="line"><span class="cl">-------------Attributes printing finished----------
+</span></span><span class="line"><span class="cl">Permissions:: <span class="se">\[</span>OTHERS_READ, OWNER_WRITE, GROUP_WRITE, OWNER_READ, GROUP_READ, OTHERS_EXECUTE, OWNER_EXECUTE, GROUP_EXECUTE, OTHERS_WRITE<span class="se">\]</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+You may ask what is the attribute view notation and what is meaning of that <em>posix:permissions</em> or <em>posix:*</em>. The first one means that we want to retrieve the permissions property of the file while the second one means that we want to retrieve all attributes of the file which can be seen using the posix view. Now you are asking where you can found list of this attributes view notations, then you question is very right. The following links shows what attributes are available to read using each one of those views. Each attribute is one of the properties included in the interface.</p>
+<ul>
+<li>BasicFileAttributes: <a href="http://download.oracle.com/docs/cd/E17409_01/javase/7/docs/api/java/nio/file/attribute/BasicFileAttributes.html" target="_blank" rel="noopener noreffer">http://download.oracle.com/docs/cd/E17409_01/javase/7/docs/api/java/nio/file/attribute/BasicFileAttributes.html</a></li>
+<li>PosixFileAttributes: <a href="http://download.oracle.com/docs/cd/E17409_01/javase/7/docs/api/java/nio/file/attribute/PosixFileAttributes.html" target="_blank" rel="noopener noreffer">http://download.oracle.com/docs/cd/E17409_01/javase/7/docs/api/java/nio/file/attribute/PosixFileAttributes.html</a></li>
+</ul>
+<p>Sure we have other views, you can find them in the JavaDocs linked above. Next entry will be the last entry covering File System functionalities of the NIO.2 including the watch and change notification service and the ACL list. After that we will look at new features included for IO developers. You can find other entries of this series under the <a href="http://kalali.me/tag/nio-2/" target="_blank" rel="noopener noreffer">NIO.2</a> tag of my weblog.</p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2010-07-13</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://kalali.blog/2010/07/introducing-nio-2-jsr-203-part-4-changing-file-system-attributes-and-permissions/" data-title="Introducing NIO.2 (JSR 203) Part 4: Changing File System Attributes and Permissions" data-via="masoudkalali" data-hashtags="Java,JCP"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://kalali.blog/2010/07/introducing-nio-2-jsr-203-part-4-changing-file-system-attributes-and-permissions/" data-hashtag="Java"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="https://kalali.blog/2010/07/introducing-nio-2-jsr-203-part-4-changing-file-system-attributes-and-permissions/"><i class="fab fa-linkedin fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Hacker News" data-sharer="hackernews" data-url="https://kalali.blog/2010/07/introducing-nio-2-jsr-203-part-4-changing-file-system-attributes-and-permissions/" data-title="Introducing NIO.2 (JSR 203) Part 4: Changing File System Attributes and Permissions"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="https://kalali.blog/2010/07/introducing-nio-2-jsr-203-part-4-changing-file-system-attributes-and-permissions/" data-title="Introducing NIO.2 (JSR 203) Part 4: Changing File System Attributes and Permissions"><i data-svg-src="https://cdn.jsdelivr.net/npm/simple-icons@7.0.0/icons/line.svg" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/java/">Java</a>,&nbsp;<a href="/tags/jcp/">JCP</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/2010/06/introducing-nio-2-jsr-203-part-3-file-system-attributes-and-permissions-support-in-nio-2/" class="prev" rel="prev" title="Introducing NIO.2 (JSR 203) Part 3: File System Attributes and Permissions support in NIO.2"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>Introducing NIO.2 (JSR 203) Part 3: File System Attributes and Permissions support in NIO.2</a>
+            <a href="/2010/08/learning-how-to-use-zfs-in-opensolaris/" class="next" rel="next" title="Learning how to use zfs in OpenSolaris">Learning how to use zfs in OpenSolaris<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2005 - 2022</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://www.linkedin.com/in/masoudkalali/" target="_blank">Masoud Kalali</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@2.4.0/css/lightgallery-bundle.min.css"><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/autocomplete.js@0.38.1/dist/autocomplete.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lunr@2.3.9/lunr.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.1/lazysizes.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/twemoji@14.0.2/dist/twemoji.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lightgallery@2.4.0/lightgallery.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lightgallery@2.4.0/plugins/thumbnail/lg-thumbnail.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lightgallery@2.4.0/plugins/zoom/lg-zoom.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sharer.js@0.5.1/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":10},"comment":{},"lightgallery":true,"search":{"highlightTag":"em","lunrIndexURL":"/index.json","maxResultLength":10,"noResultsFound":"No results found","snippetLength":30,"type":"lunr"},"twemoji":true};</script><script type="text/javascript" src="/js/theme.min.js"></script><script type="text/javascript">
+            window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());
+            gtag('config', ' UA-137107-12');
+        </script><script type="text/javascript" src="https://www.googletagmanager.com/gtag/js?id= UA-137107-12" async></script></body>
+</html>

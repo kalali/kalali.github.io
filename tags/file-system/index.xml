@@ -1,0 +1,18 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>File System - Tag - The Pensieve - Masoud Kalali&#39;s Blog</title>
+        <link>https://kalali.blog/tags/file-system/</link>
+        <description>File System - Tag - The Pensieve - Masoud Kalali&#39;s Blog</description>
+        <generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>kalali@gmail.com (Masoud Kalali)</managingEditor>
+            <webMaster>kalali@gmail.com (Masoud Kalali)</webMaster><copyright>This work is licensed under a Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)</copyright><lastBuildDate>Mon, 09 Aug 2010 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://kalali.blog/tags/file-system/" rel="self" type="application/rss+xml" /><item>
+    <title>Learning how to use zfs in OpenSolaris</title>
+    <link>https://kalali.blog/2010/08/learning-how-to-use-zfs-in-opensolaris/</link>
+    <pubDate>Mon, 09 Aug 2010 00:00:00 &#43;0000</pubDate>
+    <author>Masoud Kalali</author>
+    <guid>https://kalali.blog/2010/08/learning-how-to-use-zfs-in-opensolaris/</guid>
+    <description><![CDATA[What is a file system File systems make it possible to store and retrieve files and containing data into storages like hard disks, optical disks and other types of storages.
+OpenSolaris support both legacy file systems like UNIX File System (UFS) and its own file system called Zettabyte File System (ZFS). Following figure show how UFS and other legacy file systems work.
+As you can see we can partition each storage device into one or more volumes with different file systems.]]></description>
+</item>
+</channel>
+</rss>

@@ -2,33 +2,60 @@
     xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
     xmlns:xhtml="http://www.w3.org/1999/xhtml"
     ><url>
-            <loc>https://kalali.blog/categories/agile-team/</loc><lastmod>2022-05-03T20:45:02&#43;02:00</lastmod><changefreq>daily</changefreq><priority>1</priority></url><url>
-            <loc>https://kalali.blog/categories/</loc><lastmod>2022-05-03T20:45:02&#43;02:00</lastmod><changefreq>daily</changefreq><priority>1</priority></url><url>
-            <loc>https://kalali.blog/tags/leadership/</loc><lastmod>2022-05-03T20:45:02&#43;02:00</lastmod><changefreq>daily</changefreq><priority>1</priority></url><url>
-            <loc>https://kalali.blog/tags/management/</loc><lastmod>2022-05-03T20:45:02&#43;02:00</lastmod><changefreq>daily</changefreq><priority>1</priority></url><url>
-            <loc>https://kalali.blog/posts/</loc><lastmod>2022-05-03T20:45:02&#43;02:00</lastmod><changefreq>daily</changefreq><priority>1</priority></url><url>
-            <loc>https://kalali.blog/tags/</loc><lastmod>2022-05-03T20:45:02&#43;02:00</lastmod><changefreq>daily</changefreq><priority>1</priority></url><url>
-            <loc>https://kalali.blog/tags/team-building/</loc><lastmod>2022-05-03T20:45:02&#43;02:00</lastmod><changefreq>daily</changefreq><priority>1</priority></url><url>
-            <loc>https://kalali.blog/</loc><lastmod>2022-05-03T20:45:02&#43;02:00</lastmod><changefreq>daily</changefreq><priority>1</priority></url><url>
-            <loc>https://kalali.blog/tags/velocity/</loc><lastmod>2022-05-03T20:45:02&#43;02:00</lastmod><changefreq>daily</changefreq><priority>1</priority></url><url>
-            <loc>https://kalali.blog/2022/05/on-the-lack-of-merit-of-task-based-teams/</loc><lastmod>2022-05-03T20:45:02&#43;02:00</lastmod><changefreq>daily</changefreq><priority>1</priority></url><url>
-            <loc>https://kalali.blog/tags/architecture/</loc><lastmod>2022-04-26T20:09:54&#43;02:00</lastmod><changefreq>daily</changefreq><priority>0.9</priority></url><url>
-            <loc>https://kalali.blog/tags/developer-experience/</loc><lastmod>2022-04-26T20:09:54&#43;02:00</lastmod><changefreq>daily</changefreq><priority>0.9</priority></url><url>
-            <loc>https://kalali.blog/categories/developer-experience/</loc><lastmod>2022-04-26T20:09:54&#43;02:00</lastmod><changefreq>daily</changefreq><priority>0.9</priority></url><url>
-            <loc>https://kalali.blog/tags/documentation/</loc><lastmod>2022-04-26T20:09:54&#43;02:00</lastmod><changefreq>daily</changefreq><priority>0.9</priority></url><url>
-            <loc>https://kalali.blog/tags/onboarding/</loc><lastmod>2022-04-26T20:09:54&#43;02:00</lastmod><changefreq>daily</changefreq><priority>0.9</priority></url><url>
-            <loc>https://kalali.blog/2022/04/onboarding-as-important-as-code-readablity/</loc><lastmod>2022-04-26T20:09:54&#43;02:00</lastmod><changefreq>daily</changefreq><priority>0.9</priority></url><url>
-            <loc>https://kalali.blog/tags/team/</loc><lastmod>2022-04-26T20:09:54&#43;02:00</lastmod><changefreq>daily</changefreq><priority>0.9</priority></url><url>
-            <loc>https://kalali.blog/categories/architecture/</loc><lastmod>2022-04-19T21:16:32&#43;02:00</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url><url>
-            <loc>https://kalali.blog/2022/04/few-tips-for-more-success-with-architecture-description/</loc><lastmod>2022-04-19T21:16:32&#43;02:00</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url><url>
-            <loc>https://kalali.blog/about/</loc><lastmod>2022-04-18T00:00:00&#43;00:00</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url><url>
-            <loc>https://kalali.blog/tags/case-study/</loc><lastmod>2022-04-05T19:59:23&#43;02:00</lastmod><changefreq>daily</changefreq><priority>0.6</priority></url><url>
-            <loc>https://kalali.blog/2022/04/impacts-of-a-few-in-depth-write-ups-and-an-abundance-of-getting-started/</loc><lastmod>2022-04-05T19:59:23&#43;02:00</lastmod><changefreq>daily</changefreq><priority>0.6</priority></url><url>
-            <loc>https://kalali.blog/categories/product-adoption/</loc><lastmod>2022-04-05T19:59:23&#43;02:00</lastmod><changefreq>daily</changefreq><priority>0.6</priority></url><url>
-            <loc>https://kalali.blog/tags/vendor/</loc><lastmod>2022-04-05T19:59:23&#43;02:00</lastmod><changefreq>daily</changefreq><priority>0.6</priority></url><url>
+            <loc>https://kalali.blog/tags/architecture/</loc><lastmod>2022-06-21T20:45:02&#43;02:00</lastmod><changefreq>daily</changefreq><priority>1</priority></url><url>
+            <loc>https://kalali.blog/categories/architecture/</loc><lastmod>2022-06-21T20:45:02&#43;02:00</lastmod><changefreq>daily</changefreq><priority>1</priority></url><url>
+            <loc>https://kalali.blog/categories/</loc><lastmod>2022-06-21T20:45:02&#43;02:00</lastmod><changefreq>daily</changefreq><priority>1</priority></url><url>
+            <loc>https://kalali.blog/2022/06/software-architecture-attributes-how-to-decide/</loc><lastmod>2022-06-21T20:45:02&#43;02:00</lastmod><changefreq>daily</changefreq><priority>1</priority></url><url>
+            <loc>https://kalali.blog/posts/</loc><lastmod>2022-06-21T20:45:02&#43;02:00</lastmod><changefreq>daily</changefreq><priority>1</priority></url><url>
+            <loc>https://kalali.blog/tags/</loc><lastmod>2022-06-21T20:45:02&#43;02:00</lastmod><changefreq>daily</changefreq><priority>1</priority></url><url>
+            <loc>https://kalali.blog/</loc><lastmod>2022-06-21T20:45:02&#43;02:00</lastmod><changefreq>daily</changefreq><priority>1</priority></url><url>
+            <loc>https://kalali.blog/categories/agile-team/</loc><lastmod>2022-05-03T20:45:02&#43;02:00</lastmod><changefreq>daily</changefreq><priority>0.5</priority></url><url>
+            <loc>https://kalali.blog/tags/leadership/</loc><lastmod>2022-05-03T20:45:02&#43;02:00</lastmod><changefreq>daily</changefreq><priority>0.5</priority></url><url>
+            <loc>https://kalali.blog/tags/management/</loc><lastmod>2022-05-03T20:45:02&#43;02:00</lastmod><changefreq>daily</changefreq><priority>0.5</priority></url><url>
+            <loc>https://kalali.blog/tags/team-building/</loc><lastmod>2022-05-03T20:45:02&#43;02:00</lastmod><changefreq>daily</changefreq><priority>0.5</priority></url><url>
+            <loc>https://kalali.blog/tags/velocity/</loc><lastmod>2022-05-03T20:45:02&#43;02:00</lastmod><changefreq>daily</changefreq><priority>0.5</priority></url><url>
+            <loc>https://kalali.blog/2022/05/on-the-lack-of-merit-of-task-based-teams/</loc><lastmod>2022-05-03T20:45:02&#43;02:00</lastmod><changefreq>daily</changefreq><priority>0.5</priority></url><url>
+            <loc>https://kalali.blog/tags/developer-experience/</loc><lastmod>2022-04-26T20:09:54&#43;02:00</lastmod><changefreq>daily</changefreq><priority>0.5</priority></url><url>
+            <loc>https://kalali.blog/categories/developer-experience/</loc><lastmod>2022-04-26T20:09:54&#43;02:00</lastmod><changefreq>daily</changefreq><priority>0.5</priority></url><url>
+            <loc>https://kalali.blog/tags/documentation/</loc><lastmod>2022-04-26T20:09:54&#43;02:00</lastmod><changefreq>daily</changefreq><priority>0.5</priority></url><url>
+            <loc>https://kalali.blog/tags/onboarding/</loc><lastmod>2022-04-26T20:09:54&#43;02:00</lastmod><changefreq>daily</changefreq><priority>0.5</priority></url><url>
+            <loc>https://kalali.blog/2022/04/onboarding-as-important-as-code-readablity/</loc><lastmod>2022-04-26T20:09:54&#43;02:00</lastmod><changefreq>daily</changefreq><priority>0.5</priority></url><url>
+            <loc>https://kalali.blog/tags/team/</loc><lastmod>2022-04-26T20:09:54&#43;02:00</lastmod><changefreq>daily</changefreq><priority>0.5</priority></url><url>
+            <loc>https://kalali.blog/2022/04/few-tips-for-more-success-with-architecture-description/</loc><lastmod>2022-04-19T21:16:32&#43;02:00</lastmod><changefreq>daily</changefreq><priority>0.5</priority></url><url>
+            <loc>https://kalali.blog/about/</loc><lastmod>2022-04-18T00:00:00&#43;00:00</lastmod><changefreq>daily</changefreq><priority>0.5</priority></url><url>
+            <loc>https://kalali.blog/tags/case-study/</loc><lastmod>2022-04-05T19:59:23&#43;02:00</lastmod><changefreq>daily</changefreq><priority>0.5</priority></url><url>
+            <loc>https://kalali.blog/2022/04/impacts-of-a-few-in-depth-write-ups-and-an-abundance-of-getting-started/</loc><lastmod>2022-04-05T19:59:23&#43;02:00</lastmod><changefreq>daily</changefreq><priority>0.5</priority></url><url>
+            <loc>https://kalali.blog/categories/product-adoption/</loc><lastmod>2022-04-05T19:59:23&#43;02:00</lastmod><changefreq>daily</changefreq><priority>0.5</priority></url><url>
+            <loc>https://kalali.blog/tags/vendor/</loc><lastmod>2022-04-05T19:59:23&#43;02:00</lastmod><changefreq>daily</changefreq><priority>0.5</priority></url><url>
             <loc>https://kalali.blog/2022/03/effective-internal-platform-product-manager/</loc><lastmod>2022-03-22T19:16:32&#43;02:00</lastmod><changefreq>daily</changefreq><priority>0.5</priority></url><url>
             <loc>https://kalali.blog/tags/microservices/</loc><lastmod>2022-03-22T19:16:32&#43;02:00</lastmod><changefreq>daily</changefreq><priority>0.5</priority></url><url>
             <loc>https://kalali.blog/tags/platform-engineering/</loc><lastmod>2022-03-22T19:16:32&#43;02:00</lastmod><changefreq>daily</changefreq><priority>0.5</priority></url><url>
             <loc>https://kalali.blog/categories/platform-engineering/</loc><lastmod>2022-03-22T19:16:32&#43;02:00</lastmod><changefreq>daily</changefreq><priority>0.5</priority></url><url>
             <loc>https://kalali.blog/tags/pm/</loc><lastmod>2022-03-22T19:16:32&#43;02:00</lastmod><changefreq>daily</changefreq><priority>0.5</priority></url><url>
-            <loc>https://kalali.blog/tags/product-owner/</loc><lastmod>2022-03-22T19:16:32&#43;02:00</lastmod><changefreq>daily</changefreq><priority>0.5</priority></url></urlset>
+            <loc>https://kalali.blog/tags/product-owner/</loc><lastmod>2022-03-22T19:16:32&#43;02:00</lastmod><changefreq>daily</changefreq><priority>0.5</priority></url><url>
+            <loc>https://kalali.blog/tags/java/</loc><lastmod>2011-10-24T00:00:00&#43;00:00</lastmod><changefreq>daily</changefreq><priority>0.5</priority></url><url>
+            <loc>https://kalali.blog/tags/jcp/</loc><lastmod>2011-10-24T00:00:00&#43;00:00</lastmod><changefreq>daily</changefreq><priority>0.5</priority></url><url>
+            <loc>https://kalali.blog/2011/10/some-thought-on-jsr-351-java-identity-api/</loc><lastmod>2011-10-24T00:00:00&#43;00:00</lastmod><changefreq>daily</changefreq><priority>0.5</priority></url><url>
+            <loc>https://kalali.blog/categories/old-blog-migrated-content/</loc><lastmod>2011-10-24T00:00:00&#43;00:00</lastmod><changefreq>daily</changefreq><priority>0.5</priority></url><url>
+            <loc>https://kalali.blog/categories/programming/</loc><lastmod>2011-10-24T00:00:00&#43;00:00</lastmod><changefreq>daily</changefreq><priority>0.5</priority></url><url>
+            <loc>https://kalali.blog/2011/05/jms2-jsr/</loc><lastmod>2011-05-17T00:00:00&#43;00:00</lastmod><changefreq>daily</changefreq><priority>0.5</priority></url><url>
+            <loc>https://kalali.blog/tags/jms/</loc><lastmod>2011-05-17T00:00:00&#43;00:00</lastmod><changefreq>daily</changefreq><priority>0.5</priority></url><url>
+            <loc>https://kalali.blog/tags/smf/</loc><lastmod>2011-01-31T00:00:00&#43;00:00</lastmod><changefreq>daily</changefreq><priority>0.5</priority></url><url>
+            <loc>https://kalali.blog/tags/solaris/</loc><lastmod>2011-01-31T00:00:00&#43;00:00</lastmod><changefreq>daily</changefreq><priority>0.5</priority></url><url>
+            <loc>https://kalali.blog/categories/sysadm/</loc><lastmod>2011-01-31T00:00:00&#43;00:00</lastmod><changefreq>daily</changefreq><priority>0.5</priority></url><url>
+            <loc>https://kalali.blog/2011/01/authoring-solaris-service-management-facility-smf-service-manifest/</loc><lastmod>2011-01-31T00:00:00&#43;00:00</lastmod><changefreq>daily</changefreq><priority>0.5</priority></url><url>
+            <loc>https://kalali.blog/categories/solaris/</loc><lastmod>2011-01-12T00:00:00&#43;00:00</lastmod><changefreq>daily</changefreq><priority>0.5</priority></url><url>
+            <loc>https://kalali.blog/2011/01/solaris-fault-administration-using-fmadm-command/</loc><lastmod>2011-01-12T00:00:00&#43;00:00</lastmod><changefreq>daily</changefreq><priority>0.5</priority></url><url>
+            <loc>https://kalali.blog/tags/zfs/</loc><lastmod>2011-01-12T00:00:00&#43;00:00</lastmod><changefreq>daily</changefreq><priority>0.5</priority></url><url>
+            <loc>https://kalali.blog/2010/12/monitoring-zfs-pools-performance-using-zpool-iostat/</loc><lastmod>2010-12-30T00:00:00&#43;00:00</lastmod><changefreq>daily</changefreq><priority>0.5</priority></url><url>
+            <loc>https://kalali.blog/2010/12/managing-logical-network-interfaces-in-solaris/</loc><lastmod>2010-12-09T00:00:00&#43;00:00</lastmod><changefreq>daily</changefreq><priority>0.5</priority></url><url>
+            <loc>https://kalali.blog/tags/networking/</loc><lastmod>2010-12-09T00:00:00&#43;00:00</lastmod><changefreq>daily</changefreq><priority>0.5</priority></url><url>
+            <loc>https://kalali.blog/2010/11/configuring-solaris-link-aggregation-ethernet-bonding/</loc><lastmod>2010-11-25T00:00:00&#43;00:00</lastmod><changefreq>daily</changefreq><priority>0.5</priority></url><url>
+            <loc>https://kalali.blog/2010/08/introducing-nio-2-jsr-203-part-6-filtering-directory-content-and-walking-over-a-file-tree/</loc><lastmod>2010-08-23T00:00:00&#43;00:00</lastmod><changefreq>daily</changefreq><priority>0.5</priority></url><url>
+            <loc>https://kalali.blog/2010/08/introducing-nio-2-jsr-203-part-5-watch-service-and-change-notification/</loc><lastmod>2010-08-10T00:00:00&#43;00:00</lastmod><changefreq>daily</changefreq><priority>0.5</priority></url><url>
+            <loc>https://kalali.blog/tags/file-system/</loc><lastmod>2010-08-09T00:00:00&#43;00:00</lastmod><changefreq>daily</changefreq><priority>0.5</priority></url><url>
+            <loc>https://kalali.blog/2010/08/learning-how-to-use-zfs-in-opensolaris/</loc><lastmod>2010-08-09T00:00:00&#43;00:00</lastmod><changefreq>daily</changefreq><priority>0.5</priority></url><url>
+            <loc>https://kalali.blog/2010/07/introducing-nio-2-jsr-203-part-4-changing-file-system-attributes-and-permissions/</loc><lastmod>2010-07-13T00:00:00&#43;00:00</lastmod><changefreq>daily</changefreq><priority>0.5</priority></url><url>
+            <loc>https://kalali.blog/2010/06/introducing-nio-2-jsr-203-part-3-file-system-attributes-and-permissions-support-in-nio-2/</loc><lastmod>2010-06-23T00:00:00&#43;00:00</lastmod><changefreq>daily</changefreq><priority>0.5</priority></url><url>
+            <loc>https://kalali.blog/2010/06/introducing-nio-2-jsr-203-part-2-the-basics/</loc><lastmod>2010-06-01T00:00:00&#43;00:00</lastmod><changefreq>daily</changefreq><priority>0.5</priority></url><url>
+            <loc>https://kalali.blog/2010/05/introducing-nio-2-jsr-203-part-1-what-are-new-features/</loc><lastmod>2010-05-20T00:00:00&#43;00:00</lastmod><changefreq>daily</changefreq><priority>0.5</priority></url></urlset>

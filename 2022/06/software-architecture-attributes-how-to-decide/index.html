@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>How to plan the architectural attributes? - The Pensieve - Masoud Kalali&#39;s Blog</title><meta name="Description" content="Deciding between software architecture attributes primacy is hard. I follow some practices that I will talk a little about them here."><meta property="og:title" content="How to plan the architectural attributes?" />
+<meta property="og:description" content="Deciding between software architecture attributes primacy is hard. I follow some practices that I will talk a little about them here." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://kalali.blog/2022/06/software-architecture-attributes-how-to-decide/" /><meta property="og:image" content="https://kalali.blog/post-img/software-architecture-attributes-how-to-decide.png" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-06-21T20:45:02+02:00" />
+<meta property="article:modified_time" content="2022-06-21T20:45:02+02:00" /><meta property="og:site_name" content="My cool site" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://kalali.blog/post-img/software-architecture-attributes-how-to-decide.png"/>
+
+<meta name="twitter:title" content="How to plan the architectural attributes?"/>
+<meta name="twitter:description" content="Deciding between software architecture attributes primacy is hard. I follow some practices that I will talk a little about them here."/>
+<meta name="application-name" content="The Pensieve - Masoud Kalali&#39;s Blog">
+<meta name="apple-mobile-web-app-title" content="The Pensieve - Masoud Kalali&#39;s Blog"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://kalali.blog/2022/06/software-architecture-attributes-how-to-decide/" /><link rel="prev" href="https://kalali.blog/2022/05/on-the-lack-of-merit-of-task-based-teams/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css"></noscript><link rel="preload" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css"></noscript><meta name="google-site-verification" content="cDJVSx1L3UB6AwrPKeSQszOyhtjHYvPYkDxZw_Me4Z4" /><meta name="msvalidate.01" content="cDJVSx1L3UB6AwrPKeSQszOyhtjHYvPYkDxZw_Me4Z4" /><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "How to plan the architectural attributes?",
+        "inLanguage": "en",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/kalali.blog\/2022\/06\/software-architecture-attributes-how-to-decide\/"
+        },"image": [{
+                            "@type": "ImageObject",
+                            "url": "https:\/\/kalali.blog\/img\/preview.png",
+                            "width":  1027 ,
+                            "height":  833 
+                        }],"genre": "posts","keywords": "Architecture","wordcount":  699 ,
+        "url": "https:\/\/kalali.blog\/2022\/06\/software-architecture-attributes-how-to-decide\/","datePublished": "2022-06-21T20:45:02+02:00","dateModified": "2022-06-21T20:45:02+02:00","license": "This work is licensed under a Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)","publisher": {
+            "@type": "Organization",
+            "name": "Masoud Kalali"},"author": {
+                "@type": "Person",
+                "name": "Masoud Kalali"
+            },"description": "Deciding between software architecture attributes primacy is hard. I follow some practices that I will talk a little about them here."
+    }
+    </script></head>
+    <body data-header-desktop="auto" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="The Pensieve - Masoud Kalali&#39;s Blog">The Pensieve - Masoud Kalali&#39;s Blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/" title="Blog posts"> Posts </a><a class="menu-item" href="/tags/" title="All the blog tags"> Tags </a><a class="menu-item" href="/categories/" title="List of all categories I blogged bout"> Categories </a><a class="menu-item" href="/about/" title="About Masoud Kalali, Author"> About </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="The Pensieve - Masoud Kalali&#39;s Blog">The Pensieve - Masoud Kalali&#39;s Blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        Cancel
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="Blog posts">Posts</a><a class="menu-item" href="/tags/" title="All the blog tags">Tags</a><a class="menu-item" href="/categories/" title="List of all categories I blogged bout">Categories</a><a class="menu-item" href="/about/" title="About Masoud Kalali, Author">About</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><div class="search-dropdown desktop">
+        <div id="search-dropdown-desktop"></div>
+    </div>
+    <div class="search-dropdown mobile">
+        <div id="search-dropdown-mobile"></div>
+    </div><main class="main">
+                <div class="container"><article class="page single"><h1 class="single-title animate__animated animate__flipInX">How to plan the architectural attributes?</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="https://www.linkedin.com/in/masoudkalali/" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>Masoud Kalali</a></span>&nbsp;<span class="post-category">included in <a href="/categories/architecture/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Architecture</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2022-06-21">2022-06-21</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;699 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;4 minutes&nbsp;</div>
+        </div><div class="featured-image"><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/post-img/software-architecture-attributes-how-to-decide.png"
+        data-srcset="/post-img/software-architecture-attributes-how-to-decide.png, /post-img/software-architecture-attributes-how-to-decide.png 1.5x, /post-img/software-architecture-attributes-how-to-decide.png 2x"
+        data-sizes="auto"
+        alt="/post-img/software-architecture-attributes-how-to-decide.png"
+        title="Deciding between software architecture attributes primacy is hard. I follow some practices that I will talk a little about them here." width="1200" height="630" /></div><div class="content" id="content"><p>Last week I was talking to a former colleague, he is running a SaaS startup now, and our conversation went around SRE, production, and reliability. We talked a lot about architectural attributes that relate or impact the incidents, from detection to recovery, and on to prevention. I thought to put some of my thoughts around architecture into a blog post since that was the core of our conversation. The next post I will cover more details on architecture for fault tolerance.</p>
+<h2 id="architectural-attributes-the--ities">Architectural attributes, the -ities</h2>
+<p>I generally put different architectural attributes into two categories:</p>
+<ul>
+<li><strong>Internal</strong>: for example operability, testability, supportability, upgradability, extensibility, etc.</li>
+<li><strong>External</strong>: for example scalability, responsiveness, security, compliance, usability, availability, etc. )</li>
+</ul>
+<p>The architectural attributes can be sliced and diced in different ways, I will probably write another slicing and decision making in another post.</p>
+<p>At the end of the day, any attribute and quality of a software system are going to impact the users. But some attributes are more concerns of customers and users of the system while another group is more concerning those building and maintaining it (developers, support, QA, etc.).</p>
+<p>There is always a push and pull between different stakeholders on the importance and investment that should go into these two categories. For example, usability, availability, and responsiveness might be the product owner&rsquo;s focus while a technical stakeholder would also think, and advocate about investment in extensibility, supportability, and so on. Each stakeholder advocates for the attributes they better relate to.</p>
+<p>These pushes and pulls get more interesting when other stakeholders are advocating for attributes, not that clearly understood by others. For example compliance and legal matters (I generally put this into the external category). Keeping the balance</p>
+<p>Deciding on which attributes from different categories should be the core is very much context-dependent. For example, deciding between yield and harvest would result in deciding whether reliability or availability should have a higher degree of importance. I approach deciding about architectural attributes is based on a few practices:</p>
+<ul>
+<li>I Talk to all stakeholders to form a clear understanding of what the software system is going to do. Why is it being built, or rebuilt? How is it going to be used and who is going to be the user/s.</li>
+<li>I think about three attributes as the heart of a system based on the above. Any other attributes form around these over time, without diminishing them</li>
+<li>I associate a degree of importance with attributes contributing to architecture. These will be considered when the architecture is evolving or when trade-offs are being made for adding a new feature, etc.</li>
+<li>Iterate over these as an understanding of the system is building up and evolving the system.</li>
+</ul>
+<p>Deciding on the core attributes is like setting a strategy, decision being made around how the architecture could evolve is easier when you have some core attributes that cannot be diminished or ignored.</p>
+<p>Next to the core attributes, there are some considerations that deferring or ignoring has the highest cost of reconsideration. For example, testability and operateability are important enough to be next to the core attributes. If a software system is not testable and operatable it is going to rot over time and a re-write will ensue.</p>
+<p>Some examples to consider:</p>
+<ul>
+<li>For a regulated business attributes contributing to compliance are the top concerns. For example data integrity, audit-ability, access control, etc. Building anything, no matter how good, that is not compliant is unlikely to see the light of production.</li>
+<li>For a web-scale service the first items to consider are scalability, availability, and reliability, the rest of the attributes would form around these.</li>
+<li>Some systems may need very little attention to scalability but an extreme emphasis on safe operation, reliability, and upgradability. A medical device, a CNC machine, and so on.</li>
+</ul>
+<p>Deciding on any architectural attributes should be deferred as long as it is not causing indecision. When the same subject comes up multiple times without a conclusive way forward it means there is a lack of strategy, being for the product or the organization. I would put having a decision about the architectural attributes of a product to be part of the product and in a larger scope, the organization&rsquo;s strategy.</p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2022-06-21</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://kalali.blog/2022/06/software-architecture-attributes-how-to-decide/" data-title="How to plan the architectural attributes?" data-via="masoudkalali" data-hashtags="Architecture"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://kalali.blog/2022/06/software-architecture-attributes-how-to-decide/" data-hashtag="Architecture"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="https://kalali.blog/2022/06/software-architecture-attributes-how-to-decide/"><i class="fab fa-linkedin fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Hacker News" data-sharer="hackernews" data-url="https://kalali.blog/2022/06/software-architecture-attributes-how-to-decide/" data-title="How to plan the architectural attributes?"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="https://kalali.blog/2022/06/software-architecture-attributes-how-to-decide/" data-title="How to plan the architectural attributes?"><i data-svg-src="https://cdn.jsdelivr.net/npm/simple-icons@7.0.0/icons/line.svg" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/architecture/">Architecture</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/2022/05/on-the-lack-of-merit-of-task-based-teams/" class="prev" rel="prev" title="Why not task based teams?"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>Why not task based teams?</a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2005 - 2022</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://www.linkedin.com/in/masoudkalali/" target="_blank">Masoud Kalali</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@2.4.0/css/lightgallery-bundle.min.css"><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/autocomplete.js@0.38.1/dist/autocomplete.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lunr@2.3.9/lunr.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.1/lazysizes.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/twemoji@14.0.2/dist/twemoji.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lightgallery@2.4.0/lightgallery.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lightgallery@2.4.0/plugins/thumbnail/lg-thumbnail.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lightgallery@2.4.0/plugins/zoom/lg-zoom.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sharer.js@0.5.1/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":10},"comment":{},"lightgallery":true,"search":{"highlightTag":"em","lunrIndexURL":"/index.json","maxResultLength":10,"noResultsFound":"No results found","snippetLength":30,"type":"lunr"},"twemoji":true};</script><script type="text/javascript" src="/js/theme.min.js"></script><script type="text/javascript">
+            window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());
+            gtag('config', ' UA-137107-12');
+        </script><script type="text/javascript" src="https://www.googletagmanager.com/gtag/js?id= UA-137107-12" async></script></body>
+</html>

@@ -4,25 +4,37 @@
         <link>https://kalali.blog/tags/architecture/</link>
         <description>Architecture - Tag - The Pensieve - Masoud Kalali&#39;s Blog</description>
         <generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>kalali@gmail.com (Masoud Kalali)</managingEditor>
-            <webMaster>kalali@gmail.com (Masoud Kalali)</webMaster><copyright>This work is licensed under a Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)</copyright><lastBuildDate>Tue, 26 Apr 2022 20:09:54 &#43;0200</lastBuildDate><atom:link href="https://kalali.blog/tags/architecture/" rel="self" type="application/rss+xml" /><item>
+            <webMaster>kalali@gmail.com (Masoud Kalali)</webMaster><copyright>This work is licensed under a Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)</copyright><lastBuildDate>Tue, 21 Jun 2022 20:45:02 &#43;0200</lastBuildDate><atom:link href="https://kalali.blog/tags/architecture/" rel="self" type="application/rss+xml" /><item>
+    <title>How to plan the architectural attributes?</title>
+    <link>https://kalali.blog/2022/06/software-architecture-attributes-how-to-decide/</link>
+    <pubDate>Tue, 21 Jun 2022 20:45:02 &#43;0200</pubDate>
+    <author>Masoud Kalali</author>
+    <guid>https://kalali.blog/2022/06/software-architecture-attributes-how-to-decide/</guid>
+    <description><![CDATA[<div class="featured-image">
+                <img src="/post-img/software-architecture-attributes-how-to-decide.png" referrerpolicy="no-referrer">
+            </div>Last week I was talking to a former colleague, he is running a SaaS startup now, and our conversation went around SRE, production, and reliability. We talked a lot about architectural attributes that relate or impact the incidents, from detection to recovery, and on to prevention. I thought to put some of my thoughts around architecture into a blog post since that was the core of our conversation. The next post I will cover more details on architecture for fault tolerance.]]></description>
+</item>
+<item>
     <title>Smooth Developer Onboarding is as Important as Code Readability</title>
     <link>https://kalali.blog/2022/04/onboarding-as-important-as-code-readablity/</link>
     <pubDate>Tue, 26 Apr 2022 20:09:54 &#43;0200</pubDate>
-    <author>Author</author>
+    <author>Masoud Kalali</author>
     <guid>https://kalali.blog/2022/04/onboarding-as-important-as-code-readablity/</guid>
     <description><![CDATA[<div class="featured-image">
                 <img src="/post-img/onboarding-as-important-as-code-readablity.jpg" referrerpolicy="no-referrer">
             </div>When a new hire joins a team dealing with the development or sustaining of a large-scale application there are a few things that they would need to form a basic understanding of the system:
- Deeper understanding of what the business about Get a view of the system&rsquo;s architecture for the software system and the deployment view. Get a bird&rsquo;s eye view of the system&rsquo;s dependencies. At least the immediate dependencies.]]></description>
-</item><item>
+Deeper understanding of what the business about Get a view of the system&rsquo;s architecture for the software system and the deployment view. Get a bird&rsquo;s eye view of the system&rsquo;s dependencies. At least the immediate dependencies. History lessons, how the system came to be at the current state.]]></description>
+</item>
+<item>
     <title>Few tips for more success with architecture description</title>
     <link>https://kalali.blog/2022/04/few-tips-for-more-success-with-architecture-description/</link>
     <pubDate>Tue, 19 Apr 2022 21:16:32 &#43;0200</pubDate>
-    <author>Author</author>
+    <author>Masoud Kalali</author>
     <guid>https://kalali.blog/2022/04/few-tips-for-more-success-with-architecture-description/</guid>
     <description><![CDATA[<div class="featured-image">
                 <img src="/post-img/few-tips-for-more-success-with-architecture-description.jpg" referrerpolicy="no-referrer">
             </div>Introduction During the past 20 years I have seen trends come and go; one of the thing that has stayed around in one or another form is the term architecture and the architect role. Of course, there are plenty of overloads for the term and plenty of architect archetype like domain architect, enterprise architects, IT architect, network architect, software architect and you name it.
 Wikipedia has a good definition of software architecture that I quote below:]]></description>
-</item></channel>
+</item>
+</channel>
 </rss>

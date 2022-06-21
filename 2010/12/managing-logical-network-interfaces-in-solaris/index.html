@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>Managing Logical network interfaces in Solaris - The Pensieve - Masoud Kalali&#39;s Blog</title><meta name="Description" content="Masoud Kalali&#39;s personal blog. Covering subjects ranging from tech strategy, leadership, software architecture, cloud native, and software development in general."><meta property="og:title" content="Managing Logical network interfaces in Solaris" />
+<meta property="og:description" content="Like other operating system we can assign multiple IP address to a network interface. This secondary address are called logical interfaces and we can use them to make one machine with one single network interface own multiple IP addresses for different purposes. We may need to assign multiple IP address to an interface to make it available to both internal and external networks or for testing purposes. We should have one network interface configured in our system in order to create additional logical interfaces." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://kalali.blog/2010/12/managing-logical-network-interfaces-in-solaris/" /><meta property="og:image" content="https://kalali.blog/img/avatar.jpg"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2010-12-09T00:00:00+00:00" />
+<meta property="article:modified_time" content="2010-12-09T00:00:00+00:00" /><meta property="og:site_name" content="My cool site" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://kalali.blog/img/avatar.jpg"/>
+
+<meta name="twitter:title" content="Managing Logical network interfaces in Solaris"/>
+<meta name="twitter:description" content="Like other operating system we can assign multiple IP address to a network interface. This secondary address are called logical interfaces and we can use them to make one machine with one single network interface own multiple IP addresses for different purposes. We may need to assign multiple IP address to an interface to make it available to both internal and external networks or for testing purposes. We should have one network interface configured in our system in order to create additional logical interfaces."/>
+<meta name="application-name" content="The Pensieve - Masoud Kalali&#39;s Blog">
+<meta name="apple-mobile-web-app-title" content="The Pensieve - Masoud Kalali&#39;s Blog"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://kalali.blog/2010/12/managing-logical-network-interfaces-in-solaris/" /><link rel="prev" href="https://kalali.blog/2010/11/configuring-solaris-link-aggregation-ethernet-bonding/" /><link rel="next" href="https://kalali.blog/2010/12/monitoring-zfs-pools-performance-using-zpool-iostat/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css"></noscript><link rel="preload" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css"></noscript><meta name="google-site-verification" content="cDJVSx1L3UB6AwrPKeSQszOyhtjHYvPYkDxZw_Me4Z4" /><meta name="msvalidate.01" content="cDJVSx1L3UB6AwrPKeSQszOyhtjHYvPYkDxZw_Me4Z4" /><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Managing Logical network interfaces in Solaris",
+        "inLanguage": "en",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/kalali.blog\/2010\/12\/managing-logical-network-interfaces-in-solaris\/"
+        },"image": [{
+                            "@type": "ImageObject",
+                            "url": "https:\/\/kalali.blog\/img\/preview.png",
+                            "width":  1027 ,
+                            "height":  833 
+                        }],"genre": "posts","keywords": "Solaris, Networking","wordcount":  439 ,
+        "url": "https:\/\/kalali.blog\/2010\/12\/managing-logical-network-interfaces-in-solaris\/","datePublished": "2010-12-09T00:00:00+00:00","dateModified": "2010-12-09T00:00:00+00:00","license": "This work is licensed under a Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)","publisher": {
+            "@type": "Organization",
+            "name": "Masoud Kalali"},"author": {
+                "@type": "Person",
+                "name": "Masoud Kalali"
+            },"description": ""
+    }
+    </script></head>
+    <body data-header-desktop="auto" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="The Pensieve - Masoud Kalali&#39;s Blog">The Pensieve - Masoud Kalali&#39;s Blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/" title="Blog posts"> Posts </a><a class="menu-item" href="/tags/" title="All the blog tags"> Tags </a><a class="menu-item" href="/categories/" title="List of all categories I blogged bout"> Categories </a><a class="menu-item" href="/about/" title="About Masoud Kalali, Author"> About </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="The Pensieve - Masoud Kalali&#39;s Blog">The Pensieve - Masoud Kalali&#39;s Blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        Cancel
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="Blog posts">Posts</a><a class="menu-item" href="/tags/" title="All the blog tags">Tags</a><a class="menu-item" href="/categories/" title="List of all categories I blogged bout">Categories</a><a class="menu-item" href="/about/" title="About Masoud Kalali, Author">About</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><div class="search-dropdown desktop">
+        <div id="search-dropdown-desktop"></div>
+    </div>
+    <div class="search-dropdown mobile">
+        <div id="search-dropdown-mobile"></div>
+    </div><main class="main">
+                <div class="container"><article class="page single"><h1 class="single-title animate__animated animate__flipInX">Managing Logical network interfaces in Solaris</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="https://www.linkedin.com/in/masoudkalali/" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>Masoud Kalali</a></span>&nbsp;<span class="post-category">included in <a href="/categories/solaris/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Solaris</a>&nbsp;<a href="/categories/old-blog-migrated-content/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Old Blog Migrated Content</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2010-12-09">2010-12-09</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;439 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;3 minutes&nbsp;</div>
+        </div><div class="content" id="content"><p>Like other operating system we can assign multiple IP address to a network interface. This secondary address are called logical interfaces and we can use them to make one machine with one single network interface own multiple IP addresses for different purposes. We may need to assign multiple IP address to an interface to make it available to both internal and external networks or for testing purposes. We should have one network interface configured in our system in order to create additional logical interfaces. We are going to add a logical interface to e1000g1 interface with a 10.0.2.24 as its static IP address. Before doing so let’s see what network interface we have using the ifconfig command.</p>
+<p><figure><a class="lightgallery" href="/post-img/3180_04_12.png" title="/post-img/3180_04_12.png" data-thumbnail="/post-img/3180_04_12.png" data-sub-html="<h2>3180_04_12</h2>">
+        <img
+            class="lazyload"
+            src="/svg/loading.min.svg"
+            data-src="/post-img/3180_04_12.png"
+            data-srcset="/post-img/3180_04_12.png, /post-img/3180_04_12.png 1.5x, /post-img/3180_04_12.png 2x"
+            data-sizes="auto"
+            alt="/post-img/3180_04_12.png" width="646" height="102" />
+    </a><figcaption class="image-caption">3180_04_12</figcaption>
+    </figure></p>
+<p>Now to add the logical interface we only need to execute the following command:
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="se">\#</span> ifconfig e1000g1 addif 10.0.2.24/24 up</span></span></code></pre></td></tr></table>
+</div>
+</div>
+Invoking this command performs the following tasks:</p>
+<ul>
+<li>Create a logical interface named e1000g1:1. The naming schema for logical interfaces conforms with interface_name:logical_interface_number which the number element can be from 1 to 4096.</li>
+<li>Assign 10.0.2.24/24 as its IP address, net mask and broadcast address.</li>
+</ul>
+<p>Now if we invoke ifconfing -a command the output should contain the logical interface status as well. The following figure shows a fragment of ifconfig -a command.</p>
+<p><figure><a class="lightgallery" href="/post-img/3180_04_13.png" title="/post-img/3180_04_13.png" data-thumbnail="/post-img/3180_04_13.png" data-sub-html="<h2>3180_04_13</h2>">
+        <img
+            class="lazyload"
+            src="/svg/loading.min.svg"
+            data-src="/post-img/3180_04_13.png"
+            data-srcset="/post-img/3180_04_13.png, /post-img/3180_04_13.png 1.5x, /post-img/3180_04_13.png 2x"
+            data-sizes="auto"
+            alt="/post-img/3180_04_13.png" width="687" height="145" />
+    </a><figcaption class="image-caption">3180_04_13</figcaption>
+    </figure></p>
+<p>Operating system does not retain this configuration over a system reboot and to make the configuration persistent we need to make some changes in the interface configuration file. For example to make the configuration we applied in this recipe persistent the content of /etc/opensolaris.e1000g1 should something similar to the following snippet.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">10.0.2.23/24
+</span></span><span class="line"><span class="cl">addif 10.0.2.24/24</span></span></code></pre></td></tr></table>
+</div>
+</div>
+The first line as we discussed in recipe 3 of this chapter assign the given address to this interface and the second like adds the logical interface with the given address to this interface. To remove a logical interface we can simply un-plumb it using the ifconfig command as shown below.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="se">\#</span> ifconfig e1000g1:1 unplumb</span></span></code></pre></td></tr></table>
+</div>
+</div>
+When we create a logical interface, OpenSolaris register that interface in the network and any packet received by the interface will be delivered to the same stack that handles the underlying physical interface. Like other operating system we can assign multiple IP address to a network interface. This secondary address are called logical interfaces and we can use them to make one machine with one single network interface own multiple IP addresses for different purposes. We may need to assign multiple IP address to an interface to make it available to both internal and external networks or for testing purposes. We should have one network interface configured in our system in order to create additional logical interfaces.</p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2010-12-09</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://kalali.blog/2010/12/managing-logical-network-interfaces-in-solaris/" data-title="Managing Logical network interfaces in Solaris" data-via="masoudkalali" data-hashtags="Solaris,Networking"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://kalali.blog/2010/12/managing-logical-network-interfaces-in-solaris/" data-hashtag="Solaris"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="https://kalali.blog/2010/12/managing-logical-network-interfaces-in-solaris/"><i class="fab fa-linkedin fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Hacker News" data-sharer="hackernews" data-url="https://kalali.blog/2010/12/managing-logical-network-interfaces-in-solaris/" data-title="Managing Logical network interfaces in Solaris"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="https://kalali.blog/2010/12/managing-logical-network-interfaces-in-solaris/" data-title="Managing Logical network interfaces in Solaris"><i data-svg-src="https://cdn.jsdelivr.net/npm/simple-icons@7.0.0/icons/line.svg" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/solaris/">Solaris</a>,&nbsp;<a href="/tags/networking/">Networking</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/2010/11/configuring-solaris-link-aggregation-ethernet-bonding/" class="prev" rel="prev" title="Configuring Solaris Link Aggregation (Ethernet bonding)"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>Configuring Solaris Link Aggregation (Ethernet bonding)</a>
+            <a href="/2010/12/monitoring-zfs-pools-performance-using-zpool-iostat/" class="next" rel="next" title="Monitoring ZFS pools performance using zpool iostat">Monitoring ZFS pools performance using zpool iostat<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2005 - 2022</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://www.linkedin.com/in/masoudkalali/" target="_blank">Masoud Kalali</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@2.4.0/css/lightgallery-bundle.min.css"><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/autocomplete.js@0.38.1/dist/autocomplete.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lunr@2.3.9/lunr.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.1/lazysizes.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/twemoji@14.0.2/dist/twemoji.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lightgallery@2.4.0/lightgallery.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lightgallery@2.4.0/plugins/thumbnail/lg-thumbnail.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lightgallery@2.4.0/plugins/zoom/lg-zoom.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sharer.js@0.5.1/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":10},"comment":{},"lightgallery":true,"search":{"highlightTag":"em","lunrIndexURL":"/index.json","maxResultLength":10,"noResultsFound":"No results found","snippetLength":30,"type":"lunr"},"twemoji":true};</script><script type="text/javascript" src="/js/theme.min.js"></script><script type="text/javascript">
+            window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());
+            gtag('config', ' UA-137107-12');
+        </script><script type="text/javascript" src="https://www.googletagmanager.com/gtag/js?id= UA-137107-12" async></script></body>
+</html>

@@ -1,0 +1,34 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>ZFS - Tag - The Pensieve - Masoud Kalali&#39;s Blog</title>
+        <link>https://kalali.blog/tags/zfs/</link>
+        <description>ZFS - Tag - The Pensieve - Masoud Kalali&#39;s Blog</description>
+        <generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>kalali@gmail.com (Masoud Kalali)</managingEditor>
+            <webMaster>kalali@gmail.com (Masoud Kalali)</webMaster><copyright>This work is licensed under a Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)</copyright><lastBuildDate>Wed, 12 Jan 2011 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://kalali.blog/tags/zfs/" rel="self" type="application/rss+xml" /><item>
+    <title>Solaris fault administration using fmadm command</title>
+    <link>https://kalali.blog/2011/01/solaris-fault-administration-using-fmadm-command/</link>
+    <pubDate>Wed, 12 Jan 2011 00:00:00 &#43;0000</pubDate>
+    <author>Masoud Kalali</author>
+    <guid>https://kalali.blog/2011/01/solaris-fault-administration-using-fmadm-command/</guid>
+    <description><![CDATA[In this article we will study how we can use the fmadm command to get the list of faulty components along with the detailed information about the fault. Before starting this article we should have a command console open and then we can proceed with using the fmadm command. The most basic form of using fmadm command is using its faulty subcommand as follow 1 \# fmadm faulty When we have no error in the system, this command will not show anything and exit normally but with a faulty component the output will be different, for example in the following sample we have a faulty ZFS pool because some of its underlying devices are missing.]]></description>
+</item>
+<item>
+    <title>Monitoring ZFS pools performance using zpool iostat</title>
+    <link>https://kalali.blog/2010/12/monitoring-zfs-pools-performance-using-zpool-iostat/</link>
+    <pubDate>Thu, 30 Dec 2010 00:00:00 &#43;0000</pubDate>
+    <author>Masoud Kalali</author>
+    <guid>https://kalali.blog/2010/12/monitoring-zfs-pools-performance-using-zpool-iostat/</guid>
+    <description><![CDATA[Performance, performance, performance; this is what we hear in all software development and management sessions. ZFS provides few utility commands to monitor one or more pools&rsquo; performance. You should remember that we used fsstat command to monitor the UFS performance metrics. We can use iostat subcommand of the zpool command to monitor the performance metrics of ZFS pools. The iostat subcommand provides some options and arguments which we can see in its syntax shown below: 1 iostat \[-v\] \[pool\] .]]></description>
+</item>
+<item>
+    <title>Learning how to use zfs in OpenSolaris</title>
+    <link>https://kalali.blog/2010/08/learning-how-to-use-zfs-in-opensolaris/</link>
+    <pubDate>Mon, 09 Aug 2010 00:00:00 &#43;0000</pubDate>
+    <author>Masoud Kalali</author>
+    <guid>https://kalali.blog/2010/08/learning-how-to-use-zfs-in-opensolaris/</guid>
+    <description><![CDATA[What is a file system File systems make it possible to store and retrieve files and containing data into storages like hard disks, optical disks and other types of storages.
+OpenSolaris support both legacy file systems like UNIX File System (UFS) and its own file system called Zettabyte File System (ZFS). Following figure show how UFS and other legacy file systems work.
+As you can see we can partition each storage device into one or more volumes with different file systems.]]></description>
+</item>
+</channel>
+</rss>
