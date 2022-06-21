@@ -1,6 +1,6 @@
 # About me, Masoud Kalali
 
-I work in software industry; and have been involved with software development since 2000. Delphi, .Net and J2SE back in the time, and now I am more focused on Java and CNCF ecosystems. My responsiblities are more in ensuring alignments, and with assisting organizations with tech strategy, architecture, adoption of new technologies and practices, planning and implementations when the area of impact is across organization boundaries.
+I work in software industry; and have been involved with software development since 2000. Delphi, .Net and J2SE back in the time, and now I am more focused on technical leadership, cloud, architecture, and getting organizations closer to realizing their potentials and goals with. My responsiblities are more in ensuring alignments, and with assisting organizations with tech strategy, architecture, adoption of new technologies and practices, planning and implementations when the area of impact is across organization boundaries.
 
 I like the thrill of innovating, building or rebuilding. I enjoy it because it is as giving existence to something that is not; being software engineering or small tinkering projects. I like outdoors, mountains, open land, I like water sports; and the prime of my activities is running, mountain running that is (I am not good at it). 
 
