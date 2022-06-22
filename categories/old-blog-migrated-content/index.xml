@@ -79,11 +79,11 @@ We need to have at least two network interfaces in our machine to create a link 
     <description><![CDATA[For long time Java developers used in-house developed solutions to monitor the file system for changes. Some developed general purpose libraries to ease the task of others who deal with the same requirement. Commercial and free/ open source libraries like http://jnotify.sourceforge.net/, http://jpathwatch.wordpress.com/ and http://www.teamdev.com/jxfilewatcher among others. Java 7 comes with NIO.2 or JSR 203 which provides native file system watch service. The watch service provided in Java 7 uses the underlying file system functionalities to watch the file system for changes, so if we are running on Windows, MacOS or Linux&hellip; we are sure that the watch service is not imposing polling overhead on our application because the underlying OS and file system provides the required functionalities to allow Java to register for receiving notification on file system changes.]]></description>
 </item>
 <item>
-    <title>Learning how to use zfs in OpenSolaris</title>
-    <link>https://kalali.blog/2010/08/learning-how-to-use-zfs-in-opensolaris/</link>
+    <title>OpenSolaris File System Basics: Managing UFS and ZFS pools</title>
+    <link>https://kalali.blog/2010/08/opensolaris-file-system-basics-managing-ufs-and-zfs-pools/</link>
     <pubDate>Mon, 09 Aug 2010 00:00:00 &#43;0000</pubDate>
     <author>Masoud Kalali</author>
-    <guid>https://kalali.blog/2010/08/learning-how-to-use-zfs-in-opensolaris/</guid>
+    <guid>https://kalali.blog/2010/08/opensolaris-file-system-basics-managing-ufs-and-zfs-pools/</guid>
     <description><![CDATA[What is a file system File systems make it possible to store and retrieve files and containing data into storages like hard disks, optical disks and other types of storages.
 OpenSolaris support both legacy file systems like UNIX File System (UFS) and its own file system called Zettabyte File System (ZFS). Following figure show how UFS and other legacy file systems work.
 As you can see we can partition each storage device into one or more volumes with different file systems.]]></description>

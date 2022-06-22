@@ -39,14 +39,23 @@ When we aggregate two or more network interfaces, we are forming a new network i
 We need to have at least two network interfaces in our machine to create a link aggregation.]]></description>
 </item>
 <item>
-    <title>Learning how to use zfs in OpenSolaris</title>
-    <link>https://kalali.blog/2010/08/learning-how-to-use-zfs-in-opensolaris/</link>
+    <title>OpenSolaris File System Basics: Managing UFS and ZFS pools</title>
+    <link>https://kalali.blog/2010/08/opensolaris-file-system-basics-managing-ufs-and-zfs-pools/</link>
     <pubDate>Mon, 09 Aug 2010 00:00:00 &#43;0000</pubDate>
     <author>Masoud Kalali</author>
-    <guid>https://kalali.blog/2010/08/learning-how-to-use-zfs-in-opensolaris/</guid>
+    <guid>https://kalali.blog/2010/08/opensolaris-file-system-basics-managing-ufs-and-zfs-pools/</guid>
     <description><![CDATA[What is a file system File systems make it possible to store and retrieve files and containing data into storages like hard disks, optical disks and other types of storages.
 OpenSolaris support both legacy file systems like UNIX File System (UFS) and its own file system called Zettabyte File System (ZFS). Following figure show how UFS and other legacy file systems work.
 As you can see we can partition each storage device into one or more volumes with different file systems.]]></description>
+</item>
+<item>
+    <title>Managing ZFS Datasets</title>
+    <link>https://kalali.blog/2010/07/managing-zfs-datasets/</link>
+    <pubDate>Fri, 09 Jul 2010 00:00:00 &#43;0000</pubDate>
+    <author>Masoud Kalali</author>
+    <guid>https://kalali.blog/2010/07/managing-zfs-datasets/</guid>
+    <description><![CDATA[Introduction ZFS pools provide us with the underlying storage with which we can create files and directories inside it right after we create it. But OpenSolaris and ZFS provides more than that by introducing ZFS datasets&hellip;
+In this recipe we will work on top of a zfs pool named fpool and the default root pool named rpool. So before continuing on this recipe we should have a pool named fpool created.]]></description>
 </item>
 </channel>
 </rss>
