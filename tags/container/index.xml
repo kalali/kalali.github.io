@@ -1,0 +1,17 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>Container - Tag - The Pensieve - Masoud Kalali&#39;s Blog</title>
+        <link>https://kalali.blog/tags/container/</link>
+        <description>Container - Tag - The Pensieve - Masoud Kalali&#39;s Blog</description>
+        <generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>kalali@gmail.com (Masoud Kalali)</managingEditor>
+            <webMaster>kalali@gmail.com (Masoud Kalali)</webMaster><copyright>This work is licensed under a Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)</copyright><lastBuildDate>Mon, 12 Jul 2010 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://kalali.blog/tags/container/" rel="self" type="application/rss+xml" /><item>
+    <title>Managing and Administrating OpenSolaris Zones</title>
+    <link>https://kalali.blog/2010/07/managing-and-administrating-opensolaris-zones/</link>
+    <pubDate>Mon, 12 Jul 2010 00:00:00 &#43;0000</pubDate>
+    <author>Masoud Kalali</author>
+    <guid>https://kalali.blog/2010/07/managing-and-administrating-opensolaris-zones/</guid>
+    <description><![CDATA[Introduction The Solaris Zones provide us with kernel level virtualization allowing us to create multiple virtualized environments on top of the host system kernel. Each one of these virtualized environment is isolated from host and other virtualized environments despite running on the same Kernel which is provided by the host or global zone.
+A typical example of using zones can be hosting different applications like the HTTP server, different application server instances for different applications, and the database server in separate zones.]]></description>
+</item>
+</channel>
+</rss>

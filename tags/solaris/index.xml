@@ -42,7 +42,7 @@
     <pubDate>Thu, 25 Nov 2010 00:00:00 &#43;0000</pubDate>
     <author>Masoud Kalali</author>
     <guid>https://kalali.blog/2010/11/configuring-solaris-link-aggregation-ethernet-bonding/</guid>
-    <description><![CDATA[Link aggregation or commonly known Ethernet bonding allows us to enhance the network availability and performance by combining multiple network interfaces together and form an aggregation of those interfaces which act as a single network interface with greatly enhanced availability and performance.
+    <description><![CDATA[Link aggregation or commonly known Ethernet bonding allows us to enhance the network availability and performance by combining multiple network interfaces together and form an aggregation of those interface_names which act as a single network interface with greatly enhanced availability and performance.
 When we aggregate two or more network interfaces, we are forming a new network interface on top of those physical interfaces combined in the link layer.
 We need to have at least two network interfaces in our machine to create a link aggregation.]]></description>
 </item>
@@ -57,6 +57,15 @@ OpenSolaris support both legacy file systems like UNIX File System (UFS) and its
 As you can see we can partition each storage device into one or more volumes with different file systems.]]></description>
 </item>
 <item>
+    <title>Managing and Administrating OpenSolaris Zones</title>
+    <link>https://kalali.blog/2010/07/managing-and-administrating-opensolaris-zones/</link>
+    <pubDate>Mon, 12 Jul 2010 00:00:00 &#43;0000</pubDate>
+    <author>Masoud Kalali</author>
+    <guid>https://kalali.blog/2010/07/managing-and-administrating-opensolaris-zones/</guid>
+    <description><![CDATA[Introduction The Solaris Zones provide us with kernel level virtualization allowing us to create multiple virtualized environments on top of the host system kernel. Each one of these virtualized environment is isolated from host and other virtualized environments despite running on the same Kernel which is provided by the host or global zone.
+A typical example of using zones can be hosting different applications like the HTTP server, different application server instances for different applications, and the database server in separate zones.]]></description>
+</item>
+<item>
     <title>OpenSolaris Networking In Details</title>
     <link>https://kalali.blog/2010/07/opensolaris-networking-in-details/</link>
     <pubDate>Fri, 09 Jul 2010 00:00:00 &#43;0000</pubDate>
@@ -66,7 +75,16 @@ As you can see we can partition each storage device into one or more volumes wit
 Learning netstat command The netstat command is well known for checking the active connections status in a system but it can provide a fair deal of other diagnostics. Following sample command shows some of the netstat use cases.]]></description>
 </item>
 <item>
-    <title>Managing ZFS Datasets</title>
+    <title>Managing faults and services in OpenSolaris</title>
+    <link>https://kalali.blog/2010/06/managing-faults-and-services-in-opensolaris/</link>
+    <pubDate>Wed, 09 Jun 2010 00:00:00 &#43;0000</pubDate>
+    <author>Masoud Kalali</author>
+    <guid>https://kalali.blog/2010/06/managing-faults-and-services-in-opensolaris/</guid>
+    <description><![CDATA[Introduction In this chapter we will cover fault and services administration and management. The fault management mostly deals with failing hardware components while service management and administration deals with software failures. A hardware failure is a faulty RAM module and a sample of failing service component is an HTTP server stopped functioning properly.
+OpenSolaris is an enterprise operating system meaning that it should be resilient to both software and hardware failures and automatically recover from the failure and repair itself or in cases when it is not possible for the OS to repair and recover, it should notify some administrator to take action.]]></description>
+</item>
+<item>
+    <title>In depth tutorial on managing ZFS Datasets</title>
     <link>https://kalali.blog/2010/05/managing-zfs-datasets/</link>
     <pubDate>Sun, 09 May 2010 00:00:00 &#43;0000</pubDate>
     <author>Masoud Kalali</author>

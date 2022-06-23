@@ -1,0 +1,1658 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>Managing faults and services in OpenSolaris - The Pensieve - Masoud Kalali&#39;s Blog</title><meta name="Description" content="Masoud Kalali&#39;s personal blog. Covering subjects ranging from tech strategy, leadership, software architecture, cloud native, and software development in general."><meta property="og:title" content="Managing faults and services in OpenSolaris" />
+<meta property="og:description" content="Introduction In this chapter we will cover fault and services administration and management. The fault management mostly deals with failing hardware components while service management and administration deals with software failures. A hardware failure is a faulty RAM module and a sample of failing service component is an HTTP server stopped functioning properly.
+OpenSolaris is an enterprise operating system meaning that it should be resilient to both software and hardware failures and automatically recover from the failure and repair itself or in cases when it is not possible for the OS to repair and recover, it should notify some administrator to take action." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://kalali.blog/2010/06/managing-faults-and-services-in-opensolaris/" /><meta property="og:image" content="https://kalali.blog/img/avatar.jpg"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2010-06-09T00:00:00+00:00" />
+<meta property="article:modified_time" content="2010-06-09T00:00:00+00:00" /><meta property="og:site_name" content="My cool site" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://kalali.blog/img/avatar.jpg"/>
+
+<meta name="twitter:title" content="Managing faults and services in OpenSolaris"/>
+<meta name="twitter:description" content="Introduction In this chapter we will cover fault and services administration and management. The fault management mostly deals with failing hardware components while service management and administration deals with software failures. A hardware failure is a faulty RAM module and a sample of failing service component is an HTTP server stopped functioning properly.
+OpenSolaris is an enterprise operating system meaning that it should be resilient to both software and hardware failures and automatically recover from the failure and repair itself or in cases when it is not possible for the OS to repair and recover, it should notify some administrator to take action."/>
+<meta name="application-name" content="The Pensieve - Masoud Kalali&#39;s Blog">
+<meta name="apple-mobile-web-app-title" content="The Pensieve - Masoud Kalali&#39;s Blog"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://kalali.blog/2010/06/managing-faults-and-services-in-opensolaris/" /><link rel="prev" href="https://kalali.blog/2010/06/introducing-nio-2-jsr-203-part-2-the-basics/" /><link rel="next" href="https://kalali.blog/2010/06/introducing-nio-2-jsr-203-part-3-file-system-attributes-and-permissions-support-in-nio-2/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css"></noscript><link rel="preload" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css"></noscript><meta name="google-site-verification" content="cDJVSx1L3UB6AwrPKeSQszOyhtjHYvPYkDxZw_Me4Z4" /><meta name="msvalidate.01" content="cDJVSx1L3UB6AwrPKeSQszOyhtjHYvPYkDxZw_Me4Z4" /><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Managing faults and services in OpenSolaris",
+        "inLanguage": "en",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/kalali.blog\/2010\/06\/managing-faults-and-services-in-opensolaris\/"
+        },"image": [{
+                            "@type": "ImageObject",
+                            "url": "https:\/\/kalali.blog\/img\/preview.png",
+                            "width":  1027 ,
+                            "height":  833 
+                        }],"genre": "posts","keywords": "Solaris, Networking, Fault Handling, Services, OpenSolaris","wordcount":  6427 ,
+        "url": "https:\/\/kalali.blog\/2010\/06\/managing-faults-and-services-in-opensolaris\/","datePublished": "2010-06-09T00:00:00+00:00","dateModified": "2010-06-09T00:00:00+00:00","license": "This work is licensed under a Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)","publisher": {
+            "@type": "Organization",
+            "name": "Masoud Kalali"},"author": {
+                "@type": "Person",
+                "name": "Masoud Kalali"
+            },"description": ""
+    }
+    </script></head>
+    <body data-header-desktop="auto" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="The Pensieve - Masoud Kalali&#39;s Blog">The Pensieve - Masoud Kalali&#39;s Blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/" title="Blog posts"> Posts </a><a class="menu-item" href="/tags/" title="All the blog tags"> Tags </a><a class="menu-item" href="/categories/" title="List of all categories I blogged bout"> Categories </a><a class="menu-item" href="/about/" title="About Masoud Kalali, Author"> About </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="The Pensieve - Masoud Kalali&#39;s Blog">The Pensieve - Masoud Kalali&#39;s Blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        Cancel
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="Blog posts">Posts</a><a class="menu-item" href="/tags/" title="All the blog tags">Tags</a><a class="menu-item" href="/categories/" title="List of all categories I blogged bout">Categories</a><a class="menu-item" href="/about/" title="About Masoud Kalali, Author">About</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><div class="search-dropdown desktop">
+        <div id="search-dropdown-desktop"></div>
+    </div>
+    <div class="search-dropdown mobile">
+        <div id="search-dropdown-mobile"></div>
+    </div><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content always-active" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">Managing faults and services in OpenSolaris</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="https://www.linkedin.com/in/masoudkalali/" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>Masoud Kalali</a></span>&nbsp;<span class="post-category">included in <a href="/categories/solaris/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Solaris</a>&nbsp;<a href="/categories/old-blog-migrated-content/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Old Blog Migrated Content</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2010-06-09">2010-06-09</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;6427 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;31 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#getting-ready">Getting ready</a></li>
+    <li><a href="#how-to-do-it">How to do it&hellip;</a></li>
+    <li><a href="#how-it-works">How it works&hellip;</a></li>
+    <li><a href="#theres-more">There&rsquo;s more&hellip;</a>
+      <ul>
+        <li><a href="#notifying-the-fault-manager-about-a-repair-or-replacement">Notifying the Fault Manager about a repair or replacement</a></li>
+        <li><a href="#administrating-fault-manager-log-files">Administrating Fault Manager Log files</a></li>
+      </ul>
+    </li>
+    <li><a href="#see-also">See also</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#getting-ready-1">Getting ready</a></li>
+    <li><a href="#how-to-do-it-1">How to do it&hellip;</a></li>
+    <li><a href="#how-it-works-1">How it works&hellip;</a></li>
+    <li><a href="#see-also-1">See also</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#getting-ready-2">Getting ready</a></li>
+    <li><a href="#how-to-do-it-2">How to do it&hellip;</a></li>
+    <li><a href="#how-it-works-2">How it works&hellip;</a></li>
+    <li><a href="#theres-more-1">There&rsquo;s more&hellip;</a></li>
+    <li><a href="#see-also-2">See also</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#getting-ready-3">Getting ready</a></li>
+    <li><a href="#how-to-do-it-3">How to do it&hellip;</a></li>
+    <li><a href="#how-it-works-3">How it works&hellip;</a></li>
+    <li><a href="#see-also-3">See also</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#getting-ready-4">Getting ready</a></li>
+    <li><a href="#how-to-do-it-4">How to do it&hellip;</a></li>
+    <li><a href="#how-it-works-4">How it works&hellip;</a></li>
+    <li><a href="#see-also-4">See also</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#getting-ready-5">Getting ready</a></li>
+    <li><a href="#how-to-do-it-5">How to do it&hellip;</a></li>
+    <li><a href="#how-it-works-5">How it works&hellip;</a>
+      <ul>
+        <li><a href="#getting-list-of-process-a-service-depends-on">Getting list of process a service depends on</a></li>
+      </ul>
+    </li>
+    <li><a href="#see-also-5">See also</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#getting-ready-6">Getting ready</a></li>
+    <li><a href="#how-to-do-it-6">How to do it&hellip;</a></li>
+    <li><a href="#how-it-works-6">How it works&hellip;</a></li>
+    <li><a href="#see-also-6">See also</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#getting-ready-7">Getting ready</a></li>
+    <li><a href="#how-to-do-it-7">How to do it&hellip;</a></li>
+    <li><a href="#how-it-works-7">How it works&hellip;</a></li>
+    <li><a href="#see-also-7">See also</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#getting-ready-8">Getting ready</a></li>
+    <li><a href="#how-to-do-it-8">How to do it&hellip;</a></li>
+    <li><a href="#how-it-works-8">How it works&hellip;</a></li>
+    <li><a href="#see-also-8">See also</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h1 id="introduction">Introduction</h1>
+<p>In this chapter we will cover fault and services administration and
+management. The fault management mostly deals with failing hardware
+components while service management and administration deals with
+software failures. A hardware failure is a faulty RAM module and a
+sample of failing service component is an HTTP server stopped
+functioning properly.</p>
+<p>OpenSolaris is an enterprise operating system meaning that it should be
+resilient to both software and hardware failures and automatically
+recover from the failure and repair itself or in cases when it is not
+possible for the OS to repair and recover, it should notify some
+administrator to take action. OpenSolaris goes further and provides the
+administrators with relevant knowledge and diagnosis for the failure
+using the unified infrastructure for fault management which includes the
+following features.</p>
+<p>Both faults and service management is built on top of a unified fault
+management model capable of reconfiguring the faulty hardware and
+restarting a failing service. The framework connects administrators to
+the unified knowledge repository which contains information about the
+error, what could have caused the error and how the administrator can
+treat the problem.</p>
+<p>The fault management service is called <strong>Fault Management Daemon</strong>
+(<strong>FMD</strong>) and we may use <strong>SMF</strong> for the <strong>Service Management
+Framework</strong> which provides us with the required tools and infrastructure
+to manage the software services.</p>
+<p>The knowledge repository is accessible through the web interface by
+navigating to <a href="http://www.sun.com/msg/" target="_blank" rel="noopener noreffer">http://www.sun.com/msg/</a> address. Each entry in the
+knowledge repository is uniquely identified by its URI and the fault and
+service management framework is aware about all of these identifiers and
+how each one of them is associated with a fault in the hardware
+components or software services.</p>
+<h1 id="1-administrating-faults-using-fmadm-command">1. Administrating faults using fmadm command</h1>
+<p>In this recipe we will study how we can use the fmadm command to get the
+list of faulty components along with the detailed information about the
+fault.</p>
+<h2 id="getting-ready">Getting ready</h2>
+<p>Before starting this recipe we should have a command console open and
+then we can proceed with using the fmadm command.</p>
+<h2 id="how-to-do-it">How to do it&hellip;</h2>
+<p>The most basic form of using fmadm command is using its faulty
+subcommand as follow
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#fmadm faulty</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+When we have no error in the system, this command will not show anything
+and exit normally but with a faulty component the output will be
+different, for example in the following sample we have a faulty ZFS pool
+because some of its underlying devices are missing.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/post-img/3180_07_01.png"
+        data-srcset="/post-img/3180_07_01.png, /post-img/3180_07_01.png 1.5x, /post-img/3180_07_01.png 2x"
+        data-sizes="auto"
+        alt="/post-img/3180_07_01.png"
+        title="/post-img/3180_07_01.png" width="659" height="356" /></p>
+<p>Starting from top we have</p>
+<ul>
+<li>
+<p>Identification record: This record consisting of the timestamp, a
+unique event ID, a message Id letting us know which knowledge
+repository article we can refer to for learning more about the
+problem and troubleshooting and finally the fault severity which can
+be <strong>Minor</strong> or <strong>Major</strong>.</p>
+</li>
+<li>
+<p><strong>Fault Class</strong>: This field allows us to know what is the device
+hierarchy causing this fault</p>
+</li>
+<li>
+<p><strong>Affects</strong>: tells us which component of our system is affected and
+how. In this instance some devices are missing and therefore the
+fault manager takes the Zpool out of service.</p>
+</li>
+<li>
+<p>Problem in: shows more details about the problem root. In this case
+the device id.</p>
+</li>
+<li>
+<p>Description: this field refer us to the a knowledge base article
+discussing this type of faults</p>
+</li>
+<li>
+<p>Response: Shows what action(s) were executed by fault manager to
+repair the problem.</p>
+</li>
+<li>
+<p><strong>Impact</strong>: describe the effect of the fault on the overall system
+stability and the component itself</p>
+</li>
+<li>
+<p>Action: a quick tip on the next step administrator should follow to
+shoot the problem. This step is fully described in the knowledge
+base article we were referred in the description field.</p>
+</li>
+</ul>
+<p>Following figure shows the output for proceeding with the suggested
+action.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/post-img/3180_07_02.png"
+        data-srcset="/post-img/3180_07_02.png, /post-img/3180_07_02.png 1.5x, /post-img/3180_07_02.png 2x"
+        data-sizes="auto"
+        alt="/post-img/3180_07_02.png"
+        title="/post-img/3180_07_02.png" width="620" height="262" /></p>
+<p>As we can see the same article we were referred to, is mentioned here
+again. We can see that two of the three devices have failed and fpool
+had no replica for each of those failed device to replace them
+automatically.</p>
+<p>If we had a mirrored pool and one of the three devices were out of
+service, the system could automatically take corrective actions and
+replace continue working in a degraded status until we replace the
+faulty device.</p>
+<h2 id="how-it-works">How it works&hellip;</h2>
+<p>The fault management framework is a plug-able framework consisting of
+diagnosis engines and subsystem agents. Agents and diagnosis engine
+contains the logic for assessing the problem, performing corrective
+actions if possible and filing the relevant fault record into the fault
+database.</p>
+<p>To see a list of agents and engines plugged into the fault management
+framework we can use config subcommand of the fmadm command. Following
+figure shows the output for this command.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/post-img/3180_07_03.png"
+        data-srcset="/post-img/3180_07_03.png, /post-img/3180_07_03.png 1.5x, /post-img/3180_07_03.png 2x"
+        data-sizes="auto"
+        alt="/post-img/3180_07_03.png"
+        title="/post-img/3180_07_03.png" width="555" height="244" /></p>
+<p>As we can see in the figure, there are two engines deployed with
+OpenSolaris, eft and the zfs-diagnosis. The eft, standing for
+<strong>Eversholt Fault Diagnosis Language</strong>, is responsible for assessing and
+analyzing hardware faults while the zfs-diagnosis is a ZFS specific
+engine which analyzes and diagnoses ZFS problems.</p>
+<h2 id="theres-more">There&rsquo;s more&hellip;</h2>
+<p>The fmadm is a powerful utility we which can perform much more than what
+we discussed. Here we can see few other tasks we can perform using the
+fmadm.</p>
+<h3 id="notifying-the-fault-manager-about-a-repair-or-replacement">Notifying the Fault Manager about a repair or replacement</h3>
+<p>We can use the repaired subcommand of the fmadm utility to notify the
+FMD about a fault being repaired so it changes the component status and
+allows it to get enabled and utilized.</p>
+<p>For example to notify the FMD about repairing the missing underlying
+device of the ZFS pool we can use the following command.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#fmadm repaired zfs://pool=fpool/vdev=7f8fb1c77433c183</span></span></span></code></pre></td></tr></table>
+</div>
+</div></p>
+<h3 id="administrating-fault-manager-log-files">Administrating Fault Manager Log files</h3>
+<p>We can rotate the log files created by the FMD when we want to keep a
+log file in a specific status or when we want to have a fresh log using
+the rotate subcommand as shown below.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#fmadm rotate errlog \| fltlog</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+The fltlog and errlog are two log files residing in the /var/fm/fmd/
+directory storing all event information regarding faults and the errors
+causing them.</p>
+<h2 id="see-also">See also</h2>
+<p>To learn more about fmadm command we can use the man pages and the short
+help provided with the distribution. Following commands shows how we can
+invoke the man pages and the short help message.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#man fmadm</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#fmadm --help</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+Recipe 2 and Recipe 3 of this chapter are good steps to follow after
+learning the basics in this recipe. Oracle self healing article
+repository located at <a href="http://www.sun.com/msg/" target="_blank" rel="noopener noreffer">http://www.sun.com/msg/</a> is our friend and
+provides us with fair deal of knowledge when we just need to feed in the
+message id we retrieved from the fault reports.</p>
+<p>A good starting resource is the FM wiki page which is located at
+<a href="http://wikis.sun.com/display/OpenSolarisInfo/Fault&#43;Management" target="_blank" rel="noopener noreffer">http://wikis.sun.com/display/OpenSolarisInfo/Fault+Management</a></p>
+<h1 id="2-using-fmstat-to-view-fault-management-modules-statistics">2. Using fmstat to view fault management modules statistics</h1>
+<p>In this recipe we will see how we can see statistics about faults in our
+operating system and its underlying hardware using the fmstat command.</p>
+<h2 id="getting-ready-1">Getting ready</h2>
+<p>We will use fmstat which is a console command therefore we will need to
+be in the console window or a virtual terminal to use the command. To
+open a terminal hit <em>ALT+F2</em> and type gnome-terminal.</p>
+<h2 id="how-to-do-it-1">How to do it&hellip;</h2>
+<p>Invoking fmstat without any parameter will show all statistics for all
+modules briefly like the following figure.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/post-img/3180_07_06.png"
+        data-srcset="/post-img/3180_07_06.png, /post-img/3180_07_06.png 1.5x, /post-img/3180_07_06.png 2x"
+        data-sizes="auto"
+        alt="/post-img/3180_07_06.png"
+        title="/post-img/3180_07_06.png" width="800" height="259" /></p>
+<p>There are several columns in the output, following list summarize
+important columns.</p>
+<p>The ev_recv indicates the number of event received for this module</p>
+<p>The ev_acpt indicates the number of events accepted for this module</p>
+<p>The svc_t indicates the time spent for servicing the events</p>
+<p>The above command only shows overall statistics for the each module and
+does not provide what were the faults for each module. To see the
+detailed statistics for each module we can use the following syntax of
+fmstat command.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">fmdstat -m &lt;module/&gt; -a</span></span></code></pre></td></tr></table>
+</div>
+</div>
+For example the fmd-self-diagnosis which is a module for keeping the FMD
+healthy had 4 errors; let’s see more detailed stats for this module.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/post-img/3180_07_07.png"
+        data-srcset="/post-img/3180_07_07.png, /post-img/3180_07_07.png 1.5x, /post-img/3180_07_07.png 2x"
+        data-sizes="auto"
+        alt="/post-img/3180_07_07.png"
+        title="/post-img/3180_07_07.png" width="630" height="602" /></p>
+<p>The fmstat command can do more than showing one time snapshot of the
+errors, it can collect and display statist continually which we can use
+it in our scripts or task automation. We can use following syntax to
+view the stats in time based interval.</p>
+<p>fmstat interval count</p>
+<p>For example to see the zfs-diagnosis module stats we 10 times with 5
+seconds interval we can use the following command
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#fmstat –m zfs-diagnosis 5 10</span></span></span></code></pre></td></tr></table>
+</div>
+</div></p>
+<h2 id="how-it-works-1">How it works&hellip;</h2>
+<p>The fault management system stores all of its messages in the
+/var/fmd/errlog and /var/fm/fltlog and when we invoke a fault management
+command the command looks for the relevant records in this file, cross
+reference them with the fault management database to connect the fault
+with knowledge base URLs and descriptions if required and then show the
+result.</p>
+<h2 id="see-also-1">See also</h2>
+<p>We can use the man pages for fmstat or its short help for more
+information about the command.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#man fmstat</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#fmstat --help</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+The recipe 1 and recipe 3 of this chapter can be a great help for
+understanding and using the fault management system of OpenSolaris.</p>
+<h1 id="3-using-fmdump-to-analyze-the-fault-management-logs">3. Using fmdump to analyze the fault management logs</h1>
+<p>The fmdump command is the command we will use when we need to see
+further details compared to what the fmadm can gives us. Basically
+fmdump gives us a more direct and low level access to the error logs
+content rather than formatting and filtering before displaying the
+messages.</p>
+<h2 id="getting-ready-2">Getting ready</h2>
+<p>We should fire up a console or a virtual terminal before using this
+command as it is a CLI command.</p>
+<h2 id="how-to-do-it-2">How to do it&hellip;</h2>
+<p>The command is very flexible and relatively simple to use. The most
+basic use of the command is using it with no parameter which will show a
+list of one line records each associated with a fault similar to the
+following figure.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/post-img/3180_07_08.png"
+        data-srcset="/post-img/3180_07_08.png, /post-img/3180_07_08.png 1.5x, /post-img/3180_07_08.png 2x"
+        data-sizes="auto"
+        alt="/post-img/3180_07_08.png"
+        title="/post-img/3180_07_08.png" width="581" height="116" /></p>
+<p>The column starts with the fault timestamp, the fault unique ID and the
+message id which we can use to find knowledge base article related to
+this type of fault in the sun fault management knowledgebase.</p>
+<p>For example we can use the <a href="http://sun.com/msg/ZFS-8000-D3" target="_blank" rel="noopener noreffer">http://sun.com/msg/ZFS-8000-D3</a> to see what
+the reason for the second fault is and what we can do to fix the
+problem.</p>
+<p>The fmdump command provides us with a fair level of flexibility in using
+it. Following table shows what are its important parameters and use
+cases.</p>
+<table>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 79%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Description, Sample use</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>-u &lt;fault ID&gt;</td>
+<td><p>Select the fault identified with the given uuid</p>
+<p># fmdump -u 252601b6-98e6-4b5d-e216-cb42d1f028f0</p></td>
+</tr>
+<tr class="even">
+<td>-v</td>
+<td><p>Shows the selected fault brief information</p>
+<p># fmdump -v -u 252601b6-98e6-4b5d-e216-cb42d1f028f0</p></td>
+</tr>
+<tr class="odd">
+<td>-V</td>
+<td><p>Shows detailed information about the selected fault</p>
+<p># fmdump -V -u 252601b6-98e6-4b5d-e216-cb42d1f028f0</p></td>
+</tr>
+<tr class="even">
+<td>-c</td>
+<td>Select a class of faults for fmdump to operate on</td>
+</tr>
+<tr class="odd">
+<td>-e</td>
+<td><p>Shows errors listed stored in the fault management logs [for the
+selected fault class]</p>
+<p># fmdump -e -c ereport.fs.zfs.zpool</p></td>
+</tr>
+<tr class="even">
+<td>-t and -T</td>
+<td><p>Select events occurred after the selected time or before the
+specified time.</p>
+<p># fmdump -t 20:50 -V -e -c ereport.fs.zfs.zpool</p></td>
+</tr>
+</tbody>
+</table>
+<p>Let’s see what is output for one the commands we discussed above.
+Assuming that we want to see brief information about
+252601b6-98e6-4b5d-e216-cb42d1f028f0 we can use the following command:
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#fmdump -v -u 252601b6-98e6-4b5d-e216-cb42d1f028f0</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+Following figure shows the output for this command:</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/post-img/3180_07_09.png"
+        data-srcset="/post-img/3180_07_09.png, /post-img/3180_07_09.png 1.5x, /post-img/3180_07_09.png 2x"
+        data-sizes="auto"
+        alt="/post-img/3180_07_09.png"
+        title="/post-img/3180_07_09.png" width="595" height="162" /></p>
+<p>We can combine the parameters in any way we want, they just apply
+filters over the log entries before displaying them like -t and -T or
+include the detailed information about the event like -V or -v.</p>
+<h2 id="how-it-works-2">How it works&hellip;</h2>
+<p>This utility acts as an interface between administrator and raw log
+files. The command basically reads the log files and sort, filter; show
+its content in a readable way for administrators.</p>
+<h2 id="theres-more-1">There&rsquo;s more&hellip;</h2>
+<p>To learn more about the fmdump command we can review its man pages or
+the short help.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#fmdump --help</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#man fmdump</span></span></span></code></pre></td></tr></table>
+</div>
+</div></p>
+<h2 id="see-also-2">See also</h2>
+<p>Recipe 1 and recipe 2 of this chapter can be helpful for understanding
+the overall fault management in OpenSolaris.</p>
+<h1 id="4-checking-fault-management-support-for-the-system-components">4. Checking fault management support for the system components</h1>
+<p>We cannot expect all of our hardware components and software services to
+be supported by the fault management framework because basically
+different components shows different symptoms when they are failing and
+not all of them are known to the fault management system.</p>
+<h2 id="getting-ready-3">Getting ready</h2>
+<p>We can use the fmtopo <strong>CLI</strong> utility to check which system components
+are supported by fault management and which components are not. To start
+we need to fire a console or switch to a virtual terminal.</p>
+<h2 id="how-to-do-it-3">How to do it&hellip;</h2>
+<p>Invoking the fmtopo command with no parameter will show all of the fault
+management supported resources while we can filter the result using the
+wildcard characters. Following figure shows a part of the output we
+might get when invoking the fmtopo -p command. Let’s see what does each
+of the abbreviation means.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/post-img/3180_07_21_0.png"
+        data-srcset="/post-img/3180_07_21_0.png, /post-img/3180_07_21_0.png 1.5x, /post-img/3180_07_21_0.png 2x"
+        data-sizes="auto"
+        alt="/post-img/3180_07_21_0.png"
+        title="/post-img/3180_07_21_0.png" width="819" height="84" /></p>
+<p>The <strong>hc</strong> stands for <strong>Hardware Component</strong> and specifies a resource
+that can detect an error</p>
+<p>Th <strong>ASRU</strong> stands for <strong>Automated System Recovery Unit</strong> and specifies
+any resource that must be disabled in the system to prevent a fault it
+is causing.</p>
+<p>The <strong>FRU</strong> stands for <strong>Field Replaceable Unit</strong> and specifies the
+resource which should be replaced to repair a fault.</p>
+<p>The Label string specifies the location of the resource. For example MB
+or SLOT #.</p>
+<p>For example to see anything related to motherboard in the supported list
+we can use the following command.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#fmtopo -V &#39;\*/motherboard=0&#39;</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+The fmtopo command is very flexible and lets us extract fine amount of
+information about the supported components. For example we can use the
+following command to export the entire result as xml format and store it
+into a file.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#fmtopo -x &gt;/export/home/masoud/aa.xml</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+Or we can use it to view the CPU units in the system as shown in the
+following figure.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/post-img/3180_07_21.png"
+        data-srcset="/post-img/3180_07_21.png, /post-img/3180_07_21.png 1.5x, /post-img/3180_07_21.png 2x"
+        data-sizes="auto"
+        alt="/post-img/3180_07_21.png"
+        title="/post-img/3180_07_21.png" width="452" height="136" /></p>
+<h2 id="how-it-works-3">How it works&hellip;</h2>
+<p>The fmtopo command checks the available resources in the system and
+cross reference the list of these resources with the list of know and
+supported resources and finally print the result.</p>
+<h2 id="see-also-3">See also</h2>
+<p>You can learn more about the fmtopo and its usage by referring to its
+man pages or the online reference guide located at
+<a href="http://docs.sun.com/app/docs/doc/819-3196/gemgw?a=view" target="_blank" rel="noopener noreffer">http://docs.sun.com/app/docs/doc/819-3196/gemgw?a=view</a></p>
+<h1 id="5-authoring-smf-service-manifest">5. Authoring SMF service manifest</h1>
+<p>SMF services are basically daemons staying in background and waiting for
+the requests which they should server, when the request come the daemon
+wake ups, serve the request and then wait for the next request to come.</p>
+<p>The services are building using software development platforms and
+languages but they have one common aspect which we are going to discuss
+here. The service manifests which describe the service for the SMF and
+let the SMF manage and understand the service life cycle.</p>
+<h2 id="getting-ready-4">Getting ready</h2>
+<p>To write a service manifest we should be familiar with XML and the
+service manifest schema located at
+/usr/share/lib/xml/dtd/service_bundle.dtd.1. This file specifies what
+elements can be used for describing a service for the SMF.</p>
+<p>Next thing we need is a text editor and preferable an XML aware text
+editor. The <strong>Gnome</strong> <strong>gedit</strong> can do the task for us.</p>
+<h2 id="how-to-do-it-4">How to do it&hellip;</h2>
+<p>The service manifest file composed of 6 important elements which are
+listed below.</p>
+<p>The service declaration: specifies the service name, type and
+instantiation model</p>
+<p>Zero or more dependency declaration elements: Specifies the service
+dependencies</p>
+<p>Lifecycle methods: Specifies the start, stop and refresh methods</p>
+<p>Property groups: Which property groups the service description has.</p>
+<p>Stability element: how stable the service interface is considering
+version changes</p>
+<p>Template element: more human readable information for the service.</p>
+<p>To describe a service, first thing we need to do is identifying the
+service itself. Following snippet shows how we can declare a service
+named jws.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="nt">&lt;service</span> <span class="na">name=</span><span class="s">&#39;network/jws’ type=&#39;</span><span class="err">service&#39;</span> <span class="na">version=</span><span class="s">&#39;1&#39;</span><span class="nt">/&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;single_instance/&gt;</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+The first line specifies the service name, version and its type. The
+service name attribute forms the FMRI of the service which for this
+instance will be svc:/network/jws. In the second line we are telling SMF
+that it should only instantiate one instance of this service which will
+be svc:/network/jws:default. We can use the create_default_instance
+element to manipulate automatic creation of the default instance.</p>
+<p>All of the elements which we are going to mention in the following
+sections of this recipe are immediate child elements of the service
+element which itself is a child element of the service_bundle element.</p>
+<p>The next important element is <strong>dependency</strong> declaration element. We can
+have one or more of this element in our service manifest.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="nt">&lt;dependency</span> <span class="na">name=</span><span class="s">&#39;net-physica&#39;</span> <span class="na">grouping=</span><span class="s">&#39;require_all &#39;</span>
+</span></span><span class="line"><span class="cl"><span class="na">restart_on=</span><span class="s">&#39;none&#39;</span> <span class="na">type=</span><span class="s">&#39;service&#39;</span><span class="nt">/&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;service_fmri</span> <span class="na">value=</span><span class="s">&#39;svc:/network/physical&#39;</span><span class="nt">/&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/dependency&gt;</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+Here we are telling that our service depends on the
+svc:/network/physical service and this service needs to be online before
+our service can start. We will discuss service dependencies in recipe 7
+of this chapter. Other values for the grouping attribute are as follow:</p>
+<p>The require_all which represent that all services marked with this
+grouping must be online before our service came online</p>
+<p>The require_any which represents that any of the services in this
+grouping suffice and our service can become online if one of them is
+online</p>
+<p>The optional_all presence of the services marked with this grouping is
+optional for our service. Our service works with or without them.</p>
+<p>The exclude_all: specifies the services which may have conflict with our
+service and we cannot become online in presence of them</p>
+<p>The next important elements are specifying how the SMF should start,
+stop and refresh the service. For these tasks we use three exec_method
+elements as follow:
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="nt">&lt;exec_method</span> <span class="na">name=</span><span class="s">&#39;start&#39;</span> <span class="na">type=</span><span class="s">&#39;method&#39;</span> <span class="na">exec=</span><span class="s">&#39;/opt/jws/runner start&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="na">timeout_seconds=</span><span class="s">&#39;60&#39;</span><span class="nt">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/exec_method&gt;</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+This is the start method, SMF will invoke what the exec attribute
+specifies when it want to start the service.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="nt">&lt;exec_method</span> <span class="na">name=</span><span class="s">&#39;stop&#39;</span> <span class="na">type=</span><span class="s">&#39;method&#39;</span> <span class="na">exec=</span><span class="s">&#39;:kill&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="na">timeout_seconds=</span><span class="s">&#39;60&#39;</span><span class="nt">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/exec_method&gt;</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+The SMF will terminate the process it started for the service using a
+kill signal. By default it uses the SIGTERM but we can specify our own
+signal. For example we can use &lsquo;kill -9&rsquo; or &lsquo;kill -HUP&rsquo; or any other
+signal we find appropriate for our service termination.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="nt">&lt;exec_method</span> <span class="na">name=</span><span class="s">&#39;refresh&#39;</span> <span class="na">type=</span><span class="s">&#39;method&#39;</span> <span class="na">exec=</span><span class="s">&#39;/opt/jws/runner
+</span></span></span><span class="line"><span class="cl"><span class="s">reload_cof&#39;</span> <span class="na">timeout_seconds=</span><span class="s">&#39;60&#39;</span><span class="nt">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/exec_method&gt;</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+The final method which we should describe is the refresh method in which
+we should reload the service configuration without disturbing its
+function.</p>
+<p>The start and stop methods description are required to be present in the
+manifest in order to import it into the SMF repository but the refresh
+method description and implementation is optional.</p>
+<p>The timeout_seconds=&lsquo;60&rsquo; specifies that the SMF should wait for 60
+seconds before aborting the method execution and retrying it over. We
+can use longer timeout when we know that the execution of the method
+take longer or lower timeout when we know that our service starts
+sooner.</p>
+<p>The property group elements specify which property groups the SMF should
+associate with the service. We can use as many of the SMF built-in
+property groups or define our own property groups. We will discuss more
+about custom property groups in recipe 8.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="nt">&lt;property_group</span> <span class="na">name=</span><span class="s">&#39;startd&#39;</span> <span class="na">type=</span><span class="s">&#39;framework&#39;</span><span class="nt">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;propval</span> <span class="na">name=</span><span class="s">&#39;ignore_error&#39;</span> <span class="na">type=</span><span class="s">&#39;astring&#39;</span> <span class="na">value=</span><span class="s">&#39;core,signal&#39;</span><span class="nt">/&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/property_group&gt;</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+The above snippet shows how we can define using a framework built-in
+property group. The built-in property groups and their properties have
+meaning for the SMF framework and change its way of dealing with our
+service. For example the above snippet says that the SMF should ignore
+core dump termination of suppresses of this service via a kill signal
+from another application.</p>
+<p>Next important element is the stability element which specifies whether
+the property names, service name, its dependencies and other service
+attributes may or may not change for the next release. For example the
+following snippet specifies that the service attributes may change in
+the next release.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="nt">&lt;stability</span> <span class="na">value=</span><span class="s">&#39;Unstable&#39;</span><span class="nt">/&gt;</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+Finally we have the template element which contains descriptive
+information about the service, for example we can have something like
+the following element which describes our service for human users.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="nt">&lt;template&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;common_name&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;loctext</span> <span class="na">xml:lang=</span><span class="s">’Java&#39;</span><span class="nt">&gt;</span>Java Network Server <span class="nt">&lt;/loctext&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/common_name&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;documentation&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;manpage</span> <span class="na">title=</span><span class="s">&#39;JWS&#39;</span> <span class="na">section=</span><span class="s">&#39;1M&#39;</span> <span class="na">manpath=</span><span class="s">&#39;/usr/share/man&#39;</span><span class="nt">/&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/documentation&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/template&gt;</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+The entire element is self describing except for the man page element
+which specifies where the man utility command should look for the man
+pages for the jws service.</p>
+<p>All of these elements should be saved into an XML file with the
+following structure:
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="cp">&lt;?xml version=&#39;1.0&#39;?&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cp">&lt;!DOCTYPE service_bundle SYSTEM
+</span></span></span><span class="line"><span class="cl"><span class="cp">&#39;/usr/share/lib/xml/dtd/service_bundle.dtd.1&#39;&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;service_bundle</span> <span class="err">...</span><span class="nt">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;service</span> <span class="err">...</span><span class="nt">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;single_instance</span> <span class="err">...</span><span class="nt">/&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;dependency</span> <span class="err">...</span> <span class="nt">/&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;exec_method...</span> <span class="nt">/&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;property_group</span> <span class="err">...</span><span class="nt">/&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;stability</span> <span class="err">...</span><span class="nt">/&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;template</span> <span class="err">...</span><span class="nt">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/service&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/service_bundle&gt;</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+This is a raw representation of what the service manifest bare bone cal
+look like. The syntax is not accurate and the attributes and child
+elements are omitted to make it easier to scan by the eyes.</p>
+<p>The service_bundle, service, and start and stop method elements are
+mandatory while other elements are optional.</p>
+<p>Now we should install the service into the SMF repository and then
+administrate it. For installing the service we can use the following
+command.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#svccfg import /path/to/manifest.xml</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+Now it is time to review next three recipes to understand how to
+administrate, manage and configure this newly developed service.</p>
+<h2 id="how-it-works-4">How it works&hellip;</h2>
+<p>When we import the service manifest into the service repository, SMF
+will scan the service profiles and check whether this service is
+required to be enabled either directly or because of a dependent service
+or not. If required, the SMF will use the start method specified in the
+manifest to start the service. But before starting it, SMF will check
+its dependencies and start any required service recursively if they are
+not already online.</p>
+<h2 id="see-also-4">See also</h2>
+<p>Reviewing the XML schema located at
+/usr/share/lib/xml/dtd/service_bundle.dtd.1 and the next three recipes
+is recommended for grasping a better understanding of this recipe.</p>
+<h1 id="6-listing-services-and-viewing-service-details">6. Listing Services and viewing Service details</h1>
+<p>OpenSolaris service management framework or simple SMF is an extendible
+and customizable framework for managing software services. The
+management includes definition, dependency management, starting,
+stopping and watching the services for fail over recovery. In this
+recipe we will study how we can use svcs command to see list of the
+installed services and how to check the service health and diagnose its
+problems.</p>
+<h2 id="getting-ready-5">Getting ready</h2>
+<p>The svcs is a CLI utility so we should either open a console or switch
+to a virtual terminal.</p>
+<h2 id="how-to-do-it-5">How to do it&hellip;</h2>
+<p>The svcadm command has three primary functions listed below.</p>
+<p>Listing all services, either online, offline, enabled, disabled or
+faulty</p>
+<p>Showing a service detailed information</p>
+<p>Displaying service dependencies.</p>
+<p>The first use case is possible by simply invoking the svcs command, it
+will show all services which are in normal stat. Normal state means
+services which are enabled either online or offline.</p>
+<p>To see a list of services which are installed either disabled or enabled
+we can use the -a parameter when invoking the command.</p>
+<p>To see a list of all faulty services we can use the -x parameter when
+invoking the svcs command.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/post-img/3180_07_10.png"
+        data-srcset="/post-img/3180_07_10.png, /post-img/3180_07_10.png 1.5x, /post-img/3180_07_10.png 2x"
+        data-sizes="auto"
+        alt="/post-img/3180_07_10.png"
+        title="/post-img/3180_07_10.png" width="558" height="142" /></p>
+<p>In my case the DHCP service is faulty and the status message shows me
+some details about the problem along with the link of the knowledge base
+article that I can review to resolve the problem.</p>
+<p>In all of the above use cases we can add -pHv to see mode details about
+the listed services.</p>
+<p>Next important function of svcadm is checking status of a service. To
+see a service details or brief status record we can use one of the
+following svcs command’s syntaxes.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">svcs &lt;service name&gt;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">svcs -l &lt;service name&gt;</span></span></code></pre></td></tr></table>
+</div>
+</div>
+The important part of the command is the <service name> argument. The
+service name part can be one service name, multiple separate names
+separated by space or it can contain a wildcard representation of
+services we want to operate on. We can use any of the following formats
+for service name part or we can combine them together for example when
+we want to view details of all XVM services and a network service like
+ssh.</p>
+<p>The Fault Managed Resource Identifier (FMRI) format, for example
+svc:/network/smtp:sendmail</p>
+<p>The abbreviation format, for example network/smtp:sendmail</p>
+<p>The name matching patterns like network/*mail, network/smtp,
+smtp:sendmail, smtp or sendmail.</p>
+<p>Following figure shows how we can check the detailed status of our FTP
+service using the scvs command.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/post-img/3180_07_11.png"
+        data-srcset="/post-img/3180_07_11.png, /post-img/3180_07_11.png 1.5x, /post-img/3180_07_11.png 2x"
+        data-sizes="auto"
+        alt="/post-img/3180_07_11.png"
+        title="/post-img/3180_07_11.png" width="334" height="145" /></p>
+<p>All the details we can see are self explanatory except for the
+<strong>restarter</strong> which we will discuss in recipe 5 of this chapter.</p>
+<p>The pattern matching syntax of passing service name argument to svcs is
+very useful when we want to check status of several services with
+matching FMRIs. For example to see detailed status of all XVM services
+we can use the following command.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#svcs -l svc:/system/xvm/\*</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+To view details of all <strong>XVM</strong> services and the SSH service we can use
+the following combination of naming syntaxes.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#svcs -l svc:/system/xvm/\* ssh</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+Finally the last important function of this utility is checking a
+service dependency using the -d option. For example to check all
+dependencies of the SMTP service we can use the following command.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#svcs -d smtp</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+We can see the result of invoking this command below.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/post-img/3180_07_12.png"
+        data-srcset="/post-img/3180_07_12.png, /post-img/3180_07_12.png 1.5x, /post-img/3180_07_12.png 2x"
+        data-sizes="auto"
+        alt="/post-img/3180_07_12.png"
+        title="/post-img/3180_07_12.png" width="559" height="136" /></p>
+<p>The list shows which services the smtp service depends on to function
+properly and what is status of those services.</p>
+<h2 id="how-it-works-5">How it works&hellip;</h2>
+<p>Majority of the svcs utility tasks involves manipulating the service
+repository and service manifests which we discussed in recipe 5 and will
+discuss further in recipe 8 and 9.</p>
+<h3 id="getting-list-of-process-a-service-depends-on">Getting list of process a service depends on</h3>
+<p>To see the list of processes which a service depends on, we can use the
+-l -p parameters. For example to see detailed list of process which smtp
+service depends on them for functioning properly we can use the
+following command.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#svcs -l -p smtp</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+Following figure shows the sample output for the above command. Pay
+attention to the list of processes and their viability for the smtp
+service.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/post-img/3180_07_13.png"
+        data-srcset="/post-img/3180_07_13.png, /post-img/3180_07_13.png 1.5x, /post-img/3180_07_13.png 2x"
+        data-sizes="auto"
+        alt="/post-img/3180_07_13.png"
+        title="/post-img/3180_07_13.png" width="706" height="325" /></p>
+<p>We can see some similarities between the list of services the SMTP
+service depends of and the list of process. In the list of process we
+have an additional column letting us know whether the dependency is
+optional or not. This fall useful when we need to kill some process or
+services but we need to ensure that the service is not required for any
+other services to function properly.</p>
+<p>For example to check whether any of the network services is depending on
+the autofs service we can use a command similar to the following one.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#svcs -l -p svc:/network/\* \|grep autofs</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+For me the output is similar to the following figure suggesting that at
+least two other services have optional dependencies on this one.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/post-img/3180_07_14.png"
+        data-srcset="/post-img/3180_07_14.png, /post-img/3180_07_14.png 1.5x, /post-img/3180_07_14.png 2x"
+        data-sizes="auto"
+        alt="/post-img/3180_07_14.png"
+        title="/post-img/3180_07_14.png" width="574" height="70" /></p>
+<h2 id="see-also-5">See also</h2>
+<p>To learn more about SMF and services review recipe 5 of this chapter
+which discuss how to create a service manifest and basically install a
+service into OpenSolaris SMF.</p>
+<h1 id="7-administrating-services-using-svcadm-utility">7. Administrating services using svcadm utility</h1>
+<p>In this recipe we learn how to use the svcadm, which is one of the four
+common commands for dealing with services, to administrate the services.</p>
+<h2 id="getting-ready-6">Getting ready</h2>
+<p>The svcadm is a CLI utility so we should either be in a virtual terminal
+or fire a console to run it.</p>
+<h2 id="how-to-do-it-6">How to do it&hellip;</h2>
+<p>The svcadm utility has a set of subcommands which we use them to perform
+different administrative tasks. The command syntax is similar to the
+following schema:</p>
+<p>svcadm -v subcommand [parameters] &lt;service name(s)&gt;</p>
+<p>When we use the -v before a subcommand svcadm displays a verbose output
+of what it is doing. Following table shows the list of subcommands and
+their options</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>-r</th>
+<th>-s</th>
+<th>-t</th>
+<th>-I</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>enable</td>
+<td>*</td>
+<td>*</td>
+<td>*</td>
+<td></td>
+</tr>
+<tr>
+<td>disable</td>
+<td></td>
+<td>*</td>
+<td>*</td>
+<td></td>
+</tr>
+<tr>
+<td>mark</td>
+<td></td>
+<td></td>
+<td>*</td>
+<td>*</td>
+</tr>
+</tbody>
+</table>
+<p>The -r option specifies that all services required for the operand
+service will be enabled recursively</p>
+<p>The -s option specifies synchronous execution of commands which can be
+enabling services or disabling them</p>
+<p>The -t option specifies that the command should affect the service
+temporarily until the next restart.</p>
+<p>The -I option specifies that the operation must take place immediately.</p>
+<p>The following list shows major tasks we can perform using the svcadm
+subcommands.</p>
+<p>Restarting and Refreshing a service</p>
+<p>Enabling and disabling a service</p>
+<p>Setting and clearing the maintenance stat</p>
+<p>For each of the tasks named in the above list we have a subcommand in
+svcadm to use. For example let’s study the first task.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#svcadm restart ssh</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#svcadm refresh ssh</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+In the first command we stop and then start the service again to perform
+a full cycle of the service and in the second command we are reading the
+service configuration from its manifest so any changes in the life cycle
+methods get reflected in the next execution.</p>
+<p>We can use any of the service name schemas discussed in the previous
+recipe except for the wildcard name matching which can result in tens of
+services get restarted. When we need to operate on more than one service
+we can simply pass all the service names to the command. For example to
+restart ssh and smtp services we can use
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#svcadm disable ssh smtp</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+The next task is enabling and disabling a service, the following
+commands shows how we can use the enable and disable subcommands.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#svcadm disable ssh</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#svcadm enable ssh</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+The first command takes the service offline and then disables it in the
+profile so the service won’t start in the next system restart unless we
+enable it. A disabled service cannot be restarted but we can refresh its
+configuration for the next use of its life cycle methods.</p>
+<p>When we enable a service using the above syntax it does not guarantee
+that the service will work properly because it might depends on other
+services which are not enabled. To enable a service and all services
+which it depends on we can use the -r option. For example the following
+command enables the ssh service and all services which it depends on
+them for proper functioning.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#svcadm enable -r ssh</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+Enabling a service cause the service start-up to bootstrap
+asynchronously. To ensure that the service is started and see the result
+of the command invocation we can use the -s parameter as follow:
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#svcadm enable -s ssh</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+A service may automatically enter maintenance state when SMF fails to
+start it or we may need to push it into the maintenance state when
+required. The mark command marks a service with one of the maintenance,
+or degraded tags the tagging can be imitate or temporary for this
+session only. For example to move ssh service into maintenance mode
+temporarily we can use the following command.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#svcadm mark -t maintenance ssh</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+Now if we look at the service details we can see the state is now
+changed to maintenance.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/post-img/3180_07_15.png"
+        data-srcset="/post-img/3180_07_15.png, /post-img/3180_07_15.png 1.5x, /post-img/3180_07_15.png 2x"
+        data-sizes="auto"
+        alt="/post-img/3180_07_15.png"
+        title="/post-img/3180_07_15.png" width="628" height="308" /></p>
+<p>To clear the ssh service state from maintenance or degraded we can use
+the clear subcommand as follow.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#svcadm clear ssh</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+This command will clear the service state and put it back to one of the
+major states including offline and online and disabled.</p>
+<h2 id="how-it-works-6">How it works&hellip;</h2>
+<p>The svcs command uses the service manifest file and the SMF repository
+to execute our administrative commands. For example when we disable a
+service, the service state changes to disabled in the repository and
+when we restart a service the start method of the service manifest file
+is invoked to perform all the necessary steps to start the service.</p>
+<h2 id="see-also-6">See also</h2>
+<p>It will be good to review recipe 5 in which we discussed service
+manifest file and recipe 8 and 9 which discusses the service repository
+to grasp a better understanding of this recipe.</p>
+<p>Reviewing the man pages and short help message is another good point to
+get better understanding of the subcommands and options.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#svdadm --help</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#man svcadm</span></span></span></code></pre></td></tr></table>
+</div>
+</div></p>
+<h1 id="8-configuring-services">8. Configuring services</h1>
+<p>We can configure a service by adjusting the parameters which affect the
+way that SMF interact with the service like changing timeouts,
+dependencies, and name and so on by accessing the SMF repository data.
+The utility command for configuring services is named svccfg.</p>
+<h2 id="getting-ready-7">Getting ready</h2>
+<p>The svccfg is a console utility and we should use it in a console or
+virtual terminal.</p>
+<h2 id="how-to-do-it-7">How to do it&hellip;</h2>
+<p>The svccfg operates both in interactive mode and also in headless or
+script mode to be used in administration scripts. Working with svccfg in
+command line mode involves specifying all of the options prior to
+invoking the command. For example to view list of the smtp service
+properties we can use the following command.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#svccfg -s smtp listprop</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+To start working with the command in interactive mode we can enter its
+shell by invoking the svccfg with no parameter. Following figure shows
+the svccfg environment when we execute the help command in its shell.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/post-img/3180_07_16.png"
+        data-srcset="/post-img/3180_07_16.png, /post-img/3180_07_16.png 1.5x, /post-img/3180_07_16.png 2x"
+        data-sizes="auto"
+        alt="/post-img/3180_07_16.png"
+        title="/post-img/3180_07_16.png" width="582" height="240" /></p>
+<p>The help commands shows a two column message, The first column shows the
+commands category and the second column list of commands fitting into
+that category. We will discuss using one command from each category.</p>
+<p>From the general command, we can use the end command to exit the shell
+and commit all changes to the repository. We can use the help command to
+get help about the commands independent of the category we can use the
+following syntax.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">svcs:&gt; <span class="nb">help</span> &lt;<span class="nb">command</span> name&gt;</span></span></code></pre></td></tr></table>
+</div>
+</div>
+The manifest commands lets us import and export the manifest of each
+service or basically the entire SMF database. For example to export ssh
+service manifest file we can use the following command.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">svcs:&gt; <span class="nb">export</span> ssh&gt; /opt/bck/ssh.smf</span></span></code></pre></td></tr></table>
+</div>
+</div>
+We can use export command without the &gt;file name to export the manifest
+into the standard output (monitor) and review its content.</p>
+<p>To import he service manifest into the repository if managed to mess the
+current manifest we can simply use the import command as follow.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">svc:&gt; import /opt/bck/ssh.smf</span></span></code></pre></td></tr></table>
+</div>
+</div>
+Using the archive command we can export the entire SMF repository
+containing all manifests into a file
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">svc:&gt;archive &gt; /opt/bck/arch.smf</span></span></code></pre></td></tr></table>
+</div>
+</div>
+We will discuss the profile command in the next recipe as it requires
+more attention than other commands.</p>
+<p>The entity commands allow us to perform <strong>CRUD</strong> operations on SMF
+database. We can get a list of all system services by using
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">svc:&gt; list system/<span class="se">\*</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+And then select a service which we want to work on its properties using
+the select command. For example if we need to change the ssh service
+properties we can select it using the following command before operating
+on it.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">svc:&gt; <span class="k">select</span> ssh</span></span></code></pre></td></tr></table>
+</div>
+</div>
+Selecting a service will add another level in the shell environment and
+allows us to execute commands operating on services themselves.</p>
+<p>The snapshot commands allow us to list instance snapshots or revert a
+service instance to its previous snapshots. For example in the following
+figure we can see how to get list of ssh default instance snapshots.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/post-img/3180_07_17.png"
+        data-srcset="/post-img/3180_07_17.png, /post-img/3180_07_17.png 1.5x, /post-img/3180_07_17.png 2x"
+        data-sizes="auto"
+        alt="/post-img/3180_07_17.png"
+        title="/post-img/3180_07_17.png" width="300" height="220" /></p>
+<p>The instance category only has one command named refresh which perform
+the same task that the svcadm refresh <service name > performs,
+reloading the service configuration from the repository so they affect
+the service lifecycle in the next invocation of a lifecycle function
+like enable, disable or restart. For example to refresh the default
+instance of the ssh service we can invoke refresh command while we have
+selected it.</p>
+<p>The group property manipulation commands allows us to list, add or
+remove a property group from the service. For example to add a property
+named reason and then remove it we can use the following commands.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/post-img/3180_07_18.png"
+        data-srcset="/post-img/3180_07_18.png, /post-img/3180_07_18.png 1.5x, /post-img/3180_07_18.png 2x"
+        data-sizes="auto"
+        alt="/post-img/3180_07_18.png"
+        title="/post-img/3180_07_18.png" width="393" height="383" /></p>
+<p>The property commands provide us with CRUD operation over the service
+properties. For example to list all properties of ssh service default
+instance command we can invoke listprop commands when we have the ssh
+service selected.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/post-img/3180_07_19.png"
+        data-srcset="/post-img/3180_07_19.png, /post-img/3180_07_19.png 1.5x, /post-img/3180_07_19.png 2x"
+        data-sizes="auto"
+        alt="/post-img/3180_07_19.png"
+        title="/post-img/3180_07_19.png" width="660" height="328" /></p>
+<p>To add a property we can use addprop command. For example to add a new
+integer property inside the custom group we can use the following
+command.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">svc:/network/ssh&gt; setprop custom/iss2<span class="o">=</span>integer: <span class="m">1270</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+We can check a property’s value using the listprop command as we can see
+in the following figure.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/post-img/3180_07_20.png"
+        data-srcset="/post-img/3180_07_20.png, /post-img/3180_07_20.png 1.5x, /post-img/3180_07_20.png 2x"
+        data-sizes="auto"
+        alt="/post-img/3180_07_20.png"
+        title="/post-img/3180_07_20.png" width="460" height="52" /></p>
+<p>To update an already existing property we can use the setprop command
+with the same syntax but we should omit the property type.</p>
+<p>Finally we can use the value manipulation commands to change or add a
+value to a property. For example to change the value of custom/iss we
+can use the following command.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">svc:/network/ssh&gt; addpropvalue custom/iss <span class="m">110</span></span></span></code></pre></td></tr></table>
+</div>
+</div></p>
+<h2 id="how-it-works-7">How it works&hellip;</h2>
+<p>The svccfg like other service administration commands manipulates the
+SMF repository to change a service configuration. The SMF repository is
+a registry where all services configuration (manifests) are stored.</p>
+<h2 id="see-also-7">See also</h2>
+<p>To learn more about serve repository and service management check recipe
+## and two previous recipes. The man pages for svcadm are another
+source of knowledge and understanding for the svccfg shell commands.</p>
+<h1 id="9-using-service-profiles">9. Using Service Profiles</h1>
+<p>The service profiles are a concept allowing us to quickly change the
+OpenSolaris installation from serving one purpose to providing another,
+for example from serving as a storage server to a Web server or
+directory server. The default service profile called the generic profile
+is a multipurpose profile in which all of the basic services are started
+to make the OS a multipurpose server while we have other service
+profiles which we can enable on top of the generic profile to quickly
+tailor the system for other purposes.</p>
+<h2 id="getting-ready-8">Getting ready</h2>
+<p>We will use the svccfg utility to manage the profiles. So it would be
+good to review the recipe 5 and 8 before continuing this recipe.</p>
+<h2 id="how-to-do-it-8">How to do it&hellip;</h2>
+<p>To start using a profile we need the profile description in the format
+acceptable for the SMF saved as file accessible to the svccfg command.
+OpenSolaris come bundled with some predefined profiles which are stored
+in /var/svc/profile directory which is show in the following figure.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/post-img/3180_07_22.png"
+        data-srcset="/post-img/3180_07_22.png, /post-img/3180_07_22.png 1.5x, /post-img/3180_07_22.png 2x"
+        data-sizes="auto"
+        alt="/post-img/3180_07_22.png"
+        title="/post-img/3180_07_22.png" width="328" height="284" /></p>
+<p>The names are self explanatory and content of each file contains the
+explanation about the profile purpose. To see content of each file we
+can simply use cat command or gedit. For example to view the content of
+the ns_nis.xml we can use one of the following commands.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#gedit /var/svc/profile/ns_nis.xml</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#cat /var/svc/profile/ns_nis.xml</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+To apply a profile we can use the apply command in the svccfg shell
+along with passing the profile storage file.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">svc:&gt; apply /var/svc/profile/ns_nis.xml</span></span></code></pre></td></tr></table>
+</div>
+</div>
+We can extract the current running profile of system services using the
+extract command as follow.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">scv:&gt; extract &gt; /var/svc/profile/current.xml</span></span></code></pre></td></tr></table>
+</div>
+</div>
+We can apply the extracted profile when we need the system to load all
+the services with their current status as we had them when we extracted
+the profile.</p>
+<h2 id="how-it-works-8">How it works&hellip;</h2>
+<p>Each of the profiles storage file contain a list of services along with
+their instances and instance statuses. The status can be enabled or
+disabled based on what we require the profile to do. The files are well
+formed XML files conforming to
+/usr/share/lib/xml/dtd/service_bundle.dtd.1 schema.</p>
+<h2 id="see-also-8">See also</h2>
+<p>Reviewing the recipe 5 and 8 is recommended for learning this recipe
+more effectively.</p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2010-06-09</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://kalali.blog/2010/06/managing-faults-and-services-in-opensolaris/" data-title="Managing faults and services in OpenSolaris" data-via="masoudkalali" data-hashtags="Solaris,Networking,Fault Handling,Services,OpenSolaris"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://kalali.blog/2010/06/managing-faults-and-services-in-opensolaris/" data-hashtag="Solaris"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="https://kalali.blog/2010/06/managing-faults-and-services-in-opensolaris/"><i class="fab fa-linkedin fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Hacker News" data-sharer="hackernews" data-url="https://kalali.blog/2010/06/managing-faults-and-services-in-opensolaris/" data-title="Managing faults and services in OpenSolaris"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="https://kalali.blog/2010/06/managing-faults-and-services-in-opensolaris/" data-title="Managing faults and services in OpenSolaris"><i data-svg-src="https://cdn.jsdelivr.net/npm/simple-icons@7.0.0/icons/line.svg" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/solaris/">Solaris</a>,&nbsp;<a href="/tags/networking/">Networking</a>,&nbsp;<a href="/tags/fault-handling/">Fault Handling</a>,&nbsp;<a href="/tags/services/">Services</a>,&nbsp;<a href="/tags/opensolaris/">OpenSolaris</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/2010/06/introducing-nio-2-jsr-203-part-2-the-basics/" class="prev" rel="prev" title="Introducing NIO.2 (JSR 203) Part 2: The Basics"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>Introducing NIO.2 (JSR 203) Part 2: The Basics</a>
+            <a href="/2010/06/introducing-nio-2-jsr-203-part-3-file-system-attributes-and-permissions-support-in-nio-2/" class="next" rel="next" title="Introducing NIO.2 (JSR 203) Part 3: File System Attributes and Permissions support in NIO.2">Introducing NIO.2 (JSR 203) Part 3: File System Attributes and Permissions support in NIO.2<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2005 - 2022</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://www.linkedin.com/in/masoudkalali/" target="_blank">Masoud Kalali</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@2.4.0/css/lightgallery-bundle.min.css"><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/autocomplete.js@0.38.1/dist/autocomplete.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lunr@2.3.9/lunr.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.1/lazysizes.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/twemoji@14.0.2/dist/twemoji.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lightgallery@2.4.0/lightgallery.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lightgallery@2.4.0/plugins/thumbnail/lg-thumbnail.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lightgallery@2.4.0/plugins/zoom/lg-zoom.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sharer.js@0.5.1/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":10},"comment":{},"lightgallery":true,"search":{"highlightTag":"em","lunrIndexURL":"/index.json","maxResultLength":10,"noResultsFound":"No results found","snippetLength":30,"type":"lunr"},"twemoji":true};</script><script type="text/javascript" src="/js/theme.min.js"></script><script type="text/javascript">
+            window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());
+            gtag('config', ' UA-137107-12');
+        </script><script type="text/javascript" src="https://www.googletagmanager.com/gtag/js?id= UA-137107-12" async></script></body>
+</html>

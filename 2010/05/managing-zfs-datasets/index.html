@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="robots" content="noodp" />
-        <title>Managing ZFS Datasets - The Pensieve - Masoud Kalali&#39;s Blog</title><meta name="Description" content="Masoud Kalali&#39;s personal blog. Covering subjects ranging from tech strategy, leadership, software architecture, cloud native, and software development in general."><meta property="og:title" content="Managing ZFS Datasets" />
+        <title>In depth tutorial on managing ZFS Datasets - The Pensieve - Masoud Kalali&#39;s Blog</title><meta name="Description" content="Masoud Kalali&#39;s personal blog. Covering subjects ranging from tech strategy, leadership, software architecture, cloud native, and software development in general."><meta property="og:title" content="In depth tutorial on managing ZFS Datasets" />
 <meta property="og:description" content="Introduction ZFS pools provide us with the underlying storage with which we can create files and directories inside it right after we create it. But OpenSolaris and ZFS provides more than that by introducing ZFS datasets&hellip;
 In this recipe we will work on top of a zfs pool named fpool and the default root pool named rpool. So before continuing on this recipe we should have a pool named fpool created." />
 <meta property="og:type" content="article" />
@@ -15,7 +15,7 @@ In this recipe we will work on top of a zfs pool named fpool and the default roo
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="https://kalali.blog/img/avatar.jpg"/>
 
-<meta name="twitter:title" content="Managing ZFS Datasets"/>
+<meta name="twitter:title" content="In depth tutorial on managing ZFS Datasets"/>
 <meta name="twitter:description" content="Introduction ZFS pools provide us with the underlying storage with which we can create files and directories inside it right after we create it. But OpenSolaris and ZFS provides more than that by introducing ZFS datasets&hellip;
 In this recipe we will work on top of a zfs pool named fpool and the default root pool named rpool. So before continuing on this recipe we should have a pool named fpool created."/>
 <meta name="application-name" content="The Pensieve - Masoud Kalali&#39;s Blog">
@@ -27,7 +27,7 @@ In this recipe we will work on top of a zfs pool named fpool and the default roo
     {
         "@context": "http://schema.org",
         "@type": "BlogPosting",
-        "headline": "Managing ZFS Datasets",
+        "headline": "In depth tutorial on managing ZFS Datasets",
         "inLanguage": "en",
         "mainEntityOfPage": {
             "@type": "WebPage",
@@ -110,7 +110,7 @@ In this recipe we will work on top of a zfs pool named fpool and the default roo
                 <div class="container"><div class="toc" id="toc-auto">
             <h2 class="toc-title">Contents</h2>
             <div class="toc-content always-active" id="toc-content-auto"></div>
-        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">Managing ZFS Datasets</h1><div class="post-meta">
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">In depth tutorial on managing ZFS Datasets</h1><div class="post-meta">
             <div class="post-meta-line"><span class="post-author"><a href="https://www.linkedin.com/in/masoudkalali/" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>Masoud Kalali</a></span>&nbsp;<span class="post-category">included in <a href="/categories/solaris/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Solaris</a>&nbsp;<a href="/categories/old-blog-migrated-content/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Old Blog Migrated Content</a></span></div>
             <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2010-05-09">2010-05-09</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;5606 words&nbsp;
                 <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;27 minutes&nbsp;</div>
@@ -1426,7 +1426,7 @@ recipe of chapter.</p>
         <div class="post-info-line">
             <div class="post-info-md"></div>
             <div class="post-info-share">
-                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://kalali.blog/2010/05/managing-zfs-datasets/" data-title="Managing ZFS Datasets" data-via="masoudkalali" data-hashtags="Solaris,ZFS,File System"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://kalali.blog/2010/05/managing-zfs-datasets/" data-hashtag="Solaris"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="https://kalali.blog/2010/05/managing-zfs-datasets/"><i class="fab fa-linkedin fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Hacker News" data-sharer="hackernews" data-url="https://kalali.blog/2010/05/managing-zfs-datasets/" data-title="Managing ZFS Datasets"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="https://kalali.blog/2010/05/managing-zfs-datasets/" data-title="Managing ZFS Datasets"><i data-svg-src="https://cdn.jsdelivr.net/npm/simple-icons@7.0.0/icons/line.svg" aria-hidden="true"></i></a></span>
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://kalali.blog/2010/05/managing-zfs-datasets/" data-title="In depth tutorial on managing ZFS Datasets" data-via="masoudkalali" data-hashtags="Solaris,ZFS,File System"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://kalali.blog/2010/05/managing-zfs-datasets/" data-hashtag="Solaris"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="https://kalali.blog/2010/05/managing-zfs-datasets/"><i class="fab fa-linkedin fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Hacker News" data-sharer="hackernews" data-url="https://kalali.blog/2010/05/managing-zfs-datasets/" data-title="In depth tutorial on managing ZFS Datasets"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="https://kalali.blog/2010/05/managing-zfs-datasets/" data-title="In depth tutorial on managing ZFS Datasets"><i data-svg-src="https://cdn.jsdelivr.net/npm/simple-icons@7.0.0/icons/line.svg" aria-hidden="true"></i></a></span>
             </div>
         </div>
     </div>

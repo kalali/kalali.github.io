@@ -18,7 +18,7 @@
     <pubDate>Thu, 25 Nov 2010 00:00:00 &#43;0000</pubDate>
     <author>Masoud Kalali</author>
     <guid>https://kalali.blog/2010/11/configuring-solaris-link-aggregation-ethernet-bonding/</guid>
-    <description><![CDATA[Link aggregation or commonly known Ethernet bonding allows us to enhance the network availability and performance by combining multiple network interfaces together and form an aggregation of those interfaces which act as a single network interface with greatly enhanced availability and performance.
+    <description><![CDATA[Link aggregation or commonly known Ethernet bonding allows us to enhance the network availability and performance by combining multiple network interfaces together and form an aggregation of those interface_names which act as a single network interface with greatly enhanced availability and performance.
 When we aggregate two or more network interfaces, we are forming a new network interface on top of those physical interfaces combined in the link layer.
 We need to have at least two network interfaces in our machine to create a link aggregation.]]></description>
 </item>
@@ -30,6 +30,15 @@ We need to have at least two network interfaces in our machine to create a link 
     <guid>https://kalali.blog/2010/07/opensolaris-networking-in-details/</guid>
     <description><![CDATA[Introduction In this chapter we are going to cover basic networking capabilities of OpenSolaris. While we will some of common utilities in the recipes, we will learn some more trivial ones here.
 Learning netstat command The netstat command is well known for checking the active connections status in a system but it can provide a fair deal of other diagnostics. Following sample command shows some of the netstat use cases.]]></description>
+</item>
+<item>
+    <title>Managing faults and services in OpenSolaris</title>
+    <link>https://kalali.blog/2010/06/managing-faults-and-services-in-opensolaris/</link>
+    <pubDate>Wed, 09 Jun 2010 00:00:00 &#43;0000</pubDate>
+    <author>Masoud Kalali</author>
+    <guid>https://kalali.blog/2010/06/managing-faults-and-services-in-opensolaris/</guid>
+    <description><![CDATA[Introduction In this chapter we will cover fault and services administration and management. The fault management mostly deals with failing hardware components while service management and administration deals with software failures. A hardware failure is a faulty RAM module and a sample of failing service component is an HTTP server stopped functioning properly.
+OpenSolaris is an enterprise operating system meaning that it should be resilient to both software and hardware failures and automatically recover from the failure and repair itself or in cases when it is not possible for the OS to repair and recover, it should notify some administrator to take action.]]></description>
 </item>
 </channel>
 </rss>

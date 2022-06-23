@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>Managing and Administrating OpenSolaris Zones - The Pensieve - Masoud Kalali&#39;s Blog</title><meta name="Description" content="Masoud Kalali&#39;s personal blog. Covering subjects ranging from tech strategy, leadership, software architecture, cloud native, and software development in general."><meta property="og:title" content="Managing and Administrating OpenSolaris Zones" />
+<meta property="og:description" content="Introduction The Solaris Zones provide us with kernel level virtualization allowing us to create multiple virtualized environments on top of the host system kernel. Each one of these virtualized environment is isolated from host and other virtualized environments despite running on the same Kernel which is provided by the host or global zone.
+A typical example of using zones can be hosting different applications like the HTTP server, different application server instances for different applications, and the database server in separate zones." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://kalali.blog/2010/07/managing-and-administrating-opensolaris-zones/" /><meta property="og:image" content="https://kalali.blog/img/avatar.jpg"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2010-07-12T00:00:00+00:00" />
+<meta property="article:modified_time" content="2010-07-12T00:00:00+00:00" /><meta property="og:site_name" content="My cool site" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://kalali.blog/img/avatar.jpg"/>
+
+<meta name="twitter:title" content="Managing and Administrating OpenSolaris Zones"/>
+<meta name="twitter:description" content="Introduction The Solaris Zones provide us with kernel level virtualization allowing us to create multiple virtualized environments on top of the host system kernel. Each one of these virtualized environment is isolated from host and other virtualized environments despite running on the same Kernel which is provided by the host or global zone.
+A typical example of using zones can be hosting different applications like the HTTP server, different application server instances for different applications, and the database server in separate zones."/>
+<meta name="application-name" content="The Pensieve - Masoud Kalali&#39;s Blog">
+<meta name="apple-mobile-web-app-title" content="The Pensieve - Masoud Kalali&#39;s Blog"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://kalali.blog/2010/07/managing-and-administrating-opensolaris-zones/" /><link rel="prev" href="https://kalali.blog/2010/07/opensolaris-networking-in-details/" /><link rel="next" href="https://kalali.blog/2010/07/introducing-nio-2-jsr-203-part-4-changing-file-system-attributes-and-permissions/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css"></noscript><link rel="preload" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css"></noscript><meta name="google-site-verification" content="cDJVSx1L3UB6AwrPKeSQszOyhtjHYvPYkDxZw_Me4Z4" /><meta name="msvalidate.01" content="cDJVSx1L3UB6AwrPKeSQszOyhtjHYvPYkDxZw_Me4Z4" /><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Managing and Administrating OpenSolaris Zones",
+        "inLanguage": "en",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/kalali.blog\/2010\/07\/managing-and-administrating-opensolaris-zones\/"
+        },"image": [{
+                            "@type": "ImageObject",
+                            "url": "https:\/\/kalali.blog\/img\/preview.png",
+                            "width":  1027 ,
+                            "height":  833 
+                        }],"genre": "posts","keywords": "Solaris, Zone, Container, Services, OpenSolaris","wordcount":  5478 ,
+        "url": "https:\/\/kalali.blog\/2010\/07\/managing-and-administrating-opensolaris-zones\/","datePublished": "2010-07-12T00:00:00+00:00","dateModified": "2010-07-12T00:00:00+00:00","license": "This work is licensed under a Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)","publisher": {
+            "@type": "Organization",
+            "name": "Masoud Kalali"},"author": {
+                "@type": "Person",
+                "name": "Masoud Kalali"
+            },"description": ""
+    }
+    </script></head>
+    <body data-header-desktop="auto" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="The Pensieve - Masoud Kalali&#39;s Blog">The Pensieve - Masoud Kalali&#39;s Blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/" title="Blog posts"> Posts </a><a class="menu-item" href="/tags/" title="All the blog tags"> Tags </a><a class="menu-item" href="/categories/" title="List of all categories I blogged bout"> Categories </a><a class="menu-item" href="/about/" title="About Masoud Kalali, Author"> About </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="The Pensieve - Masoud Kalali&#39;s Blog">The Pensieve - Masoud Kalali&#39;s Blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        Cancel
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="Blog posts">Posts</a><a class="menu-item" href="/tags/" title="All the blog tags">Tags</a><a class="menu-item" href="/categories/" title="List of all categories I blogged bout">Categories</a><a class="menu-item" href="/about/" title="About Masoud Kalali, Author">About</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><div class="search-dropdown desktop">
+        <div id="search-dropdown-desktop"></div>
+    </div>
+    <div class="search-dropdown mobile">
+        <div id="search-dropdown-mobile"></div>
+    </div><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content always-active" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">Managing and Administrating OpenSolaris Zones</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="https://www.linkedin.com/in/masoudkalali/" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>Masoud Kalali</a></span>&nbsp;<span class="post-category">included in <a href="/categories/solaris/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Solaris</a>&nbsp;<a href="/categories/old-blog-migrated-content/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Old Blog Migrated Content</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2010-07-12">2010-07-12</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;5478 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;26 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#getting-ready">Getting ready</a></li>
+    <li><a href="#how-to-do-it">How to do it&hellip;</a></li>
+    <li><a href="#how-it-works">How it works&hellip;</a></li>
+    <li><a href="#see-also">See also</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#getting-ready-1">Getting ready</a></li>
+    <li><a href="#how-to-do-it-1">How to do it&hellip;</a></li>
+    <li><a href="#how-it-works-1">How it works&hellip;</a></li>
+    <li><a href="#theres-more">There&rsquo;s more&hellip;</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#getting-ready-2">Getting ready</a></li>
+    <li><a href="#how-to-do-it-2">How to do it&hellip;</a></li>
+    <li><a href="#how-it-works-2">How it works&hellip;</a></li>
+    <li><a href="#theres-more-1">There&rsquo;s more&hellip;</a></li>
+    <li><a href="#see-also-1">See also</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#getting-ready-3">Getting ready</a></li>
+    <li><a href="#how-to-do-it-3">How to do it&hellip;</a></li>
+    <li><a href="#how-it-works-3">How it works&hellip;</a></li>
+    <li><a href="#theres-more-2">There&rsquo;s more&hellip;</a></li>
+    <li><a href="#see-also-2">See also</a></li>
+    <li><a href="#of-zfs-chapter">of ZFS chapter.</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#getting-ready-4">Getting ready</a></li>
+    <li><a href="#how-to-do-it-4">How to do it&hellip;</a></li>
+    <li><a href="#how-it-works-4">How it works&hellip;</a></li>
+    <li><a href="#see-also-3">See also</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#getting-ready-5">Getting ready</a></li>
+    <li><a href="#how-to-do-it-5">How to do it&hellip;</a></li>
+    <li><a href="#how-it-works-5">How it works&hellip;</a></li>
+    <li><a href="#see-also-4">See also</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#getting-ready-6">Getting ready</a></li>
+    <li><a href="#how-to-do-it-6">How to do it&hellip;</a></li>
+    <li><a href="#how-it-works-6">How it works&hellip;</a></li>
+    <li><a href="#see-also-5">See also</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#getting-ready-7">Getting ready</a></li>
+    <li><a href="#how-to-do-it-7">How to do it&hellip;</a></li>
+    <li><a href="#how-it-works-7">How it works&hellip;</a></li>
+    <li><a href="#see-also-6">See also</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h1 id="introduction">Introduction</h1>
+<p>The Solaris Zones provide us with kernel level virtualization allowing
+us to create multiple virtualized environments on top of the host system
+kernel. Each one of these virtualized environment is isolated from host
+and other virtualized environments despite running on the same Kernel
+which is provided by the host or global zone.</p>
+<p>A typical example of using zones can be hosting different applications
+like the HTTP server, different application server instances for
+different applications, and the database server in separate zones. This
+separation and therefore isolation of different applications into
+different zones bring the following benefits.</p>
+<p>Possibility to control, cap, apply restrictions and share the resources
+like CPU, memory, disks, network interfaces, etc.</p>
+<p>Ease the monitoring and management of the all related applications by
+hosting them in one single machine.</p>
+<p>Proving each application administrator with enough space to configure
+its system security and apply the performance tweaking while controlling
+all of them from the global zone.</p>
+<p>Ensure that any performance or security issue with each one of the
+applications will not affect the other infrastructure members.</p>
+<p>Another use case for zones can be allocating resources of a powerful
+machine between different use cases or departments; each department has
+the freedom to install applications it requires while the underlying
+operating system will be managed by one single administration.</p>
+<h1 id="1-creating-a-zone">1. Creating a Zone</h1>
+<p>In this recipe we will create a none-global zone and familiarize
+ourselves with different zone administration utilities including zonecfg
+and zoneadm.</p>
+<h2 id="getting-ready">Getting ready</h2>
+<p>We will use CLI utilities so we need to either switch to one f the
+virtual terminals or open a gnome-terminal.</p>
+<h2 id="how-to-do-it">How to do it&hellip;</h2>
+<p>We can use the zonecfg command in interactive or shell mode to create a
+zone following snippet shows how we can create a zone in the interactive
+mode. The answers that we need to provide to the zonecfg command are
+highlight and we will discuss them afterward.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="post-img/3180_09_00.png"
+        data-srcset="post-img/3180_09_00.png, post-img/3180_09_00.png 1.5x, post-img/3180_09_00.png 2x"
+        data-sizes="auto"
+        alt="post-img/3180_09_00.png"
+        title="post-img/3180_09_00.png" /></p>
+<p>After we enter the zonecfg shell it detects that the zone we want to
+configure does not exists and offers us to create the zone by invoking
+the create command. By invoking the create command we add the zone
+creation request to the batch of tasks we are stacking in the zonecfg
+shell.</p>
+<p>After invoking the create command we should specify the zone file system
+root path. In our case we entered /fpool/zones/fzone.</p>
+<p>The next thing that we should do in addition to specifying the zone path
+is adding a network interface to the zone because the zone creation and
+installation will need to access package repositories in order to
+install some packages into the zone. To add the network interface we
+should specify an IP address or a host name for the zone in addition to
+the physical network interface we want to create the zone virtual
+interface on top of it.</p>
+<p>Invoking end exit the current sub shell and invoking exit commits all
+changes we requested and exit the shell.</p>
+<p>Now we can check existence of our zone configuration using zoneadm
+command as shown in the following figure.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/post-img/3180_09_02.png"
+        data-srcset="/post-img/3180_09_02.png, /post-img/3180_09_02.png 1.5x, /post-img/3180_09_02.png 2x"
+        data-sizes="auto"
+        alt="/post-img/3180_09_02.png"
+        title="/post-img/3180_09_02.png" width="646" height="71" /></p>
+<p>In the figure 2 we can see a column named Brand, this column shows what
+is the zone type as we can have different types of zones including
+<strong>native</strong>, <strong>ipkg</strong>, <strong>cluster</strong>, <strong>solaris8</strong>, <strong>solaris9</strong>, etc. The
+Native brand uses the old packaging system, the ipkg uses the new IPS,
+and the cluster is the brand name for the Cluster zones. The solaris9
+and solaris8 zones are provided to support running software compatible
+with Solaris 9 or Solaris 8 in Solaris 11.</p>
+<p>Now we have a zone configuration stored as an XML file in the zone
+management repository, what we need to do next is installing the zone
+which is actually realizing the configuration into a bootable, isolated
+Solaris installation on top of the running operating system.</p>
+<p>We can install the zone using the zoneadm command as shown below. The
+zone installation process requires Internet access or access to a local
+network package repository. In our case we will use the main repository
+available on Sun network.</p>
+<p>Following figure shows how we invoke the zoneadm to install the fzone.
+The system will download the necessary packages and install them to
+provide us with the minimum bootable zone.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/post-img/3180_09_03.png"
+        data-srcset="/post-img/3180_09_03.png, /post-img/3180_09_03.png 1.5x, /post-img/3180_09_03.png 2x"
+        data-sizes="auto"
+        alt="/post-img/3180_09_03.png"
+        title="/post-img/3180_09_03.png" width="697" height="447" /></p>
+<p>Now that the zone is installed we can boot into the zone using the boot
+subcommand of the zoneadm command as shown below.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># zoneadm –z fzone boot</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+Now that the zone is booted we can login to zone and configure the
+runtime parameters like default terminal, hostname for the zone, etc.
+Following command initialize the login sequence.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># zlogin -C fzone</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+During the boot sequence we should specify the following configuration
+attributes:</p>
+<p>The terminal type: The first step will be specifying the terminal, we
+can select from 6 different terminals including xterm which is my
+favourite. After specifying the terminal, system generates the SSH key
+pair and continues to the next step.</p>
+<p>The host name for the zone: After the key pair we should specify the
+hostname for the zone, by default the zone name will be the host name
+but we can change it to whatever we want in this step. To continue to
+the next step we should press <em>Escape+2</em> buttons.</p>
+<p>Security service: After the host name we can select either we want to
+use Kerberos authentication or not, select no and press Escape+2
+buttons.</p>
+<p>Name Service: Here we should specify the Name Service we want to use,
+select none and continue to the next step.</p>
+<p>The NFSv4 Domain Name: Here we should select the network file system
+domain name, let the system use the host derived domain name.</p>
+<p>The Time zone: In this step we specify which time zone we want our zone
+to use by specifying the continent and then the country.</p>
+<p>The Zone password: Here in the final step we should specify a root
+password for the zone. Something simple like fzone for our snippet
+should work but in production the password must be combination of
+alphanumeric at least.</p>
+<p>Now the zone is booted and we will be asked for username and password to
+enter the zone shell. Provide root/fzone as username and password to
+login into the zone.</p>
+<h2 id="how-it-works">How it works&hellip;</h2>
+<p>When we install Solaris we have one zone created by default which is
+called global zone. The global zone represents the entire operating
+system and can host as many as 8191 non-global zones.</p>
+<p>Each none global zone is a virtualized environment with its own host
+name and a virtualized network interface. Each zone has its own security
+boundaries and its storage and processing resources are assigned to it
+from the global zone.</p>
+<p>As each none-global zone acts as a complete an isolated instance of
+Solaris, it needs utilities, libraries and applications accessible to
+it. The model in which Solaris provides the zone with the libraries and
+utilities differentiates the zones into two categories as follow:</p>
+<p>The <strong>sparse-root zone</strong>: In this model the zone has read-only access to
+/lib, /sbin, /usr, /platform directories of the global zone and
+therefore any changes in those directories will be reflected in the
+zone. On the other hand we cannot install applications which need write
+access to these directories into a sparse-root zone. The benefit of this
+zone is ease of administration and small footprint while its drawback is
+limited capability in installing new packages into the zone.</p>
+<p>The <strong>whole zone</strong>: In this mode we have full control over the file
+system layout of the pool and the packages and application we want to
+install but this will cost us a little more space.</p>
+<h2 id="see-also">See also</h2>
+<p>Make sure that you review other recipes of this chapter as this recipe
+was just the door to the Solais Zones world. In next recipe we will see
+how we can control resources allocation for a Zone or how we can create
+a Linux zone instead of a Native Solaris zone.</p>
+<h1 id="zone-networking">Zone Networking</h1>
+<p>In this recipe we are going to see what are networking options in a zone
+and how we can use these options to further configure a zone to fit our
+requirements.</p>
+<h2 id="getting-ready-1">Getting ready</h2>
+<p>In this recipe we assume that we have a zone installed according to the
+previous recipe and then we will tweak its networking configuration.</p>
+<h2 id="how-to-do-it-1">How to do it&hellip;</h2>
+<p>Assuming that we have a zone created using the previous recipe we can
+use the zoneadm command to see the zone configuration as shown in the
+following figure.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/post-img/3180_09_04.png"
+        data-srcset="/post-img/3180_09_04.png, /post-img/3180_09_04.png 1.5x, /post-img/3180_09_04.png 2x"
+        data-sizes="auto"
+        alt="/post-img/3180_09_04.png"
+        title="/post-img/3180_09_04.png" width="646" height="71" /></p>
+<p>As you can see under the IP column, we have shared as the IP type of the
+fzone. Basically this means that one IP stack and physical network
+interface is shared between the global and the non-global zone using a
+virtual network interface built on top of the physical interface we
+specified during the zone creation. When sharing an IP stack between a
+global and a non-global zone, the global zone takes care of IP routing
+and if we share the physical interface between multiple zones, packets
+won’t leave the system and get routed in the global zone kernel.
+Following figure shows how the logical interface is created on top the
+e1000g1 for the fzone to have network access.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/post-img/3180_09_05.png"
+        data-srcset="/post-img/3180_09_05.png, /post-img/3180_09_05.png 1.5x, /post-img/3180_09_05.png 2x"
+        data-sizes="auto"
+        alt="/post-img/3180_09_05.png"
+        title="/post-img/3180_09_05.png" width="690" height="302" /></p>
+<p>The logical interface won’t appear in the output of the ifconfig command
+unless we boot the zone. The command to boot a zone is as follow:
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># zoneadm –z fzone boot</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+When we use logical interfaces to share a physical interface between
+different zones, the interface configuration is not changeable from
+within the non-global zones which increase the overall security of
+system.</p>
+<p>We can add use virtual interface, VNIC, physical network interfaces for
+a zone, to do so we only need to reconfigure a zone’s networking or
+specify the physical or virtual interface during the zone creation.</p>
+<p>We can configure a non-global zone with exclusive network interface
+using the following steps.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/post-img/3180_09_06.png"
+        data-srcset="/post-img/3180_09_06.png, /post-img/3180_09_06.png 1.5x, /post-img/3180_09_06.png 2x"
+        data-sizes="auto"
+        alt="/post-img/3180_09_06.png"
+        title="/post-img/3180_09_06.png" width="394" height="158" /></p>
+<p>As you can see we removed the shared interface from the zone and give it
+the exclusive access to the e1000g0.</p>
+<p>To make the changes effective we need to restart the zone. To do so we
+can halt the zone using halt command inside the zone shell or we can use
+the following command from the global zone.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># zoneadm -z fzone halt</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+When we allocate an exclusive physical network interface to a zone we
+are asking the system to create a completely isolated IP stack for the
+zone and isolate all the traffic.</p>
+<h2 id="how-it-works-1">How it works&hellip;</h2>
+<p>When we use logical interfaces to share a physical interface between
+different zones, the interface configuration is not changeable from
+within the non-global zones which increase the overall security of
+system.</p>
+<h2 id="theres-more">There&rsquo;s more&hellip;</h2>
+<p>We can create a virtual interface using the dladm command and then
+assign that interface to the zone or we can create an aggregation and
+exclusively assign the aggregation to a zone.</p>
+<h1 id="3-managing-a-zone-resources">3. Managing a zone resources</h1>
+<p>In this recipe we will learn how to allocate and control the resource
+that a zone can utilize. For example how much CPU cycles and how much
+memory a zone can use.</p>
+<h2 id="getting-ready-2">Getting ready</h2>
+<p>Before we get down seeing how we can apply the resource control we need
+to have some basic knowledge of two different CPU cycles allocator
+available in Solaris.</p>
+<p><strong>The Fair Share Scheduler</strong>, FSS: The FSS ensure that all parties,
+zones, at least get what we allocate for them. For example if we have 4
+zones running and all of them are very busy the FSS ensure that each
+zone receives its fair share of CPU power as allocated by the
+administrator. Meanwhile if we have one very busy zone and 2 idle zones,
+the FSS allows the busy zone to get more than its share of CPU cycle
+until another zone requires receiving its allocated share.</p>
+<p><strong>The Time Sharing scheduler</strong>: This schedule is the default scheduler
+in Solaris and acts based on the time slices independent of whether the
+zone requires the allocated time slice or not. For example if we have
+three zones, one very busy and two idle zones, the TS will gives each of
+these zones the time slice specified regardless of it not doing anything
+with the CPU power and one zone starving for the power.</p>
+<p><strong>Capping</strong>: The capping resource controlling feature allows us to place
+a cap on the amount of resource the zone can use regardless of more
+resource being available at the time.</p>
+<p>The default CPU sharing mechanism is TS and we if we want to use the FSS
+we should enable it. To replace the TS with FSS we can use the following
+command
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># dispadmin -d FSS</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+After the above command we need to restart the machine but in order to
+make TSS take effect immediately we can use the priocntl CLI utility as
+follow:
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># priocntl -s -c FSS -i all</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+Before getting down to the business of controlling the zone resources we
+need to install a required package, which is a Solaris service, for
+resource controlling. The package name is SUNWrcap and to install it we
+can use the pkg command as shown below.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># pkg install SUNWrcap</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+Now we can get down to the actual work and add some CPU and memory
+control on our zone.</p>
+<h2 id="how-to-do-it-2">How to do it&hellip;</h2>
+<p>To configure and apply resource control for a zone we use the zonecfg
+command and change the value of different zone attributes. Following
+table shows the resource that we can control and specify its value for a
+zone along with a basic description of attribute.</p>
+<table>
+<thead>
+<tr>
+<th>Resource Type/ Corresponding Zone property</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CPU Shares/ cpu-shares</td>
+<td>Specifies how much of the system CPU power we want the zone to use.</td>
+</tr>
+<tr>
+<td>Maximum number of processes/ max-lwps</td>
+<td>Specifies how many process a zone can spawn.</td>
+</tr>
+<tr>
+<td>Maximum number of semaphores/ max-sem-ids</td>
+<td>Specifies how many semaphore lock a zone can acquire</td>
+</tr>
+<tr>
+<td>Maximum size of a shared memory segment /max-shm-ids</td>
+<td>Specifies what is the maximum size of a memory segment for a zone</td>
+</tr>
+<tr>
+<td>Total amount of shared memory/max-shm-memory</td>
+<td>Specifies how much RAM/ SWAP a zone can allocate.</td>
+</tr>
+<tr>
+<td>Maximum number of message queues/max-msg-ids</td>
+<td>Specifies how many message queue a zone can create for asynchronous processing.</td>
+</tr>
+</tbody>
+</table>
+<p>Let’s assume that we specified a cpu-share value for our zone and we are
+using FSS as the scheduler. Assuming that we have two zones, one the
+global zone and one the local zone named fzone, we allocate 3 shares of
+CPU for the fzone, it means that the whole CPU power of the machine will
+be divided into 4 shares which 3 goes for the none-global zone and one
+share goes for the global zone. If at a later time we add another zone
+to the system with 2 share then we the FSS will divide the CPU power
+into 3+1+2 shares. From this 16% goes to the global zone, 48% goes to
+the fzone and 32% goes to the zone arrived at last.</p>
+<p>All of the above numbers are flexible when using FSS, for example if all
+other zones are idle then all available CPU power goes to fzone and if
+other zones are busy each one get the amount of CPU we specified.</p>
+<p>Now let’s get down to the work and apply the following control over the
+resources that fzone can utilize.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/post-img/3180_09_07.png"
+        data-srcset="/post-img/3180_09_07.png, /post-img/3180_09_07.png 1.5x, /post-img/3180_09_07.png 2x"
+        data-sizes="auto"
+        alt="/post-img/3180_09_07.png"
+        title="/post-img/3180_09_07.png" width="314" height="110" /></p>
+<p>Now to check the resource control restrictions we have just applied we
+can use the the zonecfg command as shown in the following figure.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/post-img/3180_09_08.png"
+        data-srcset="/post-img/3180_09_08.png, /post-img/3180_09_08.png 1.5x, /post-img/3180_09_08.png 2x"
+        data-sizes="auto"
+        alt="/post-img/3180_09_08.png"
+        title="/post-img/3180_09_08.png" width="480" height="194" /></p>
+<p>In the above figure, the resource names are cited in the full name
+instead of the simplified names and syntax we used to set the attributes
+value.</p>
+<p>In the beginning of the recipe we discussed the CPU and memory capping
+as a mechanism to prevent a zone from using more a certain cap even if
+the resource is available in the system, like when we use FSS and CPU
+power is available for the zone to use.</p>
+<p>To apply capping we should use resource scopes in the zonecfg shell. For
+example to cap the fzone memory usage we can use the fzone as shown in
+the following figure.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/post-img/3180_09_09.png"
+        data-srcset="/post-img/3180_09_09.png, /post-img/3180_09_09.png 1.5x, /post-img/3180_09_09.png 2x"
+        data-sizes="auto"
+        alt="/post-img/3180_09_09.png"
+        title="/post-img/3180_09_09.png" width="410" height="158" /></p>
+<p>For the fzone we are setting the maximum amount of memory to 1 GB, the
+maximum amount of SWAP to 2GB and the maximum amount of lockable memory
+to 16 MB. The SWAP space we specified is the amount of swap that the
+zone’s user applications can use.</p>
+<p>Next comes CPU capping in which we can specify a maximum amount of CPU
+which a zone can use despite the system being configured with FSS which
+means a zone can use al CPU cycles which are not in use by other
+process.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/post-img/3180_09_10.png"
+        data-srcset="/post-img/3180_09_10.png, /post-img/3180_09_10.png 1.5x, /post-img/3180_09_10.png 2x"
+        data-sizes="auto"
+        alt="/post-img/3180_09_10.png"
+        title="/post-img/3180_09_10.png" width="343" height="122" /></p>
+<p>In our configuration we specified that the fzone cannot use more than
+1.5 CPU even if more CPUs are free.</p>
+<h2 id="how-it-works-2">How it works&hellip;</h2>
+<p>To configure zone resources we have two ways, the first is using
+resource pools and the second way is to directly allocate resource to a
+zone. In the second method the Solaris kernel dynamically creates a
+pool, allocate the resources we assigned to the zone and use that pool
+as the zone resource pool. The pool will be created when the zone starts
+and it will be destroyed when the zone shouts down.</p>
+<h2 id="theres-more-1">There&rsquo;s more&hellip;</h2>
+<p>We can use dedicated-cpu scope to restrict the zone on the number of
+CPUs it can use and dedicate the CPUs to that particular zone when zone
+boots up.</p>
+<h2 id="see-also-1">See also</h2>
+<p>To review read more about resource management check recipe XX and recipe
+XY in chapter ZZ.</p>
+<p>We can limit the bandwidth that a zone can use which is discussed in
+recipe XX of chapter ZZ.</p>
+<h1 id="4-cloning-a-zone">4. Cloning a Zone</h1>
+<p>In this recipe we will look at how we can clone a zone which basically
+allows us to create a new zone based on an already existing zone to save
+time in file system management and configuration, software installation
+and so on.</p>
+<p>Usually we clone a zone when we want to have several identical zones in
+term of file system layout and installed software. A simple case can be
+a zone with all required software fully configured or periodical clones
+of a test zone to ensure that we can quickly initialize a new test zone.</p>
+<h2 id="getting-ready-3">Getting ready</h2>
+<p>In this recipe we assume that we have the fzone created according to the
+first recipe of this chapter. We will clone the zone configuration into
+a new zone.</p>
+<h2 id="how-to-do-it-3">How to do it&hellip;</h2>
+<p>In our hands-on we will clone fzone into a zone named fzone-c. Before we
+could clone the fzone file system into the fzone-c we should create
+fzone-c, For sake of simplicity the only thing that we specify during
+the zone creation is the zone file system path. Following figure shows
+how we can create the zone.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/post-img/3180_09_11.png"
+        data-srcset="/post-img/3180_09_11.png, /post-img/3180_09_11.png 1.5x, /post-img/3180_09_11.png 2x"
+        data-sizes="auto"
+        alt="/post-img/3180_09_11.png"
+        title="/post-img/3180_09_11.png" width="458" height="142" /></p>
+<p>Now that we have created the zone and specified its file system root we
+can clone the template zone into the newly configured zone instead of
+installing the zone. To clone the zone we use the clone subcommand of
+the zoneadm command as shown below.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># zoneadm –z fzone-c clone fzone</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+We can check the status of our newly cloned zone using the list
+subcommand of the zoneadm command as shown in the following figure.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/post-img/3180_09_12.png"
+        data-srcset="/post-img/3180_09_12.png, /post-img/3180_09_12.png 1.5x, /post-img/3180_09_12.png 2x"
+        data-sizes="auto"
+        alt="/post-img/3180_09_12.png"
+        title="/post-img/3180_09_12.png" width="638" height="92" /></p>
+<p>The new zone will be cloned in few seconds as it is a snapshot of the
+template zone. Following figure shows the difference in size of the
+fzone and its clone fzone-c in term of initial disk space usage.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/post-img/3180_09_13.png"
+        data-srcset="/post-img/3180_09_13.png, /post-img/3180_09_13.png 1.5x, /post-img/3180_09_13.png 2x"
+        data-sizes="auto"
+        alt="/post-img/3180_09_13.png"
+        title="/post-img/3180_09_13.png" width="732" height="346" /></p>
+<p>Now we can boot the zone and login using the following commands which we
+discussed in details in the first recipe of this chapter.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#zoneadm -z fzone-c boot</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#zlogin -C fzone-c</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+When we want to clone a zone we should ensure that the zone is not
+running because zoneadm will not clone a running zone.</p>
+<h2 id="how-it-works-3">How it works&hellip;</h2>
+<p>The whole zone cloning benefits from creating a ZFS snapshot of the
+template zone and then a ZFS clone based on that ZFS snapshot for the
+new Zone. Using this way, the new zone will have an identical file
+system layout with the template zone without using that much of a disk
+space and its creating will be immediate. The size of the clone will
+grow in time based on what we change in the new zone and in the template
+zone from which we created the snapshot.</p>
+<h2 id="theres-more-2">There&rsquo;s more&hellip;</h2>
+<p>Instead of using ZFS cloning we can use simply copy to copy the template
+zone file system into the new zone file system. The zone copying takes
+longer and consumes more space compared to zone cloning. We can use the
+following syntax of zoneadm to copy a zone.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#zoneadm -z fzone-c clone -m copy fzone</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+In this syntax the fzone-c is the new zone, the fzone is the template
+zone and the -m copy specifies the cloning method which is plain copying
+compared to the default method which is ZFS cloning.</p>
+<h2 id="see-also-2">See also</h2>
+<p>It is recommended that you review recipe 1 of this chapter and recipe</p>
+<h2 id="of-zfs-chapter">of ZFS chapter.</h2>
+<h1 id="5-migrating-a-zone">5. Migrating a zone</h1>
+<p>In this recipe we will look at how we can relocate a zone inside the
+same machine or migrate it from one machine to another.</p>
+<h2 id="getting-ready-4">Getting ready</h2>
+<p>For this recipe we assume that we have a zone named fzone created
+according to the first recipe of this chapter. We will move the zone to
+another dataset and then migrate it from its current host machine to a
+secondary machine.</p>
+<h2 id="how-to-do-it-4">How to do it&hellip;</h2>
+<p>First let’s look at how we can move the zone. In order to move a zone we
+should halt the zone either by invoking halt inside the zone or by using
+halt subcommand of the zoneadm in the global zone.</p>
+<p>To move a zone we can use the move subcommand of the zoneadm command as
+shown below.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># zoneadm -z fzone move /fpool/zones/fzone-moved</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+The following figure shows the effect of moving a zone because the zone
+file system root remains constant from inside the zone and the only
+changes are physically moving the file system and also altering the zone
+configurations in the zone configuration store.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/post-img/3180_09_14.png"
+        data-srcset="/post-img/3180_09_14.png, /post-img/3180_09_14.png 1.5x, /post-img/3180_09_14.png 2x"
+        data-sizes="auto"
+        alt="/post-img/3180_09_14.png"
+        title="/post-img/3180_09_14.png" width="658" height="188" /></p>
+<p>Now let’s see how we can migrate a zone from one machine to another. The
+steps for migrating a zone form one machine to another is as follow:</p>
+<ol>
+<li>
+<p>Halt the zone</p>
+</li>
+<li>
+<p>Dump the zone configuration and detach the zone</p>
+</li>
+<li>
+<p>Create and move the zone snapshot to target machine</p>
+</li>
+<li>
+<p>Create a zone with same name in the target machine</p>
+</li>
+<li>
+<p>Configure the new zone’s zonepath attribute to point to the received
+snapshot</p>
+</li>
+<li>
+<p>Apply the zone manifest</p>
+</li>
+</ol>
+<p>Now that we know the steps let’s see how we can put these steps into
+practice. Let’s start with detaching the zone and saving the zone
+manifest.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#zoneadm -z fzone halt</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># zoneadm -z fzone detach \&gt; /fpool/fzone -manifest.mft</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># zfs snapshot -r fpool/zones/fzone@opensolaris</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># zfs send fpool/zones/fzone@opensolaris \| ssh new-host zfs recv</span>
+</span></span><span class="line"><span class="cl">/zones/fzone
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># zfs send /fpool/fzone -manifest.mft \| ssh new-host zfs recv /zones/</span>
+</span></span><span class="line"><span class="cl">fzone -manifest.mft</span></span></code></pre></td></tr></table>
+</div>
+</div>
+Now that we have the manifest file and the zone file system snapshot in
+the new host we can use login to the new host and continue with creating
+the zone in the new host with the rest of steps.</p>
+<p>The first step in the new host is creating a non-global zone and using
+the received snapshot as its zone path. I assume that we created the
+zone in the new machine and continue with the rests of steps. To learn
+how we can create a new zone review recipe 1 of this chapter.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># zoneadm -z myzone attach /zones/ fzone -manifest.mft</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+Now the zone is migrated to its new host. We can boot the zone and
+login. We may need to change the hostname and the networking as we are
+now residing on a new host.</p>
+<h2 id="how-it-works-4">How it works&hellip;</h2>
+<p>When migrating a zone, we are moving both its settings and its file
+system from one machine to the second one. The manifest file contains
+basic zone configurations like resource control, networking, package
+inheritance, and so on.</p>
+<p>Creating a new zone using the same zonepath and attaching the
+configuration gives us the same zone that we had in the previous host
+without the need to go through configurations again.</p>
+<h2 id="see-also-3">See also</h2>
+<p>To learn more about ZFS you can review chapter 1 and chapter 2. These
+two chapters contain detailed instructions for each possible task with
+ZFS.</p>
+<h1 id="6-controlling-zone-network-resource">6. Controlling Zone network resource</h1>
+<p>In this recipe we will use the features that project crossbow introduced
+into Solaris operating system to apply resource control on a zone
+network usage.</p>
+<h2 id="getting-ready-5">Getting ready</h2>
+<p>Before we continue with this recipe I assume that we have a zone named
+fzone which uses a dedicated virtual interface named vnic1 for its
+network access.</p>
+<p>We discussed how to create a zone and how to create the zone and how to
+configure it with the dedicated network interface review recipe 1 and
+recipe 2 of this chapter.</p>
+<h2 id="how-to-do-it-5">How to do it&hellip;</h2>
+<p>In order to configure anything regarding the zone networking we should
+have access to the global zone and the network resource control is not
+an exception. We can use the dladm we discussed in chapter X recipe Y to
+apply resource allocation on network resources.</p>
+<p>Before getting down to applying the resource controls let’s see what is
+the default value for different resources allocation properties of the
+vnic1. To do so we can use the dladm command as shown in following
+figure.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/post-img/3180_09_15.png"
+        data-srcset="/post-img/3180_09_15.png, /post-img/3180_09_15.png 1.5x, /post-img/3180_09_15.png 2x"
+        data-sizes="auto"
+        alt="/post-img/3180_09_15.png"
+        title="/post-img/3180_09_15.png" width="644" height="176" /></p>
+<p>As we can see there is no limit on the CPU and bandwidth, the <strong>MTU</strong> is
+set to default 1500 and the priority to high.</p>
+<p>Now we will lower the priority to low, set a maximum bandwidth of 250 Mb
+per second, and delegate the packet processing for this interface to CPU
+number 3 using the following commands.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># dladm set-linkprop -p cpus=1 vnic1</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># dladm set-linkprop -p priority=low vnic1</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># dladm set-linkprop -p maxbw=250 vnic1</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+We can use the dladm command to check the interface property changes as
+shown in the following figure.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/post-img/3180_09_16.png"
+        data-srcset="/post-img/3180_09_16.png, /post-img/3180_09_16.png 1.5x, /post-img/3180_09_16.png 2x"
+        data-sizes="auto"
+        alt="/post-img/3180_09_16.png"
+        title="/post-img/3180_09_16.png" width="644" height="170" /></p>
+<p>Different types of links like physical, aggregation, virtual can have
+less or more properties but the resource control properties are shared
+between all of them.</p>
+<p>We can also impose restrictions on the bandwidth and flow of data on
+different port and different protocols using the flowadm command and the
+flow control capability of Solaris.</p>
+<p>To impose limitation on different protocols and the traffic of different
+ports we should create a flow control and then add the restrictions to
+the flow control. For example let’s see how we can limit the traffic on
+port 21 to 10Mb.</p>
+<p>First we should create the flow control as shown below
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># flowadm add-flow -l vnic1 -a transport=tcp,local_port=21 ftp-flow</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+Now we can add the bandwidth restriction to the flow control we have
+just created using the following command
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># flowadm set-flowprop -p priority=low,maxbw=10m ftp-flow</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+Now that we applied the flow control let’s get the list of flow control
+to double check the restrictions we imposed. Following figure shows the
+restriction we just applied on the vnic1 flow.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/post-img/3180_09_17.png"
+        data-srcset="/post-img/3180_09_17.png, /post-img/3180_09_17.png 1.5x, /post-img/3180_09_17.png 2x"
+        data-sizes="auto"
+        alt="/post-img/3180_09_17.png"
+        title="/post-img/3180_09_17.png" width="671" height="74" /></p>
+<p>In addition to setting the maximum bandwidth we changed the priority of
+FTP port packet processing to low as it is not a critical protocol after
+all.</p>
+<h2 id="how-it-works-5">How it works&hellip;</h2>
+<p>When we change the resource allocation property of a network interface
+independent of which zone, global or none-global, it belongs to; the
+Solaris kernel place the caps on the interface resources as soon as the
+interface is brought online.</p>
+<h2 id="see-also-4">See also</h2>
+<p>To learn more about applying resource consumption restriction on Solaris
+zones review recipe 3 of this chapter.</p>
+<p>To see a complete list of all flow controlling properties consult the
+documentation available at
+<a href="http://docs.sun.com/app/docs/doc/819-2240/flowadm-1m?l=en&amp;n=1&amp;a=view" target="_blank" rel="noopener noreffer">http://docs.sun.com/app/docs/doc/819-2240/flowadm-1m?l=en&n=1&a=view</a></p>
+<h1 id="7-creating-linux-zone">7. Creating Linux zone</h1>
+<p>In this recipe we will see how we can create a Linux zone on top of the
+Solaris kernel. In the first recipe of this chapter we discussed the
+zone brands which can be lx, pkg, native, solaris8 and so on; the lx
+brand is the Linux zone brand which we are going to create in this
+recipe.</p>
+<p>The lx brand, based on the BrandZ framework, provides the runtime
+environment equal to CentOS 3.x or any compatible distribution like
+Redhat Enterprise Linux 3.x as a Solaris zone.</p>
+<h2 id="getting-ready-6">Getting ready</h2>
+<p>Before we start creating and installing a lx zone we need to have the
+CentOS VERSIONN tarball or iso image available in the global zone for
+installation phase. A tarball of CentOS 3.VERSION is available at
+<a href="http://hub.opensolaris.org/bin/view/Community&#43;Group&#43;brandz/downloads" target="_blank" rel="noopener noreffer">http://hub.opensolaris.org/bin/view/Community+Group+brandz/downloads</a></p>
+<p>The second perquisite is the lx branded zone template which facilitate
+the zone creation. The template is available in the SUNWlx package. We
+can check whether the package is installed or not using the following
+command
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># pkg info SUNWlx \|grep State</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+And if it is not already installed we can install it using the following
+command.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># pkg install SUNWlx</span></span></span></code></pre></td></tr></table>
+</div>
+</div></p>
+<h2 id="how-to-do-it-6">How to do it&hellip;</h2>
+<p>Now that we have all the required pieces prepared we go get down to the
+zone creation and installation.</p>
+<p>The only difference in the creation phase is the fact that we will use
+the SUNWlx template to create the zone, all other details like network
+configuration, resource allocation and so on remains the same.</p>
+<p>Following figure shows how we can create the lz-zone based on the SUNWlx
+template.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/post-img/3180_09_18.png"
+        data-srcset="/post-img/3180_09_18.png, /post-img/3180_09_18.png 1.5x, /post-img/3180_09_18.png 2x"
+        data-sizes="auto"
+        alt="/post-img/3180_09_18.png"
+        title="/post-img/3180_09_18.png" width="473" height="206" /></p>
+<p>I omitted adding networking and resource control during zone creation as
+we already discussed resource control in the 3<sup>rd</sup> recipe of
+this chapter.</p>
+<p>Now that we created the zone it is time to install he zone using the
+zoneadm command and the tar archive we grabbed form the OpenSolaris
+website.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/post-img/3180_09_19.png"
+        data-srcset="/post-img/3180_09_19.png, /post-img/3180_09_19.png 1.5x, /post-img/3180_09_19.png 2x"
+        data-sizes="auto"
+        alt="/post-img/3180_09_19.png"
+        title="/post-img/3180_09_19.png" width="690" height="328" /></p>
+<p>After installing the zone, it is time to review the list of zones and
+see status of our newly created zone using the list subcommand of the
+zoneadm command as shown in the following figure.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/post-img/3180_09_20.png"
+        data-srcset="/post-img/3180_09_20.png, /post-img/3180_09_20.png 1.5x, /post-img/3180_09_20.png 2x"
+        data-sizes="auto"
+        alt="/post-img/3180_09_20.png"
+        title="/post-img/3180_09_20.png" width="738" height="100" /></p>
+<p>The brand name of the lz-zone is lx which reminds us that this is a
+Linux branded zone.</p>
+<p>Now let’s boot the zone and login into the zone console. Following
+figure shows how to use boot subcommand of the zoneadm and zloging
+command to boot and login into the zone.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/post-img/3180_09_21.png"
+        data-srcset="/post-img/3180_09_21.png, /post-img/3180_09_21.png 1.5x, /post-img/3180_09_21.png 2x"
+        data-sizes="auto"
+        alt="/post-img/3180_09_21.png"
+        title="/post-img/3180_09_21.png" width="657" height="276" /></p>
+<p>Finally we can use the uname CLI utility inside the zone to see the zone
+version.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/post-img/3180_09_22.png"
+        data-srcset="/post-img/3180_09_22.png, /post-img/3180_09_22.png 1.5x, /post-img/3180_09_22.png 2x"
+        data-sizes="auto"
+        alt="/post-img/3180_09_22.png"
+        title="/post-img/3180_09_22.png" width="574" height="44" /></p>
+<p>The Linux zone’s networking is disabled by default; we can enable it by
+adding the required hostname and networking property in the
+/etc/sysconfig/network using any editor or a simple echo command which
+is shown below. Note that these commands should be executed inside the
+lz-zone shell.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># echo &#34;NETWORKING=yes&#34;\&gt; /etc/sysconfig/network</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># echo &#34;HOSTNAME=lx-zone&#34;\&gt; /etc/sysconfig/network</span></span></span></code></pre></td></tr></table>
+</div>
+</div></p>
+<h2 id="how-it-works-6">How it works&hellip;</h2>
+<p>When the runtime environment of the none-global zone is not the same as
+the global zone a translation is required for all system calls from the
+non-native environment to the native environment in order for the guest
+to work on top of Solaris host.</p>
+<p>The lx branded zones require all of the calls from the guest zone which
+is a Linux runtime with its own kernel to be translated to Solaris API
+and then executed on the hardware and the result will go back in the
+same translation phase to carry the final execution result to the Linux
+environment.</p>
+<h2 id="see-also-5">See also</h2>
+<p>To learn more about creating a zone and applying zone resource control
+reviewing the recipe 1, 2, and 3 of this chapter is highly recommended.</p>
+<h1 id="8-removing-a-zone">8. Removing a Zone</h1>
+<p>In this recipe we cover how we can remove a none-global zone from the
+system safely.</p>
+<h2 id="getting-ready-7">Getting ready</h2>
+<p>We assume that we have a zone named fzone and we want to remove the
+zone.</p>
+<h2 id="how-to-do-it-7">How to do it&hellip;</h2>
+<ol start="10">
+<li>In order to remove a zone we should follow the steps listed below,</li>
+</ol>
+<p>Ensuring that no one is logged-in to the zone because we need to halt
+the zone before deleting it and halting a non-global zone from the
+global zone does not notify the users who are logged into the zone about
+the upcoming halt. To halt the zone we can use the following command
+from the global zone.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># zoneadm -z fzone halt</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+Uninstalling the zone: After halting the zone we should uninstall it
+using the following command
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># zoneadm -z fzone uninstall</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+Deleting the zone: To delete the zone we will use the same command that
+we used to create the zone, the zonecfg command.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#zonecfg -z fzone delete</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+The delete and the uninstall sub-commands interactively ask for the
+confirmation of the operation. We can use the -F after each sub-command
+to force the deletion without further confirmation.</p>
+<h2 id="how-it-works-7">How it works&hellip;</h2>
+<p>When we use the uninstall sub-command of the zoneadm command we are
+basically removing the zone file system from hard drive and when we call
+the delete subcommand of zonecfg command we are removing the zone
+manifest and configuration from the system configuration store.</p>
+<h2 id="see-also-6">See also</h2>
+<p>To learn more about the zones structure and layout refer to first recipe
+of this chapter.</p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2010-07-12</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://kalali.blog/2010/07/managing-and-administrating-opensolaris-zones/" data-title="Managing and Administrating OpenSolaris Zones" data-via="masoudkalali" data-hashtags="Solaris,Zone,Container,Services,OpenSolaris"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://kalali.blog/2010/07/managing-and-administrating-opensolaris-zones/" data-hashtag="Solaris"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="https://kalali.blog/2010/07/managing-and-administrating-opensolaris-zones/"><i class="fab fa-linkedin fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Hacker News" data-sharer="hackernews" data-url="https://kalali.blog/2010/07/managing-and-administrating-opensolaris-zones/" data-title="Managing and Administrating OpenSolaris Zones"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="https://kalali.blog/2010/07/managing-and-administrating-opensolaris-zones/" data-title="Managing and Administrating OpenSolaris Zones"><i data-svg-src="https://cdn.jsdelivr.net/npm/simple-icons@7.0.0/icons/line.svg" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/solaris/">Solaris</a>,&nbsp;<a href="/tags/zone/">Zone</a>,&nbsp;<a href="/tags/container/">Container</a>,&nbsp;<a href="/tags/services/">Services</a>,&nbsp;<a href="/tags/opensolaris/">OpenSolaris</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/2010/07/opensolaris-networking-in-details/" class="prev" rel="prev" title="OpenSolaris Networking In Details"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>OpenSolaris Networking In Details</a>
+            <a href="/2010/07/introducing-nio-2-jsr-203-part-4-changing-file-system-attributes-and-permissions/" class="next" rel="next" title="Introducing NIO.2 (JSR 203) Part 4: Changing File System Attributes and Permissions">Introducing NIO.2 (JSR 203) Part 4: Changing File System Attributes and Permissions<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2005 - 2022</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://www.linkedin.com/in/masoudkalali/" target="_blank">Masoud Kalali</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@2.4.0/css/lightgallery-bundle.min.css"><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/autocomplete.js@0.38.1/dist/autocomplete.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lunr@2.3.9/lunr.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.1/lazysizes.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/twemoji@14.0.2/dist/twemoji.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lightgallery@2.4.0/lightgallery.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lightgallery@2.4.0/plugins/thumbnail/lg-thumbnail.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lightgallery@2.4.0/plugins/zoom/lg-zoom.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sharer.js@0.5.1/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":10},"comment":{},"lightgallery":true,"search":{"highlightTag":"em","lunrIndexURL":"/index.json","maxResultLength":10,"noResultsFound":"No results found","snippetLength":30,"type":"lunr"},"twemoji":true};</script><script type="text/javascript" src="/js/theme.min.js"></script><script type="text/javascript">
+            window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());
+            gtag('config', ' UA-137107-12');
+        </script><script type="text/javascript" src="https://www.googletagmanager.com/gtag/js?id= UA-137107-12" async></script></body>
+</html>

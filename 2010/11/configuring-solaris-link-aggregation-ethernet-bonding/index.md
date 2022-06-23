@@ -1,6 +1,6 @@
 # Configuring Solaris Link Aggregation (Ethernet bonding)
 
- Link aggregation or commonly known Ethernet bonding allows us to enhance the network availability and performance by combining multiple network interfaces together and form an aggregation of those interfaces which act as a single network interface with greatly enhanced availability and performance.
+ Link aggregation or commonly known Ethernet bonding allows us to enhance the network availability and performance by combining multiple network interfaces together and form an aggregation of those interface_names which act as a single network interface with greatly enhanced availability and performance.
 
 When we aggregate two or more network interfaces, we are forming a new network interface on top of those physical interfaces combined in the link layer.
 

@@ -15,7 +15,7 @@ OpenSolaris support both legacy file systems like UNIX File System (UFS) and its
 As you can see we can partition each storage device into one or more volumes with different file systems.]]></description>
 </item>
 <item>
-    <title>Managing ZFS Datasets</title>
+    <title>In depth tutorial on managing ZFS Datasets</title>
     <link>https://kalali.blog/2010/05/managing-zfs-datasets/</link>
     <pubDate>Sun, 09 May 2010 00:00:00 &#43;0000</pubDate>
     <author>Masoud Kalali</author>

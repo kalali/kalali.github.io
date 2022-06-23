@@ -1,4 +1,4 @@
-# Managing ZFS Datasets
+# In depth tutorial on managing ZFS Datasets
 
 
 
