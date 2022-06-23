@@ -49,11 +49,20 @@ OpenSolaris support both legacy file systems like UNIX File System (UFS) and its
 As you can see we can partition each storage device into one or more volumes with different file systems.]]></description>
 </item>
 <item>
-    <title>Managing ZFS Datasets</title>
-    <link>https://kalali.blog/2010/07/managing-zfs-datasets/</link>
+    <title>OpenSolaris Networking In Details</title>
+    <link>https://kalali.blog/2010/07/opensolaris-networking-in-details/</link>
     <pubDate>Fri, 09 Jul 2010 00:00:00 &#43;0000</pubDate>
     <author>Masoud Kalali</author>
-    <guid>https://kalali.blog/2010/07/managing-zfs-datasets/</guid>
+    <guid>https://kalali.blog/2010/07/opensolaris-networking-in-details/</guid>
+    <description><![CDATA[Introduction In this chapter we are going to cover basic networking capabilities of OpenSolaris. While we will some of common utilities in the recipes, we will learn some more trivial ones here.
+Learning netstat command The netstat command is well known for checking the active connections status in a system but it can provide a fair deal of other diagnostics. Following sample command shows some of the netstat use cases.]]></description>
+</item>
+<item>
+    <title>Managing ZFS Datasets</title>
+    <link>https://kalali.blog/2010/05/managing-zfs-datasets/</link>
+    <pubDate>Sun, 09 May 2010 00:00:00 &#43;0000</pubDate>
+    <author>Masoud Kalali</author>
+    <guid>https://kalali.blog/2010/05/managing-zfs-datasets/</guid>
     <description><![CDATA[Introduction ZFS pools provide us with the underlying storage with which we can create files and directories inside it right after we create it. But OpenSolaris and ZFS provides more than that by introducing ZFS datasets&hellip;
 In this recipe we will work on top of a zfs pool named fpool and the default root pool named rpool. So before continuing on this recipe we should have a pool named fpool created.]]></description>
 </item>

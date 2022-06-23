@@ -16,10 +16,10 @@ As you can see we can partition each storage device into one or more volumes wit
 </item>
 <item>
     <title>Managing ZFS Datasets</title>
-    <link>https://kalali.blog/2010/07/managing-zfs-datasets/</link>
-    <pubDate>Fri, 09 Jul 2010 00:00:00 &#43;0000</pubDate>
+    <link>https://kalali.blog/2010/05/managing-zfs-datasets/</link>
+    <pubDate>Sun, 09 May 2010 00:00:00 &#43;0000</pubDate>
     <author>Masoud Kalali</author>
-    <guid>https://kalali.blog/2010/07/managing-zfs-datasets/</guid>
+    <guid>https://kalali.blog/2010/05/managing-zfs-datasets/</guid>
     <description><![CDATA[Introduction ZFS pools provide us with the underlying storage with which we can create files and directories inside it right after we create it. But OpenSolaris and ZFS provides more than that by introducing ZFS datasets&hellip;
 In this recipe we will work on top of a zfs pool named fpool and the default root pool named rpool. So before continuing on this recipe we should have a pool named fpool created.]]></description>
 </item>

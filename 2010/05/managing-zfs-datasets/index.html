@@ -1,0 +1,1459 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>Managing ZFS Datasets - The Pensieve - Masoud Kalali&#39;s Blog</title><meta name="Description" content="Masoud Kalali&#39;s personal blog. Covering subjects ranging from tech strategy, leadership, software architecture, cloud native, and software development in general."><meta property="og:title" content="Managing ZFS Datasets" />
+<meta property="og:description" content="Introduction ZFS pools provide us with the underlying storage with which we can create files and directories inside it right after we create it. But OpenSolaris and ZFS provides more than that by introducing ZFS datasets&hellip;
+In this recipe we will work on top of a zfs pool named fpool and the default root pool named rpool. So before continuing on this recipe we should have a pool named fpool created." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://kalali.blog/2010/05/managing-zfs-datasets/" /><meta property="og:image" content="https://kalali.blog/img/avatar.jpg"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2010-05-09T00:00:00+00:00" />
+<meta property="article:modified_time" content="2010-05-09T00:00:00+00:00" /><meta property="og:site_name" content="My cool site" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://kalali.blog/img/avatar.jpg"/>
+
+<meta name="twitter:title" content="Managing ZFS Datasets"/>
+<meta name="twitter:description" content="Introduction ZFS pools provide us with the underlying storage with which we can create files and directories inside it right after we create it. But OpenSolaris and ZFS provides more than that by introducing ZFS datasets&hellip;
+In this recipe we will work on top of a zfs pool named fpool and the default root pool named rpool. So before continuing on this recipe we should have a pool named fpool created."/>
+<meta name="application-name" content="The Pensieve - Masoud Kalali&#39;s Blog">
+<meta name="apple-mobile-web-app-title" content="The Pensieve - Masoud Kalali&#39;s Blog"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://kalali.blog/2010/05/managing-zfs-datasets/" /><link rel="next" href="https://kalali.blog/2010/05/introducing-nio-2-jsr-203-part-1-what-are-new-features/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css"></noscript><link rel="preload" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css"></noscript><meta name="google-site-verification" content="cDJVSx1L3UB6AwrPKeSQszOyhtjHYvPYkDxZw_Me4Z4" /><meta name="msvalidate.01" content="cDJVSx1L3UB6AwrPKeSQszOyhtjHYvPYkDxZw_Me4Z4" /><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Managing ZFS Datasets",
+        "inLanguage": "en",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/kalali.blog\/2010\/05\/managing-zfs-datasets\/"
+        },"image": [{
+                            "@type": "ImageObject",
+                            "url": "https:\/\/kalali.blog\/img\/preview.png",
+                            "width":  1027 ,
+                            "height":  833 
+                        }],"genre": "posts","keywords": "Solaris, ZFS, File System","wordcount":  5606 ,
+        "url": "https:\/\/kalali.blog\/2010\/05\/managing-zfs-datasets\/","datePublished": "2010-05-09T00:00:00+00:00","dateModified": "2010-05-09T00:00:00+00:00","license": "This work is licensed under a Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)","publisher": {
+            "@type": "Organization",
+            "name": "Masoud Kalali"},"author": {
+                "@type": "Person",
+                "name": "Masoud Kalali"
+            },"description": ""
+    }
+    </script></head>
+    <body data-header-desktop="auto" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="The Pensieve - Masoud Kalali&#39;s Blog">The Pensieve - Masoud Kalali&#39;s Blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/" title="Blog posts"> Posts </a><a class="menu-item" href="/tags/" title="All the blog tags"> Tags </a><a class="menu-item" href="/categories/" title="List of all categories I blogged bout"> Categories </a><a class="menu-item" href="/about/" title="About Masoud Kalali, Author"> About </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="The Pensieve - Masoud Kalali&#39;s Blog">The Pensieve - Masoud Kalali&#39;s Blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        Cancel
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="Blog posts">Posts</a><a class="menu-item" href="/tags/" title="All the blog tags">Tags</a><a class="menu-item" href="/categories/" title="List of all categories I blogged bout">Categories</a><a class="menu-item" href="/about/" title="About Masoud Kalali, Author">About</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><div class="search-dropdown desktop">
+        <div id="search-dropdown-desktop"></div>
+    </div>
+    <div class="search-dropdown mobile">
+        <div id="search-dropdown-mobile"></div>
+    </div><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content always-active" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">Managing ZFS Datasets</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="https://www.linkedin.com/in/masoudkalali/" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>Masoud Kalali</a></span>&nbsp;<span class="post-category">included in <a href="/categories/solaris/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Solaris</a>&nbsp;<a href="/categories/old-blog-migrated-content/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Old Blog Migrated Content</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2010-05-09">2010-05-09</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;5606 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;27 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#getting-ready">Getting ready</a></li>
+    <li><a href="#how-to-do-it">How to do it&hellip;</a></li>
+    <li><a href="#how-it-works">How it works&hellip;</a></li>
+    <li><a href="#see-also">See also</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#getting-ready-1">Getting ready</a></li>
+    <li><a href="#how-to-do-it-1">How to do it&hellip;</a></li>
+    <li><a href="#how-it-works-1">How it works&hellip;</a>
+      <ul>
+        <li><a href="#renaming-a-zfs-file-system">Renaming a ZFS file system</a></li>
+      </ul>
+    </li>
+    <li><a href="#see-also-1">See also</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#getting-ready-2">Getting ready</a></li>
+    <li><a href="#how-to-do-it-2">How to do it&hellip;</a></li>
+    <li><a href="#how-it-works-2">How it works&hellip;</a></li>
+    <li><a href="#see-also-2">See also</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#getting-ready-3">Getting ready</a></li>
+    <li><a href="#how-to-do-it-3">How to do it&hellip;</a></li>
+    <li><a href="#how-it-works-3">How it works&hellip;</a></li>
+    <li><a href="#theres-more">There&rsquo;s more&hellip;</a>
+      <ul>
+        <li><a href="#renaming-a-snapshot">Renaming a snapshot</a></li>
+        <li><a href="#accessing-snapshot-data-without-reverting-active-dataset">Accessing snapshot data without reverting active dataset</a></li>
+      </ul>
+    </li>
+    <li><a href="#see-also-3">See also</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#getting-ready-4">Getting ready</a></li>
+    <li><a href="#how-to-do-it-4">How to do it&hellip;</a></li>
+    <li><a href="#how-it-works-4">How it works&hellip;</a></li>
+    <li><a href="#see-also-4">See also</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#getting-ready-5">Getting ready</a></li>
+    <li><a href="#how-to-do-it-5">How to do it&hellip;</a></li>
+    <li><a href="#how-it-works-5">How it works&hellip;</a></li>
+    <li><a href="#see-also-5">See also</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#getting-ready-6">Getting ready</a></li>
+    <li><a href="#how-to-do-it-6">How to do it&hellip;</a></li>
+    <li><a href="#how-it-works-6">How it works&hellip;</a></li>
+    <li><a href="#see-also-6">See also</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#getting-ready-7">Getting ready</a></li>
+    <li><a href="#how-to-do-it-7">How to do it&hellip;</a></li>
+    <li><a href="#how-it-works-7">How it works&hellip;</a></li>
+    <li><a href="#theres-more-1">There&rsquo;s more&hellip;</a></li>
+    <li><a href="#see-also-7">See also</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#getting-ready-8">Getting ready</a></li>
+    <li><a href="#how-to-do-it-8">How to do it&hellip;</a></li>
+    <li><a href="#how-it-works-8">How it works&hellip;</a></li>
+    <li><a href="#see-also-8">See also</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#getting-ready-9">Getting ready</a></li>
+    <li><a href="#how-to-do-it-9">How to do it&hellip;</a></li>
+    <li><a href="#how-it-works-9">How it works&hellip;</a></li>
+    <li><a href="#see-also-9">See also</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#getting-ready-10">Getting ready</a></li>
+    <li><a href="#how-to-do-it-10">How to do it&hellip;</a></li>
+    <li><a href="#how-it-works-10">How it works&hellip;</a></li>
+    <li><a href="#see-also-10">See also</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h1 id="introduction">Introduction</h1>
+<p>ZFS pools provide us with the underlying storage with which we can
+create files and directories inside it right after we create it. But
+OpenSolaris and ZFS provides more than that by introducing ZFS
+datasets&hellip;</p>
+<p>In this recipe we will work on top of a zfs pool named fpool and the
+default root pool named rpool. So before continuing on this recipe we
+should have a pool named fpool created. Creating ZFS pools is discussed
+in the recipe 9, Creating and Destroying ZFS pools, of chapter 2.</p>
+<h1 id="1-getting-list-of-zfs-datasets">1. Getting list of ZFS datasets</h1>
+<p>In this recipe we will discuss how we can get the list of ZFS datasets
+and also how to get detailed information about a dataset.</p>
+<h2 id="getting-ready">Getting ready</h2>
+<p>In this recipe we will work with list subcommand of the zfs command.</p>
+<h2 id="how-to-do-it">How to do it&hellip;</h2>
+<p>We can use the list subcommand of the zfs command to get list of
+available datasets. Like zpool command we can use this command with a
+pool name or without a pool name to get list of all available datasets
+in the system. The simplified schema of the list subcommand is shown
+below:
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">list <span class="se">\[</span>-rH<span class="se">\]</span> <span class="se">\[</span>list_of_pools<span class="se">\]</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+In this command:</p>
+<p>The -r option specifies that we want to see a recursive list of all
+child datasets in addition to root datasets.</p>
+<p>The -H specify that we do not want to see the header row of the printed
+information.</p>
+<p>The list_of_pool arguments specifies a space separated list of pools we
+want to see their datasets, passing no argument means we want all
+datasets of all pools to be included in the output.</p>
+<p>For example to view list of all datasets recursively in both rpool and
+fpool we can use the following command.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="se">\#</span> zfs list -r fpool rpool</span></span></code></pre></td></tr></table>
+</div>
+</div>
+The output for the above command is similar to the following figure.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/post-img/3180_03_01.png"
+        data-srcset="/post-img/3180_03_01.png, /post-img/3180_03_01.png 1.5x, /post-img/3180_03_01.png 2x"
+        data-sizes="auto"
+        alt="/post-img/3180_03_01.png"
+        title="/post-img/3180_03_01.png" width="564" height="259" /></p>
+<p>As we can see in the figure, the child datasets are also listed in the
+output. One thing which we might notice is the differences between a ZFS
+file system name and its mount point, especially for the zpools. Each
+ZFS dataset has a mount point which can be different than its name and
+its location in the parent dataset. When we are using commands like zfs
+and zpool we will refer to the name of the dataset and when we ware
+accessing a file system dataset we use the mount point.</p>
+<h2 id="how-it-works">How it works&hellip;</h2>
+<p>The command reads metadata related to the questioned pools and print
+them in the output. Metadata information of all ZFS objects are stored
+in /etc/zfs directory.</p>
+<h2 id="see-also">See also</h2>
+<p>We can get more information about datasets using their properties which
+is discussed in the last recipe of this chapter.</p>
+<h1 id="2-creating-and-destroying-zfs-file-system">2. Creating and destroying ZFS File System</h1>
+<p>We can create and destroy a ZFS file systems using create and destroy
+sub commands of the zfs command.</p>
+<h2 id="getting-ready-1">Getting ready</h2>
+<p>To get started with this recipe we need to have a pool named fpool, so
+before proceeding further create a ZFS pool named fpool. We can find how
+we can create ZFS pools in recipe 9 of chapter 2.</p>
+<h2 id="how-to-do-it-1">How to do it&hellip;</h2>
+<p>To create a ZFS file systems we should use the create subcommand of zfs
+command. The command syntax is shown below.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">create <span class="se">\[</span>-p<span class="se">\]</span> <span class="se">\[</span>-o <span class="nv">property</span><span class="o">=</span>value<span class="se">\]</span> ... <span class="se">\&lt;</span>filesystem<span class="se">\&gt;</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+In this syntax:</p>
+<p>The -p option specifies that any non-existing parent addressed should be
+created.</p>
+<p>The -o can be used to pass ZFS properties to be assigned to the command.
+For example we can use it to enable the compression during dataset
+creation. We will discuss more about these properties in recipe
+number&hellip;.</p>
+<p>The file systems argument specifies the dataset path we want to create.
+Any of the non-existing parent file systems specified in this argument
+will be created recursively provided that we use -p option.</p>
+<p>Now to create file systems named parent/fset inside the fpool we can use
+the following command based on the above syntax.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="se">\#</span> zfs create -p -o <span class="nv">compression</span><span class="o">=</span>on fpool/parent/fset</span></span></code></pre></td></tr></table>
+</div>
+</div>
+The command enables the compression for the file systems during the
+dataset creation time. The following image shows how this dataset
+appears in the pool.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/post-img/3180_03_02.png"
+        data-srcset="/post-img/3180_03_02.png, /post-img/3180_03_02.png 1.5x, /post-img/3180_03_02.png 2x"
+        data-sizes="auto"
+        alt="/post-img/3180_03_02.png"
+        title="/post-img/3180_03_02.png" width="670" height="177" /></p>
+<p>To destroy a dataset we can use the destroy subcommand of the zfs
+command. The command schema is as follow:
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">destroy <span class="se">\[</span>-rRf<span class="se">\]</span> filesystem<span class="se">\|</span>volume<span class="se">\|</span>snapshot</span></span></code></pre></td></tr></table>
+</div>
+</div>
+In this syntax:</p>
+<p>The -r option asks the command to destroy all descendents of the target
+dataset.</p>
+<p>The -R option asks the command to destroy all depended objects like
+clones and snapshots. We will discuss clones and snapshots in recipe
+number</p>
+<p>The -f option force unmount any mount point.</p>
+<p>The argument specifies type of the dataset we want to delete; either it
+is a volume, a file system or a snapshot. We will discuss volumes in
+next recipe.</p>
+<p>To delete the parent dataset with its entire child we can use the
+following command.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="se">\#</span> zfs destroy -rf fpool/parent</span></span></code></pre></td></tr></table>
+</div>
+</div>
+The following figure shows the fpool datasets after we execute the
+command.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/post-img/3180_03_03.png"
+        data-srcset="/post-img/3180_03_03.png, /post-img/3180_03_03.png 1.5x, /post-img/3180_03_03.png 2x"
+        data-sizes="auto"
+        alt="/post-img/3180_03_03.png"
+        title="/post-img/3180_03_03.png" width="665" height="144" /></p>
+<h2 id="how-it-works-1">How it works&hellip;</h2>
+<p>When we create a ZFS dataset its related records are inserted in ZFS
+metadata storages located at /etc/zfs and any further access to the file
+system will update these records.</p>
+<h3 id="renaming-a-zfs-file-system">Renaming a ZFS file system</h3>
+<p>We can rename a ZFS dataset using the rename subcommand of the zfs
+command. For example to rename the parent file system we created
+previously we can use the following command
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="se">\#</span> zfs rename fpool/parent fpool/parent2</span></span></code></pre></td></tr></table>
+</div>
+</div></p>
+<h2 id="see-also-1">See also</h2>
+<p>In the next three recipes we discuss managing other types of datasets
+available in ZFS including <strong>volumes</strong>, <strong>snapshots</strong>.</p>
+<h1 id="3-creating-and-destroying-zfs-volumes">3. Creating and Destroying ZFS volumes</h1>
+<p>In this recipe we will see how we can create or destroy a ZFS volume
+using the create and destroy subcommand of the zfs command.</p>
+<p>ZFS volumes provide the software systems which require a block or
+character device to benefit from the storage pooling of ZFS pools and in
+the same time has the freedom of accessing the storage in block or
+character mode.</p>
+<h2 id="getting-ready-2">Getting ready</h2>
+<p>To get started with this recipe we need to have a pool named fpool, so
+before proceeding further create a ZFS pool named fpool.We can find how
+we can create ZFS pools in recipe 9 of chapter 2.</p>
+<h2 id="how-to-do-it-2">How to do it&hellip;</h2>
+<p>OpenSolaris installation creates two ZFS volumes one for <strong>SWAP</strong> area
+and the other for storing different dumps created when the OS face a
+problem. To see the list of volumes we can use the following command.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="se">\#</span> zfs list -r rpool</span></span></code></pre></td></tr></table>
+</div>
+</div>
+Thefollowing figure shows the result of executing the given command.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/post-img/3180_03_04.png"
+        data-srcset="/post-img/3180_03_04.png, /post-img/3180_03_04.png 1.5x, /post-img/3180_03_04.png 2x"
+        data-sizes="auto"
+        alt="/post-img/3180_03_04.png"
+        title="/post-img/3180_03_04.png" width="554" height="221" /></p>
+<p>As you can see none of the volumes has a mount point because they are
+block devices and not file systems unless we format them and mount them
+manually.</p>
+<p>To create a ZFS volume we can use the following syntax of the create
+subcommand of the zfs command.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">create <span class="se">\[</span>-ps<span class="se">\]</span> <span class="se">\[</span>-b blocksize<span class="se">\]</span> <span class="se">\[</span>-o <span class="nv">property</span><span class="o">=</span>value<span class="se">\]</span> ... -V <span class="se">\&lt;</span>size<span class="se">\&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="se">\&lt;</span>volume<span class="se">\&gt;</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+In this syntax we have:</p>
+<p>The -p option similar to the -p option in creating dataset specifies
+that all non-existing parents addressed in the volume name should be
+created.</p>
+<p>The -s option specifies that we want to create a <strong>sparse</strong> volume. In
+contrast with normal volumes sparse volumes does not occupy any space
+after we created them and the volume size grows when we copy some data
+into it. The maximum size is specified using the -V parameter.</p>
+<p>The -b option is similar to using -o volblocksize option which let us
+determine the volume block size.</p>
+<p>The -V parameter specifies the volume capacity or size, if we use the -s
+parameter the size will not get allocated immediately but rather the
+volume grows when we copy some data into it.</p>
+<p>The volume argument specifies the volume name.</p>
+<p>For example to create a volume named fvol with a fixed size of 100 MB we
+can use the following command.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="se">\#</span> zfs create -v 100m fpool/fvol</span></span></code></pre></td></tr></table>
+</div>
+</div>
+To create a sparse volume named svol with a maximum size of 500 MB we
+can use the following command.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="se">\#</span> zfs create -v 500m fpool/svol</span></span></code></pre></td></tr></table>
+</div>
+</div>
+Following figure shows the fpool datasets after creating these two
+volumes.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/post-img/3180_03_05.png"
+        data-srcset="/post-img/3180_03_05.png, /post-img/3180_03_05.png 1.5x, /post-img/3180_03_05.png 2x"
+        data-sizes="auto"
+        alt="/post-img/3180_03_05.png"
+        title="/post-img/3180_03_05.png" width="434" height="165" /></p>
+<p>When we create a volume we can access it using its associated raw and
+character node names.</p>
+<p>The raw name for each ZFS volume consists with
+/dev/zvol/rdsk/pool_name/volume_name naming schema</p>
+<p>The character name for each ZFS volume consists with
+/dev/zvol/dsk/pool_name/volume_name naming schema</p>
+<p>To understand the naming schema better, the following figure shows how
+these volumes appear in the block and character devices list.</p>
+<p>Using sparse volumes is not a good move when we have sensitive
+applications utilizing the volume because the volume may not be able to
+grow when there might be no empty space left in the pool when the volume
+requires growing.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/post-img/3180_03_06.png"
+        data-srcset="/post-img/3180_03_06.png, /post-img/3180_03_06.png 1.5x, /post-img/3180_03_06.png 2x"
+        data-sizes="auto"
+        alt="/post-img/3180_03_06.png"
+        title="/post-img/3180_03_06.png" width="359" height="184" /></p>
+<p>Destroying a volume is similar to destroying a file system which we
+discussed in recipe 2. For example we can use the following command to
+destroy the fvol
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="se">\#</span> zfs destroy -rf fpool/fvol</span></span></code></pre></td></tr></table>
+</div>
+</div></p>
+<h2 id="how-it-works-2">How it works&hellip;</h2>
+<p>When we create a ZFS volume, all related metadata for the volume will be
+stored in the ZFS metadata storage located at /etc/zfs and the space we
+assigned to the volume will be reserved for the volume and will be
+subtracted from the underlying pool’s available space. The volume’s node
+will be created in the /dev/zvol subdirectories to allow both raw and
+block access level to the volume.</p>
+<p>Destroying a pool return back the allocated space, remove the associated
+records and also delete the volume node names created in the /dev/zvol
+subdirectories.</p>
+<h2 id="see-also-2">See also</h2>
+<p>You can take a look at recipe 2 and 4 which contains more information
+about different types of datasets supported by ZFS.</p>
+<h1 id="4-creating-and-destroying-a-zfs-snapshot">4. Creating and Destroying a ZFS snapshot</h1>
+<p>In this recipe we will learn another ZFS dataset named snapshots.</p>
+<h2 id="getting-ready-3">Getting ready</h2>
+<p>To get started with this recipe we need to have a pool named fpool, so
+before proceeding further create a ZFS pool named fpool.We can find how
+we can create ZFS pools in recipe 9 of chapter 2.</p>
+<p>We should create a file system named fset to continue with this recipe.
+Creating file systems dicussed in recipe 2 of this chapter.</p>
+<h2 id="how-to-do-it-3">How to do it&hellip;</h2>
+<p>To create a snapshot we can use the snapshot subcommand of the zfs
+command. The command syntax is as follow:
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">snapshot <span class="se">\[</span>-r<span class="se">\]</span> <span class="se">\[</span>-o <span class="nv">property</span><span class="o">=</span>value<span class="se">\]</span> ...
+</span></span><span class="line"><span class="cl"><span class="se">\&lt;</span>filesystem@snapname<span class="se">\|</span>volume@snapname<span class="se">\&gt;</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
+In this syntax:</p>
+<p>The -r specifies that we want to create snapshot from all descendent
+datasets of the target dataset.</p>
+<p>The -o specifies a property we want to set during the snapshot creation.</p>
+<p>The <a href="mailto:filesystem@snapname" rel="">filesystem@snapname</a> | volume@snapname specifies the snapshot
+name.</p>
+<p>A snapshot is created from a file system or a volume and conforms to a
+naming schema similar to <a href="mailto:dataset_name@snapshot" rel="">dataset_name@snapshot</a> name. In the naming
+schema the first part is the dataset name for example fpool/fset
+followed by @ character and then the snapshot name like
+before_migration.</p>
+<p>To create a snapshot named initial from the fpool/fset we can use the
+following command
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="se">\#</span> zfs snapshot &lt;fpool/fset@initial&gt;</span></span></code></pre></td></tr></table>
+</div>
+</div>
+Following figure shows the snapshot status before anything changes in
+the fset and after we delete some files and add some other in their
+place.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/post-img/3180_03_07.png"
+        data-srcset="/post-img/3180_03_07.png, /post-img/3180_03_07.png 1.5x, /post-img/3180_03_07.png 2x"
+        data-sizes="auto"
+        alt="/post-img/3180_03_07.png"
+        title="/post-img/3180_03_07.png" width="434" height="185" /></p>
+<p>The main purpose of creating snapshot is to revert back to the point
+when we created the snapshot. To rollback the changes that a dataset
+have seen after creating a snapshot we can use rollback subcommand of
+the zfs command as follow.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="se">\#</span> zfs rollback &lt;fpool/fset@initial&gt;</span></span></code></pre></td></tr></table>
+</div>
+</div>
+This command rollbacks the fset file system back to the state when we
+created the <a href="mailto:fpool/fset@initial" rel="">fpool/fset@initial</a> snapshot.</p>
+<h2 id="how-it-works-3">How it works&hellip;</h2>
+<p>A snapshot as its name implies is an image of a file system or a volume
+in a specific point in time. The main reason behind creating snapshots
+is possibility to revert a file system or a volume back to a specific
+point in time.</p>
+<p>Utilising the copy-on-write and metadata blocks, a ZFS snapshot does not
+occupy any space after we create it, and the creating process is
+amazingly fast. After the snapshot is created, any change in the file
+system will cause the snapshot size to increase in order to reflect the
+changed blocks.</p>
+<h2 id="theres-more">There&rsquo;s more&hellip;</h2>
+<h3 id="renaming-a-snapshot">Renaming a snapshot</h3>
+<h3 id="accessing-snapshot-data-without-reverting-active-dataset">Accessing snapshot data without reverting active dataset</h3>
+<h2 id="see-also-3">See also</h2>
+<p>Recipe number 3 and 5 are closely related to the snapshots and reading
+them can give you a better understanding of this recipe.</p>
+<h1 id="5-creating-and-destroying-a-zfs-clone">5. Creating and Destroying a ZFS clone</h1>
+<p>In this recipe we will learn how to deal with ZFS clones.</p>
+<h2 id="getting-ready-4">Getting ready</h2>
+<p>Before we get down to the actual business of managing clones we should
+have an accessible pool and a dataset, either a ZFS volume or a ZFS file
+system, to study on.</p>
+<p>I assume that we have fpool and a file system named fset in our disposal
+to work with.</p>
+<h2 id="how-to-do-it-4">How to do it&hellip;</h2>
+<p>We can use the clone subcommand of the zfs command to create a clone.
+The command syntax is as follow:
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">zfs clone <span class="se">\[</span>-p<span class="se">\]</span> <span class="se">\[</span>-o property<span class="se">\]</span> ... source_snapshot target_dataset</span></span></code></pre></td></tr></table>
+</div>
+</div>
+In this syntax:</p>
+<p>The -p option specifies that all parent datasets need to be created if
+not existing already</p>
+<p>The -o allows us to specify some options for the clone. List of all
+properties for a dataset is discussed in recipe number 12</p>
+<p>The source_snapshot specifies which snapshot we want to base the clone
+on.</p>
+<p>The target_dataset specifies where we want the clone to be created. The
+target_dataset is of the same type as the source_snapshot is based on.</p>
+<p>To create a clone we need a snapshot so, lets create one.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="se">\#</span> zfs snapshot &lt;fpool/fset@initial&gt;</span></span></code></pre></td></tr></table>
+</div>
+</div>
+Now we can create a clone based on the state which this snapshot
+represent from the underlaying file system which is fset.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="se">\#</span> zfs clone -p fpool/fset@initial fpool/initial_clone</span></span></code></pre></td></tr></table>
+</div>
+</div>
+Now if we get the list of all datasets we can see the initial_clone as a
+file system in the fpool.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/post-img/3180_03_08.png"
+        data-srcset="/post-img/3180_03_08.png, /post-img/3180_03_08.png 1.5x, /post-img/3180_03_08.png 2x"
+        data-sizes="auto"
+        alt="/post-img/3180_03_08.png"
+        title="/post-img/3180_03_08.png" width="607" height="175" /></p>
+<p>A clone can not be created in any pool other than the pool which
+original dataset resides because of the copy-on-write nature of the ZFS
+and use of metadata blocks for referring to unchanged data blocks.</p>
+<p>Now that we have a clone to experiment on, we may need to replace the
+original dataset with the clone after we succeeded changing the dataset
+in the way we need. This is called <strong>promoting</strong> as we are promoting a
+clone to become the original. The following command shows syntax of the
+promote command which we can use to swap the clone place with the
+original dataset.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">promote clone_name</span></span></code></pre></td></tr></table>
+</div>
+</div>
+In this syntax the clone_name argument specifies the clone we want to
+swap its place with the original dataset it is initialized with. To
+promote the initial_clone we can use the following command.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="se">\#</span> zfs promote fpool/initial_clone</span></span></code></pre></td></tr></table>
+</div>
+</div>
+When the clone replaces the original dataset, any dependent of the
+dataset, which includes clones and snapshots, will cease its
+dependencies on the original dataset and point the dependency toward the
+newly promoted clone.</p>
+<p>Destroying a dataset which has dependencies like snapshots and clones is
+easy when we want to destroy the clones as well. We just need to use the
+-R option to destroy all dependencies including snapshots and clones.
+But if we only want to destroy an underlying dataset we should promote
+one of its clones to take its place and then destroy the dataset without
+harming dependent datasets.</p>
+<p>For example following set of commands promote the initial_clone and then
+destroy the fset file system.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="se">\#</span> zfs promote fpool/initial_clone
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="se">\#</span> zfs destroy fpool/fset</span></span></code></pre></td></tr></table>
+</div>
+</div></p>
+<h2 id="how-it-works-4">How it works&hellip;</h2>
+<p>A clone is a writeable copy of a dataset, a volume or a file system,
+which its initial data is the same as the original dataset it is created
+from. A clone can be initialized from a snapshot of the file system and
+its initial creation is as fast as creating a snapshot because of the
+copy-on-write nature of the ZFS file system. A clone size grows in time
+when we change the clone or the original dataset content.</p>
+<h2 id="see-also-4">See also</h2>
+<p>Recipe 2, 3 and 4 are closely related to this recipe as they explain ZFS
+file systems, ZFS volumes and ZFS snapshots. Reviewing them can help
+understanding this recipe better.</p>
+<h1 id="6-specifying-zfs-mount-point">6. Specifying ZFS mount point</h1>
+<p>In order to use a file system, we should mount it to a mount point so we
+can read from the file system or write into it.</p>
+<h2 id="getting-ready-5">Getting ready</h2>
+<p>To get started with this recipe we need to have a pool named fpool, so
+before proceeding further create a ZFS pool named fpool.We can find how
+we can create ZFS pools in recipe 9 of chapter 2.</p>
+<p>We should create a file system named fset to continue with this recipe.
+Creating file systems dicussed in recipe 2 of this chapter.</p>
+<h2 id="how-to-do-it-5">How to do it&hellip;</h2>
+<p>Let&rsquo;s create a file system and see where it is mounted by default.
+Following command creates fset in the fpool.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="se">\#</span> zfs create fpool/fset</span></span></code></pre></td></tr></table>
+</div>
+</div>
+And following figure shows how it is mounted in the default location.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/post-img/3180_03_09.png"
+        data-srcset="/post-img/3180_03_09.png, /post-img/3180_03_09.png 1.5x, /post-img/3180_03_09.png 2x"
+        data-sizes="auto"
+        alt="/post-img/3180_03_09.png"
+        title="/post-img/3180_03_09.png" width="535" height="157" /></p>
+<p>Now let&rsquo;s use -o option and its argument to change the mount point
+during file system creation.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="se">\#</span> zfs create -o <span class="nv">mountpoint</span><span class="o">=</span>/fpool/cu-mp fpool/file-set</span></span></code></pre></td></tr></table>
+</div>
+</div>
+And following figure shows how our -o option works and how we can use
+the set subcommand to change the mountpoint property of a file system
+after we create the file system.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/post-img/3180_03_10.png"
+        data-srcset="/post-img/3180_03_10.png, /post-img/3180_03_10.png 1.5x, /post-img/3180_03_10.png 2x"
+        data-sizes="auto"
+        alt="/post-img/3180_03_10.png"
+        title="/post-img/3180_03_10.png" width="612" height="280" /></p>
+<h2 id="how-it-works-5">How it works&hellip;</h2>
+<p>When we create a ZFS file system, the ZFS assign a mount point to the
+file system we created and which complies the default naming schema
+which is pool_name/file_system/ though the file_system argument itself
+can have multiple levels. This mount point is stored as a part of the
+file system metadata in the /etc/zfs and when system is booting it uses
+this storage to layout the file system as we configured.</p>
+<h2 id="see-also-5">See also</h2>
+<p>We can use the mount table to mount a ZFS file system for integrating
+with legacy software. More information about legacy mode is available at
+<a href="http://docs.sun.com/app/docs/doc/819-5461/gaynd?a=view" target="_blank" rel="noopener noreffer">http://docs.sun.com/app/docs/doc/819-5461/gaynd?a=view</a></p>
+<h1 id="7-replicating-a-zfs-dataset">7. Replicating a ZFS dataset</h1>
+<p>In t recipe 5 of this chapter we saw how we can clone a dataset but that
+has its own limitation as it only works inside the mother pool
+containing the dataset. What if we need to move a dataset from one
+computer to another or from one pool to another. You may suggest using
+commands like tar, cpio, and dd which we discussed in recipe NO of
+chapter 1. Sure we can use them but those commands have their associated
+drawbacks which we discussed in the related recipe. To facilitate
+replicating a dataset between different pools or different machines ZFS
+provides a send and receive subcommands of the zfs command.</p>
+<h2 id="getting-ready-6">Getting ready</h2>
+<p>For this recipe we assume that we have two pools named fpool and mpool
+in one machine, we also assume that we have another machine with ssh
+server running in a remote machine networked with our workstation. To
+learn more about ssh review recipe in chapter</p>
+<h2 id="how-to-do-it-6">How to do it&hellip;</h2>
+<p>In brief, the send and receive subcommands of the zfs command can do the
+following tasks for us.</p>
+<p>Sending a ZFS Snapshot means that we can read a ZFS snapshot and send it
+to a destination. The destination can be a binary file or the receive
+command.</p>
+<p>Receiving a ZFS Snapshot means that we receive a ZFS snapshot sent by
+the send command and writes it in the file system in the same order it
+was in the origination pool.</p>
+<p>Remote Replication of ZFS Data: we can use combination of piping zfs
+second command with ssh and zfs receive commands to send a snapshot from
+one machine, piping it with ssh executing zfs receive command in a
+remote machine to write the snapshot on the remote machine.</p>
+<p>The following command sends a snapshot of the fset file system from
+fpool to mpool/nset. So the content of the mpool/nset will be an exact
+clone of the fset when the snapshot was taken.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="se">\#</span> zfs send fpool/fset@snap1 <span class="se">\|</span> zfs receive mpool/nset</span></span></code></pre></td></tr></table>
+</div>
+</div>
+The following figure shows more details about the operation.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/post-img/3180_03_10.png"
+        data-srcset="/post-img/3180_03_10.png, /post-img/3180_03_10.png 1.5x, /post-img/3180_03_10.png 2x"
+        data-sizes="auto"
+        alt="/post-img/3180_03_10.png"
+        title="/post-img/3180_03_10.png" width="612" height="280" /></p>
+<p>Now lets see a more complicated sample of using the send and receive
+commands by sending the snapshot over SSH to another machine.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="se">\#</span> zfs send fpool/fset@snap1 <span class="se">\|</span> ssh machine-02 zfs receive mpool/nset</span></span></code></pre></td></tr></table>
+</div>
+</div>
+The command will pipe the send output to ssh command which itself is
+running the receive command.</p>
+<p>When using SSH client command, ssh, without passing any username it
+assumes that we want to authenticate using the same user we are loged-in
+in our local machine. For more details about using SSH review recipe in
+chapter</p>
+<p>But the send and receive commands has much more to offer, we can
+incrementally by sending a group of snapshots to the destination in the
+same order we have created them. For example following command will send
+two snapshots named sn1 and sn2 to create the destination file system
+identical to the state of original file system included in the sn2 which
+itself is an increment of sn1.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="se">\#</span> zfs send -i fpool/fset@sn1 fpool/fset@sn2 <span class="se">\|</span> ssh machine-02 zfs recv
+</span></span><span class="line"><span class="cl">mpool/fset</span></span></code></pre></td></tr></table>
+</div>
+</div>
+For this command to succeed, the fset should exist in the remote
+machine.</p>
+<h2 id="how-it-works-6">How it works&hellip;</h2>
+<p>The send command sends the dumped dataset as a stream to the designated
+output which can be the default output (screen) or any other output
+target specified using the pipe operand.</p>
+<p>The recv command write the file system it receives into the specified
+dataset as it receives it.</p>
+<h2 id="see-also-6">See also</h2>
+<p>To understand this recipe better reviewing recipe 4 of this chapter and
+recipe N of chapter is recommended. To learn more about send and receive
+commands we can refer to man pages and also the online document
+available at <a href="http://docs.sun.com/app/docs/doc/819-5461/gbchx?a=view" target="_blank" rel="noopener noreffer">http://docs.sun.com/app/docs/doc/819-5461/gbchx?a=view</a>.
+To see whish other additional software are available to replicate a ZFS
+dataset take a look at</p>
+<p><a href="http://hub.opensolaris.org/bin/view/Community&#43;Group&#43;zfs/faq/#backupsoftware" target="_blank" rel="noopener noreffer">http://hub.opensolaris.org/bin/view/Community+Group+zfs/faq/#backupsoftware</a></p>
+<h1 id="8-managing-datasets-properties">8. Managing datasets&rsquo; properties</h1>
+<p>In recipe8 in chapter one list of a zpool properties are listed, the
+list is quite short because of the ZPools nature but for the ZFS
+datasets we have tens of properties which are either specific to a
+dataset type (volume, file system) or are shared between both of them.</p>
+<h2 id="getting-ready-7">Getting ready</h2>
+<p>In this recipe we will work on read-only and writeable properties of ZFS
+datasets. I assume that we have a pool named fpool and a file system
+named fpool/com to demonstrate the related commands.</p>
+<h2 id="how-to-do-it-7">How to do it&hellip;</h2>
+<p>We said that tens of properties are at our disposal to use for our
+benefit but these properties has some values assigned to them when we
+create a dataset. These values come from three sources which are listed
+below.</p>
+<p>Default: Some properties have default values, like block size for the
+dataset, or compression status.</p>
+<p>Inherited: each dataset can inherit its parent properties’ values if we
+specify</p>
+<p>Assigned: We assign some properties’ values when we create a dataset
+like the dataset name.</p>
+<p>The following table shows important properties of ZFS datasets. Each a
+description of these properties is given in the
+<a href="http://docs.sun.com/app/docs/doc/817-2271/gazss?a=view" target="_blank" rel="noopener noreffer">http://docs.sun.com/app/docs/doc/817-2271/gazss?a=view</a> . The table
+specifies whether the volume, file system, clone and snapshot have the
+property or not.</p>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 18%" />
+<col style="width: 18%" />
+<col style="width: 18%" />
+<col style="width: 18%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Property</th>
+<th>File System</th>
+<th>Volume</th>
+<th>Clone</th>
+<th>Snapshot</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>atime</td>
+<td><ul>
+<li></li>
+</ul></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>available</td>
+<td><ul>
+<li></li>
+</ul></td>
+<td><ul>
+<li></li>
+</ul></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>checksum</td>
+<td><ul>
+<li></li>
+</ul></td>
+<td><ul>
+<li></li>
+</ul></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>compresiion</td>
+<td><ul>
+<li></li>
+</ul></td>
+<td><ul>
+<li></li>
+</ul></td>
+<td><ul>
+<li></li>
+</ul></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>compressionratio</td>
+<td><ul>
+<li></li>
+</ul></td>
+<td><ul>
+<li></li>
+</ul></td>
+<td><ul>
+<li></li>
+</ul></td>
+<td><ul>
+<li></li>
+</ul></td>
+</tr>
+<tr class="even">
+<td>mountpoint</td>
+<td><ul>
+<li></li>
+</ul></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>quota</td>
+<td><ul>
+<li></li>
+</ul></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>readonly</td>
+<td><ul>
+<li></li>
+</ul></td>
+<td><ul>
+<li></li>
+</ul></td>
+<td><ul>
+<li></li>
+</ul></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>type</td>
+<td><ul>
+<li></li>
+</ul></td>
+<td><ul>
+<li></li>
+</ul></td>
+<td><ul>
+<li></li>
+</ul></td>
+<td><ul>
+<li></li>
+</ul></td>
+</tr>
+<tr class="even">
+<td>used</td>
+<td><ul>
+<li></li>
+</ul></td>
+<td><ul>
+<li></li>
+</ul></td>
+<td><ul>
+<li></li>
+</ul></td>
+<td><ul>
+<li></li>
+</ul></td>
+</tr>
+<tr class="odd">
+<td>copies</td>
+<td><ul>
+<li></li>
+</ul></td>
+<td><ul>
+<li></li>
+</ul></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>volblocksize</td>
+<td></td>
+<td><ul>
+<li></li>
+</ul></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>secondarycache</td>
+<td></td>
+<td><ul>
+<li></li>
+</ul></td>
+<td><ul>
+<li></li>
+</ul></td>
+<td><ul>
+<li></li>
+</ul></td>
+</tr>
+<tr class="even">
+<td>usedbysnapshot</td>
+<td><ul>
+<li></li>
+</ul></td>
+<td><ul>
+<li></li>
+</ul></td>
+<td><ul>
+<li></li>
+</ul></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Some attributes are solely available to file system and some for a
+volume. But snapshot and clones share a subset of the properties
+available for their base dataset. For example a clone made from a file
+system has the mount point property while a clone made from a volume
+does not.</p>
+<p>Some of these properties are read-only meaning that the system itself
+sets their values, for example available and used, which contain the
+amount of space available to the dataset and amount of space used from
+are read-only and only operating system can change them.</p>
+<p>We can use two zfs subcommands to set a value for a property or get the
+current value. Following commands show how we can do it.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="se">\#</span> zfs get available fpool/com
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="se">\#</span> zfs <span class="nb">set</span> <span class="nv">mountpoint</span><span class="o">=</span>fpool/newmp fpool/com</span></span></code></pre></td></tr></table>
+</div>
+</div>
+To view a complete list of all properties for a dataset along with its
+source, current value, and write-ablity we can use the all argument for
+the get command as we can see in the following figure.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/post-img/3180_03_37.png"
+        data-srcset="/post-img/3180_03_37.png, /post-img/3180_03_37.png 1.5x, /post-img/3180_03_37.png 2x"
+        data-sizes="auto"
+        alt="/post-img/3180_03_37.png"
+        title="/post-img/3180_03_37.png" width="528" height="420" /></p>
+<p>ZFS datasets inherits many of their properties from their parent
+datasets. For example if we enable compression in the fpool/comp and
+then create fpool/comp/inner, the compression algorithm for the
+fpool/comp/inner will be the same as the compression state of the parent
+dataset.</p>
+<p>Sometimes we do not want a property to get inherited by a parent
+dataset, for example we may specify a custom mount point for a file
+system when we create it and we do not required the descendent file
+systems to use the same mount point we can use inherit subcommand of the
+zfs command to prevent descendent datasets to inherit the custom mount
+point.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="se">\#</span> zfs create -o <span class="nv">mountpoint</span><span class="o">=</span>/fpool/customs/fs1 fpool/fs1
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="se">\#</span> zfs inherit mountpoint fpool/fs1</span></span></code></pre></td></tr></table>
+</div>
+</div>
+From now on, any descendent file system of fs1 will not use the mount
+point relative to /fpool/customs/fs1 and either uses the default mount
+point pattern discussed in recipe 6 or uses the mount point we
+specified.</p>
+<p>The combination of get and set commands helps us in developing shell
+scripts to automate our daily jobs. We will discuss more about shell
+script development in chapter.</p>
+<h2 id="how-it-works-7">How it works&hellip;</h2>
+<p>All ZFS attributes and properties are stored in the ZFS metadata storage
+located at /etc/zfs. When we invoke a set subcommand or any of the
+dataset creation command we either insert new records into this storage
+or we edit the already existing information. When we use get subcommand
+or any other zfs subcommands, we read the metadata stored in this
+database. OpenSolaris uses the information stored here to layout the
+file system during operating system boot-up.</p>
+<h2 id="theres-more-1">There&rsquo;s more&hellip;</h2>
+<p>We can define and later on use custom properties for a ZFS dataset
+specifying descriptive information for our administrators and users. For
+example we can create a custom property named used-for to specify what
+we are using a dataset for. All custom dataset are pre-fixed with : to
+let us know a property is custom or native to ZFS.</p>
+<p>To set a custom property we can use set command as shown below.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="se">\#</span> zfs <span class="nb">set</span> :used-for<span class="o">=</span>backup fpool/comp</span></span></code></pre></td></tr></table>
+</div>
+</div>
+To view the value of a property we can use the get subcommand as follow.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="se">\#</span>zfs get used-for fpool/comp</span></span></code></pre></td></tr></table>
+</div>
+</div>
+Following figure shows how the custom properties appear in the output.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/post-img/3180_03_38.png"
+        data-srcset="/post-img/3180_03_38.png, /post-img/3180_03_38.png 1.5x, /post-img/3180_03_38.png 2x"
+        data-sizes="auto"
+        alt="/post-img/3180_03_38.png"
+        title="/post-img/3180_03_38.png" width="477" height="118" /></p>
+<h2 id="see-also-7">See also</h2>
+<p>For some example of using the set and get commands review recipe 9 and
+10 which deals with deduplication and the compression in ZFS file
+systems.</p>
+<h1 id="9-zfs-de-duplication">9. ZFS De-Duplication</h1>
+<p>Deduplication is a file system level space saving method in which
+redundant data is eliminated.</p>
+<h2 id="getting-ready-8">Getting ready</h2>
+<p>To get started with this recipe we need to have a pool named fpool, so
+before proceeding further create a ZFS pool named fpool. We can find how
+we can create ZFS pools in recipe 9 of chapter 2.</p>
+<p>We should create a file system named dedup inside this pool to makes it
+possible for the sample commands to execute properly.</p>
+<h2 id="how-to-do-it-8">How to do it&hellip;</h2>
+<p>We can enable deduplication during file system creation or afterward
+using the set command.</p>
+<p>Following snippet shows how we can enable it for an fpool/dedup file
+system during file system creation.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="se">\#</span> zfs create –o <span class="nv">deduplocation</span><span class="o">=</span>on fpool/dedup</span></span></code></pre></td></tr></table>
+</div>
+</div>
+Following figure shows value of the deduplication property for the
+fpool/dedup.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="post-img/3180_03_39.png"
+        data-srcset="post-img/3180_03_39.png, post-img/3180_03_39.png 1.5x, post-img/3180_03_39.png 2x"
+        data-sizes="auto"
+        alt="post-img/3180_03_39.png"
+        title="post-img/3180_03_39.png" /></p>
+<p>We can also use the set command to enable deduplication for a file
+system after we create it. Following command shows how we can turn off
+the deduplication in the fpool/dedup file system.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="se">\#</span> zfs <span class="nb">set</span> <span class="nv">deduplication</span><span class="o">=</span>off fpool/dedup</span></span></code></pre></td></tr></table>
+</div>
+</div></p>
+<h2 id="how-it-works-8">How it works&hellip;</h2>
+<p>Deduplication operates in the file level so the file system checks every
+file and decide whether the file already exists in the system or not if
+the file already exists, the file will not be stored and instead a
+reference to the already existing file will be used. For example in a
+typical enterprise mail server one email attachment may find its way
+into hundreds of users mail boxes, Deduplication will store the actual
+file once and all other instance of the file are referenced to the same
+actual file.</p>
+<p>When we enable deduplication for a file system either when we create the
+file system or afterward using the set subcommand, we are asking
+OpenSolaris to only keep one copy of each single file stored in the hard
+disk and use reference to that single copy when necessary.</p>
+<h2 id="see-also-8">See also</h2>
+<p>1.To learn more about ZFS dataset properties and their usage review recipe number 8.</p>
+<h1 id="10-zfs-compression">10. ZFS compression</h1>
+<p>In this recipe we will see how we can enable the ZFS compression to save
+space. We usually enable the compression when we rarely need to read the
+dataset content or the reading operation does not need to be performed
+fast.</p>
+<h2 id="getting-ready-9">Getting ready</h2>
+<p>We can enable the compression on both file systems and volumes.
+Compression can be enabled during the dataset creation or we can enable
+it after we created the file system and we felt that we need more space
+rather than higher I/O speed.</p>
+<h2 id="how-to-do-it-9">How to do it&hellip;</h2>
+<p>Following command creates a ZFS file system named comp with compression
+enabled and a custom mount point instead of the default mount point.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="se">\#</span> zfs create -o <span class="nv">compression</span><span class="o">=</span>on -o <span class="nv">mountpoint</span><span class="o">=</span>/fpool/custom fpool/comp</span></span></code></pre></td></tr></table>
+</div>
+</div>
+We can check the compression ratio of the file system using the get
+command as follow:
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="se">\#</span> zfs get compressratio fpool/comp</span></span></code></pre></td></tr></table>
+</div>
+</div>
+Following figure shows how the output for this command, however I copied
+some files into the dataset before checking the compression ration so
+you can see how it actually works.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/post-img/3180_03_40.png"
+        data-srcset="/post-img/3180_03_40.png, /post-img/3180_03_40.png 1.5x, /post-img/3180_03_40.png 2x"
+        data-sizes="auto"
+        alt="/post-img/3180_03_40.png"
+        title="/post-img/3180_03_40.png" width="502" height="148" /></p>
+<p>We can use the set command to enable the compression or change its
+algorithm on a dataset. For example to change the compression algorithm
+in the fpool/comp we can use the following command
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="se">\#</span> zfs <span class="nb">set</span> <span class="nv">compression</span><span class="o">=</span>gzip-9 fpool/comp</span></span></code></pre></td></tr></table>
+</div>
+</div>
+There are multiple values for the compression option which varies in
+compression and CPU usage factors. Following table shows these values
+along with their explanations.</p>
+<table>
+    <tr>
+        <td>Value</td>
+        <td>Description</td>
+    </tr>
+    <tr>
+        <td>on</td>
+        <td>Turn on the compression using the default algorithm (lzjb).</td>
+    </tr>
+    <tr>
+        <td>gzip-N</td>
+        <td>same algorithm and compression ration which gzip provides. The N can be 1 to 9 which specifies the compression level. While 1 means no compression 9 is the highest compression level with most CPU usage</td>
+    </tr>
+    <tr>
+        <td>gzip</td>
+        <td>The gzip algorithm with default compression level set to 6.</td>
+    </tr>
+    <tr>
+        <td>lzjb</td>
+        <td>default compression algorithm which is a performance friendly algorithm with an acceptable compression ratio</td>
+    </tr>
+    <tr>
+        <td>off</td>
+        <td>turn off the compression for the given pool.</td>
+    </tr>
+</table>
+When we create a clone from a dataset with compression enabled, by
+default the clone will not be compressed unless we enable it either
+during creation or afterward using the set command.
+<h2 id="how-it-works-9">How it works&hellip;</h2>
+<p>When we enable the compression, our data get compressed before the get
+written into the disk using the algorithm we specified. When reading the
+data, each block of data go trough decompression and then upper level
+applications receives the uncompressed data.</p>
+<p>When we disable the compression, no further compression is applied on
+the data we write into file system but the data which are already
+compressed will stay the same.</p>
+<h2 id="see-also-9">See also</h2>
+<p>To learn more about ZFS dataset properties and their usage review recipe
+number 8.</p>
+<h1 id="11-defining-quota-for-zfs">11. Defining quota for ZFS</h1>
+<h2 id="getting-ready-10">Getting ready</h2>
+<p>We will use the quota and reservation properties of ZFS file system to
+set a limit on the amount of space the file system can use and amount of
+space which the pool must have in reserve for the file system.</p>
+<h2 id="how-to-do-it-10">How to do it&hellip;</h2>
+<p>Assuming that we want to limit the fpool/fset to 1 GB we can use the
+following command.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="se">\#</span> zfs <span class="nb">set</span> <span class="nv">quota</span><span class="o">=</span>1g fpool/fset</span></span></code></pre></td></tr></table>
+</div>
+</div>
+And to ensure that the fpool always keep at least 200 MB free space for
+the fset we can use the following command.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="se">\#</span> zfs <span class="nb">set</span> <span class="nv">reservation</span><span class="o">=</span>200m fpool/fset</span></span></code></pre></td></tr></table>
+</div>
+</div>
+The two commands we used means that</p>
+<p>The overall size of the fset and all of its descendent datasets can not
+exceed the 1GB limit</p>
+<p>At each point at time, the fpool has at least 200 MB space ready to be
+used by the fset. This space will be allocated and counted as used space
+of the pool.</p>
+<p>Following figure shows how the reservation and quota properties’ value
+can affect the status of a zfs dataset.</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/post-img/3180_03_41.png"
+        data-srcset="/post-img/3180_03_41.png, /post-img/3180_03_41.png 1.5x, /post-img/3180_03_41.png 2x"
+        data-sizes="auto"
+        alt="/post-img/3180_03_41.png"
+        title="/post-img/3180_03_41.png" width="514" height="291" /></p>
+<p>As we can see before we specify the quota, the whole 2 GB of the fpool
+is available for the fpool/fset while after we specify the quota only
+1024 MB of that space is available for the fpool/fset.</p>
+<p>On the next step, before we specify the reservation, just 102 K of the
+pool was used while after specifying the reservation; 200 MB of the pool
+were gone for good.</p>
+<h2 id="how-it-works-10">How it works&hellip;</h2>
+<p>Defining quota in ZFS is very different compared to defining it in UFS
+which is described in recipe 7 of chapter 2. In ZFS we define the quotas
+in file system level for the file system itself and not for users’
+usage. In ZFS we specify how much space a file system can use in the
+pool, quotas of that file system, and how much space the pool must have
+reserved for a specific file system.</p>
+<p>To limit how much space a user can use we will assign a file system to
+the specific user to prevent it from using more than quoted space. To
+lean more about security and user access management review chapter ?
+recipe ?</p>
+<h2 id="see-also-10">See also</h2>
+<p>To learn more about quota take a look at recipe 7 of chapter2. For
+leaning limiting the amount of space a user can have take a look at
+recipe of chapter.</p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2010-05-09</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://kalali.blog/2010/05/managing-zfs-datasets/" data-title="Managing ZFS Datasets" data-via="masoudkalali" data-hashtags="Solaris,ZFS,File System"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://kalali.blog/2010/05/managing-zfs-datasets/" data-hashtag="Solaris"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="https://kalali.blog/2010/05/managing-zfs-datasets/"><i class="fab fa-linkedin fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Hacker News" data-sharer="hackernews" data-url="https://kalali.blog/2010/05/managing-zfs-datasets/" data-title="Managing ZFS Datasets"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="https://kalali.blog/2010/05/managing-zfs-datasets/" data-title="Managing ZFS Datasets"><i data-svg-src="https://cdn.jsdelivr.net/npm/simple-icons@7.0.0/icons/line.svg" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/solaris/">Solaris</a>,&nbsp;<a href="/tags/zfs/">ZFS</a>,&nbsp;<a href="/tags/file-system/">File System</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav">
+            <a href="/2010/05/introducing-nio-2-jsr-203-part-1-what-are-new-features/" class="next" rel="next" title="Introducing NIO.2 (JSR 203) Part 1: What are new features?">Introducing NIO.2 (JSR 203) Part 1: What are new features?<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2005 - 2022</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://www.linkedin.com/in/masoudkalali/" target="_blank">Masoud Kalali</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@2.4.0/css/lightgallery-bundle.min.css"><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/autocomplete.js@0.38.1/dist/autocomplete.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lunr@2.3.9/lunr.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.1/lazysizes.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/twemoji@14.0.2/dist/twemoji.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lightgallery@2.4.0/lightgallery.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lightgallery@2.4.0/plugins/thumbnail/lg-thumbnail.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lightgallery@2.4.0/plugins/zoom/lg-zoom.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sharer.js@0.5.1/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":10},"comment":{},"lightgallery":true,"search":{"highlightTag":"em","lunrIndexURL":"/index.json","maxResultLength":10,"noResultsFound":"No results found","snippetLength":30,"type":"lunr"},"twemoji":true};</script><script type="text/javascript" src="/js/theme.min.js"></script><script type="text/javascript">
+            window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());
+            gtag('config', ' UA-137107-12');
+        </script><script type="text/javascript" src="https://www.googletagmanager.com/gtag/js?id= UA-137107-12" async></script></body>
+</html>

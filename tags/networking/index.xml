@@ -22,5 +22,14 @@
 When we aggregate two or more network interfaces, we are forming a new network interface on top of those physical interfaces combined in the link layer.
 We need to have at least two network interfaces in our machine to create a link aggregation.]]></description>
 </item>
+<item>
+    <title>OpenSolaris Networking In Details</title>
+    <link>https://kalali.blog/2010/07/opensolaris-networking-in-details/</link>
+    <pubDate>Fri, 09 Jul 2010 00:00:00 &#43;0000</pubDate>
+    <author>Masoud Kalali</author>
+    <guid>https://kalali.blog/2010/07/opensolaris-networking-in-details/</guid>
+    <description><![CDATA[Introduction In this chapter we are going to cover basic networking capabilities of OpenSolaris. While we will some of common utilities in the recipes, we will learn some more trivial ones here.
+Learning netstat command The netstat command is well known for checking the active connections status in a system but it can provide a fair deal of other diagnostics. Following sample command shows some of the netstat use cases.]]></description>
+</item>
 </channel>
 </rss>
