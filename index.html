@@ -106,6 +106,21 @@
         alt="/img/avatar.jpg"
         title="/img/avatar.jpg" width="671" height="755" /></a></div><h1 class="home-title">The Pensieve - Masoud Kalali's Blog</h1><div class="home-subtitle"> My personla blog where I share notes and thoughts about software technology landscape. Covering subjects ranging from tech strategy, leadership, software architecture, cloud native, and software development in general.</div><div class="links"><a href="https://github.com/kalali" title="GitHub" target="_blank" rel="noopener noreffer me"><i class="fab fa-github-alt fa-fw" aria-hidden="true"></i></a><a href="https://linkedin.com/in/masoudkalali" title="LinkedIn" target="_blank" rel="noopener noreffer me"><i class="fab fa-linkedin fa-fw" aria-hidden="true"></i></a><a href="https://twitter.com/masoudkalali" title="Twitter" target="_blank" rel="noopener noreffer me"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="/index.xml" title="RSS" target="_blank" rel="noopener noreffer me"><i class="fas fa-rss fa-fw" aria-hidden="true"></i></a></div></div>
 <article class="single summary" itemscope itemtype="http://schema.org/Article"><div class="featured-image-preview">
+            <a href="/2022/07/kubernetes-active-active-clusters-and-application-fault-tolerance/"><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/post-img/kubernetes-active-active-clusters-and-application-fault-tolerance.png"
+        data-srcset="/post-img/kubernetes-active-active-clusters-and-application-fault-tolerance.png, /post-img/kubernetes-active-active-clusters-and-application-fault-tolerance.png 1.5x, /post-img/kubernetes-active-active-clusters-and-application-fault-tolerance.png 2x"
+        data-sizes="auto"
+        alt="/post-img/kubernetes-active-active-clusters-and-application-fault-tolerance.png"
+        title="/post-img/kubernetes-active-active-clusters-and-application-fault-tolerance.png" width="1200" height="630" /></a>
+        </div><h1 class="single-title" itemprop="name headline">
+        <a href="/2022/07/kubernetes-active-active-clusters-and-application-fault-tolerance/">Kubernetes Active Active Clusters and Application Fault Tolerance</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="https://www.linkedin.com/in/masoudkalali/" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>Masoud Kalali</a></span>&nbsp;<span class="post-publish">published on <time datetime="2022-07-01">2022-07-01</time></span>&nbsp;<span class="post-category">included in <a href="/categories/kubernetes/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Kubernetes</a>&nbsp;<a href="/categories/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Categories</a></span></div><div class="content">From Monolith to Microservices Having redundancy in application space is pretty common. We have all seen them for decades in different ways. Hardware, software layer 4, or layer 7, etc. All of them what they do they direct traffic based on a given decision-making rule to a destination. Being weighted round-robin, resource/load-based metrics, etc. All they do is reliably direct traffic to a healthy node in the destination.
+In a very simple and basic view with VMs and data centers, if VMs fail the load balancer will direct loads to identical VMs, all nodes more or less can handle any of the incoming requests (ignoring stickiness, etc.</div><div class="post-footer">
+        <a href="/2022/07/kubernetes-active-active-clusters-and-application-fault-tolerance/">Read More</a><div class="post-tags">
+                <i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/kubernetes/">Kubernetes</a>,&nbsp;<a href="/tags/reliability/">Reliability</a>,&nbsp;<a href="/tags/fault-tolerance/">Fault Tolerance</a></div></div>
+</article><article class="single summary" itemscope itemtype="http://schema.org/Article"><div class="featured-image-preview">
             <a href="/2022/06/software-architecture-attributes-how-to-decide/"><img
         class="lazyload"
         src="/svg/loading.min.svg"
@@ -179,20 +194,6 @@ Wikipedia has a good definition of software architecture that I quote below:</di
 Have you seen the plenty of use cases that every vendor in every segment of tech stack provide as part of the adoption or success story? How about the tutorial that shows how quickly and easily something as significant as a an observability solution can be set and be up and running?</div><div class="post-footer">
         <a href="/2022/04/impacts-of-a-few-in-depth-write-ups-and-an-abundance-of-getting-started/">Read More</a><div class="post-tags">
                 <i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/vendor/">Vendor</a>,&nbsp;<a href="/tags/case-study/">Case Study</a></div></div>
-</article><article class="single summary" itemscope itemtype="http://schema.org/Article"><div class="featured-image-preview">
-            <a href="/2022/03/effective-internal-platform-product-manager/"><img
-        class="lazyload"
-        src="/svg/loading.min.svg"
-        data-src="/post-img/building-a-development-platform.jpg"
-        data-srcset="/post-img/building-a-development-platform.jpg, /post-img/building-a-development-platform.jpg 1.5x, /post-img/building-a-development-platform.jpg 2x"
-        data-sizes="auto"
-        alt="/post-img/building-a-development-platform.jpg"
-        title="Building a new development platform, for example a new microservices oriented platform to replace an existing monolith software system, is a massive endeavour. I have been working on a development platform, the whole ecosystem from ways of working to pipeline in the past 3 years and the experience might help others. So I thought to write down some of the observation and experience before they fully turn into intrinsic/implicit knowledge and hard to pen. " width="1200" height="630" /></a>
-        </div><h1 class="single-title" itemprop="name headline">
-        <a href="/2022/03/effective-internal-platform-product-manager/">Building a development platform</a>
-    </h1><div class="post-meta"><span class="post-author"><a href="https://www.linkedin.com/in/masoudkalali/" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>Masoud Kalali</a></span>&nbsp;<span class="post-publish">published on <time datetime="2022-03-22">2022-03-22</time></span>&nbsp;<span class="post-category">included in <a href="/categories/platform-engineering/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Platform Engineering</a></span></div><div class="content">Intro Building a new development platform, for example a new microservices oriented platform to replace an existing monolith software system, is a massive endeavour. I have been working on a development platform, the whole ecosystem from ways of working to pipeline in the past 3 years and the experience might help others. So I thought to write down some of the observation and experience before they fully turn into intrinsic/implicit knowledge and hard to pen.</div><div class="post-footer">
-        <a href="/2022/03/effective-internal-platform-product-manager/">Read More</a><div class="post-tags">
-                <i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/product-owner/">product owner</a>,&nbsp;<a href="/tags/pm/">PM</a>,&nbsp;<a href="/tags/platform-engineering/">platform engineering</a>,&nbsp;<a href="/tags/microservices/">microservices</a></div></div>
 </article><ul class="pagination"><li class="page-item active">
                     <span class="page-link">
                         <a href="/">1</a>
@@ -206,8 +207,10 @@ Have you seen the plenty of use cases that every vendor in every segment of tech
                         <a href="/page/3/">3</a>
                     </span>
                 </li><li class="page-item ">
+                    <span class="page-link" aria-hidden="true">&hellip;</span>
+                </li><li class="page-item ">
                     <span class="page-link">
-                        <a href="/page/4/">4</a>
+                        <a href="/page/5/">5</a>
                     </span>
                 </li></ul></div></div>
             </main><footer class="footer">

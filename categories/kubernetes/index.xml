@@ -1,0 +1,19 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>Kubernetes - Category - The Pensieve - Masoud Kalali&#39;s Blog</title>
+        <link>https://kalali.blog/categories/kubernetes/</link>
+        <description>Kubernetes - Category - The Pensieve - Masoud Kalali&#39;s Blog</description>
+        <generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>kalali@gmail.com (Masoud Kalali)</managingEditor>
+            <webMaster>kalali@gmail.com (Masoud Kalali)</webMaster><copyright>This work is licensed under a Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)</copyright><lastBuildDate>Fri, 01 Jul 2022 18:00:02 &#43;0200</lastBuildDate><atom:link href="https://kalali.blog/categories/kubernetes/" rel="self" type="application/rss+xml" /><item>
+    <title>Kubernetes Active Active Clusters and Application Fault Tolerance</title>
+    <link>https://kalali.blog/2022/07/kubernetes-active-active-clusters-and-application-fault-tolerance/</link>
+    <pubDate>Fri, 01 Jul 2022 18:00:02 &#43;0200</pubDate>
+    <author>Masoud Kalali</author>
+    <guid>https://kalali.blog/2022/07/kubernetes-active-active-clusters-and-application-fault-tolerance/</guid>
+    <description><![CDATA[<div class="featured-image">
+                <img src="/post-img/kubernetes-active-active-clusters-and-application-fault-tolerance.png" referrerpolicy="no-referrer">
+            </div>From Monolith to Microservices Having redundancy in application space is pretty common. We have all seen them for decades in different ways. Hardware, software layer 4, or layer 7, etc. All of them what they do they direct traffic based on a given decision-making rule to a destination. Being weighted round-robin, resource/load-based metrics, etc. All they do is reliably direct traffic to a healthy node in the destination.
+In a very simple and basic view with VMs and data centers, if VMs fail the load balancer will direct loads to identical VMs, all nodes more or less can handle any of the incoming requests (ignoring stickiness, etc.]]></description>
+</item>
+</channel>
+</rss>

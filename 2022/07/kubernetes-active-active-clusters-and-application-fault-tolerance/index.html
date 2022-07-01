@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>Kubernetes Active Active Clusters and Application Fault Tolerance - The Pensieve - Masoud Kalali&#39;s Blog</title><meta name="Description" content="Masoud Kalali&#39;s personal blog. Covering subjects ranging from tech strategy, leadership, software architecture, cloud native, and software development in general."><meta property="og:title" content="Kubernetes Active Active Clusters and Application Fault Tolerance" />
+<meta property="og:description" content="From Monolith to Microservices Having redundancy in application space is pretty common. We have all seen them for decades in different ways. Hardware, software layer 4, or layer 7, etc. All of them what they do they direct traffic based on a given decision-making rule to a destination. Being weighted round-robin, resource/load-based metrics, etc. All they do is reliably direct traffic to a healthy node in the destination.
+In a very simple and basic view with VMs and data centers, if VMs fail the load balancer will direct loads to identical VMs, all nodes more or less can handle any of the incoming requests (ignoring stickiness, etc." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://kalali.blog/2022/07/kubernetes-active-active-clusters-and-application-fault-tolerance/" /><meta property="og:image" content="https://kalali.blog/post-img/kubernetes-active-active-clusters-and-application-fault-tolerance.png" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-07-01T18:00:02+02:00" />
+<meta property="article:modified_time" content="2022-07-01T18:00:02+02:00" /><meta property="og:site_name" content="My cool site" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://kalali.blog/post-img/kubernetes-active-active-clusters-and-application-fault-tolerance.png"/>
+
+<meta name="twitter:title" content="Kubernetes Active Active Clusters and Application Fault Tolerance"/>
+<meta name="twitter:description" content="From Monolith to Microservices Having redundancy in application space is pretty common. We have all seen them for decades in different ways. Hardware, software layer 4, or layer 7, etc. All of them what they do they direct traffic based on a given decision-making rule to a destination. Being weighted round-robin, resource/load-based metrics, etc. All they do is reliably direct traffic to a healthy node in the destination.
+In a very simple and basic view with VMs and data centers, if VMs fail the load balancer will direct loads to identical VMs, all nodes more or less can handle any of the incoming requests (ignoring stickiness, etc."/>
+<meta name="application-name" content="The Pensieve - Masoud Kalali&#39;s Blog">
+<meta name="apple-mobile-web-app-title" content="The Pensieve - Masoud Kalali&#39;s Blog"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://kalali.blog/2022/07/kubernetes-active-active-clusters-and-application-fault-tolerance/" /><link rel="prev" href="https://kalali.blog/2022/06/software-architecture-attributes-how-to-decide/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css"></noscript><link rel="preload" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css"></noscript><meta name="google-site-verification" content="cDJVSx1L3UB6AwrPKeSQszOyhtjHYvPYkDxZw_Me4Z4" /><meta name="msvalidate.01" content="cDJVSx1L3UB6AwrPKeSQszOyhtjHYvPYkDxZw_Me4Z4" /><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Kubernetes Active Active Clusters and Application Fault Tolerance",
+        "inLanguage": "en",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/kalali.blog\/2022\/07\/kubernetes-active-active-clusters-and-application-fault-tolerance\/"
+        },"image": [{
+                            "@type": "ImageObject",
+                            "url": "https:\/\/kalali.blog\/img\/preview.png",
+                            "width":  1027 ,
+                            "height":  833 
+                        }],"genre": "posts","keywords": "Kubernetes, Reliability, Fault Tolerance","wordcount":  1050 ,
+        "url": "https:\/\/kalali.blog\/2022\/07\/kubernetes-active-active-clusters-and-application-fault-tolerance\/","datePublished": "2022-07-01T18:00:02+02:00","dateModified": "2022-07-01T18:00:02+02:00","license": "This work is licensed under a Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)","publisher": {
+            "@type": "Organization",
+            "name": "Masoud Kalali"},"author": {
+                "@type": "Person",
+                "name": "Masoud Kalali"
+            },"description": ""
+    }
+    </script></head>
+    <body data-header-desktop="auto" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="The Pensieve - Masoud Kalali&#39;s Blog">The Pensieve - Masoud Kalali&#39;s Blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/" title="Blog posts"> Posts </a><a class="menu-item" href="/tags/" title="All the blog tags"> Tags </a><a class="menu-item" href="/categories/" title="List of all categories I blogged bout"> Categories </a><a class="menu-item" href="/about/" title="About Masoud Kalali, Author"> About </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="The Pensieve - Masoud Kalali&#39;s Blog">The Pensieve - Masoud Kalali&#39;s Blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        Cancel
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="Blog posts">Posts</a><a class="menu-item" href="/tags/" title="All the blog tags">Tags</a><a class="menu-item" href="/categories/" title="List of all categories I blogged bout">Categories</a><a class="menu-item" href="/about/" title="About Masoud Kalali, Author">About</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><div class="search-dropdown desktop">
+        <div id="search-dropdown-desktop"></div>
+    </div>
+    <div class="search-dropdown mobile">
+        <div id="search-dropdown-mobile"></div>
+    </div><main class="main">
+                <div class="container"><article class="page single"><h1 class="single-title animate__animated animate__flipInX">Kubernetes Active Active Clusters and Application Fault Tolerance</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="https://www.linkedin.com/in/masoudkalali/" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>Masoud Kalali</a></span>&nbsp;<span class="post-category">included in <a href="/categories/kubernetes/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Kubernetes</a>&nbsp;<a href="/categories/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Categories</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2022-07-01">2022-07-01</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;1050 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;5 minutes&nbsp;</div>
+        </div><div class="featured-image"><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/post-img/kubernetes-active-active-clusters-and-application-fault-tolerance.png"
+        data-srcset="/post-img/kubernetes-active-active-clusters-and-application-fault-tolerance.png, /post-img/kubernetes-active-active-clusters-and-application-fault-tolerance.png 1.5x, /post-img/kubernetes-active-active-clusters-and-application-fault-tolerance.png 2x"
+        data-sizes="auto"
+        alt="/post-img/kubernetes-active-active-clusters-and-application-fault-tolerance.png"
+        title="/post-img/kubernetes-active-active-clusters-and-application-fault-tolerance.png" width="1200" height="630" /></div><div class="content" id="content"><h2 id="from-monolith-to-microservices">From Monolith to Microservices</h2>
+<p>Having redundancy in application space is pretty common. We have all seen them for decades in different ways. Hardware, software layer 4, or layer 7, etc. All of them what they do they direct traffic based on a given decision-making rule to a destination. Being weighted round-robin, resource/load-based metrics, etc. All they do is reliably direct traffic to a healthy node in the destination.</p>
+<p>In a very simple and basic view with VMs and data centers, if VMs fail the load balancer will direct loads to identical VMs, all nodes more or less can handle any of the incoming requests (ignoring stickiness, etc.) If one node disappears another one will take the burden, hopefully without causing a cascading failure. No matter what type, the load balancer will add and remove the nodes based on their health or other metrics, API calls from the pool and add them back. When there are active-active or active/standby data centers the whole switch can happen between data centers manually or automatically when one data center is down or operating at the limit of its capacity, etc.</p>
+<figure><a class="lightgallery" href="/post-img/kubernetes-active-active-clusters-and-application-fault-tolerance-img.001.png" title="/post-img/kubernetes-active-active-clusters-and-application-fault-tolerance-img.001.png" data-thumbnail="/post-img/kubernetes-active-active-clusters-and-application-fault-tolerance-img.001.png" data-sub-html="<h2>VMs on different clusters</h2>">
+        <img
+            class="lazyload"
+            src="/svg/loading.min.svg"
+            data-src="/post-img/kubernetes-active-active-clusters-and-application-fault-tolerance-img.001.png"
+            data-srcset="/post-img/kubernetes-active-active-clusters-and-application-fault-tolerance-img.001.png, /post-img/kubernetes-active-active-clusters-and-application-fault-tolerance-img.001.png 1.5x, /post-img/kubernetes-active-active-clusters-and-application-fault-tolerance-img.001.png 2x"
+            data-sizes="auto"
+            alt="/post-img/kubernetes-active-active-clusters-and-application-fault-tolerance-img.001.png" width="484" height="451" />
+    </a><figcaption class="image-caption">VMs on different clusters</figcaption>
+    </figure>
+<h3 id="microservices-and-redundancy">Microservices and redundancy</h3>
+<p>With Microservices it will change, as usually there is no single DNS name that can handle all the requests but somewhat different components of the system service different subsets of requests. Each of those monolith VMs is now several dozen separate services, being micro or mini. The microservices are usually deployed in a Kubernetes distribution, using namespaces for each service or group of services that can form a boundary. Services are redundant across clusters; usually, the clusters are identical replicas in sense of the service dependency graph.</p>
+<p>Some of the services are serving requests that are originating from outside of the Kubernetes cluster, call them ** services and some of the services are only serving requests that originated from inside the cluster call them <strong>Core</strong> services. The <strong>experience</strong> services are load-balanced across the two clusters using hardware or software sitting outside these clusters. The <strong>Core</strong> services in each cluster serve the internal requests in that cluster.</p>
+<figure><a class="lightgallery" href="/post-img/kubernetes-active-active-clusters-and-application-fault-tolerance-img.002.png" title="/post-img/kubernetes-active-active-clusters-and-application-fault-tolerance-img.002.png" data-thumbnail="/post-img/kubernetes-active-active-clusters-and-application-fault-tolerance-img.002.png" data-sub-html="<h2>A simple look at an active active cluster</h2>">
+        <img
+            class="lazyload"
+            src="/svg/loading.min.svg"
+            data-src="/post-img/kubernetes-active-active-clusters-and-application-fault-tolerance-img.002.png"
+            data-srcset="/post-img/kubernetes-active-active-clusters-and-application-fault-tolerance-img.002.png, /post-img/kubernetes-active-active-clusters-and-application-fault-tolerance-img.002.png 1.5x, /post-img/kubernetes-active-active-clusters-and-application-fault-tolerance-img.002.png 2x"
+            data-sizes="auto"
+            alt="/post-img/kubernetes-active-active-clusters-and-application-fault-tolerance-img.002.png" width="821" height="594" />
+    </a><figcaption class="image-caption">A simple look at an active active cluster</figcaption>
+    </figure>
+<p>Services in each cluster have a health check, which includes their dependencies health check. The health check happens at intervals so an Experience service knows if the dependencies are healthy and it can operate or not, and it exposes that status as its own health check to the load balancer.</p>
+<h3 id="microservices-and-cluster-reliability">Microservices and cluster reliability</h3>
+<p>The problem arises when some of the <strong>Core</strong> services are not implementing the health check or that a <strong>Core</strong> service that handles a fraction of these requests that arrive at the <strong>experience</strong> service is dying off in one cluster. The health check cascade will put the <strong>experience</strong> service in that cluster out of the origin pool and route all the requests to another cluster.  As image below first, the <strong>Core</strong> service fails then the health check cascade results in the load that was handled by <em>the west</em> is now routed to <em>the east</em>.</p>
+<figure><a class="lightgallery" href="/post-img/kubernetes-active-active-clusters-and-application-fault-tolerance-img.003.png" title="/post-img/kubernetes-active-active-clusters-and-application-fault-tolerance-img.003.png" data-thumbnail="/post-img/kubernetes-active-active-clusters-and-application-fault-tolerance-img.003.png" data-sub-html="<h2>A simple look at an active active cluster</h2>">
+        <img
+            class="lazyload"
+            src="/svg/loading.min.svg"
+            data-src="/post-img/kubernetes-active-active-clusters-and-application-fault-tolerance-img.003.png"
+            data-srcset="/post-img/kubernetes-active-active-clusters-and-application-fault-tolerance-img.003.png, /post-img/kubernetes-active-active-clusters-and-application-fault-tolerance-img.003.png 1.5x, /post-img/kubernetes-active-active-clusters-and-application-fault-tolerance-img.003.png 2x"
+            data-sizes="auto"
+            alt="/post-img/kubernetes-active-active-clusters-and-application-fault-tolerance-img.003.png" width="816" height="582" />
+    </a><figcaption class="image-caption">A simple look at an active active cluster</figcaption>
+    </figure>
+<p>This other cluster either needs to autoscale to bear the load or have service degradation until the  <strong>Core</strong>  service is restored.</p>
+<h5 id="some-of-the-solutions-for-cross-cluster-load-balancing">Some of the solutions for cross-cluster load balancing:</h5>
+<ul>
+<li>Exposing every single service as using <a href="https://jvns.ca/blog/2022/04/26/new-zine--how-dns-works-/" target="_blank" rel="noopener noreffer">DNS</a>. The load balancing happens outside the cluster as the load balancer, generally sitting outside the cluster. It is simple and well-known how to manage DNS records and load balancers in any big organization. The big disadvantage is the traffic routing cost (time and CPU) in and out of the clusters and the increased failure chance with the LB instance/s being the SPF.</li>
+<li>Using <a href="https://skupper.io" target="_blank" rel="noopener noreffer">Skupper</a> which provides a level 7 virtual application network (VAN) layered on top of the already existing network. Skupper uses <a href="http://qpid.apache.org/components/dispatch-router/" target="_blank" rel="noopener noreffer">Apache Qpid Router</a> and performs cross-cluster load balancing among a few other things. It is simple and very lightweight to use. It needs no cluster administrative privileges to install and overall automation for a cross-cluster load balancing is pretty straightforward (plenty of examples in their website). On the flip side if skupper proxies a service, the applications cannot do network port negotiations for example. E.g. FTP. Skupper is a completely decentralized solution for cross-cluster load balancing. Each namespace owner can decide to use it or not.</li>
+<li>Use a <a href="https://servicemesh.es/" target="_blank" rel="noopener noreffer">Service Mesh</a> federation. Service mesh is a component that can help with addressing quite an array of requirements, one being cross-cluster load balancing! The mesh can dynamically balance the load between the two clusters for any of the service constructs that are enrolled. The disadvantage is the complexity of the service mesh operation and management. Of course, the mesh provides many other functionalities which if the organization requires it may be a reasonable solution. Depending on the organizational setup and cluster access levels a service mesh can be a semi-centralized solution. CRDs are managed by namespace owners and overall operation by cluster admins</li>
+<li>Using <a href="https://submariner.io/" target="_blank" rel="noopener noreffer">Submariner</a> that manages the network mesh in layer 3. If the clusters are already set this is going to be difficult to roll out. It needs cluster-admin access as well as the complexity of maintenance and management. Dealing with compatibility between different cluster versions/flavors may also become an extra maintenance cost. The solution is centralized and managed by cluster admins.</li>
+</ul>
+<h5 id="all-of-these-solutions">All of these solutions:</h5>
+<ul>
+<li>Provide a control plane</li>
+<li>Full host of monitoring capacity (from having their own console and GUI to exposing a Prometheus scrapable endpoint)</li>
+<li>Support, e.g. from a vendor like <a href="https://redhat.com" target="_blank" rel="noopener noreffer">redhat</a></li>
+<li>Cross cluster load balancing and routing</li>
+<li>Provide encryption for the communication channel</li>
+</ul>
+<h5 id="the-solutions-differ-on">The solutions differ on:</h5>
+<ul>
+<li>What other functionalities do they provide</li>
+<li>What level of complexities do they impose on the infrastructure</li>
+<li>what network layer implications do they have</li>
+<li>What level of complexities are exposed to application developers</li>
+</ul>
+<p>Which way to go depends on the context and the expected outcome(s). If none of the functionalities listed for Submariner and Istio are needed then something like Skupper is the definite answer. If the organization requires more QoS that are provided by e.g. Istio or LinkerD then the service mesh is the way to go. But generally speaking, using the simplest solution with a bit of thought about how will it scale in the future should be the first MVP and attempt in addressing a requirement.</p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2022-07-01</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://kalali.blog/2022/07/kubernetes-active-active-clusters-and-application-fault-tolerance/" data-title="Kubernetes Active Active Clusters and Application Fault Tolerance" data-via="masoudkalali" data-hashtags="Kubernetes,Reliability,Fault Tolerance"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://kalali.blog/2022/07/kubernetes-active-active-clusters-and-application-fault-tolerance/" data-hashtag="Kubernetes"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="https://kalali.blog/2022/07/kubernetes-active-active-clusters-and-application-fault-tolerance/"><i class="fab fa-linkedin fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Hacker News" data-sharer="hackernews" data-url="https://kalali.blog/2022/07/kubernetes-active-active-clusters-and-application-fault-tolerance/" data-title="Kubernetes Active Active Clusters and Application Fault Tolerance"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="https://kalali.blog/2022/07/kubernetes-active-active-clusters-and-application-fault-tolerance/" data-title="Kubernetes Active Active Clusters and Application Fault Tolerance"><i data-svg-src="https://cdn.jsdelivr.net/npm/simple-icons@7.0.0/icons/line.svg" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/kubernetes/">Kubernetes</a>,&nbsp;<a href="/tags/reliability/">Reliability</a>,&nbsp;<a href="/tags/fault-tolerance/">Fault Tolerance</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/2022/06/software-architecture-attributes-how-to-decide/" class="prev" rel="prev" title="How to plan the architectural attributes?"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>How to plan the architectural attributes?</a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2005 - 2022</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://www.linkedin.com/in/masoudkalali/" target="_blank">Masoud Kalali</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@2.4.0/css/lightgallery-bundle.min.css"><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/autocomplete.js@0.38.1/dist/autocomplete.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lunr@2.3.9/lunr.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.1/lazysizes.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/twemoji@14.0.2/dist/twemoji.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lightgallery@2.4.0/lightgallery.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lightgallery@2.4.0/plugins/thumbnail/lg-thumbnail.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lightgallery@2.4.0/plugins/zoom/lg-zoom.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sharer.js@0.5.1/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":10},"comment":{},"lightgallery":true,"search":{"highlightTag":"em","lunrIndexURL":"/index.json","maxResultLength":10,"noResultsFound":"No results found","snippetLength":30,"type":"lunr"},"twemoji":true};</script><script type="text/javascript" src="/js/theme.min.js"></script><script type="text/javascript">
+            window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());
+            gtag('config', ' UA-137107-12');
+        </script><script type="text/javascript" src="https://www.googletagmanager.com/gtag/js?id= UA-137107-12" async></script></body>
+</html>
