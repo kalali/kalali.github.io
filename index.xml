@@ -4,9 +4,19 @@
         <link>https://kalali.blog/</link>
         <description>Masoud Kalali&#39;s personal blog. Covering subjects ranging from tech strategy, leadership, software architecture, cloud native, and software development in general.</description>
         <generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>kalali@gmail.com (Masoud Kalali)</managingEditor>
-            <webMaster>kalali@gmail.com (Masoud Kalali)</webMaster><copyright>This work is licensed under a Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)</copyright><lastBuildDate>Fri, 01 Jul 2022 18:00:02 &#43;0200</lastBuildDate>
+            <webMaster>kalali@gmail.com (Masoud Kalali)</webMaster><copyright>This work is licensed under a Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)</copyright><lastBuildDate>Sun, 03 Jul 2022 17:50:55 &#43;0200</lastBuildDate>
             <atom:link href="https://kalali.blog/index.xml" rel="self" type="application/rss+xml" />
         <item>
+    <title>Microservices Runtime Fragmentation</title>
+    <link>https://kalali.blog/2022/07/microservices-fragmentation-and-what-to-do-about-it/</link>
+    <pubDate>Sun, 03 Jul 2022 17:50:55 &#43;0200</pubDate>
+    <author>Masoud Kalali</author>
+    <guid>https://kalali.blog/2022/07/microservices-fragmentation-and-what-to-do-about-it/</guid>
+    <description><![CDATA[<div class="featured-image">
+                <img src="/post-img/microservices-fragmentation-and-what-to-do-about-it.jpg" referrerpolicy="no-referrer">
+            </div>Fragmentation of Java runtimes in a microservices-based architecture There are many many differences between the monolithic architecture and microservices-based architecture. One of them is the number of independently deployed bits of software, with a monolith there are usually many replicas of the same distribution running on many machines, virtualized or not. With the Microservices the number of independently deployed software systems grows as the different contexts raise&hellip; or an already existing context boundary grows enough to be split.]]></description>
+</item>
+<item>
     <title>Kubernetes Active Active Clusters and Application Fault Tolerance</title>
     <link>https://kalali.blog/2022/07/kubernetes-active-active-clusters-and-application-fault-tolerance/</link>
     <pubDate>Fri, 01 Jul 2022 18:00:02 &#43;0200</pubDate>
@@ -96,14 +106,6 @@ Have you seen the plenty of use cases that every vendor in every segment of tech
     <author>Masoud Kalali</author>
     <guid>https://kalali.blog/2011/05/jms2-jsr/</guid>
     <description><![CDATA[Well, as many of us already know Oracle submitted the JSR for Java EE 7 which is sort of an umbrella JSR for many update in already existing specifications, new versions of some JSRs and some completely new JSRs which will be part of the grand Java EE 7 - JSR 342. One of these JSRs is the JSR 343 which introduces a new version of JMS into the platform as an evolution of its previous version, JSR-914, and will unify the JMS usage with what added to the platform in the past 8 years.]]></description>
-</item>
-<item>
-    <title>Writing Solaris Service Management Facility (SMF) service manifest</title>
-    <link>https://kalali.blog/2011/01/authoring-solaris-service-management-facility-smf-service-manifest/</link>
-    <pubDate>Mon, 31 Jan 2011 00:00:00 &#43;0000</pubDate>
-    <author>Masoud Kalali</author>
-    <guid>https://kalali.blog/2011/01/authoring-solaris-service-management-facility-smf-service-manifest/</guid>
-    <description><![CDATA[SMF services are basically daemons staying in background and waiting for the requests which they should server, when the request come the daemon wake ups, serve the request and then wait for the next request to come. The services are building using software development platforms and languages but they have one common aspect which we are going to discuss here. The service manifests which describe the service for the SMF and let the SMF manage and understand the service life cycle.]]></description>
 </item>
 </channel>
 </rss>
