@@ -4,9 +4,20 @@
         <link>https://kalali.blog/</link>
         <description>Masoud Kalali&#39;s personal blog. Covering subjects ranging from tech strategy, leadership, software architecture, cloud native, and software development in general.</description>
         <generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>kalali@gmail.com (Masoud Kalali)</managingEditor>
-            <webMaster>kalali@gmail.com (Masoud Kalali)</webMaster><copyright>This work is licensed under a Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)</copyright><lastBuildDate>Sun, 03 Jul 2022 17:50:55 &#43;0200</lastBuildDate>
+            <webMaster>kalali@gmail.com (Masoud Kalali)</webMaster><copyright>This work is licensed under a Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)</copyright><lastBuildDate>Fri, 08 Jul 2022 18:22:35 &#43;0200</lastBuildDate>
             <atom:link href="https://kalali.blog/index.xml" rel="self" type="application/rss+xml" />
         <item>
+    <title>Solve the Right Problem at the Right Level</title>
+    <link>https://kalali.blog/2022/07/solve-the-right-problem-at-the-right-level/</link>
+    <pubDate>Fri, 08 Jul 2022 18:22:35 &#43;0200</pubDate>
+    <author>Masoud Kalali</author>
+    <guid>https://kalali.blog/2022/07/solve-the-right-problem-at-the-right-level/</guid>
+    <description><![CDATA[<div class="featured-image">
+                <img src="/post-img/solve-the-right-problem-at-the-right-level.png" referrerpolicy="no-referrer">
+            </div>This is one of the common principles that not only software developers are adhering to, but also the whole of civilization is attempting to adhere to. But it is sometimes not as easy as it may sound to figure out the right problem, and, more importantly, what is the right level.
+A simple example is a pull request fixing a small bug that should not be blocked because of an architectural decision made a year ago and has about 5 engineer years&rsquo; worth of work built around it.]]></description>
+</item>
+<item>
     <title>Microservices Runtime Fragmentation</title>
     <link>https://kalali.blog/2022/07/microservices-fragmentation-and-what-to-do-about-it/</link>
     <pubDate>Sun, 03 Jul 2022 17:50:55 &#43;0200</pubDate>
@@ -98,14 +109,6 @@ Have you seen the plenty of use cases that every vendor in every segment of tech
     <author>Masoud Kalali</author>
     <guid>https://kalali.blog/2011/10/some-thought-on-jsr-351-java-identity-api/</guid>
     <description><![CDATA[Identity, something that we hear more often these days with the whole web 2.0 and social services and more and more web based public services growing around us. The identity notion is an integral part of a security system in distributed services. Developing effective software system require an effective security and access control system which java provides, not exactly in the way that it should be in 2011 but it does provide what is the bare bone necessity to develop applications and frameworks on top of it and benefit from its presence.]]></description>
-</item>
-<item>
-    <title>Brief overview of JSR 343: JavaTM Message Service 2.0</title>
-    <link>https://kalali.blog/2011/05/jms2-jsr/</link>
-    <pubDate>Tue, 17 May 2011 00:00:00 &#43;0000</pubDate>
-    <author>Masoud Kalali</author>
-    <guid>https://kalali.blog/2011/05/jms2-jsr/</guid>
-    <description><![CDATA[Well, as many of us already know Oracle submitted the JSR for Java EE 7 which is sort of an umbrella JSR for many update in already existing specifications, new versions of some JSRs and some completely new JSRs which will be part of the grand Java EE 7 - JSR 342. One of these JSRs is the JSR 343 which introduces a new version of JMS into the platform as an evolution of its previous version, JSR-914, and will unify the JMS usage with what added to the platform in the past 8 years.]]></description>
 </item>
 </channel>
 </rss>

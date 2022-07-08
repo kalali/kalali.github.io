@@ -1,0 +1,19 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>Culture and Transformation - Category - The Pensieve - Masoud Kalali&#39;s Blog</title>
+        <link>https://kalali.blog/categories/culture-and-transformation/</link>
+        <description>Culture and Transformation - Category - The Pensieve - Masoud Kalali&#39;s Blog</description>
+        <generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>kalali@gmail.com (Masoud Kalali)</managingEditor>
+            <webMaster>kalali@gmail.com (Masoud Kalali)</webMaster><copyright>This work is licensed under a Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)</copyright><lastBuildDate>Fri, 08 Jul 2022 18:22:35 &#43;0200</lastBuildDate><atom:link href="https://kalali.blog/categories/culture-and-transformation/" rel="self" type="application/rss+xml" /><item>
+    <title>Solve the Right Problem at the Right Level</title>
+    <link>https://kalali.blog/2022/07/solve-the-right-problem-at-the-right-level/</link>
+    <pubDate>Fri, 08 Jul 2022 18:22:35 &#43;0200</pubDate>
+    <author>Masoud Kalali</author>
+    <guid>https://kalali.blog/2022/07/solve-the-right-problem-at-the-right-level/</guid>
+    <description><![CDATA[<div class="featured-image">
+                <img src="/post-img/solve-the-right-problem-at-the-right-level.png" referrerpolicy="no-referrer">
+            </div>This is one of the common principles that not only software developers are adhering to, but also the whole of civilization is attempting to adhere to. But it is sometimes not as easy as it may sound to figure out the right problem, and, more importantly, what is the right level.
+A simple example is a pull request fixing a small bug that should not be blocked because of an architectural decision made a year ago and has about 5 engineer years&rsquo; worth of work built around it.]]></description>
+</item>
+</channel>
+</rss>
