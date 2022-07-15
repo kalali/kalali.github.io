@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>Getting started with CouchDB and MongoDB, Part II: Beginning with Security - The Pensieve - Masoud Kalali&#39;s Blog</title><meta name="Description" content="Masoud Kalali&#39;s personal blog. Covering subjects ranging from tech strategy, leadership, software architecture, cloud native, and software development in general."><meta property="og:title" content="Getting started with CouchDB and MongoDB, Part II: Beginning with Security" />
+<meta property="og:description" content="In the first part of this series I discussed how can we perform CRUD operation in MongoDB and CouchDB. In this part we will look into security features of MongoDB and CouchDB. In the next two installments of this series I will go into how to apply the configuration that are described here and how to write codes that work with them.
+Basic security requirements There are some basic features and functionalities which are required by different applications, in addition to tons of other more advanced fine grained features, which one can expect a semi-structured data storage server to provide." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://kalali.blog/2013/09/2013-09-17-getting-started-with-couchdb-and-mongodb-part-ii-beginning-with-security/" /><meta property="og:image" content="https://kalali.blog/img/avatar.jpg"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2013-09-17T00:00:00+00:00" />
+<meta property="article:modified_time" content="2013-09-17T00:00:00+00:00" /><meta property="og:site_name" content="My cool site" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://kalali.blog/img/avatar.jpg"/>
+
+<meta name="twitter:title" content="Getting started with CouchDB and MongoDB, Part II: Beginning with Security"/>
+<meta name="twitter:description" content="In the first part of this series I discussed how can we perform CRUD operation in MongoDB and CouchDB. In this part we will look into security features of MongoDB and CouchDB. In the next two installments of this series I will go into how to apply the configuration that are described here and how to write codes that work with them.
+Basic security requirements There are some basic features and functionalities which are required by different applications, in addition to tons of other more advanced fine grained features, which one can expect a semi-structured data storage server to provide."/>
+<meta name="application-name" content="The Pensieve - Masoud Kalali&#39;s Blog">
+<meta name="apple-mobile-web-app-title" content="The Pensieve - Masoud Kalali&#39;s Blog"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://kalali.blog/2013/09/2013-09-17-getting-started-with-couchdb-and-mongodb-part-ii-beginning-with-security/" /><link rel="prev" href="https://kalali.blog/2013/09/2013-09-12-getting-started-with-couchdb-and-mongodb-nosql-document-databases-part-i/" /><link rel="next" href="https://kalali.blog/2022/03/effective-internal-platform-product-manager/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css"></noscript><link rel="preload" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css"></noscript><meta name="google-site-verification" content="cDJVSx1L3UB6AwrPKeSQszOyhtjHYvPYkDxZw_Me4Z4" /><meta name="msvalidate.01" content="cDJVSx1L3UB6AwrPKeSQszOyhtjHYvPYkDxZw_Me4Z4" /><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Getting started with CouchDB and MongoDB, Part II: Beginning with Security",
+        "inLanguage": "en",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/kalali.blog\/2013\/09\/2013-09-17-getting-started-with-couchdb-and-mongodb-part-ii-beginning-with-security\/"
+        },"image": [{
+                            "@type": "ImageObject",
+                            "url": "https:\/\/kalali.blog\/img\/preview.png",
+                            "width":  1027 ,
+                            "height":  833 
+                        }],"genre": "posts","keywords": "Java, MongoDB, CouchDB","wordcount":  1032 ,
+        "url": "https:\/\/kalali.blog\/2013\/09\/2013-09-17-getting-started-with-couchdb-and-mongodb-part-ii-beginning-with-security\/","datePublished": "2013-09-17T00:00:00+00:00","dateModified": "2013-09-17T00:00:00+00:00","license": "This work is licensed under a Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)","publisher": {
+            "@type": "Organization",
+            "name": "Masoud Kalali"},"author": {
+                "@type": "Person",
+                "name": "Masoud Kalali"
+            },"description": ""
+    }
+    </script></head>
+    <body data-header-desktop="auto" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="The Pensieve - Masoud Kalali&#39;s Blog">The Pensieve - Masoud Kalali&#39;s Blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/" title="Blog posts"> Posts </a><a class="menu-item" href="/tags/" title="All the blog tags"> Tags </a><a class="menu-item" href="/categories/" title="List of all categories I blogged bout"> Categories </a><a class="menu-item" href="/about/" title="About Masoud Kalali, Author"> About </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="The Pensieve - Masoud Kalali&#39;s Blog">The Pensieve - Masoud Kalali&#39;s Blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        Cancel
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="Blog posts">Posts</a><a class="menu-item" href="/tags/" title="All the blog tags">Tags</a><a class="menu-item" href="/categories/" title="List of all categories I blogged bout">Categories</a><a class="menu-item" href="/about/" title="About Masoud Kalali, Author">About</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><div class="search-dropdown desktop">
+        <div id="search-dropdown-desktop"></div>
+    </div>
+    <div class="search-dropdown mobile">
+        <div id="search-dropdown-mobile"></div>
+    </div><main class="main">
+                <div class="container"><article class="page single"><h1 class="single-title animate__animated animate__flipInX">Getting started with CouchDB and MongoDB, Part II: Beginning with Security</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="https://www.linkedin.com/in/masoudkalali/" title="Author" target="_blank" rel="noopener noreffer author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>Masoud Kalali</a></span>&nbsp;<span class="post-category">included in <a href="/categories/programming/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Programming</a>&nbsp;<a href="/categories/old-blog-migrated-content/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Old Blog Migrated Content</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2013-09-17">2013-09-17</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;1032 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;5 minutes&nbsp;</div>
+        </div><div class="content" id="content"><p>In the first part of this series I discussed how can we <a href="/2013/09/2013-09-12-getting-started-with-couchdb-and-mongodb-nosql-document-databases-part-i/" rel="">perform CRUD operation in MongoDB and CouchDB</a>. In this part we will look into security features of MongoDB and CouchDB. In the next two installments of this series I will go into how to apply the configuration that are described here and how to write codes that work with them.</p>
+<h3 id="basic-security-requirements">Basic security requirements</h3>
+<p>There are some basic features and functionalities which are required by different applications, in addition to tons of other more advanced fine grained features, which one can expect a semi-structured data storage server to provide. If the not provided, other measures should be applied to limit the effect of missing features risks. The basic features are as listed below:</p>
+<ul>
+<li><strong>Authentication</strong>: Authentication refers to ensuring that if a token is presented to our system the system can verify that the token is valid, for example a username can be verified using the password that accompany it.</li>
+<li>**Access control: **To limit the access to specific resources/ set of resources to an authenticated client or a group of authenticated clients sharing common characteristics like a assigned role_name.</li>
+<li>**Transport safety: **To ensure that the data is being transferred over the network safely without possibility of tampering or reading depending on the required level of confidentiality.</li>
+<li>**On-Disk/In-memory Data Encryption: **To keep the data encrypted on disk to prevent RAW access to the data without presence of the decryption key/token. Same applies to the systems that are data memory intensive, the memory data in memory should be protected from memory dump/views.</li>
+</ul>
+<h3 id="general-security-precautions">General Security precautions</h3>
+<ul>
+<li>Do not run the server on default network interface which it is configured, usually 0.0.0.0 which means all available interfaces. Imagine you having a LAN and WAN interface and you want your NoSQL storage to only listen on the LAN interface while by default it listens on all interfaces (including your outbound WAN).</li>
+<li>Do not use the default port numbers, change the port numbers that your backend application server, database, NoSQL storage, ABCD network server listen on. No need to wait for intrusion on the default port number.</li>
+<li>Do not run your network server, e.g NoSQL server on root or any other privileged user.  Create a user which is relaxed enough in disk/network access to let the network server perform its task and not relaxer!</li>
+<li>Do not let the above user to have access to any portion of file server other than the one that it requires.</li>
+<li>Enable disk quota!</li>
+<li>If on-disk/in-memory encryption is supported depending on sensitivity of the data, enable it.</li>
+<li>Enable transport security. One way or another transport security is required to prevent others peeping, tampering the data or request responses!</li>
+<li>Make sure you enable your iptable and limit the above user to only have access to port/interfaces that it meant to have access nothing more.</li>
+<li>Disable any sample welcome page, any default &ldquo;I am UP&rdquo; message, any default &ldquo;Welcome page&rdquo; or anything else that your network server may have out of the box. This will prevent people from peeping into seeing what version of what network server you are running.</li>
+<li>Disable any extra interface/communication channel that your network server has and you are not using it. E.g In an application server we just don&rsquo;t need the JMX interface and thus we disable it rather than having a door into the application server, although the door is locked but&hellip;</li>
+<li>Do not use anything default, no port, no default username, no default password, no default welcome message, no default&hellip; Nothing default!</li>
+</ul>
+<h3 id="mongodb-and-security">MongoDB and Security</h3>
+<p>Below is some description on how MongoDB cover the basic security requirements.</p>
+<ul>
+<li><strong>Authentication</strong>: Supports two types of access. Either no authentication is enabled and anonymous users can do read/write or authentication is enabled (per database) and users are authenticated and then checked for their authorization before accessing the database. At the token level, CouchDB supports OAuth, cookie based authentication and http basic authentication. We will go into details of these in the next installments of this blog series.</li>
+<li><strong>Authorization</strong>: Supports role based access control. There are several roles which can be assigned to users. each role add some more privilege to the user(remember unauthenticated users cannot interact with the database when authentication is enabled). Details of the roles <a href="http://docs.mongodb.org/manual/reference/user-privileges/" target="_blank" rel="noopener noreffer">MongoDB access control documentation</a>.</li>
+<li><strong>Transport</strong> Security: In the community edition there is no build-in transport security out of the box, you can use the MongoDB enterprise or you need to build it from the source to get SSL included in your non-enterprise copy. Procedure described at <a href="http://docs.mongodb.org/manual/tutorial/configure-ssl/" target="_blank" rel="noopener noreffer">Configure SSL</a>.</li>
+<li><strong>On-disk/In-memory encryption</strong>: I am not aware of any built-in support for any of these. One possibility is to use OS level disk encryption and/or use application level encryption for the sensitive fields, which imposes limitation on indexing and similarity searches, in the document.</li>
+</ul>
+<h3 id="couchdb-and-security">CouchDB and Security</h3>
+<p>Below is some description on how Apache CouchDB cover the basic security requirements.</p>
+<ul>
+<li><strong>Authentication</strong>: By default any connection to CouchDB has access to perform CRUD on the server (creating/reading/deleting databases) and also CRUD operations on documents stored in the databases. When authentication is enabled, we go into how each one of these tasks can be performed in next blog entry, the user&rsquo;s credentials is checked to let it perform CRUD on server or on databases or to perform read action on the database.</li>
+<li><strong>Authorization</strong>: There are 3 roles in CouchDB, the server admin role which can do anything and everything possible in the server, the database admin role on a database and the read-only role on a database.</li>
+<li><strong>Transport</strong>: Apache CouchDB has built-in supports for transport security using SSL and thus all communication that requires transport security (encryption, integrity) can be made over HTTPS.</li>
+<li><strong>On-Disk/In-memory encryption</strong>: I am not aware of any built-in support for any of these. One possibility is to use OS level disk encryption and/or use application level encryption for the sensitive fields in the document. Application level encryption will imposes limitation on indexing and similarity searches.</li>
+</ul>
+<p>This blog entry is wrote based on CouchDB 1.3.1 and MongoDB 2.4.5 and thus the descriptions are valid for these versions and they may differ in other versions. The sample codes should work with the mentioned versions and any newer release.</p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2013-09-17</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://kalali.blog/2013/09/2013-09-17-getting-started-with-couchdb-and-mongodb-part-ii-beginning-with-security/" data-title="Getting started with CouchDB and MongoDB, Part II: Beginning with Security" data-via="masoudkalali" data-hashtags="Java,MongoDB,CouchDB"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://kalali.blog/2013/09/2013-09-17-getting-started-with-couchdb-and-mongodb-part-ii-beginning-with-security/" data-hashtag="Java"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="https://kalali.blog/2013/09/2013-09-17-getting-started-with-couchdb-and-mongodb-part-ii-beginning-with-security/"><i class="fab fa-linkedin fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Hacker News" data-sharer="hackernews" data-url="https://kalali.blog/2013/09/2013-09-17-getting-started-with-couchdb-and-mongodb-part-ii-beginning-with-security/" data-title="Getting started with CouchDB and MongoDB, Part II: Beginning with Security"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="https://kalali.blog/2013/09/2013-09-17-getting-started-with-couchdb-and-mongodb-part-ii-beginning-with-security/" data-title="Getting started with CouchDB and MongoDB, Part II: Beginning with Security"><i data-svg-src="https://cdn.jsdelivr.net/npm/simple-icons@7.0.0/icons/line.svg" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/java/">Java</a>,&nbsp;<a href="/tags/mongodb/">MongoDB</a>,&nbsp;<a href="/tags/couchdb/">CouchDB</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/2013/09/2013-09-12-getting-started-with-couchdb-and-mongodb-nosql-document-databases-part-i/" class="prev" rel="prev" title="Getting started with CouchDB and MongoDB, Part I: CRUD operations"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>Getting started with CouchDB and MongoDB, Part I: CRUD operations</a>
+            <a href="/2022/03/effective-internal-platform-product-manager/" class="next" rel="next" title="Building a development platform">Building a development platform<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2005 - 2022</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="https://www.linkedin.com/in/masoudkalali/" target="_blank">Masoud Kalali</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@2.4.0/css/lightgallery-bundle.min.css"><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/autocomplete.js@0.38.1/dist/autocomplete.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lunr@2.3.9/lunr.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.1/lazysizes.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/twemoji@14.0.2/dist/twemoji.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lightgallery@2.4.0/lightgallery.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lightgallery@2.4.0/plugins/thumbnail/lg-thumbnail.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lightgallery@2.4.0/plugins/zoom/lg-zoom.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sharer.js@0.5.1/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":10},"comment":{},"lightgallery":true,"search":{"highlightTag":"em","lunrIndexURL":"/index.json","maxResultLength":10,"noResultsFound":"No results found","snippetLength":30,"type":"lunr"},"twemoji":true};</script><script type="text/javascript" src="/js/theme.min.js"></script><script type="text/javascript">
+            window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());
+            gtag('config', ' UA-137107-12');
+        </script><script type="text/javascript" src="https://www.googletagmanager.com/gtag/js?id= UA-137107-12" async></script></body>
+</html>

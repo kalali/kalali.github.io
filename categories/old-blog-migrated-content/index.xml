@@ -4,7 +4,24 @@
         <link>https://kalali.blog/categories/old-blog-migrated-content/</link>
         <description>Old Blog Migrated Content - Category - The Pensieve - Masoud Kalali&#39;s Blog</description>
         <generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>kalali@gmail.com (Masoud Kalali)</managingEditor>
-            <webMaster>kalali@gmail.com (Masoud Kalali)</webMaster><copyright>This work is licensed under a Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)</copyright><lastBuildDate>Mon, 24 Oct 2011 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://kalali.blog/categories/old-blog-migrated-content/" rel="self" type="application/rss+xml" /><item>
+            <webMaster>kalali@gmail.com (Masoud Kalali)</webMaster><copyright>This work is licensed under a Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)</copyright><lastBuildDate>Tue, 17 Sep 2013 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://kalali.blog/categories/old-blog-migrated-content/" rel="self" type="application/rss+xml" /><item>
+    <title>Getting started with CouchDB and MongoDB, Part II: Beginning with Security</title>
+    <link>https://kalali.blog/2013/09/2013-09-17-getting-started-with-couchdb-and-mongodb-part-ii-beginning-with-security/</link>
+    <pubDate>Tue, 17 Sep 2013 00:00:00 &#43;0000</pubDate>
+    <author>Masoud Kalali</author>
+    <guid>https://kalali.blog/2013/09/2013-09-17-getting-started-with-couchdb-and-mongodb-part-ii-beginning-with-security/</guid>
+    <description><![CDATA[In the first part of this series I discussed how can we perform CRUD operation in MongoDB and CouchDB. In this part we will look into security features of MongoDB and CouchDB. In the next two installments of this series I will go into how to apply the configuration that are described here and how to write codes that work with them.
+Basic security requirements There are some basic features and functionalities which are required by different applications, in addition to tons of other more advanced fine grained features, which one can expect a semi-structured data storage server to provide.]]></description>
+</item>
+<item>
+    <title>Getting started with CouchDB and MongoDB, Part I: CRUD operations</title>
+    <link>https://kalali.blog/2013/09/2013-09-12-getting-started-with-couchdb-and-mongodb-nosql-document-databases-part-i/</link>
+    <pubDate>Thu, 12 Sep 2013 00:00:00 &#43;0000</pubDate>
+    <author>Masoud Kalali</author>
+    <guid>https://kalali.blog/2013/09/2013-09-12-getting-started-with-couchdb-and-mongodb-nosql-document-databases-part-i/</guid>
+    <description><![CDATA[In a series of blog I am going to write to cover CouchDB and MongoDB as two popular document databases. In each one of the entries I will show how can you do similar tasks with each one of these two so that you get some understanding of the differences and similarities between them. I am not going to do any comparison here but reading the series you can draw conclusion on which one seems more suitable for your case based judging by how different tasks can be accomplished using these two.]]></description>
+</item>
+<item>
     <title>My thoughts on JSR 351, Java Identity API</title>
     <link>https://kalali.blog/2011/10/some-thought-on-jsr-351-java-identity-api/</link>
     <pubDate>Mon, 24 Oct 2011 00:00:00 &#43;0000</pubDate>
@@ -69,24 +86,6 @@ We need to have at least two network interfaces in our machine to create a link 
     <author>Masoud Kalali</author>
     <guid>https://kalali.blog/2010/08/introducing-nio-2-jsr-203-part-6-filtering-directory-content-and-walking-over-a-file-tree/</guid>
     <description><![CDATA[In this part we will look at how the directory tree walker and the directory stream reader works. These two features are another couple of long requested features which was not included in the core java before Java 7. First, lets see what directory stream reader is, this API allows us to filter content of a directory on the file system and extract the file names that matches our filter criteria.]]></description>
-</item>
-<item>
-    <title>Introducing NIO.2 (JSR 203) Part 5: Watch Service and Change Notification</title>
-    <link>https://kalali.blog/2010/08/introducing-nio-2-jsr-203-part-5-watch-service-and-change-notification/</link>
-    <pubDate>Tue, 10 Aug 2010 00:00:00 &#43;0000</pubDate>
-    <author>Masoud Kalali</author>
-    <guid>https://kalali.blog/2010/08/introducing-nio-2-jsr-203-part-5-watch-service-and-change-notification/</guid>
-    <description><![CDATA[For long time Java developers used in-house developed solutions to monitor the file system for changes. Some developed general purpose libraries to ease the task of others who deal with the same requirement. Commercial and free/ open source libraries like http://jnotify.sourceforge.net/, http://jpathwatch.wordpress.com/ and http://www.teamdev.com/jxfilewatcher among others. Java 7 comes with NIO.2 or JSR 203 which provides native file system watch service. The watch service provided in Java 7 uses the underlying file system functionalities to watch the file system for changes, so if we are running on Windows, MacOS or Linux&hellip; we are sure that the watch service is not imposing polling overhead on our application because the underlying OS and file system provides the required functionalities to allow Java to register for receiving notification on file system changes.]]></description>
-</item>
-<item>
-    <title>OpenSolaris File System Basics: Managing UFS and ZFS pools</title>
-    <link>https://kalali.blog/2010/08/opensolaris-file-system-basics-managing-ufs-and-zfs-pools/</link>
-    <pubDate>Mon, 09 Aug 2010 00:00:00 &#43;0000</pubDate>
-    <author>Masoud Kalali</author>
-    <guid>https://kalali.blog/2010/08/opensolaris-file-system-basics-managing-ufs-and-zfs-pools/</guid>
-    <description><![CDATA[What is a file system File systems make it possible to store and retrieve files and containing data into storages like hard disks, optical disks and other types of storages.
-OpenSolaris support both legacy file systems like UNIX File System (UFS) and its own file system called Zettabyte File System (ZFS). Following figure show how UFS and other legacy file systems work.
-As you can see we can partition each storage device into one or more volumes with different file systems.]]></description>
 </item>
 </channel>
 </rss>

@@ -103,12 +103,13 @@ Have you seen the plenty of use cases that every vendor in every segment of tech
             </div>Intro Building a new development platform, for example a new microservices oriented platform to replace an existing monolith software system, is a massive endeavour. I have been working on a development platform, the whole ecosystem from ways of working to pipeline in the past 3 years and the experience might help others. So I thought to write down some of the observation and experience before they fully turn into intrinsic/implicit knowledge and hard to pen.]]></description>
 </item>
 <item>
-    <title>My thoughts on JSR 351, Java Identity API</title>
-    <link>https://kalali.blog/2011/10/some-thought-on-jsr-351-java-identity-api/</link>
-    <pubDate>Mon, 24 Oct 2011 00:00:00 &#43;0000</pubDate>
+    <title>Getting started with CouchDB and MongoDB, Part II: Beginning with Security</title>
+    <link>https://kalali.blog/2013/09/2013-09-17-getting-started-with-couchdb-and-mongodb-part-ii-beginning-with-security/</link>
+    <pubDate>Tue, 17 Sep 2013 00:00:00 &#43;0000</pubDate>
     <author>Masoud Kalali</author>
-    <guid>https://kalali.blog/2011/10/some-thought-on-jsr-351-java-identity-api/</guid>
-    <description><![CDATA[Identity, something that we hear more often these days with the whole web 2.0 and social services and more and more web based public services growing around us. The identity notion is an integral part of a security system in distributed services. Developing effective software system require an effective security and access control system which java provides, not exactly in the way that it should be in 2011 but it does provide what is the bare bone necessity to develop applications and frameworks on top of it and benefit from its presence.]]></description>
+    <guid>https://kalali.blog/2013/09/2013-09-17-getting-started-with-couchdb-and-mongodb-part-ii-beginning-with-security/</guid>
+    <description><![CDATA[In the first part of this series I discussed how can we perform CRUD operation in MongoDB and CouchDB. In this part we will look into security features of MongoDB and CouchDB. In the next two installments of this series I will go into how to apply the configuration that are described here and how to write codes that work with them.
+Basic security requirements There are some basic features and functionalities which are required by different applications, in addition to tons of other more advanced fine grained features, which one can expect a semi-structured data storage server to provide.]]></description>
 </item>
 </channel>
 </rss>
