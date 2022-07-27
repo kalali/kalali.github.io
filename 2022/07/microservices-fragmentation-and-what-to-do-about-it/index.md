@@ -96,4 +96,16 @@ We developed an in-house system that gather metrics from different sources (chan
 
 ### Announcements
 There is an announcement channel that everyone is tuned to. If there is something urgent that must be taken care of an announcement is sent out and teams are supposed to act. For example, a config issue in a sidecar, a bug in a library, etc. We are working to automatically creating incidents for these type of issues that needs a short reaction turnaround.
+
+
+{{< admonition type=info title="Discuss this post" open=true >}}
+Share your comments and thouthgs about this post on its [Linked in post](https://www.linkedin.com/posts/masoudkalali_microservices-runtime-fragmentation-activity-6949393211903635456-ooAC/)
+{{< /admonition >}}
+
+
+
+
+
+
+
  

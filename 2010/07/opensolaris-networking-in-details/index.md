@@ -757,9 +757,7 @@ and e1000g1 as the two interfaces which form the sm_group.
 Fowling figure shows fragment of ifconfig -a command prior to forming
 the sm_group.
 
-![](post-img/="media/image12.png" style="width:5.5in;height:0.84722in" />
-
-insert image 3180_04_10.png
+![](post-img/3180_04_10.png)
 
 As we can see there is nothing indicating that these interfaces are
 member of a group and as specified in the figure we two interfaces uses
