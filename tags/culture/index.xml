@@ -1,0 +1,19 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>culture - Tag - The Pensieve - Masoud Kalali&#39;s Blog</title>
+        <link>https://kalali.blog/tags/culture/</link>
+        <description>culture - Tag - The Pensieve - Masoud Kalali&#39;s Blog</description>
+        <generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>kalali@gmail.com (Masoud Kalali)</managingEditor>
+            <webMaster>kalali@gmail.com (Masoud Kalali)</webMaster><copyright>This work is licensed under a Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)</copyright><lastBuildDate>Tue, 22 Mar 2022 19:16:32 &#43;0200</lastBuildDate><atom:link href="https://kalali.blog/tags/culture/" rel="self" type="application/rss+xml" /><item>
+    <title>Proactive vs Reactive Working in Software Development</title>
+    <link>https://kalali.blog/2022/03/reactive-proactive-work/</link>
+    <pubDate>Tue, 22 Mar 2022 19:16:32 &#43;0200</pubDate>
+    <author>Masoud Kalali</author>
+    <guid>https://kalali.blog/2022/03/reactive-proactive-work/</guid>
+    <description><![CDATA[<div class="featured-image">
+                <img src="/post-img/reactive-proactive-work.png" referrerpolicy="no-referrer">
+            </div>Intro I was a guest at the The Exchange Nordics Podcast recently around this subject and decided to write a bit more detailed blog post with my thourhts more organized. I recommend listening to the podcast as the other guests had views into the subject from different angles which enriches the understanding.
+What is Reactive and Proactive working? Looking at the Oxford dictionary for the adjectives definition I find the the brief but clear description as follows]]></description>
+</item>
+</channel>
+</rss>
