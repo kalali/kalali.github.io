@@ -4,9 +4,20 @@
         <link>https://kalali.blog/</link>
         <description>Masoud Kalali&#39;s personal blog. Covering subjects ranging from tech strategy, leadership, software architecture, cloud native, and software development in general.</description>
         <generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>kalali@gmail.com (Masoud Kalali)</managingEditor>
-            <webMaster>kalali@gmail.com (Masoud Kalali)</webMaster><copyright>This work is licensed under a Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)</copyright><lastBuildDate>Sun, 04 Dec 2022 15:51:22 &#43;0100</lastBuildDate>
+            <webMaster>kalali@gmail.com (Masoud Kalali)</webMaster><copyright>This work is licensed under a Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)</copyright><lastBuildDate>Thu, 05 Jan 2023 12:16:32 &#43;0200</lastBuildDate>
             <atom:link href="https://kalali.blog/index.xml" rel="self" type="application/rss+xml" />
         <item>
+    <title>Proactive vs Reactive Working in Software Development</title>
+    <link>https://kalali.blog/2023/01/reactive-proactive-work/</link>
+    <pubDate>Thu, 05 Jan 2023 12:16:32 &#43;0200</pubDate>
+    <author>Masoud Kalali</author>
+    <guid>https://kalali.blog/2023/01/reactive-proactive-work/</guid>
+    <description><![CDATA[<div class="featured-image">
+                <img src="/post-img/reactive-proactive-work.png" referrerpolicy="no-referrer">
+            </div>Intro I was a guest at the The Exchange Nordics Podcast a while back around this subject and decided to write a bit more detailed blog post with my thoughts more organized. I recommend listening to the podcast as the other guests had views on the subject from different angles which enriches the understanding.
+What are Reactive and Proactive working? Looking at the Oxford dictionary for the adjective&rsquo;s definition I find the brief but clear description as follows]]></description>
+</item>
+<item>
     <title>Books, newsletters, and podcasts I Enjoyed Reading 2022</title>
     <link>https://kalali.blog/2022/12/books-i-enjoyed-reading-2022/</link>
     <pubDate>Sun, 04 Dec 2022 15:51:22 &#43;0100</pubDate>
@@ -102,16 +113,6 @@ Wikipedia has a good definition of software architecture that I quote below:]]><
                 <img src="/post-img/impacts-of-a-few-in-depth-write-ups-and-an-abundance-of-getting-started.jpg" referrerpolicy="no-referrer">
             </div>Amount of information about how a new component or software system can solve all the problem in a specific area is sometimes overboard. The hotter the topic or the framework the more information is scattered around the web for it. For example:
 Have you seen the plenty of use cases that every vendor in every segment of tech stack provide as part of the adoption or success story? How about the tutorial that shows how quickly and easily something as significant as a an observability solution can be set and be up and running?]]></description>
-</item>
-<item>
-    <title>Building a development platform</title>
-    <link>https://kalali.blog/2022/03/effective-internal-platform-product-manager/</link>
-    <pubDate>Tue, 22 Mar 2022 19:16:32 &#43;0200</pubDate>
-    <author>Masoud Kalali</author>
-    <guid>https://kalali.blog/2022/03/effective-internal-platform-product-manager/</guid>
-    <description><![CDATA[<div class="featured-image">
-                <img src="/post-img/building-a-development-platform.jpg" referrerpolicy="no-referrer">
-            </div>Intro Building a new development platform, for example a new microservices oriented platform to replace an existing monolith software system, is a massive endeavour. I have been working on a development platform, the whole ecosystem from ways of working to pipeline in the past 3 years and the experience might help others. So I thought to write down some of the observation and experience before they fully turn into intrinsic/implicit knowledge and hard to pen.]]></description>
 </item>
 </channel>
 </rss>
