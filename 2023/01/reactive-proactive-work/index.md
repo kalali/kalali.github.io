@@ -20,8 +20,7 @@ The description is clear on what the approaches are, but there are some characte
 Any organization more focused on a proactive approach has a higher understanding and readiness for the future and what may come to pass. To enumerate, proactive mindset and leadership summerise in:
 
 - Anticipating and preventing problems
-- Taking initiative and anticipating future needs
-- Planning and organizing work effectively
+- Anticipating future needs
 - Seeking out opportunities for improvement and innovation
 - Focusing on long-term goals
 
@@ -30,12 +29,10 @@ Proactive leaning organizations often have this characteristic at every level of
 ### Reactive leaning organization 
 A more reactive-leaning organization may consider short-term goals to be more important than long-term ones. To enumerate, reactive mindset and leadership summerise in:
 
-- Responding to problems and issues as they arise
-- Waiting for instructions and direction from others
-- Less planning and organization
+- Responding to problems and issues as they occur
+- Less planning and organization more taking things as they come
 - Less focus on improvement and innovation
 - Focusing on short-term goals
-- Waiting for things to happen rather than actively seeking out opportunities
 
 
 ### Mesh of Reactive and Proactive in an organization
