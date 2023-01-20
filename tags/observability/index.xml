@@ -1,0 +1,19 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>Observability - Tag - The Pensieve - Masoud Kalali&#39;s Blog</title>
+        <link>https://kalali.blog/tags/observability/</link>
+        <description>Observability - Tag - The Pensieve - Masoud Kalali&#39;s Blog</description>
+        <generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>kalali@gmail.com (Masoud Kalali)</managingEditor>
+            <webMaster>kalali@gmail.com (Masoud Kalali)</webMaster><copyright>This work is licensed under a Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)</copyright><lastBuildDate>Fri, 20 Jan 2023 20:16:32 &#43;0200</lastBuildDate><atom:link href="https://kalali.blog/tags/observability/" rel="self" type="application/rss+xml" /><item>
+    <title>Characteristics of a Good Observability Platform</title>
+    <link>https://kalali.blog/2023/01/attributes-of-good-observability-platform/</link>
+    <pubDate>Fri, 20 Jan 2023 20:16:32 &#43;0200</pubDate>
+    <author>Masoud Kalali</author>
+    <guid>https://kalali.blog/2023/01/attributes-of-good-observability-platform/</guid>
+    <description><![CDATA[<div class="featured-image">
+                <img src="/post-img/Characteristics-of-good%20observability.png" referrerpolicy="no-referrer">
+            </div>Introduction Observability is a critical pillar of operability in software systems. And the more complex the mesh of contributing components and infrastructure, the more important to have clear observability. The market for observability tooling is getting more mature with the explosion of the adoption of microservices and the standards for the interfaces are emerging with different vendors, adapting them at different levels.
+Plenty of SaaS and on-premise products are around to buy and start using and almost all of them come with a 5 minutes demo to show how easy they are to use!]]></description>
+</item>
+</channel>
+</rss>

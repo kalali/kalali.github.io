@@ -2,16 +2,21 @@
     xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
     xmlns:xhtml="http://www.w3.org/1999/xhtml"
     ><url>
-            <loc>https://kalali.blog/categories/</loc><lastmod>2023-01-05T12:16:32&#43;02:00</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url><url>
+            <loc>https://kalali.blog/tags/architecture/</loc><lastmod>2023-01-20T20:16:32&#43;02:00</lastmod><changefreq>daily</changefreq><priority>1</priority></url><url>
+            <loc>https://kalali.blog/categories/architecture/</loc><lastmod>2023-01-20T20:16:32&#43;02:00</lastmod><changefreq>daily</changefreq><priority>1</priority></url><url>
+            <loc>https://kalali.blog/categories/</loc><lastmod>2023-01-20T20:16:32&#43;02:00</lastmod><changefreq>daily</changefreq><priority>1</priority></url><url>
+            <loc>https://kalali.blog/2023/01/attributes-of-good-observability-platform/</loc><lastmod>2023-01-20T20:16:32&#43;02:00</lastmod><changefreq>daily</changefreq><priority>1</priority></url><url>
+            <loc>https://kalali.blog/tags/observability/</loc><lastmod>2023-01-20T20:16:32&#43;02:00</lastmod><changefreq>daily</changefreq><priority>1</priority></url><url>
+            <loc>https://kalali.blog/tags/operability/</loc><lastmod>2023-01-20T20:16:32&#43;02:00</lastmod><changefreq>daily</changefreq><priority>1</priority></url><url>
+            <loc>https://kalali.blog/posts/</loc><lastmod>2023-01-20T20:16:32&#43;02:00</lastmod><changefreq>daily</changefreq><priority>1</priority></url><url>
+            <loc>https://kalali.blog/tags/</loc><lastmod>2023-01-20T20:16:32&#43;02:00</lastmod><changefreq>daily</changefreq><priority>1</priority></url><url>
+            <loc>https://kalali.blog/</loc><lastmod>2023-01-20T20:16:32&#43;02:00</lastmod><changefreq>daily</changefreq><priority>1</priority></url><url>
             <loc>https://kalali.blog/tags/culture/</loc><lastmod>2023-01-05T12:16:32&#43;02:00</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url><url>
             <loc>https://kalali.blog/tags/pm/</loc><lastmod>2023-01-05T12:16:32&#43;02:00</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url><url>
-            <loc>https://kalali.blog/posts/</loc><lastmod>2023-01-05T12:16:32&#43;02:00</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url><url>
             <loc>https://kalali.blog/2023/01/reactive-proactive-work/</loc><lastmod>2023-01-05T12:16:32&#43;02:00</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url><url>
             <loc>https://kalali.blog/tags/product-owner/</loc><lastmod>2023-01-05T12:16:32&#43;02:00</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url><url>
             <loc>https://kalali.blog/tags/strategy/</loc><lastmod>2023-01-05T12:16:32&#43;02:00</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url><url>
             <loc>https://kalali.blog/categories/strategy/</loc><lastmod>2023-01-05T12:16:32&#43;02:00</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url><url>
-            <loc>https://kalali.blog/tags/</loc><lastmod>2023-01-05T12:16:32&#43;02:00</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url><url>
-            <loc>https://kalali.blog/</loc><lastmod>2023-01-05T12:16:32&#43;02:00</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url><url>
             <loc>https://kalali.blog/tags/books/</loc><lastmod>2022-12-04T15:51:22&#43;01:00</lastmod><changefreq>daily</changefreq><priority>0.5</priority></url><url>
             <loc>https://kalali.blog/categories/books/</loc><lastmod>2022-12-04T15:51:22&#43;01:00</lastmod><changefreq>daily</changefreq><priority>0.5</priority></url><url>
             <loc>https://kalali.blog/2022/12/books-i-enjoyed-reading-2022/</loc><lastmod>2022-12-04T15:51:22&#43;01:00</lastmod><changefreq>daily</changefreq><priority>0.5</priority></url><url>
@@ -29,8 +34,6 @@
             <loc>https://kalali.blog/categories/kubernetes/</loc><lastmod>2022-07-01T18:00:02&#43;02:00</lastmod><changefreq>daily</changefreq><priority>0.5</priority></url><url>
             <loc>https://kalali.blog/2022/07/kubernetes-active-active-clusters-and-application-fault-tolerance/</loc><lastmod>2022-07-01T18:00:02&#43;02:00</lastmod><changefreq>daily</changefreq><priority>0.5</priority></url><url>
             <loc>https://kalali.blog/tags/reliability/</loc><lastmod>2022-07-01T18:00:02&#43;02:00</lastmod><changefreq>daily</changefreq><priority>0.5</priority></url><url>
-            <loc>https://kalali.blog/tags/architecture/</loc><lastmod>2022-06-21T20:45:02&#43;02:00</lastmod><changefreq>daily</changefreq><priority>0.5</priority></url><url>
-            <loc>https://kalali.blog/categories/architecture/</loc><lastmod>2022-06-21T20:45:02&#43;02:00</lastmod><changefreq>daily</changefreq><priority>0.5</priority></url><url>
             <loc>https://kalali.blog/2022/06/software-architecture-attributes-how-to-decide/</loc><lastmod>2022-06-21T20:45:02&#43;02:00</lastmod><changefreq>daily</changefreq><priority>0.5</priority></url><url>
             <loc>https://kalali.blog/categories/agile-team/</loc><lastmod>2022-05-03T20:45:02&#43;02:00</lastmod><changefreq>daily</changefreq><priority>0.5</priority></url><url>
             <loc>https://kalali.blog/tags/management/</loc><lastmod>2022-05-03T20:45:02&#43;02:00</lastmod><changefreq>daily</changefreq><priority>0.5</priority></url><url>
