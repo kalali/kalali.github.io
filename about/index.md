@@ -1,6 +1,6 @@
 # About me, Masoud Kalali
 
-I work in the software industry and have been involved in software development since 2000. Delphi, .Net, and J2SE back in the time, and now I am more focused on technical leadership, cloud, architecture, and getting organizations closer to realizing their potential and goals. My responsibilities are more in ensuring alignments and assisting organizations with tech strategy, architecture, adoption of new technologies and practices, planning, and implementations when the area of impact is across organization boundaries.
+I am a pcincipal software engineer at Amazon Web Services (AWS), and have been involved in software development since 2000. Delphi, .Net, and J2SE back in the time, and now I am more focused on technical leadership, cloud, architecture, and getting organizations closer to realizing their potential and goals. My responsibilities are more in ensuring alignments and assisting organizations with tech strategy, architecture, adoption of new technologies and practices, planning, and implementations when the area of impact is across organization boundaries.
 
 I like the thrill of innovating, building, or rebuilding. It is as giving existence to something that is not; being software engineering or small tinkering projects. I like the outdoors and most often I go for a long trail run to unwind.
 
